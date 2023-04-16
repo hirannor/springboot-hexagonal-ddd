@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.hirannor.hexagonal</groupId>
+    <artifactId>api-generator-internal</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+
+    <name>API Generator for internal communication</name>
+
+    <properties>
+        <spring-boot.version>2.7.3</spring-boot.version>
+        <open-api-generator.version>6.0.1</open-api-generator.version>
+        <openapitools-jackson-databind-nullable.version>0.2.3</openapitools-jackson-databind-nullable.version>
+        <swagger-parser.version>2.1.2</swagger-parser.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <rest-api-definition.version>1.0.0-SNAPSHOT</rest-api-definition.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.hirannor.hexagonal</groupId>
+            <artifactId>rest-api-definition</artifactId>
+            <version>${rest-api-definition.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${openapitools-jackson-databind-nullable.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.swagger.parser.v3</groupId>
+            <artifactId>swagger-parser</artifactId>
+            <version>${swagger-parser.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>validation-api</artifactId>
+                    <groupId>javax.validation</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring-boot.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>${spring-boot.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>fetch-api-def</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.hirannor.hexagonal</groupId>
+                                    <artifactId>rest-api-definition</artifactId>
+                                    <version>${rest-api-definition.version}</version>
+                                    <outputDirectory>${project.build.directory}</outputDirectory>
+                                    <includes>**/*.yml</includes>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${open-api-generator.version}</version>
+                <configuration>
+                    <generatorName>spring</generatorName>
+                    <modelNameSuffix>Model</modelNameSuffix>
+                    <configOptions>
+                        <useOptional>true</useOptional>
+                        <interfaceOnly>true</interfaceOnly>
+                        <useBeanValidation>true</useBeanValidation>
+                    </configOptions>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>customers-api</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.build.directory}/internal/customers-api.yml</inputSpec>
+                            <apiPackage>com.hirannor.hexagonal.adapter.api.rest.api</apiPackage>
+                            <modelPackage>com.hirannor.hexagonal.adapter.api.rest.model</modelPackage>
+                            <typeMappings>
+                                <typeMapping>OffsetDateTime=Instant</typeMapping>
+                            </typeMappings>
+                            <importMappings>
+                                <importMapping>java.time.OffsetDateTime=java.time.Instant</importMapping>
+                            </importMappings>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

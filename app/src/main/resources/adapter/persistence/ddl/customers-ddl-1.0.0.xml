@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="hirannor" id="create_tables::customer:ddl:1.0.0">
+        <createTable tableName="EC_CUSTOMER">
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="CUSTOMER_ID" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UQ_EC_CUSTOMER_CUST_ID"/>
+            </column>
+
+            <column name="FIRST_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="LAST_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="AGE" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="GENDER" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="EMAIL_ADDRESS" type="VARCHAR(255)">
+                <constraints nullable="false" uniqueConstraintName="UQ_EC_CUSTOMER_EMAIL_ADDR"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="CUSTOMER_SEQ" incrementBy="5" startValue="1"/>
+
+        <createIndex tableName="EC_CUSTOMER" indexName="EC_CUSTOMER_IX_CUST_ID">
+            <column name="CUSTOMER_ID"/>
+        </createIndex>
+
+        <createIndex tableName="EC_CUSTOMER" indexName="EC_CUSTOMER_IX_EMAIL_ADDR">
+            <column name="EMAIL_ADDRESS"/>
+        </createIndex>
+
+        <createTable tableName="EC_ADDRESS">
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="COUNTRY" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="CITY" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="POSTAL_CODE" type="INT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="STREET_ADDRESS" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="ADDRESS_SEQ" incrementBy="5" startValue="1"/>
+
+        <createTable tableName="EC_CUSTOMER_ADDRESS">
+            <column name="CUSTOMER_ID" type="BIGINT">
+                <constraints nullable="false" referencedTableName="EC_CUSTOMER" referencedColumnNames="ID" foreignKeyName="EC_CUST_ADDR_FK_CUST_ID"/>
+            </column>
+
+            <column name="ADDRESS_ID" type="BIGINT">
+                <constraints nullable="false" referencedTableName="EC_ADDRESS" referencedColumnNames="ID"  foreignKeyName="EC_CUST_ADDR_FK_ADDR_ID"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+
+</databaseChangeLog>

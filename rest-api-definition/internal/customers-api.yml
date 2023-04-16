@@ -1,0 +1,120 @@
+openapi: 3.0.3
+info:
+  title: Customers API
+  description: Customers API
+  version: 1.0.0
+tags:
+  - name: customer
+
+paths:
+  /customers:
+    post:
+      summary: registers a customer
+      description: registers a customer
+      operationId: signup
+      requestBody:
+        description: Customer registration details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/Customer'
+    get:
+      tags:
+        - customer
+      summary: Retrieves all customer
+      description: Retrieves all customer
+      operationId: displayAll
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+  /customers/{customerId}:
+    get:
+      summary: Retrieves customer by id
+      description: Retrieves customer by id
+      operationId: displayById
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+components:
+  schemas:
+    SignupRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        age:
+          type: number
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+        gender:
+          $ref: '#/components/schemas/Gender'
+        emailAddress:
+          type: string
+    Customer:
+      type: object
+      properties:
+        customerId:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        age:
+          type: number
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+        gender:
+          $ref: '#/components/schemas/Gender'
+        emailAddress:
+          type: string
+    Address:
+      type: object
+      properties:
+        country:
+          $ref: '#/components/schemas/Country'
+        city:
+          type: string
+        postalCode:
+          type: integer
+        streetAddress:
+          type: string
+    Country:
+      type: string
+      enum:
+        - HUNGARY
+        - GERMANY
+    Gender:
+      type: string
+      enum:
+        - MALE
+        - FEMALE
+
