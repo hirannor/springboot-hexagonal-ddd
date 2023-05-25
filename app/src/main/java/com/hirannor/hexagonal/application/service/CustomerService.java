@@ -1,12 +1,8 @@
 package com.hirannor.hexagonal.application.service;
 
-import com.hirannor.hexagonal.application.usecase.customer.CustomerDisplay;
-import com.hirannor.hexagonal.application.usecase.customer.CustomerRegistration;
-import com.hirannor.hexagonal.application.usecase.eventing.EventPublishing;
-import com.hirannor.hexagonal.domain.customer.AddCustomer;
-import com.hirannor.hexagonal.domain.customer.Customer;
-import com.hirannor.hexagonal.domain.customer.CustomerId;
-import com.hirannor.hexagonal.domain.customer.CustomerRepository;
+import com.hirannor.hexagonal.application.port.messaging.MessagePublisher;
+import com.hirannor.hexagonal.application.usecase.customer.*;
+import com.hirannor.hexagonal.domain.customer.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,41 +21,41 @@ import java.util.Optional;
 )
 class CustomerService implements
         CustomerRegistration,
-        CustomerDisplay {
+        CustomerDisplay,
+        CustomerModification {
 
     private static final Logger LOGGER = LogManager.getLogger(
             CustomerService.class
     );
 
     private final CustomerRepository customers;
-    private final EventPublishing events;
+    private final MessagePublisher messages;
 
     @Autowired
-    CustomerService(final CustomerRepository customers, final EventPublishing events) {
+    CustomerService(final CustomerRepository customers, final MessagePublisher messages) {
         this.customers = customers;
-        this.events = events;
+        this.messages = messages;
     }
 
     @Override
-    public Customer signup(final AddCustomer command) {
-        if (command == null) throw new IllegalArgumentException("AddCustomer command cannot be null!");
+    public Customer register(final RegisterCustomer command) {
+        if (command == null) throw new IllegalArgumentException("RegisterCustomer command cannot be null!");
 
-        final Optional<Customer> customerFound = customers.findByEmailAddress(command.emailAddress());
+        final Optional<Customer> foundCustomer = customers.findByEmailAddress(command.emailAddress());
 
-        if (customerFound.isPresent()) {
-            throw new IllegalArgumentException("Customer already exist with the given e-mail address:" + command.emailAddress());
+        if (foundCustomer.isPresent()) {
+            throw new IllegalArgumentException("Customer already exist with the given e-mail address: " + command.emailAddress());
         }
 
-        final Customer registeredCustomer = Customer.register(command);
+        final Customer newCustomer = Customer.registerBy(command);
+        customers.save(newCustomer);
 
-        customers.save(registeredCustomer);
-        events.publish(registeredCustomer.listEvents());
+        messages.publish(newCustomer.listEvents());
+        newCustomer.clearEvents();
 
-        registeredCustomer.clearEvents();
+        LOGGER.info("Customer with customerId: {} is successfully registered!", newCustomer.customerId());
 
-        LOGGER.info("Customer with id: {} is successfully saved!", registeredCustomer.customerId());
-
-        return registeredCustomer;
+        return newCustomer;
     }
 
     @Override
@@ -70,9 +66,25 @@ class CustomerService implements
     }
 
     @Override
-    public Optional<Customer> displayById(final CustomerId customerId) {
-        LOGGER.info("Retrieving customer by id: {}", customerId);
+    public Optional<Customer> displayBy(final CustomerId customerId) {
+        LOGGER.info("Retrieving customer by customerId: {}", customerId);
 
         return customers.findBy(customerId);
+    }
+
+    @Override
+    public Customer change(final ChangeCustomerDetails cmd) {
+        final Customer foundCustomer = customers.findBy(cmd.customerId())
+            .orElseThrow(() -> new IllegalArgumentException("Customer not found with customerId: " + cmd.customerId()));
+
+        final Customer changed = foundCustomer.changeDetailsBy(cmd);
+        customers.changeDetails(changed);
+
+        messages.publish(changed.listEvents());
+        changed.clearEvents();
+
+        LOGGER.info("Customer details for customer id: {} are changed successfully!", changed.customerId());
+
+        return changed;
     }
 }

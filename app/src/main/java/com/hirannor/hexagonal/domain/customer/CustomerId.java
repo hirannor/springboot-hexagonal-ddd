@@ -1,12 +1,11 @@
 package com.hirannor.hexagonal.domain.customer;
 
-
 import java.util.UUID;
 
 public record CustomerId(String value) {
 
     public CustomerId {
-        if (value == null || value.isEmpty()) throw new IllegalArgumentException("CustomerId cannot be null!");
+        if (value == null || value.isBlank()) throw new IllegalArgumentException("CustomerId cannot be null or empty!");
     }
 
     public static CustomerId from(final String value) {

@@ -1,8 +1,7 @@
 package com.hirannor.hexagonal.adapter.persistence.jpa.customer.model;
 
-
 import javax.persistence.*;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "EC_CUSTOMER")
@@ -30,23 +29,24 @@ public class CustomerModel {
     @Column(name = "LAST_NAME")
     private String lastName;
 
-    @Column(name = "AGE")
-    private int age;
+    @Column(name = "BIRTH_DATE")
+    private LocalDate birthDate;
 
     @Column(name = "GENDER")
     private GenderModel gender;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "EC_CUSTOMER_ADDRESS",
-            joinColumns = @JoinColumn(
-                    name = "customer_id", referencedColumnName = "id"
-            ),
-            inverseJoinColumns = @JoinColumn(
-                    name = "address_id", referencedColumnName = "id"
-            )
-    )
-    private List<AddressModel> addresses;
+    @Column
+    @Enumerated(EnumType.STRING)
+    private CountryModel country;
+
+    @Column(name = "CITY")
+    private String city;
+
+    @Column(name = "POSTAL_CODE")
+    private Integer postalCode;
+
+    @Column(name = "STREET_ADDRESS")
+    private String streetAddress;
 
     @Column(name = "EMAIL_ADDRESS")
     private String emailAddress;
@@ -83,12 +83,12 @@ public class CustomerModel {
         this.lastName = lastName;
     }
 
-    public int getAge() {
-        return age;
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
-    public void setAge(final int age) {
-        this.age = age;
+    public void setBirthDate(final LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 
     public GenderModel getGender() {
@@ -99,12 +99,36 @@ public class CustomerModel {
         this.gender = gender;
     }
 
-    public List<AddressModel> getAddresses() {
-        return addresses;
+    public CountryModel getCountry() {
+        return country;
     }
 
-    public void setAddresses(final List<AddressModel> addresses) {
-        this.addresses = addresses;
+    public void setCountry(final CountryModel country) {
+        this.country = country;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(final String city) {
+        this.city = city;
+    }
+
+    public Integer getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(final Integer postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getStreetAddress() {
+        return streetAddress;
+    }
+
+    public void setStreetAddress(final String streetAddress) {
+        this.streetAddress = streetAddress;
     }
 
     public String getEmailAddress() {
@@ -114,4 +138,5 @@ public class CustomerModel {
     public void setEmailAddress(final String emailAddress) {
         this.emailAddress = emailAddress;
     }
+
 }

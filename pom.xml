@@ -15,7 +15,7 @@
 
     <modules>
         <module>app</module>
-        <module>api-generator-internal</module>
+        <module>api-generator-server</module>
         <module>rest-api-definition</module>
     </modules>
 

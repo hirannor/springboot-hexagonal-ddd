@@ -1,6 +1,7 @@
 package com.hirannor.hexagonal.adapter.messaging.eventbus.handling;
 
-import com.hirannor.hexagonal.domain.customer.CustomerAdded;
+import com.hirannor.hexagonal.domain.customer.CustomerDetailsChanged;
+import com.hirannor.hexagonal.domain.customer.CustomerRegistered;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.scheduling.annotation.Async;
@@ -14,13 +15,18 @@ class EventBusIngestionHandler {
             EventBusIngestionHandler.class
     );
 
-    EventBusIngestionHandler() {
+    EventBusIngestionHandler() {}
+
+    @Async
+    @TransactionalEventListener
+    public void handle(final CustomerRegistered evt) {
+        LOGGER.debug("CustomerRegistered event received: {}", evt);
     }
 
     @Async
     @TransactionalEventListener
-    public void handle(final CustomerAdded evt) {
-        LOGGER.debug("CustomerAdded event received: {}", evt);
+    public void handle(final CustomerDetailsChanged evt) {
+        LOGGER.debug("CustomerDetailsChanged event received: {}", evt);
     }
 
 }

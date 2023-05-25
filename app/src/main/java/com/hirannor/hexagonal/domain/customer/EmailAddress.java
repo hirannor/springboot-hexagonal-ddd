@@ -1,13 +1,14 @@
 package com.hirannor.hexagonal.domain.customer;
 
-
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public record EmailAddress(String value) {
 
-    private static final String EMAIL_REGEX_PATTERN = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\" +
+    private static final String EMAIL_REGEX =
+        "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\" +
             ".[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     public EmailAddress {
         if (value == null || value.isEmpty()) throw new IllegalArgumentException("EmailAddress cannot be null!");
@@ -20,10 +21,6 @@ public record EmailAddress(String value) {
     }
 
     private boolean isValidEmailAddress(final String value) {
-        final Pattern p = Pattern.compile(EMAIL_REGEX_PATTERN);
-        final Matcher m = p.matcher(value);
-
-        return m.matches();
-
+        return EMAIL_PATTERN.matcher(value).matches();
     }
 }

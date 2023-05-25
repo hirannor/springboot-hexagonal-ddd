@@ -35,13 +35,9 @@ class CustomerToModelMapper implements Function<Customer, CustomerModel> {
                 .customerId(customer.customerId().value())
                 .firstName(customer.fullName().firstName())
                 .lastName(customer.fullName().lastName())
-                .age(BigDecimal.valueOf(customer.age().value()))
+                .birthDate(customer.birthDate())
                 .gender(mapGenderToModel.apply(customer.gender()))
-                .addresses(
-                        customer.addresses()
-                                .stream()
-                                .map(addressToModel)
-                                .toList()
+                .address(addressToModel.apply(customer.address())
                 )
                 .emailAddress(customer.emailAddress().value());
     }

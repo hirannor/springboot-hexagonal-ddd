@@ -4,9 +4,9 @@ import java.util.Objects;
 
 public enum GenderModel {
 
-    MALE("male"),
+    MALE("Male"),
 
-    FEMALE("female");
+    FEMALE("Female");
 
     private final String dbRepresentation;
 

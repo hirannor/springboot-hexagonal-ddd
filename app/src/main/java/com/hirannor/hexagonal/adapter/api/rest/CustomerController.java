@@ -2,77 +2,109 @@ package com.hirannor.hexagonal.adapter.api.rest;
 
 import com.hirannor.hexagonal.adapter.api.rest.api.CustomersApi;
 import com.hirannor.hexagonal.adapter.api.rest.mapping.CustomerMapperFactory;
-import com.hirannor.hexagonal.adapter.api.rest.model.CustomerModel;
-import com.hirannor.hexagonal.adapter.api.rest.model.SignupRequestModel;
-import com.hirannor.hexagonal.application.usecase.customer.CustomerDisplay;
-import com.hirannor.hexagonal.application.usecase.customer.CustomerRegistration;
-import com.hirannor.hexagonal.domain.customer.AddCustomer;
-import com.hirannor.hexagonal.domain.customer.Customer;
-import com.hirannor.hexagonal.domain.customer.CustomerId;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
-
+import com.hirannor.hexagonal.adapter.api.rest.model.*;
+import com.hirannor.hexagonal.application.usecase.customer.*;
+import com.hirannor.hexagonal.domain.customer.*;
+import java.net.URI;
 import java.util.List;
 import java.util.function.Function;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 class CustomerController implements CustomersApi {
 
+    private static final String BASE_PATH = "/customers/";
+
     private final Function<Customer, CustomerModel> mapCustomerToModel;
-    private final Function<SignupRequestModel, AddCustomer> mapSignupRequestModelToAddCustomer;
+    private final Function<RegisterCustomerModel, RegisterCustomer> mapRegisterCustomerToModel;
+    private final Function<AddressModel, Address> mapAddressModelToDomain;
+    private final Function<GenderModel, Gender> mapGenderModelToDomain;
+
     private final CustomerDisplay customers;
     private final CustomerRegistration registration;
+    private final CustomerModification details;
 
     @Autowired
     CustomerController(final CustomerDisplay customers,
-                       final CustomerRegistration registration) {
+                       final CustomerRegistration registration,
+                       final CustomerModification details) {
         this(
-                customers,
-                registration,
-                CustomerMapperFactory.createCustomerToModelMapper(),
-                CustomerMapperFactory.createSignupRequestModelToAddCustomerMapper()
+            customers,
+            registration,
+            details,
+            CustomerMapperFactory.createCustomerToModelMapper(),
+            CustomerMapperFactory.createRegisterCustomerModelToDomainMapper(),
+            CustomerMapperFactory.createAddressModelToAddressMapper(),
+            CustomerMapperFactory.createGenderModelToDomainMapper()
         );
     }
 
     CustomerController(final CustomerDisplay customers,
                        final CustomerRegistration registration,
+                       final CustomerModification modification,
                        final Function<Customer, CustomerModel> mapCustomerToModel,
-                       final Function<SignupRequestModel, AddCustomer> mapSignupRequestModelToAddCustomer) {
+                       final Function<RegisterCustomerModel, RegisterCustomer> mapRegisterCustomerToModel,
+                       final Function<AddressModel, Address> mapAddressModelToDomain,
+                       final Function<GenderModel, Gender> mapGenderModelToDomain) {
         this.customers = customers;
         this.registration = registration;
+        this.details = modification;
         this.mapCustomerToModel = mapCustomerToModel;
-        this.mapSignupRequestModelToAddCustomer = mapSignupRequestModelToAddCustomer;
-    }
-
-    @Override
-    public ResponseEntity<CustomerModel> displayById(final String rawCustomerId) {
-        return customers.displayById(CustomerId.from(rawCustomerId))
-                .map(mapCustomerToModel)
-                .map(ResponseEntity::ok)
-                .orElseGet(ResponseEntity.notFound()::build);
+        this.mapRegisterCustomerToModel = mapRegisterCustomerToModel;
+        this.mapAddressModelToDomain = mapAddressModelToDomain;
+        this.mapGenderModelToDomain = mapGenderModelToDomain;
     }
 
     @Override
     public ResponseEntity<List<CustomerModel>> displayAll() {
-        final List<CustomerModel> retrievedCustomers = customers.displayAll()
-                .stream()
-                .map(mapCustomerToModel)
-                .toList();
+        final List<CustomerModel> response = customers.displayAll()
+            .stream()
+            .map(mapCustomerToModel)
+            .toList();
 
-        return ResponseEntity.ok(retrievedCustomers);
+        return ResponseEntity.ok(response);
     }
 
     @Override
-    public ResponseEntity<CustomerModel> signup(final SignupRequestModel model) {
-        final AddCustomer command = mapSignupRequestModelToAddCustomer.apply(model);
-
-        final Customer registeredCustomer = registration.signup(command);
-
-        final CustomerModel response = mapCustomerToModel.apply(registeredCustomer);
-
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    public ResponseEntity<CustomerModel> displayBy(final String rawCustomerId) {
+        return customers.displayBy(CustomerId.from(rawCustomerId))
+            .map(mapCustomerToModel)
+            .map(ResponseEntity::ok)
+            .orElseGet(ResponseEntity.notFound()::build);
     }
 
+    @Override
+    public ResponseEntity<CustomerModel> modify(final String customerId,
+                                                final ModifyCustomerModel model) {
+        final ChangeCustomerDetails cmd = assembleCommand(customerId, model);
+
+        final Customer changed = details.change(cmd);
+        final CustomerModel response = mapCustomerToModel.apply(changed);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public ResponseEntity<CustomerModel> register(final RegisterCustomerModel model) {
+        final RegisterCustomer cmd = mapRegisterCustomerToModel.apply(model);
+        final Customer registered = registration.register(cmd);
+
+        return ResponseEntity.created(
+            URI.create(BASE_PATH + registered.customerId().asText())
+        ).body(mapCustomerToModel.apply(registered));
+    }
+
+    private ChangeCustomerDetails assembleCommand(final String customerId,
+                                                  final ModifyCustomerModel model) {
+        return new ChangeCustomerDetails.Builder()
+            .customerId(CustomerId.from(customerId))
+            .fullName(FullName.from(model.getFirstName(), model.getLastName()))
+            .gender(mapGenderModelToDomain.apply(model.getGender()))
+            .birthDate(model.getBirthDate())
+            .address(mapAddressModelToDomain.apply(model.getAddress()))
+            .email(EmailAddress.from(model.getEmailAddress()))
+            .assemble();
+    }
 }

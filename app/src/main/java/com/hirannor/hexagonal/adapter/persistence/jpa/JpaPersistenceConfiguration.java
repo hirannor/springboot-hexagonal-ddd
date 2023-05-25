@@ -19,18 +19,21 @@ import javax.sql.DataSource;
 )
 public class JpaPersistenceConfiguration {
 
-    private final DataSource dataSource;
+    private static final String BUNDLE_INIT_PATH =
+        "classpath:adapter/persistence/bundle-init.xml";
+
+    private final DataSource ds;
 
     @Autowired
-    JpaPersistenceConfiguration(final DataSource dataSource) {
-        this.dataSource = dataSource;
+    JpaPersistenceConfiguration(final DataSource ds) {
+        this.ds = ds;
     }
 
     @Bean("liquibaseForPersistence")
     SpringLiquibase initializeDatabaseMigration() {
         final SpringLiquibase liquibase = new SpringLiquibase();
-        liquibase.setDataSource(dataSource);
-        liquibase.setChangeLog("classpath:adapter/persistence/bundle-init.xml");
+        liquibase.setDataSource(ds);
+        liquibase.setChangeLog(BUNDLE_INIT_PATH);
 
         return liquibase;
     }

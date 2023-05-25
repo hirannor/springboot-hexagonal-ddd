@@ -1,6 +1,6 @@
 package com.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping;
 
-import com.hirannor.hexagonal.adapter.persistence.jpa.customer.model.AddressModel;
+import com.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CountryModel;
 import com.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
 import com.hirannor.hexagonal.adapter.persistence.jpa.customer.model.GenderModel;
 import com.hirannor.hexagonal.domain.customer.*;
@@ -9,16 +9,16 @@ import java.util.function.Function;
 
 class CustomerModelToDomainMapper implements Function<CustomerModel, Customer> {
 
-    private final Function<AddressModel, Address> addressModelToDomain;
+    private final Function<CountryModel, Country> countryModelToDomain;
     private final Function<GenderModel, Gender> mapGenderModelToDomain;
 
     CustomerModelToDomainMapper() {
-        this(new AddressModelToDomainMapper(), new GenderModelToDomainMapper());
+        this(new CountryModelToDomainMapper(), new GenderModelToDomainMapper());
     }
 
-    CustomerModelToDomainMapper(final Function<AddressModel, Address> addressModelToDomain,
-                                Function<GenderModel, Gender> mapGenderModelToDomain) {
-        this.addressModelToDomain = addressModelToDomain;
+    CustomerModelToDomainMapper(final Function<CountryModel, Country> countryModelToDomain,
+                                final Function<GenderModel, Gender> mapGenderModelToDomain) {
+        this.countryModelToDomain = countryModelToDomain;
         this.mapGenderModelToDomain = mapGenderModelToDomain;
     }
 
@@ -29,12 +29,14 @@ class CustomerModelToDomainMapper implements Function<CustomerModel, Customer> {
         return Customer.from(
                 CustomerId.from(model.getCustomerId()),
                 FullName.from(model.getFirstName(), model.getLastName()),
-                Age.from(model.getAge()),
+                model.getBirthDate(),
                 mapGenderModelToDomain.apply(model.getGender()),
-                model.getAddresses()
-                        .stream()
-                        .map(addressModelToDomain)
-                        .toList(),
+                Address.from(
+                        countryModelToDomain.apply(model.getCountry()),
+                        model.getCity(),
+                        PostalCode.from(model.getPostalCode()),
+                        model.getStreetAddress()
+                ),
                 EmailAddress.from(model.getEmailAddress())
         );
     }

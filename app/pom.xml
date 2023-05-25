@@ -19,7 +19,7 @@
         <liquibase-core.version>4.15.0</liquibase-core.version>
         <h2.version>2.1.214</h2.version>
         <jackson-annotations.version>2.13.3</jackson-annotations.version>
-        <api-generator-internal.version>1.0.0-SNAPSHOT</api-generator-internal.version>
+        <api-generator-server.version>1.0.0-SNAPSHOT</api-generator-server.version>
     </properties>
 
     <dependencies>
@@ -27,8 +27,8 @@
         <!--APP DEPENDENCIES -->
         <dependency>
             <groupId>com.hirannor.hexagonal</groupId>
-            <artifactId>api-generator-internal</artifactId>
-            <version>${api-generator-internal.version}</version>
+            <artifactId>api-generator-server</artifactId>
+            <version>${api-generator-server.version}</version>
         </dependency>
 
         <!-- SPRING BOOT DEPENDENCIES-->

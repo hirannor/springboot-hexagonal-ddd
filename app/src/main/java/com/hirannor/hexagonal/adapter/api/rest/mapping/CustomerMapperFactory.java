@@ -1,9 +1,7 @@
 package com.hirannor.hexagonal.adapter.api.rest.mapping;
 
-import com.hirannor.hexagonal.adapter.api.rest.model.CustomerModel;
-import com.hirannor.hexagonal.adapter.api.rest.model.SignupRequestModel;
-import com.hirannor.hexagonal.domain.customer.AddCustomer;
-import com.hirannor.hexagonal.domain.customer.Customer;
+import com.hirannor.hexagonal.adapter.api.rest.model.*;
+import com.hirannor.hexagonal.domain.customer.*;
 
 import java.util.function.Function;
 
@@ -13,8 +11,16 @@ public interface CustomerMapperFactory {
         return new CustomerToModelMapper();
     }
 
-    static Function<SignupRequestModel, AddCustomer> createSignupRequestModelToAddCustomerMapper() {
-        return new SignUpRequestModelToAddCustomerMapper();
+    static Function<RegisterCustomerModel, RegisterCustomer> createRegisterCustomerModelToDomainMapper() {
+        return new RegisterCustomerModelToDomainMapper();
+    }
+
+    static Function<GenderModel, Gender> createGenderModelToDomainMapper() {
+        return new GenderModelToDomainMapper();
+    }
+
+    static Function<AddressModel, Address> createAddressModelToAddressMapper() {
+        return new AddressModelToDomainMapper();
     }
 
 }

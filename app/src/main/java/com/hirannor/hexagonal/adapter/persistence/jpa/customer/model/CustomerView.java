@@ -1,6 +1,6 @@
 package com.hirannor.hexagonal.adapter.persistence.jpa.customer.model;
 
-import java.util.List;
+import java.time.LocalDate;
 
 public interface CustomerView {
 
@@ -10,11 +10,17 @@ public interface CustomerView {
 
     String getLastName();
 
-    Integer getAge();
+    LocalDate getBirthDate();
 
     GenderModel getGender();
 
-    List<AddressView> getAddresses();
+    CountryModel getCountry();
+
+    String getCity();
+
+    Integer getPostalCode();
+
+    String getStreetAddress();
 
     String getEmailAddress();
 

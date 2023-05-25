@@ -3,9 +3,9 @@ package com.hirannor.hexagonal.adapter.persistence.jpa.customer.model;
 import java.util.Objects;
 
 public enum CountryModel {
-    HUNGARY("hungary"),
+    HUNGARY("Hungary"),
 
-    GERMANY("germany");
+    GERMANY("Germany");
 
     private final String dbRepresentation;
 

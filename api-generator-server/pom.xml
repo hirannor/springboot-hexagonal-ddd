@@ -4,10 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.hirannor.hexagonal</groupId>
-    <artifactId>api-generator-internal</artifactId>
+    <artifactId>api-generator-server</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
-    <name>API Generator for internal communication</name>
+    <name>API Generator</name>
 
     <properties>
         <spring-boot.version>2.7.3</spring-boot.version>

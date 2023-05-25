@@ -3,47 +3,54 @@ package com.hirannor.hexagonal.domain.customer;
 import com.hirannor.hexagonal.infrastructure.aggregate.AggregateRoot;
 import com.hirannor.hexagonal.infrastructure.event.DomainEvent;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 
 public class Customer implements AggregateRoot {
 
     private final List<DomainEvent> events;
     private final CustomerId customerId;
-    private final FullName fullName;
-    private final Age age;
-    private final Gender gender;
-    private final List<Address> addresses;
-    private final EmailAddress emailAddress;
+    private FullName fullName;
+    private LocalDate birthDate;
+    private Gender gender;
+    private Address address;
+    private EmailAddress emailAddress;
 
     private Customer(final CustomerId customerId,
                      final FullName fullName,
-                     final Age age,
+                     final LocalDate birthDate,
                      final Gender gender,
-                     final List<Address> addresses,
+                     final Address address,
                      final EmailAddress emailAddress) {
+
+        Objects.requireNonNull(customerId);
+        Objects.requireNonNull(fullName);
+        Objects.requireNonNull(birthDate);
+        Objects.requireNonNull(gender);
+        Objects.requireNonNull(address);
+        Objects.requireNonNull(emailAddress);
 
         this.events = new ArrayList<>(0);
         this.customerId = customerId;
         this.fullName = fullName;
-        this.age = age;
+        this.birthDate = birthDate;
         this.gender = gender;
-        this.addresses = addresses;
+        this.address = address;
         this.emailAddress = emailAddress;
     }
 
     public static Customer from(
             final CustomerId customerId,
             final FullName fullName,
-            final Age age,
+            final LocalDate birthDate,
             final Gender gender,
-            final List<Address> addresses,
+            final Address address,
             final EmailAddress emailAddress) {
 
-        return new Customer(customerId, fullName, age, gender, addresses, emailAddress);
+        return new Customer(customerId, fullName, birthDate, gender, address, emailAddress);
     }
 
-    public static Customer register(final AddCustomer cmd) {
+    public static Customer registerBy(final RegisterCustomer cmd) {
         if (cmd == null) throw new IllegalArgumentException("AddCustomer command cannot be null!");
 
         final CustomerId customerId = CustomerId.generate();
@@ -51,15 +58,27 @@ public class Customer implements AggregateRoot {
         final Customer newCustomer = new Customer(
                 customerId,
                 cmd.fullName(),
-                cmd.age(),
+                cmd.birthDate(),
                 cmd.gender(),
-                cmd.addresses(),
+                cmd.address(),
                 cmd.emailAddress()
         );
 
-        newCustomer.events.add(CustomerAdded.issue(customerId));
+        newCustomer.events.add(CustomerRegistered.issue(customerId));
 
         return newCustomer;
+    }
+
+    public Customer changeDetailsBy(final ChangeCustomerDetails cmd) {
+        this.fullName = cmd.fullName();
+        this.birthDate = cmd.birthDate();
+        this.address = cmd.address();
+        this.gender = cmd.gender();
+        this.emailAddress = cmd.email();
+
+        this.events.add(CustomerDetailsChanged.issue(customerId));
+
+        return this;
     }
 
 
@@ -71,16 +90,16 @@ public class Customer implements AggregateRoot {
         return fullName;
     }
 
-    public Age age() {
-        return age;
+    public LocalDate birthDate() {
+        return birthDate;
     }
 
     public Gender gender() {
         return gender;
     }
 
-    public List<Address> addresses() {
-        return addresses;
+    public Address address() {
+        return address;
     }
 
     public EmailAddress emailAddress() {

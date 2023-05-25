@@ -1,9 +1,9 @@
 package com.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping;
 
-import com.hirannor.hexagonal.adapter.persistence.jpa.customer.model.AddressModel;
+import com.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CountryModel;
 import com.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
 import com.hirannor.hexagonal.adapter.persistence.jpa.customer.model.GenderModel;
-import com.hirannor.hexagonal.domain.customer.Address;
+import com.hirannor.hexagonal.domain.customer.Country;
 import com.hirannor.hexagonal.domain.customer.Customer;
 import com.hirannor.hexagonal.domain.customer.Gender;
 
@@ -12,18 +12,18 @@ import java.util.function.Function;
 class CustomerToModelMapper implements Function<Customer, CustomerModel> {
 
     private final Function<Gender, GenderModel> mapGenderToModel;
-    private final Function<Address, AddressModel> mapAddressToModel;
+    private final Function<Country, CountryModel> mapCountryToModel;
 
     CustomerToModelMapper() {
-        this(new GenderToModelMapper(), new AddressToModelMapper());
+        this(new GenderToModelMapper(), new CountryToModelMapper());
     }
 
     CustomerToModelMapper(
             final Function<Gender, GenderModel> mapGenderToModel,
-            final Function<Address, AddressModel> mapAddressToModel) {
+            final Function<Country, CountryModel> mapCountryToModel) {
 
         this.mapGenderToModel = mapGenderToModel;
-        this.mapAddressToModel = mapAddressToModel;
+        this.mapCountryToModel = mapCountryToModel;
     }
 
     @Override
@@ -32,16 +32,15 @@ class CustomerToModelMapper implements Function<Customer, CustomerModel> {
 
         final CustomerModel model = new CustomerModel();
 
-        model.setCustomerId(domain.customerId().value());
+        model.setCustomerId(domain.customerId().asText());
         model.setGender(mapGenderToModel.apply(domain.gender()));
-        model.setAge(domain.age().value());
+        model.setBirthDate(domain.birthDate());
         model.setFirstName(domain.fullName().firstName());
         model.setLastName(domain.fullName().lastName());
-
-        model.setAddresses(domain.addresses()
-                .stream()
-                .map(mapAddressToModel)
-                .toList());
+        model.setCountry(mapCountryToModel.apply(domain.address().country()));
+        model.setCity(domain.address().city());
+        model.setPostalCode(domain.address().postalCode().value());
+        model.setStreetAddress(domain.address().streetAddress());
 
         model.setEmailAddress(domain.emailAddress().value());
 

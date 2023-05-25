@@ -10,6 +10,6 @@ public interface CustomerDisplay {
 
     List<Customer> displayAll();
 
-    Optional<Customer> displayById(CustomerId customerId);
+    Optional<Customer> displayBy(CustomerId customerId);
 
 }

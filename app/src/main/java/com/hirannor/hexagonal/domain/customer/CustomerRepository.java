@@ -13,4 +13,6 @@ public interface CustomerRepository {
 
     void save(Customer customer);
 
+    Customer changeDetails(Customer customer);
+
 }

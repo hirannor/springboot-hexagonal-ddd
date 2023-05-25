@@ -1,6 +1,7 @@
 package com.hirannor.hexagonal.adapter.persistence.jpa.customer;
 
 import com.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping.CustomerMappingFactory;
+import com.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping.CustomerModeller;
 import com.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
 import com.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerView;
 import com.hirannor.hexagonal.domain.customer.Customer;
@@ -66,6 +67,8 @@ class CustomerJpaRepository implements CustomerRepository {
     public Optional<Customer> findBy(final CustomerId customerId) {
         if (customerId == null) throw new IllegalArgumentException("CustomerId cannot be null!");
 
+        LOGGER.debug("Fetching customer by id: {}", customerId);
+
         return customers.findByCustomerId(customerId.value())
                 .map(customerModelToDomain);
     }
@@ -74,6 +77,8 @@ class CustomerJpaRepository implements CustomerRepository {
     public void save(final Customer customer) {
         if (customer == null) throw new IllegalArgumentException("Customer cannot be null!");
 
+        LOGGER.debug("Saving customer....");
+
         customers.save(customerToModel.apply(customer));
     }
 
@@ -81,8 +86,26 @@ class CustomerJpaRepository implements CustomerRepository {
     public Optional<Customer> findByEmailAddress(final EmailAddress email) {
         if (email == null) throw new IllegalArgumentException("EmailAddress cannot be null!");
 
+        LOGGER.debug("Fetching customer by e-mail address: {}", email);
+
         return customers.findByEmailAddress(email.value())
                 .map(customerModelToDomain);
+    }
 
+    @Override
+    public Customer changeDetails(final Customer domain) {
+        if (domain == null) throw new IllegalArgumentException("Customer cannot be null!");
+
+        LOGGER.debug("Changing customer details for customer id: {}", domain.customerId());
+
+        final String rawCustomerId = domain.customerId().value();
+
+        final CustomerModel model = customers.findByCustomerId(rawCustomerId)
+            .orElseThrow(() -> new IllegalArgumentException("Customer not found for id: " + rawCustomerId));
+
+        final CustomerModel modifiedCustomer = CustomerModeller.applyChangesFrom(domain).to(model);
+        customers.save(modifiedCustomer);
+
+        return domain;
     }
 }
