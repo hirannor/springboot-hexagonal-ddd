@@ -58,6 +58,17 @@ class CustomerController implements CustomersApi {
     }
 
     @Override
+    public ResponseEntity<CustomerModel> changeDetails(final String customerId,
+                                                       final ChangeCustomerDetailsModel model) {
+        final ChangeCustomerDetails cmd = assembleCommand(customerId, model);
+
+        final Customer changed = details.change(cmd);
+        final CustomerModel response = mapCustomerToModel.apply(changed);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @Override
     public ResponseEntity<List<CustomerModel>> displayAll() {
         final List<CustomerModel> response = customers.displayAll()
             .stream()
@@ -76,17 +87,6 @@ class CustomerController implements CustomersApi {
     }
 
     @Override
-    public ResponseEntity<CustomerModel> modify(final String customerId,
-                                                final ModifyCustomerModel model) {
-        final ChangeCustomerDetails cmd = assembleCommand(customerId, model);
-
-        final Customer changed = details.change(cmd);
-        final CustomerModel response = mapCustomerToModel.apply(changed);
-
-        return ResponseEntity.ok(response);
-    }
-
-    @Override
     public ResponseEntity<CustomerModel> register(final RegisterCustomerModel model) {
         final RegisterCustomer cmd = mapRegisterCustomerToModel.apply(model);
         final Customer registered = registration.register(cmd);
@@ -97,7 +97,7 @@ class CustomerController implements CustomersApi {
     }
 
     private ChangeCustomerDetails assembleCommand(final String customerId,
-                                                  final ModifyCustomerModel model) {
+                                                  final ChangeCustomerDetailsModel model) {
         return new ChangeCustomerDetails.Builder()
             .customerId(CustomerId.from(customerId))
             .fullName(FullName.from(model.getFirstName(), model.getLastName()))

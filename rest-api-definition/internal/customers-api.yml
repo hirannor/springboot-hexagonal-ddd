@@ -65,15 +65,15 @@ paths:
     put:
       tags:
         - customer
-      summary: Modify customer details
-      description: Modify customer details
-      operationId: modify
+      summary: Change customer details
+      description: Change customer details
+      operationId: changeDetails
       requestBody:
-        description: Modified customer details
+        description: Changed customer details
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ModifyCustomer'
+              $ref: '#/components/schemas/ChangeCustomerDetails'
       parameters:
         - name: customerId
           in: path
@@ -112,7 +112,7 @@ components:
           $ref: '#/components/schemas/Gender'
         emailAddress:
           type: string
-    ModifyCustomer:
+    ChangeCustomerDetails:
       type: object
       properties:
         firstName:
