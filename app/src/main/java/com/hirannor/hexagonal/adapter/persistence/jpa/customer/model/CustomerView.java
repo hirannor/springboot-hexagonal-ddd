@@ -2,6 +2,11 @@ package com.hirannor.hexagonal.adapter.persistence.jpa.customer.model;
 
 import java.time.LocalDate;
 
+/**
+ * A view representation of a Customer used for projection.
+ *
+ * @author Mate Karolyi
+ */
 public interface CustomerView {
 
     String getCustomerId();

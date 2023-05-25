@@ -1,21 +1,23 @@
 package com.hirannor.hexagonal.adapter.persistence.jpa;
 
+import javax.sql.DataSource;
 import liquibase.integration.spring.SpringLiquibase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-import javax.sql.DataSource;
-
+/**
+ * Spring configuration class for spring data jpa adapter.
+ *
+ * @author Mate Karolyi
+ */
 @Configuration
 @EnableJpaRepositories
 @ComponentScan
 @ConditionalOnProperty(
-        value = "adapter.persistence",
-        havingValue = "spring-data-jpa"
+    value = "adapter.persistence",
+    havingValue = "spring-data-jpa"
 )
 public class JpaPersistenceConfiguration {
 

@@ -1,22 +1,28 @@
 package com.hirannor.hexagonal.adapter.persistence.jpa.customer.model;
 
-import javax.persistence.*;
 import java.time.LocalDate;
+import javax.persistence.*;
 
+/**
+ * Customer related persistence entity model.
+ *
+ * @author Mate Karolyi
+ */
 @Entity
 @Table(name = "EC_CUSTOMER")
 public class CustomerModel {
+
     private static final int ALLOCATION_SIZE = 5;
 
     @Id
     @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "customer_seq"
+        strategy = GenerationType.SEQUENCE,
+        generator = "customer_seq"
     )
     @SequenceGenerator(
-            name = "customer_seq",
-            sequenceName = "customer_seq",
-            allocationSize = ALLOCATION_SIZE
+        name = "customer_seq",
+        sequenceName = "customer_seq",
+        allocationSize = ALLOCATION_SIZE
     )
     private Long id;
 

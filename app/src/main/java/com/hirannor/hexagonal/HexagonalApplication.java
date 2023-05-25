@@ -6,24 +6,27 @@ import com.hirannor.hexagonal.adapter.messaging.eventbus.SpringEventBusMessaging
 import com.hirannor.hexagonal.adapter.persistence.jpa.JpaPersistenceConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 
+/**
+ * Main entry point of application.
+ *
+ * @author Mate Karolyi
+ */
 @Import({
-        JpaPersistenceConfiguration.class,
-        RestApiConfiguration.class,
-        BasicAuthenticationConfiguration.class,
-        SpringEventBusMessagingConfiguration.class
+    JpaPersistenceConfiguration.class,
+    RestApiConfiguration.class,
+    BasicAuthenticationConfiguration.class,
+    SpringEventBusMessagingConfiguration.class
 })
 @SpringBootApplication
 @ComponentScan(
-        excludeFilters = {
-                @ComponentScan.Filter(
-                        type = FilterType.REGEX,
-                        pattern = "com.hirannor.hexagonal.adapter.*"
-                ),
-        }
+    excludeFilters = {
+        @ComponentScan.Filter(
+            type = FilterType.REGEX,
+            pattern = "com.hirannor.hexagonal.adapter.*"
+        ),
+    }
 )
 public class HexagonalApplication {
 

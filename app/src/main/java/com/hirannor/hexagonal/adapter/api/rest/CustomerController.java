@@ -1,9 +1,9 @@
 package com.hirannor.hexagonal.adapter.api.rest;
 
 import com.hirannor.hexagonal.adapter.api.rest.api.CustomersApi;
-import com.hirannor.hexagonal.adapter.api.rest.mapping.CustomerMapperFactory;
+import com.hirannor.hexagonal.adapter.api.rest.mapping.CustomerMappingFactory;
 import com.hirannor.hexagonal.adapter.api.rest.model.*;
-import com.hirannor.hexagonal.application.usecase.customer.*;
+import com.hirannor.hexagonal.application.usecase.*;
 import com.hirannor.hexagonal.domain.customer.*;
 import java.net.URI;
 import java.util.List;
@@ -12,6 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Rest controller implementation of {@link CustomersApi}
+ *
+ * @author Mate Karolyi
+ */
 @RestController
 class CustomerController implements CustomersApi {
 
@@ -34,10 +39,10 @@ class CustomerController implements CustomersApi {
             customers,
             registration,
             details,
-            CustomerMapperFactory.createCustomerToModelMapper(),
-            CustomerMapperFactory.createRegisterCustomerModelToDomainMapper(),
-            CustomerMapperFactory.createAddressModelToAddressMapper(),
-            CustomerMapperFactory.createGenderModelToDomainMapper()
+            CustomerMappingFactory.createCustomerToModelMapper(),
+            CustomerMappingFactory.createRegisterCustomerModelToDomainMapper(),
+            CustomerMappingFactory.createAddressModelToAddressMapper(),
+            CustomerMappingFactory.createGenderModelToDomainMapper()
         );
     }
 

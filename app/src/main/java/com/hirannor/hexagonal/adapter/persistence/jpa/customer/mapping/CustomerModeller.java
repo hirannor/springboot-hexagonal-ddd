@@ -5,6 +5,12 @@ import com.hirannor.hexagonal.domain.customer.*;
 import com.hirannor.hexagonal.infrastructure.modelling.Modeller;
 import java.util.function.Function;
 
+/**
+ * An implementation of {@link Modeller} interface, which is capable of
+ * applying changes from a {@link Customer} domain type to a {@link CustomerModel} model type.
+ *
+ * @author Mate Karolyi
+ */
 public class CustomerModeller implements Modeller<CustomerModel> {
 
     private final Function<Country, CountryModel> mapCountryToModel;
@@ -19,6 +25,12 @@ public class CustomerModeller implements Modeller<CustomerModel> {
         this.domain = domain;
     }
 
+    /**
+     * Create an instance of {@link CustomerModeller}.
+     *
+     * @param domain {@link Customer} from which the changes should be applied
+     * @return an instance of {@link CustomerModeller}
+     */
     public static CustomerModeller applyChangesFrom(Customer domain) {
         return new CustomerModeller(domain);
     }

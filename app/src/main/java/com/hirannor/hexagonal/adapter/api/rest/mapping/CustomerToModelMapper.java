@@ -1,30 +1,31 @@
 package com.hirannor.hexagonal.adapter.api.rest.mapping;
 
-import com.hirannor.hexagonal.adapter.api.rest.model.AddressModel;
-import com.hirannor.hexagonal.adapter.api.rest.model.CustomerModel;
-import com.hirannor.hexagonal.adapter.api.rest.model.GenderModel;
-import com.hirannor.hexagonal.domain.customer.Address;
-import com.hirannor.hexagonal.domain.customer.Customer;
-import com.hirannor.hexagonal.domain.customer.Gender;
-
-import java.math.BigDecimal;
+import com.hirannor.hexagonal.adapter.api.rest.model.*;
+import com.hirannor.hexagonal.domain.customer.*;
 import java.util.function.Function;
 
+/**
+ * Maps a {@link Customer} domain type to {@link CustomerModel} model type.
+ *
+ * @author Mate Karolyi
+ */
 class CustomerToModelMapper implements Function<Customer, CustomerModel> {
 
     private final Function<Gender, GenderModel> mapGenderToModel;
-    private final Function<Address, AddressModel> addressToModel;
+    private final Function<Address, AddressModel> mapAddressToModel;
 
     CustomerToModelMapper() {
-        this(new GenderToModelMapper(), new AddressToModelMapper());
+        this(
+            new GenderToModelMapper(),
+            new AddressToModelMapper()
+        );
     }
 
     CustomerToModelMapper(final Function<Gender, GenderModel> mapGenderToModel,
-                          final Function<Address, AddressModel> addressToModel) {
+                          final Function<Address, AddressModel> mapAddressToModel) {
 
         this.mapGenderToModel = mapGenderToModel;
-        this.addressToModel = addressToModel;
-
+        this.mapAddressToModel = mapAddressToModel;
     }
 
     @Override
@@ -32,14 +33,13 @@ class CustomerToModelMapper implements Function<Customer, CustomerModel> {
         if (customer == null) return null;
 
         return new CustomerModel()
-                .customerId(customer.customerId().value())
-                .firstName(customer.fullName().firstName())
-                .lastName(customer.fullName().lastName())
-                .birthDate(customer.birthDate())
-                .gender(mapGenderToModel.apply(customer.gender()))
-                .address(addressToModel.apply(customer.address())
-                )
-                .emailAddress(customer.emailAddress().value());
+            .customerId(customer.customerId().value())
+            .firstName(customer.fullName().firstName())
+            .lastName(customer.fullName().lastName())
+            .birthDate(customer.birthDate())
+            .gender(mapGenderToModel.apply(customer.gender()))
+            .address(mapAddressToModel.apply(customer.address()))
+            .emailAddress(customer.emailAddress().value());
     }
 
 }

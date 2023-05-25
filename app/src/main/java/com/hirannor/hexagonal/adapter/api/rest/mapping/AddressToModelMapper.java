@@ -5,9 +5,13 @@ import com.hirannor.hexagonal.adapter.api.rest.model.AddressModel;
 import com.hirannor.hexagonal.adapter.api.rest.model.CountryModel;
 import com.hirannor.hexagonal.domain.customer.Address;
 import com.hirannor.hexagonal.domain.customer.Country;
-
 import java.util.function.Function;
 
+/**
+ * Maps a {@link Address} domain type to {@link AddressModel} model type.
+ *
+ * @author Mate Karolyi
+ */
 class AddressToModelMapper implements Function<Address, AddressModel> {
 
     private final Function<Country, CountryModel> mapCountryToModel;

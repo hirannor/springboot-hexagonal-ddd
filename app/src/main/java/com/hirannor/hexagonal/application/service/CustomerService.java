@@ -1,31 +1,33 @@
 package com.hirannor.hexagonal.application.service;
 
 import com.hirannor.hexagonal.application.port.messaging.MessagePublisher;
-import com.hirannor.hexagonal.application.usecase.customer.*;
+import com.hirannor.hexagonal.application.usecase.*;
 import com.hirannor.hexagonal.domain.customer.*;
+import java.util.List;
+import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-
+/**
+ * A service implementation of customer related use cases.
+ *
+ * @author Mate Karolyi
+ */
 @Service
 @Transactional(
-        propagation = Propagation.REQUIRES_NEW,
-        isolation = Isolation.REPEATABLE_READ
+    propagation = Propagation.REQUIRES_NEW,
+    isolation = Isolation.REPEATABLE_READ
 )
 class CustomerService implements
-        CustomerRegistration,
-        CustomerDisplay,
-        CustomerModification {
+    CustomerRegistration,
+    CustomerDisplay,
+    CustomerModification {
 
     private static final Logger LOGGER = LogManager.getLogger(
-            CustomerService.class
+        CustomerService.class
     );
 
     private final CustomerRepository customers;
@@ -44,7 +46,8 @@ class CustomerService implements
         final Optional<Customer> foundCustomer = customers.findByEmailAddress(command.emailAddress());
 
         if (foundCustomer.isPresent()) {
-            throw new IllegalArgumentException("Customer already exist with the given e-mail address: " + command.emailAddress());
+            throw new IllegalArgumentException(
+                "Customer already exist with the given e-mail address: " + command.emailAddress());
         }
 
         final Customer newCustomer = Customer.registerBy(command);

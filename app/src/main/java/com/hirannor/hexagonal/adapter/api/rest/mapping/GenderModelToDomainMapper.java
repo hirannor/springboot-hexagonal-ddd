@@ -2,9 +2,13 @@ package com.hirannor.hexagonal.adapter.api.rest.mapping;
 
 import com.hirannor.hexagonal.adapter.api.rest.model.GenderModel;
 import com.hirannor.hexagonal.domain.customer.Gender;
-
 import java.util.function.Function;
 
+/**
+ * Maps a {@link GenderModel} model type to {@link Gender} domain type.
+ *
+ * @author Mate Karolyi
+ */
 class GenderModelToDomainMapper implements Function<GenderModel, Gender> {
 
     GenderModelToDomainMapper() {

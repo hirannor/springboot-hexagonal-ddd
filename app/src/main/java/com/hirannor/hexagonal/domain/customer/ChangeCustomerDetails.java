@@ -5,6 +5,19 @@ import com.hirannor.hexagonal.infrastructure.command.CommandId;
 import java.time.Instant;
 import java.time.LocalDate;
 
+/**
+ * Immutable record that represents a command to hold changed customer details.
+ *
+ * @param id           {@link CommandId} unique identifier of command operation
+ * @param registeredAt {@link Instant} registration time of command
+ * @param customerId   {@link CustomerId} unique identifier of a customer
+ * @param fullName     {@link FullName} full name of customer
+ * @param birthDate    {@link LocalDate} birth date of customer
+ * @param gender       {@link Gender} gender of customer
+ * @param address      {@link Address} address of customer
+ * @param email        {@link EmailAddress} email address of customer
+ * @author Mate Karolyi
+ */
 public record ChangeCustomerDetails(
     CommandId id,
     Instant registeredAt,

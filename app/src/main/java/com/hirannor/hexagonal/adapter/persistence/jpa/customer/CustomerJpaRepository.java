@@ -4,31 +4,30 @@ import com.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping.CustomerM
 import com.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping.CustomerModeller;
 import com.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
 import com.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerView;
-import com.hirannor.hexagonal.domain.customer.Customer;
-import com.hirannor.hexagonal.domain.customer.CustomerId;
-import com.hirannor.hexagonal.domain.customer.CustomerRepository;
-import com.hirannor.hexagonal.domain.customer.EmailAddress;
+import com.hirannor.hexagonal.domain.customer.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-
+/**
+ * Spring JPA implementation of {@link CustomerRepository} repository.
+ *
+ * @author Mate Karolyi
+ */
 @Repository
 @Transactional(
-        propagation = Propagation.MANDATORY,
-        isolation = Isolation.REPEATABLE_READ
+    propagation = Propagation.MANDATORY,
+    isolation = Isolation.REPEATABLE_READ
 )
 class CustomerJpaRepository implements CustomerRepository {
 
     private static final Logger LOGGER = LogManager.getLogger(
-            CustomerJpaRepository.class
+        CustomerJpaRepository.class
     );
 
     private final Function<Customer, CustomerModel> mapDomainToModel;
@@ -40,9 +39,9 @@ class CustomerJpaRepository implements CustomerRepository {
     @Autowired
     CustomerJpaRepository(final CustomerSpringDataJpaRepository customers) {
         this(customers,
-                CustomerMappingFactory.createCustomerToModelMapper(),
-                CustomerMappingFactory.createCustomerModelToDomainMapper(),
-                CustomerMappingFactory.createCustomerViewToDomainMapper()
+            CustomerMappingFactory.createCustomerToModelMapper(),
+            CustomerMappingFactory.createCustomerModelToDomainMapper(),
+            CustomerMappingFactory.createCustomerViewToDomainMapper()
         );
     }
 
@@ -59,9 +58,9 @@ class CustomerJpaRepository implements CustomerRepository {
     @Override
     public List<Customer> findAll() {
         return customers.findAllProjectedBy()
-                .stream()
-                .map(mapViewToDomain)
-                .toList();
+            .stream()
+            .map(mapViewToDomain)
+            .toList();
     }
 
     @Override
@@ -71,7 +70,7 @@ class CustomerJpaRepository implements CustomerRepository {
         LOGGER.debug("Fetching customer by id: {}", customerId);
 
         return customers.findByCustomerId(customerId.value())
-                .map(mapModelToDomain);
+            .map(mapModelToDomain);
     }
 
     @Override
@@ -90,7 +89,7 @@ class CustomerJpaRepository implements CustomerRepository {
         LOGGER.debug("Fetching customer by e-mail address: {}", email);
 
         return customers.findByEmailAddress(email.value())
-                .map(mapModelToDomain);
+            .map(mapModelToDomain);
     }
 
     @Override

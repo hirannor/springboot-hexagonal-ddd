@@ -2,9 +2,13 @@ package com.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping;
 
 import com.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CountryModel;
 import com.hirannor.hexagonal.domain.customer.Country;
-
 import java.util.function.Function;
 
+/**
+ * Maps a {@link CountryModel} model type to {@link Country} domain type.
+ *
+ * @author Mate Karolyi
+ */
 class CountryModelToDomainMapper implements Function<CountryModel, Country> {
 
     CountryModelToDomainMapper() {

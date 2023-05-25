@@ -1,26 +1,29 @@
 package com.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping;
 
-import com.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CountryModel;
-import com.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
-import com.hirannor.hexagonal.adapter.persistence.jpa.customer.model.GenderModel;
-import com.hirannor.hexagonal.domain.customer.Country;
-import com.hirannor.hexagonal.domain.customer.Customer;
-import com.hirannor.hexagonal.domain.customer.Gender;
-
+import com.hirannor.hexagonal.adapter.persistence.jpa.customer.model.*;
+import com.hirannor.hexagonal.domain.customer.*;
 import java.util.function.Function;
 
+/**
+ * Maps a {@link Customer} domain type to {@link CustomerModel} model type.
+ *
+ * @author Mate Karolyi
+ */
 class CustomerToModelMapper implements Function<Customer, CustomerModel> {
 
     private final Function<Gender, GenderModel> mapGenderToModel;
     private final Function<Country, CountryModel> mapCountryToModel;
 
     CustomerToModelMapper() {
-        this(new GenderToModelMapper(), new CountryToModelMapper());
+        this(
+            new GenderToModelMapper(),
+            new CountryToModelMapper()
+        );
     }
 
     CustomerToModelMapper(
-            final Function<Gender, GenderModel> mapGenderToModel,
-            final Function<Country, CountryModel> mapCountryToModel) {
+        final Function<Gender, GenderModel> mapGenderToModel,
+        final Function<Country, CountryModel> mapCountryToModel) {
 
         this.mapGenderToModel = mapGenderToModel;
         this.mapCountryToModel = mapCountryToModel;

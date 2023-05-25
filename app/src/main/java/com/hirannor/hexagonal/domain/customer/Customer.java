@@ -2,10 +2,14 @@ package com.hirannor.hexagonal.domain.customer;
 
 import com.hirannor.hexagonal.infrastructure.aggregate.AggregateRoot;
 import com.hirannor.hexagonal.infrastructure.event.DomainEvent;
-
 import java.time.LocalDate;
 import java.util.*;
 
+/**
+ * Domain specific customer object.
+ *
+ * @author Mate Karolyi
+ */
 public class Customer implements AggregateRoot {
 
     private final List<DomainEvent> events;
@@ -40,28 +44,34 @@ public class Customer implements AggregateRoot {
     }
 
     public static Customer from(
-            final CustomerId customerId,
-            final FullName fullName,
-            final LocalDate birthDate,
-            final Gender gender,
-            final Address address,
-            final EmailAddress emailAddress) {
+        final CustomerId customerId,
+        final FullName fullName,
+        final LocalDate birthDate,
+        final Gender gender,
+        final Address address,
+        final EmailAddress emailAddress) {
 
         return new Customer(customerId, fullName, birthDate, gender, address, emailAddress);
     }
 
+    /**
+     * Registers a customer by a command.
+     *
+     * @param cmd {@link RegisterCustomer} command
+     * @return an instance of newly created {@link Customer} object
+     */
     public static Customer registerBy(final RegisterCustomer cmd) {
         if (cmd == null) throw new IllegalArgumentException("AddCustomer command cannot be null!");
 
         final CustomerId customerId = CustomerId.generate();
 
         final Customer newCustomer = new Customer(
-                customerId,
-                cmd.fullName(),
-                cmd.birthDate(),
-                cmd.gender(),
-                cmd.address(),
-                cmd.emailAddress()
+            customerId,
+            cmd.fullName(),
+            cmd.birthDate(),
+            cmd.gender(),
+            cmd.address(),
+            cmd.emailAddress()
         );
 
         newCustomer.events.add(CustomerRegistered.issue(customerId));
@@ -69,6 +79,12 @@ public class Customer implements AggregateRoot {
         return newCustomer;
     }
 
+    /**
+     * Change customer details based on the command
+     *
+     * @param cmd {@link ChangeCustomerDetails}
+     * @return a modified instance of {@link Customer}
+     */
     public Customer changeDetailsBy(final ChangeCustomerDetails cmd) {
         this.fullName = cmd.fullName();
         this.birthDate = cmd.birthDate();
