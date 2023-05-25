@@ -31,9 +31,10 @@ class CustomerJpaRepository implements CustomerRepository {
             CustomerJpaRepository.class
     );
 
-    private final Function<Customer, CustomerModel> customerToModel;
-    private final Function<CustomerModel, Customer> customerModelToDomain;
-    private final Function<CustomerView, Customer> customerViewToDomain;
+    private final Function<Customer, CustomerModel> mapDomainToModel;
+    private final Function<CustomerModel, Customer> mapModelToDomain;
+    private final Function<CustomerView, Customer> mapViewToDomain;
+
     private final CustomerSpringDataJpaRepository customers;
 
     @Autowired
@@ -46,20 +47,20 @@ class CustomerJpaRepository implements CustomerRepository {
     }
 
     CustomerJpaRepository(final CustomerSpringDataJpaRepository customers,
-                          final Function<Customer, CustomerModel> customerToModel,
-                          final Function<CustomerModel, Customer> customerModelToDomain,
-                          final Function<CustomerView, Customer> customerViewToDomain) {
+                          final Function<Customer, CustomerModel> mapDomainToModel,
+                          final Function<CustomerModel, Customer> mapModelToDomain,
+                          final Function<CustomerView, Customer> mapViewToDomain) {
         this.customers = customers;
-        this.customerToModel = customerToModel;
-        this.customerModelToDomain = customerModelToDomain;
-        this.customerViewToDomain = customerViewToDomain;
+        this.mapDomainToModel = mapDomainToModel;
+        this.mapModelToDomain = mapModelToDomain;
+        this.mapViewToDomain = mapViewToDomain;
     }
 
     @Override
     public List<Customer> findAll() {
         return customers.findAllProjectedBy()
                 .stream()
-                .map(customerViewToDomain)
+                .map(mapViewToDomain)
                 .toList();
     }
 
@@ -70,7 +71,7 @@ class CustomerJpaRepository implements CustomerRepository {
         LOGGER.debug("Fetching customer by id: {}", customerId);
 
         return customers.findByCustomerId(customerId.value())
-                .map(customerModelToDomain);
+                .map(mapModelToDomain);
     }
 
     @Override
@@ -79,7 +80,7 @@ class CustomerJpaRepository implements CustomerRepository {
 
         LOGGER.debug("Saving customer....");
 
-        customers.save(customerToModel.apply(customer));
+        customers.save(mapDomainToModel.apply(customer));
     }
 
     @Override
@@ -89,7 +90,7 @@ class CustomerJpaRepository implements CustomerRepository {
         LOGGER.debug("Fetching customer by e-mail address: {}", email);
 
         return customers.findByEmailAddress(email.value())
-                .map(customerModelToDomain);
+                .map(mapModelToDomain);
     }
 
     @Override
