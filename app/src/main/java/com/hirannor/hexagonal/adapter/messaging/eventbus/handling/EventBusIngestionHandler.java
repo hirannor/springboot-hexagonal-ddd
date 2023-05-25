@@ -31,6 +31,8 @@ class EventBusIngestionHandler {
     @Async
     @TransactionalEventListener
     public void handle(final CustomerRegistered evt) {
+        if (evt == null) throw new IllegalArgumentException("Customer registered event cannot be null!");
+
         LOGGER.debug("CustomerRegistered event received: {}", evt);
     }
 
@@ -42,6 +44,8 @@ class EventBusIngestionHandler {
     @Async
     @TransactionalEventListener
     public void handle(final CustomerDetailsChanged evt) {
+        if (evt == null) throw new IllegalArgumentException("Customer details changed event cannot be null!");
+
         LOGGER.debug("CustomerDetailsChanged event received: {}", evt);
     }
 

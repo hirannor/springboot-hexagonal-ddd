@@ -17,7 +17,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ComponentScan
 @ConditionalOnProperty(
     value = "adapter.persistence",
-    havingValue = "spring-data-jpa"
+    havingValue = "spring-data-jpa",
+    matchIfMissing = true
 )
 public class JpaPersistenceConfiguration {
 

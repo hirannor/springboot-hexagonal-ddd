@@ -63,7 +63,7 @@ class CustomerService implements
 
     @Override
     public List<Customer> displayAll() {
-        LOGGER.info("Retrieving all customer...");
+        LOGGER.info("Retrieving all customers...");
 
         return customers.findAll();
     }
