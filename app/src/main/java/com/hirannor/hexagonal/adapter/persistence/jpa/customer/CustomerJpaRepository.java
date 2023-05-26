@@ -101,7 +101,7 @@ class CustomerJpaRepository implements CustomerRepository {
         final String rawCustomerId = domain.customerId().value();
 
         final CustomerModel model = customers.findByCustomerId(rawCustomerId)
-            .orElseThrow(() -> new IllegalArgumentException("Customer not found for id: " + rawCustomerId));
+            .orElseThrow(() -> new IllegalArgumentException(String.format("Customer not found with id: %s ", rawCustomerId)));
 
         final CustomerModel modifiedCustomer = CustomerModeller.applyChangesFrom(domain).to(model);
         customers.save(modifiedCustomer);

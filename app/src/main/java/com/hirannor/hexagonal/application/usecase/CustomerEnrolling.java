@@ -8,7 +8,7 @@ import com.hirannor.hexagonal.domain.customer.RegisterCustomer;
  *
  * @author Mate Karolyi
  */
-public interface CustomerRegistration {
+public interface CustomerEnrolling {
 
     /**
      * Register a customer based on the {@link RegisterCustomer} command.

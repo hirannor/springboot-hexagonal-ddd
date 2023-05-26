@@ -28,16 +28,16 @@ class CustomerController implements CustomersApi {
     private final Function<GenderModel, Gender> mapGenderModelToDomain;
 
     private final CustomerDisplay customers;
-    private final CustomerRegistration registration;
+    private final CustomerEnrolling enrolling;
     private final CustomerModification details;
 
     @Autowired
     CustomerController(final CustomerDisplay customers,
-                       final CustomerRegistration registration,
+                       final CustomerEnrolling enrolling,
                        final CustomerModification details) {
         this(
             customers,
-            registration,
+                enrolling,
             details,
             CustomerMappingFactory.createCustomerToModelMapper(),
             CustomerMappingFactory.createRegisterCustomerModelToDomainMapper(),
@@ -47,15 +47,15 @@ class CustomerController implements CustomersApi {
     }
 
     CustomerController(final CustomerDisplay customers,
-                       final CustomerRegistration registration,
-                       final CustomerModification modification,
+                       final CustomerEnrolling enrolling,
+                       final CustomerModification details,
                        final Function<Customer, CustomerModel> mapCustomerToModel,
                        final Function<RegisterCustomerModel, RegisterCustomer> mapRegisterCustomerToModel,
                        final Function<AddressModel, Address> mapAddressModelToDomain,
                        final Function<GenderModel, Gender> mapGenderModelToDomain) {
         this.customers = customers;
-        this.registration = registration;
-        this.details = modification;
+        this.enrolling = enrolling;
+        this.details = details;
         this.mapCustomerToModel = mapCustomerToModel;
         this.mapRegisterCustomerToModel = mapRegisterCustomerToModel;
         this.mapAddressModelToDomain = mapAddressModelToDomain;
@@ -67,8 +67,8 @@ class CustomerController implements CustomersApi {
                                                        final ChangeCustomerDetailsModel model) {
         final ChangeCustomerDetails cmd = assembleCommand(customerId, model);
 
-        final Customer changed = details.change(cmd);
-        final CustomerModel response = mapCustomerToModel.apply(changed);
+        final Customer changedCustomer = details.changeDetails(cmd);
+        final CustomerModel response = mapCustomerToModel.apply(changedCustomer);
 
         return ResponseEntity.ok(response);
     }
@@ -94,11 +94,11 @@ class CustomerController implements CustomersApi {
     @Override
     public ResponseEntity<CustomerModel> register(final RegisterCustomerModel model) {
         final RegisterCustomer cmd = mapRegisterCustomerToModel.apply(model);
-        final Customer registered = registration.register(cmd);
+        final Customer registeredCustomer = enrolling.register(cmd);
 
         return ResponseEntity.created(
-            URI.create(BASE_PATH + registered.customerId().asText())
-        ).body(mapCustomerToModel.apply(registered));
+            URI.create(BASE_PATH + registeredCustomer.customerId().asText())
+        ).body(mapCustomerToModel.apply(registeredCustomer));
     }
 
     private ChangeCustomerDetails assembleCommand(final String customerId,
