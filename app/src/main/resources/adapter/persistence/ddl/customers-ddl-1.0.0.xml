@@ -51,7 +51,7 @@
             </column>
         </createTable>
 
-        <createSequence sequenceName="CUSTOMER_SEQ" incrementBy="5" startValue="1"/>
+        <createSequence sequenceName="CUSTOMER_SEQ" incrementBy="5" startValue="100"/>
 
         <createIndex tableName="EC_CUSTOMER" indexName="EC_CUSTOMER_IX_CUST_ID">
             <column name="CUSTOMER_ID"/>

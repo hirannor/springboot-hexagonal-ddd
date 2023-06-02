@@ -22,11 +22,11 @@ spring:
     hibernate:
       ddl-auto: validate
   application:
-    name: hexagonal-dd-app
+    name: hexagonal-ddd-app
 
 adapter:
   authentication: basic
   persistence: spring-data-jpa
   messaging: spring-event-bus
-  api: rest
+  web: rest
 

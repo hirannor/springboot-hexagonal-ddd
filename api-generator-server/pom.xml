@@ -3,17 +3,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.hirannor.hexagonal</groupId>
+    <groupId>hu.hirannor.hexagonal</groupId>
     <artifactId>api-generator-server</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <name>API Generator</name>
 
     <properties>
-        <spring-boot.version>2.7.3</spring-boot.version>
+        <spring-boot.version>3.1.0</spring-boot.version>
         <open-api-generator.version>6.0.1</open-api-generator.version>
-        <openapitools-jackson-databind-nullable.version>0.2.3</openapitools-jackson-databind-nullable.version>
-        <swagger-parser.version>2.1.2</swagger-parser.version>
+        <openapitools-jackson-databind-nullable.version>0.2.6</openapitools-jackson-databind-nullable.version>
+        <swagger-parser.version>2.1.14</swagger-parser.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>17</maven.compiler.source>
@@ -23,7 +23,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.hirannor.hexagonal</groupId>
+            <groupId>hu.hirannor.hexagonal</groupId>
             <artifactId>rest-api-definition</artifactId>
             <version>${rest-api-definition.version}</version>
         </dependency>
@@ -78,7 +78,7 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>com.hirannor.hexagonal</groupId>
+                                    <groupId>hu.hirannor.hexagonal</groupId>
                                     <artifactId>rest-api-definition</artifactId>
                                     <version>${rest-api-definition.version}</version>
                                     <outputDirectory>${project.build.directory}</outputDirectory>
@@ -97,6 +97,7 @@
                     <generatorName>spring</generatorName>
                     <modelNameSuffix>Model</modelNameSuffix>
                     <configOptions>
+                        <useSpringBoot3>true</useSpringBoot3>
                         <useOptional>true</useOptional>
                         <interfaceOnly>true</interfaceOnly>
                         <useBeanValidation>true</useBeanValidation>
@@ -110,8 +111,8 @@
                         </goals>
                         <configuration>
                             <inputSpec>${project.build.directory}/internal/customers-api.yml</inputSpec>
-                            <apiPackage>com.hirannor.hexagonal.adapter.api.rest.api</apiPackage>
-                            <modelPackage>com.hirannor.hexagonal.adapter.api.rest.model</modelPackage>
+                            <apiPackage>hu.hirannor.hexagonal.adapter.web.rest.api</apiPackage>
+                            <modelPackage>hu.hirannor.hexagonal.adapter.web.rest.model</modelPackage>
                             <typeMappings>
                                 <typeMapping>OffsetDateTime=Instant</typeMapping>
                             </typeMappings>

@@ -33,6 +33,29 @@ paths:
       summary: Retrieves all customer
       description: Retrieves all customer
       operationId: displayAll
+      parameters:
+        - name: from
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: to
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: gender
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/Gender'
+        - name: emailAddress
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Successful operation
@@ -62,6 +85,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Customer'
+    delete:
+      tags:
+        - customer
+      summary: Deletes a customer by id
+      description: Deletes a customer by id
+      operationId: deleteBy
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Successful operation
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
     put:
       tags:
         - customer
@@ -87,6 +131,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Customer'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
 components:
   schemas:
     RegisterCustomer:
@@ -156,6 +206,16 @@ components:
         postalCode:
           type: integer
         streetAddress:
+          type: string
+    ErrorMessage:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: string
+        message:
           type: string
     Country:
       type: string
