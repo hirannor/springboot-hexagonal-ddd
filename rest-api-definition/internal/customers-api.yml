@@ -34,13 +34,13 @@ paths:
       description: Retrieves all customer
       operationId: displayAll
       parameters:
-        - name: from
+        - name: birthDateFrom
           in: query
           required: false
           schema:
             type: string
             format: date
-        - name: to
+        - name: birthDateTo
           in: query
           required: false
           schema:

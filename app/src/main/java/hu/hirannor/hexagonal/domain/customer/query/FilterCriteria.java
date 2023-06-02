@@ -11,14 +11,14 @@ import java.util.Optional;
 /**
  * Record representation of a filter criteria, which is used to filter the customers
  *
- * @param from   {@link LocalDate} birth date from
- * @param to     {@link LocalDate} birth date from
+ * @param birthDateFrom   {@link LocalDate} birth date from
+ * @param birthDateTo     {@link LocalDate} birth date from
  * @param gender {@link Gender}
  * @param email  {@link EmailAddress}
  * @author Mate Karolyi
  */
-public record FilterCriteria(Optional<LocalDate> from,
-                             Optional<LocalDate> to,
+public record FilterCriteria(Optional<LocalDate> birthDateFrom,
+                             Optional<LocalDate> birthDateTo,
                              Optional<Gender> gender,
                              Optional<EmailAddress> email) implements Query {
 
@@ -28,8 +28,8 @@ public record FilterCriteria(Optional<LocalDate> from,
      *
      * @return {@link Instant}
      */
-    public Optional<LocalDate> toExclusive() {
-        return this.to.map(this::addOneDay);
+    public Optional<LocalDate> birthDateToToExclusive() {
+        return this.birthDateTo.map(this::addOneDay);
     }
 
     /**
@@ -43,18 +43,18 @@ public record FilterCriteria(Optional<LocalDate> from,
     }
 
     public static class Builder {
-        private Optional<LocalDate> from;
-        private Optional<LocalDate> to;
+        private Optional<LocalDate> birthDateFrom;
+        private Optional<LocalDate> birthDateTo;
         private Optional<Gender> gender;
         private Optional<EmailAddress> email;
 
-        public Builder from(final Optional<LocalDate> from) {
-            this.from = from;
+        public Builder birthDateFrom(final Optional<LocalDate> birthDateFrom) {
+            this.birthDateFrom = birthDateFrom;
             return this;
         }
 
-        public Builder to(final Optional<LocalDate> to) {
-            this.to = to;
+        public Builder birthDateTo(final Optional<LocalDate> birthDateTo) {
+            this.birthDateTo = birthDateTo;
             return this;
         }
 
@@ -70,8 +70,8 @@ public record FilterCriteria(Optional<LocalDate> from,
 
         public FilterCriteria assemble() {
             return new FilterCriteria(
-                from,
-                to,
+                birthDateFrom,
+                birthDateTo,
                 gender,
                 email
             );

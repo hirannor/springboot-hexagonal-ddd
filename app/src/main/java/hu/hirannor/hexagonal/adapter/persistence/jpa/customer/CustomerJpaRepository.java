@@ -85,21 +85,21 @@ class CustomerJpaRepository implements CustomerRepository {
     public void deleteBy(final CustomerId id) {
         if (id == null) throw new IllegalArgumentException(ERR_CUSTOMER_ID_IS_NULL);
 
-        LOGGER.debug("Attempting to delete customer with id: {}", id);
+        LOGGER.debug("Attempting to delete customer by id: {}", id);
 
         customers.deleteByCustomerId(id.asText());
     }
 
     @Override
-    public List<Customer> findAll(final FilterCriteria query) {
-        if (query == null) throw new IllegalArgumentException("FilterCriteria query object cannot be null!");
+    public List<Customer> findAllBy(final FilterCriteria criteria) {
+        if (criteria == null) throw new IllegalArgumentException("FilterCriteria criteria object cannot be null!");
 
         return customers.findAll(
                 where(
-                    emailAddressMatches(query.email())
-                        .and(genderMatches(query.gender()))
-                        .and(birthBefore(query.toExclusive()))
-                        .and(birthAfter(query.from()))
+                    emailAddressMatches(criteria.email())
+                        .and(genderMatches(criteria.gender()))
+                        .and(birthAfter(criteria.birthDateFrom()))
+                        .and(birthBefore(criteria.birthDateToToExclusive()))
                 )
             ).stream()
             .map(mapModelToDomain)

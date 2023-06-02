@@ -16,10 +16,10 @@ public interface CustomerDisplay {
     /**
      * Displays all available customers.
      *
-     * @param query {@link FilterCriteria} criteria to filter
+     * @param criteria {@link FilterCriteria} criteria to filter
      * @return a list of {@link Customer} customers.
      */
-    List<Customer> displayAll(FilterCriteria query);
+    List<Customer> displayAllBy(FilterCriteria criteria);
 
     /**
      * Displays a customer by {@link CustomerId} id.

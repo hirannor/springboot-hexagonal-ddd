@@ -12,13 +12,13 @@ import org.springframework.data.jpa.domain.Specification;
  *
  * @author Mate Karolyi
  */
-public final class CustomerModelSpecification {
+final class CustomerModelSpecification {
 
     private CustomerModelSpecification() {
     }
 
     /**
-     * Specification to query customer entries which were birth after the given parameter. (Inclusive)
+     * Specification to query customer entries which were birth after the given parameter. (inclusive)
      *
      * @param from {@link LocalDate} filter from date
      * @return Specification output {@link Specification< CustomerModel >}
@@ -32,7 +32,7 @@ public final class CustomerModelSpecification {
     }
 
     /**
-     * Specification to query customer entries which were birth before the given parameter. (Inclusive)
+     * Specification to query customer entries which were birth before the given parameter. (exclusive)
      *
      * @param to {@link LocalDate} filter to date
      * @return Specification output {@link Specification< CustomerModel >}

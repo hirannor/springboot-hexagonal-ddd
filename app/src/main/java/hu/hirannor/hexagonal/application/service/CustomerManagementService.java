@@ -49,7 +49,7 @@ class CustomerManagementService implements
     }
 
     @Override
-    public Customer changeDetails(final ChangeCustomerDetails cmd) {
+    public Customer changeDetailsBy(final ChangeCustomerDetails cmd) {
         if (cmd == null) throw new IllegalArgumentException("ChangeCustomerDetails command cannot be null!");
 
         final Customer foundCustomer = customers.findBy(cmd.customerId())
@@ -63,7 +63,7 @@ class CustomerManagementService implements
         messages.publish(updatedCustomer.listEvents());
         updatedCustomer.clearEvents();
 
-        LOGGER.info("Customer details for customer id: {} are upadated successfully!", updatedCustomer.customerId());
+        LOGGER.info("Customer details for customer id: {} are updated successfully!", updatedCustomer.customerId());
 
         return updatedCustomer;
     }
@@ -77,18 +77,18 @@ class CustomerManagementService implements
                 () -> new CustomerNotFound(String.format(ERR_CUSTOMER_NOT_FOUND, customerId.asText()))
             );
 
-        LOGGER.info("Attempting to delete customer with id: {}", customerId.asText());
+        LOGGER.info("Attempting to delete customer by id: {}", customerId.asText());
 
         customers.deleteBy(customerId);
     }
 
     @Override
-    public List<Customer> displayAll(final FilterCriteria query) {
-        if (query == null) throw new IllegalArgumentException("FilterCriteria query object cannot be null!");
+    public List<Customer> displayAllBy(final FilterCriteria criteria) {
+        if (criteria == null) throw new IllegalArgumentException("FilterCriteria object cannot be null!");
 
-        LOGGER.info("Retrieving customers that are filtered with: {}", query);
+        LOGGER.info("Retrieving customers...");
 
-        return customers.findAll(query);
+        return customers.findAllBy(criteria);
     }
 
     @Override
@@ -118,7 +118,7 @@ class CustomerManagementService implements
         messages.publish(newCustomer.listEvents());
         newCustomer.clearEvents();
 
-        LOGGER.info("Customer with customerId: {} is successfully registered!", newCustomer.customerId());
+        LOGGER.info("Customer with id: {} is successfully registered!", newCustomer.customerId());
 
         return newCustomer;
     }

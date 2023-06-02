@@ -32,7 +32,7 @@ public interface CustomerRepository {
      * @param query {@link FilterCriteria} criteria filter
      * @return a list of {@link Customer} customers.
      */
-    List<Customer> findAll(FilterCriteria query);
+    List<Customer> findAllBy(FilterCriteria query);
 
     /**
      * Retrieves a customer by {@link CustomerId} id

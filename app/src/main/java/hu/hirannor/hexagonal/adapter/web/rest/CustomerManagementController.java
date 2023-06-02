@@ -79,7 +79,7 @@ class CustomerManagementController implements CustomersApi {
                                                        final ChangeCustomerDetailsModel model) {
         final ChangeCustomerDetails cmd = assembleCommand(customerId, model);
 
-        final Customer changedCustomer = details.changeDetails(cmd);
+        final Customer changedCustomer = details.changeDetailsBy(cmd);
         final CustomerModel response = mapCustomerToModel.apply(changedCustomer);
 
         return ResponseEntity.ok(response);
@@ -93,19 +93,19 @@ class CustomerManagementController implements CustomersApi {
     }
 
     @Override
-    public ResponseEntity<List<CustomerModel>> displayAll(final Optional<LocalDate> from,
-                                                          final Optional<LocalDate> to,
+    public ResponseEntity<List<CustomerModel>> displayAll(final Optional<LocalDate> birthDateFrom,
+                                                          final Optional<LocalDate> birthDateTo,
                                                           final Optional<GenderModel> gender,
                                                           final Optional<String> emailAddress) {
 
-        final FilterCriteria query = new FilterCriteria.Builder()
-            .from(from)
-            .to(to)
+        final FilterCriteria criteria = new FilterCriteria.Builder()
+            .birthDateFrom(birthDateFrom)
+            .birthDateTo(birthDateTo)
             .gender(gender.map(mapGenderModelToDomain))
             .email(emailAddress.map(EmailAddress::from))
             .assemble();
 
-        final List<CustomerModel> response = customers.displayAll(query)
+        final List<CustomerModel> response = customers.displayAllBy(criteria)
             .stream()
             .map(mapCustomerToModel)
             .toList();
