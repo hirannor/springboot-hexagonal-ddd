@@ -16,3 +16,10 @@ spring:
       ddl-auto: validate
   application:
     name: hexagonal-ddd-app
+
+adapter:
+  authentication: basic
+  persistence: spring-data-jpa
+  messaging: spring-event-bus
+  web: rest
+

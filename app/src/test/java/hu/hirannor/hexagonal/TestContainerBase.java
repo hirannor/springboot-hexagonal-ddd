@@ -15,7 +15,8 @@ public class TestContainerBase {
         POSTGRE_SQL_CONTAINER.start();
     }
 
-    public TestContainerBase() {}
+    public TestContainerBase() {
+    }
 
     @DynamicPropertySource
     private static void properties(final DynamicPropertyRegistry registry) {
