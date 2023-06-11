@@ -6,6 +6,7 @@ import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.syntax.elements.GivenClassesConjunction;
 import com.tngtech.archunit.lang.syntax.elements.GivenMethodsConjunction;
+import hu.hirannor.hexagonal.TestContainerBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -37,6 +38,8 @@ class TestArchTest {
                         .areNotAnnotatedWith(Configuration.class)
                         .and()
                         .areNotAnnotatedWith(TestConfiguration.class)
+                        .and()
+                        .areNotAssignableTo(TestContainerBase.class)
                         .and()
                         .areNotRecords();
 
