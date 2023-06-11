@@ -3,8 +3,9 @@ package hu.hirannor.hexagonal.adapter.authentication.basic;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.*;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.core.userdetails.*;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -37,13 +38,14 @@ public class BasicAuthenticationConfiguration {
                                 .anyRequest()
                                 .authenticated()
                 )
-                .httpBasic(withDefaults());
+                .httpBasic(withDefaults())
+                .csrf(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
 
     @Bean
-    InMemoryUserDetailsManager createInMemoryUserDetailsManager() {
+    UserDetailsService createUserDetailsService() {
         final UserDetails user = User
                 .withDefaultPasswordEncoder()
                 .username("user")
