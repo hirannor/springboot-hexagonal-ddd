@@ -1,4 +1,4 @@
-package hu.hirannor.hexagonal.adapter.web.rest.error;
+package hu.hirannor.hexagonal.adapter.web.rest.customer.error;
 
 import hu.hirannor.hexagonal.adapter.web.rest.model.ErrorMessageModel;
 import hu.hirannor.hexagonal.application.error.CustomerAlreadyExist;

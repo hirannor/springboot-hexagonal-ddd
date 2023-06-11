@@ -14,19 +14,19 @@ import org.springframework.context.annotation.*;
  * @author Mate Karolyi
  */
 @Import({
-    JpaPersistenceConfiguration.class,
-    RestApiConfiguration.class,
-    BasicAuthenticationConfiguration.class,
-    SpringEventBusMessagingConfiguration.class
+        JpaPersistenceConfiguration.class,
+        RestApiConfiguration.class,
+        BasicAuthenticationConfiguration.class,
+        SpringEventBusMessagingConfiguration.class
 })
 @SpringBootApplication
 @ComponentScan(
-    excludeFilters = {
-        @ComponentScan.Filter(
-            type = FilterType.REGEX,
-            pattern = "hu.hirannor.hexagonal.adapter.*"
-        ),
-    }
+        excludeFilters = {
+                @ComponentScan.Filter(
+                        type = FilterType.REGEX,
+                        pattern = "hu.hirannor.hexagonal.adapter.*"
+                ),
+        }
 )
 public class HexagonalApplication {
 

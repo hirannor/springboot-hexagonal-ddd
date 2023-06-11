@@ -1,4 +1,4 @@
-package hu.hirannor.hexagonal.adapter.web.rest.mapping;
+package hu.hirannor.hexagonal.adapter.web.rest.customer.mapping;
 
 import hu.hirannor.hexagonal.adapter.web.rest.model.*;
 import hu.hirannor.hexagonal.domain.customer.*;

@@ -1,7 +1,7 @@
-package hu.hirannor.hexagonal.adapter.web.rest;
+package hu.hirannor.hexagonal.adapter.web.rest.customer;
 
 import hu.hirannor.hexagonal.adapter.web.rest.api.CustomersApi;
-import hu.hirannor.hexagonal.adapter.web.rest.mapping.CustomerMappingFactory;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.mapping.CustomerMappingFactory;
 import hu.hirannor.hexagonal.adapter.web.rest.model.*;
 import hu.hirannor.hexagonal.application.usecase.*;
 import hu.hirannor.hexagonal.domain.customer.*;
