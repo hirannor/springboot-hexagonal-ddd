@@ -2,8 +2,9 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.customer;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
 import jakarta.persistence.criteria.*;
-import java.io.Serial;
 import org.springframework.data.jpa.domain.Specification;
+
+import java.io.Serial;
 
 /**
  * Always true specification for ignoring query result.
@@ -24,9 +25,9 @@ final class Ignored implements Specification<CustomerModel> {
 
     @Override
     public Predicate toPredicate(
-        final Root<CustomerModel> root,
-        final CriteriaQuery<?> query,
-        final CriteriaBuilder criteriaBuilder
+            final Root<CustomerModel> root,
+            final CriteriaQuery<?> query,
+            final CriteriaBuilder criteriaBuilder
     ) {
         return criteriaBuilder.conjunction();
     }

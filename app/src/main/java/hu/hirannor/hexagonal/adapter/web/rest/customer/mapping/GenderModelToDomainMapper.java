@@ -1,7 +1,8 @@
 package hu.hirannor.hexagonal.adapter.web.rest.customer.mapping;
 
-import hu.hirannor.hexagonal.adapter.web.rest.model.GenderModel;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.GenderModel;
 import hu.hirannor.hexagonal.domain.customer.Gender;
+
 import java.util.function.Function;
 
 /**

@@ -15,9 +15,9 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @ComponentScan
 @ConditionalOnProperty(
-    value = "adapter.authentication",
-    havingValue = "basic",
-    matchIfMissing = true
+        value = "adapter.authentication",
+        havingValue = "basic",
+        matchIfMissing = true
 )
 public class BasicAuthenticationConfiguration {
 
@@ -26,20 +26,20 @@ public class BasicAuthenticationConfiguration {
 
     @Bean
     SecurityFilterChain createSecurityFilterChain(final HttpSecurity http)
-        throws Exception {
+            throws Exception {
         http
-            .authorizeHttpRequests()
-            .requestMatchers("/error", "/h2-console/**")
-            .permitAll()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .httpBasic()
-            .and()
-            .csrf()
-            .disable()
-            .headers().frameOptions()
-            .disable();
+                .authorizeHttpRequests()
+                .requestMatchers("/error", "/h2-console/**")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .httpBasic()
+                .and()
+                .csrf()
+                .disable()
+                .headers().frameOptions()
+                .disable();
 
         return http.build();
     }
@@ -47,11 +47,11 @@ public class BasicAuthenticationConfiguration {
     @Bean
     UserDetailsService createUserDetailsService() {
         final UserDetails user = User
-            .withDefaultPasswordEncoder()
-            .username("user")
-            .password("password")
-            .roles("USER")
-            .build();
+                .withDefaultPasswordEncoder()
+                .username("user")
+                .password("password")
+                .roles("USER")
+                .build();
 
         return new InMemoryUserDetailsManager(user);
     }

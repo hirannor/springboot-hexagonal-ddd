@@ -13,14 +13,14 @@ import jakarta.persistence.Converter;
  */
 @Converter(autoApply = true)
 public class GenderModelConverter
-    implements AttributeConverter<GenderModel, String> {
+        implements AttributeConverter<GenderModel, String> {
 
     GenderModelConverter() {
     }
 
     @Override
     public String convertToDatabaseColumn(
-        final GenderModel statusAttribute) {
+            final GenderModel statusAttribute) {
         if (statusAttribute == null) return null;
 
         return statusAttribute.dbRepresentation();

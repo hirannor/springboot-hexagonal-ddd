@@ -2,6 +2,7 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.*;
 import hu.hirannor.hexagonal.domain.customer.*;
+
 import java.util.function.Function;
 
 /**
@@ -16,14 +17,14 @@ class CustomerViewToDomainMapper implements Function<CustomerView, Customer> {
 
     CustomerViewToDomainMapper() {
         this(
-            new GenderModelToDomainMapper(),
-            new CountryModelToDomainMapper()
+                new GenderModelToDomainMapper(),
+                new CountryModelToDomainMapper()
         );
     }
 
     CustomerViewToDomainMapper(
-        final Function<GenderModel, Gender> mapGenderModelToDomain,
-        final Function<CountryModel, Country> mapCountryModelToDomain) {
+            final Function<GenderModel, Gender> mapGenderModelToDomain,
+            final Function<CountryModel, Country> mapCountryModelToDomain) {
         this.mapGenderModelToDomain = mapGenderModelToDomain;
         this.mapCountryModelToDomain = mapCountryModelToDomain;
     }
@@ -33,20 +34,20 @@ class CustomerViewToDomainMapper implements Function<CustomerView, Customer> {
         if (view == null) return null;
 
         return Customer.from(
-            CustomerId.from(view.getCustomerId()),
-            FullName.from(
-                view.getFirstName(),
-                view.getLastName()
-            ),
-            view.getBirthDate(),
-            mapGenderModelToDomain.apply(view.getGender()),
-            Address.from(
-                mapCountryModelToDomain.apply(view.getCountry()),
-                view.getCity(),
-                PostalCode.from(view.getPostalCode()),
-                view.getStreetAddress()
-            ),
-            EmailAddress.from(view.getEmailAddress())
+                CustomerId.from(view.getCustomerId()),
+                FullName.from(
+                        view.getFirstName(),
+                        view.getLastName()
+                ),
+                view.getBirthDate(),
+                mapGenderModelToDomain.apply(view.getGender()),
+                Address.from(
+                        mapCountryModelToDomain.apply(view.getCountry()),
+                        view.getCity(),
+                        PostalCode.from(view.getPostalCode()),
+                        view.getStreetAddress()
+                ),
+                EmailAddress.from(view.getEmailAddress())
         );
     }
 

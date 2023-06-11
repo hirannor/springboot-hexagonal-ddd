@@ -3,6 +3,7 @@ package hu.hirannor.hexagonal.domain.customer.query;
 import hu.hirannor.hexagonal.domain.customer.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.Gender;
 import hu.hirannor.hexagonal.infrastructure.query.Query;
+
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -11,10 +12,10 @@ import java.util.Optional;
 /**
  * Record representation of a filter criteria, which is used to filter the customers
  *
- * @param birthDateFrom   {@link LocalDate} birth date from
- * @param birthDateTo     {@link LocalDate} birth date from
- * @param gender {@link Gender}
- * @param email  {@link EmailAddress}
+ * @param birthDateFrom {@link LocalDate} birth date from
+ * @param birthDateTo   {@link LocalDate} birth date from
+ * @param gender        {@link Gender}
+ * @param email         {@link EmailAddress}
  * @author Mate Karolyi
  */
 public record FilterCriteria(Optional<LocalDate> birthDateFrom,
@@ -70,10 +71,10 @@ public record FilterCriteria(Optional<LocalDate> birthDateFrom,
 
         public FilterCriteria assemble() {
             return new FilterCriteria(
-                birthDateFrom,
-                birthDateTo,
-                gender,
-                email
+                    birthDateFrom,
+                    birthDateTo,
+                    gender,
+                    email
             );
         }
     }

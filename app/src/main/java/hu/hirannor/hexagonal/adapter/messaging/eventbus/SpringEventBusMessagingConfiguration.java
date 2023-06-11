@@ -14,9 +14,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @Configuration
 @ComponentScan
 @ConditionalOnProperty(
-    value = "adapter.messaging",
-    havingValue = "spring-event-bus",
-    matchIfMissing = true
+        value = "adapter.messaging",
+        havingValue = "spring-event-bus",
+        matchIfMissing = true
 )
 public class SpringEventBusMessagingConfiguration {
 

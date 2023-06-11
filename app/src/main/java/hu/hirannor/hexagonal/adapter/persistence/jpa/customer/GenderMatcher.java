@@ -4,9 +4,10 @@ import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping.CustomerMa
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.*;
 import hu.hirannor.hexagonal.domain.customer.Gender;
 import jakarta.persistence.criteria.*;
+import org.springframework.data.jpa.domain.Specification;
+
 import java.io.Serial;
 import java.util.function.Function;
-import org.springframework.data.jpa.domain.Specification;
 
 /**
  * Specification implementation for matching a given gender.
@@ -24,7 +25,7 @@ final class GenderMatcher implements Specification<CustomerModel> {
     }
 
     static Specification<CustomerModel> matchWith(
-        final Gender genderMatchWith
+            final Gender genderMatchWith
     ) {
         final Function<Gender, GenderModel> mapDomainToModel = CustomerMappingFactory.createGenderToModelMapper();
         final GenderModel model = mapDomainToModel.apply(genderMatchWith);

@@ -3,6 +3,7 @@ package hu.hirannor.hexagonal.domain.customer.command;
 import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.infrastructure.command.Command;
 import hu.hirannor.hexagonal.infrastructure.command.CommandId;
+
 import java.time.Instant;
 import java.time.LocalDate;
 
@@ -20,14 +21,14 @@ import java.time.LocalDate;
  * @author Mate Karolyi
  */
 public record ChangeCustomerDetails(
-    CommandId id,
-    Instant registeredAt,
-    CustomerId customerId,
-    FullName fullName,
-    LocalDate birthDate,
-    Gender gender,
-    Address address,
-    EmailAddress email) implements Command {
+        CommandId id,
+        Instant registeredAt,
+        CustomerId customerId,
+        FullName fullName,
+        LocalDate birthDate,
+        Gender gender,
+        Address address,
+        EmailAddress email) implements Command {
 
     public static class Builder {
         private CustomerId customerId;
@@ -70,14 +71,14 @@ public record ChangeCustomerDetails(
 
         public ChangeCustomerDetails assemble() {
             return new ChangeCustomerDetails(
-                CommandId.generate(),
-                Command.now(),
-                customerId,
-                fullName,
-                birthDate,
-                gender,
-                address,
-                email
+                    CommandId.generate(),
+                    Command.now(),
+                    customerId,
+                    fullName,
+                    birthDate,
+                    gender,
+                    address,
+                    email
             );
         }
     }

@@ -19,7 +19,7 @@ public interface Command {
     }
 
     /**
-     * Retrieves the id of command
+     * Retrieves the value of command
      *
      * @return a {@link CommandId}
      */

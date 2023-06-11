@@ -3,9 +3,10 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.customer;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
 import hu.hirannor.hexagonal.domain.customer.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.Gender;
+import org.springframework.data.jpa.domain.Specification;
+
 import java.time.LocalDate;
 import java.util.Optional;
-import org.springframework.data.jpa.domain.Specification;
 
 /**
  * Specification aggregator for customer specification operations.
@@ -24,11 +25,11 @@ final class CustomerModelSpecification {
      * @return Specification output {@link Specification< CustomerModel >}
      */
     public static Specification<CustomerModel> birthAfter(
-        final Optional<LocalDate> from
+            final Optional<LocalDate> from
     ) {
         return from
-            .map(BirthDateMatcher::after)
-            .orElseGet(Ignored::create);
+                .map(BirthDateMatcher::after)
+                .orElseGet(Ignored::create);
     }
 
     /**
@@ -38,11 +39,11 @@ final class CustomerModelSpecification {
      * @return Specification output {@link Specification< CustomerModel >}
      */
     public static Specification<CustomerModel> birthBefore(
-        final Optional<LocalDate> to
+            final Optional<LocalDate> to
     ) {
         return to
-            .map(BirthDateMatcher::before)
-            .orElseGet(Ignored::create);
+                .map(BirthDateMatcher::before)
+                .orElseGet(Ignored::create);
     }
 
     /**
@@ -52,11 +53,11 @@ final class CustomerModelSpecification {
      * @return Specification output {@link Specification< CustomerModel >}
      */
     public static Specification<CustomerModel> genderMatches(
-        final Optional<Gender> gender
+            final Optional<Gender> gender
     ) {
         return gender
-            .map(GenderMatcher::matchWith)
-            .orElseGet(Ignored::create);
+                .map(GenderMatcher::matchWith)
+                .orElseGet(Ignored::create);
     }
 
     /**
@@ -66,10 +67,10 @@ final class CustomerModelSpecification {
      * @return Specification output {@link Specification< CustomerModel >}
      */
     public static Specification<CustomerModel> emailAddressMatches(
-        final Optional<EmailAddress> email
+            final Optional<EmailAddress> email
     ) {
         return email
-            .map(EmailAddressMatcher::matchWith)
-            .orElseGet(Ignored::create);
+                .map(EmailAddressMatcher::matchWith)
+                .orElseGet(Ignored::create);
     }
 }

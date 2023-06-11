@@ -1,22 +1,23 @@
 package hu.hirannor.hexagonal.adapter.web.rest.customer;
 
-import hu.hirannor.hexagonal.adapter.web.rest.api.CustomersApi;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.api.CustomersApi;
 import hu.hirannor.hexagonal.adapter.web.rest.customer.mapping.CustomerMappingFactory;
-import hu.hirannor.hexagonal.adapter.web.rest.model.*;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
 import hu.hirannor.hexagonal.application.usecase.*;
 import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.domain.customer.command.ChangeCustomerDetails;
 import hu.hirannor.hexagonal.domain.customer.command.RegisterCustomer;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Rest controller implementation of {@link CustomersApi}
@@ -45,14 +46,14 @@ class CustomerManagementController implements CustomersApi {
                                  final CustomerModification details,
                                  final CustomerDeletion deletion) {
         this(
-            customers,
-            enrolling,
-            details,
-            deletion,
-            CustomerMappingFactory.createCustomerToModelMapper(),
-            CustomerMappingFactory.createRegisterCustomerModelToDomainMapper(),
-            CustomerMappingFactory.createAddressModelToAddressMapper(),
-            CustomerMappingFactory.createGenderModelToDomainMapper()
+                customers,
+                enrolling,
+                details,
+                deletion,
+                CustomerMappingFactory.createCustomerToModelMapper(),
+                CustomerMappingFactory.createRegisterCustomerModelToDomainMapper(),
+                CustomerMappingFactory.createAddressModelToAddressMapper(),
+                CustomerMappingFactory.createGenderModelToDomainMapper()
         );
     }
 
@@ -99,16 +100,16 @@ class CustomerManagementController implements CustomersApi {
                                                           final Optional<String> emailAddress) {
 
         final FilterCriteria criteria = new FilterCriteria.Builder()
-            .birthDateFrom(birthDateFrom)
-            .birthDateTo(birthDateTo)
-            .gender(gender.map(mapGenderModelToDomain))
-            .email(emailAddress.map(EmailAddress::from))
-            .assemble();
+                .birthDateFrom(birthDateFrom)
+                .birthDateTo(birthDateTo)
+                .gender(gender.map(mapGenderModelToDomain))
+                .email(emailAddress.map(EmailAddress::from))
+                .assemble();
 
         final List<CustomerModel> response = customers.displayAllBy(criteria)
-            .stream()
-            .map(mapCustomerToModel)
-            .toList();
+                .stream()
+                .map(mapCustomerToModel)
+                .toList();
 
         return ResponseEntity.ok(response);
     }
@@ -116,9 +117,9 @@ class CustomerManagementController implements CustomersApi {
     @Override
     public ResponseEntity<CustomerModel> displayBy(final String rawCustomerId) {
         return customers.displayBy(CustomerId.from(rawCustomerId))
-            .map(mapCustomerToModel)
-            .map(ResponseEntity::ok)
-            .orElseGet(ResponseEntity.notFound()::build);
+                .map(mapCustomerToModel)
+                .map(ResponseEntity::ok)
+                .orElseGet(ResponseEntity.notFound()::build);
     }
 
     @Override
@@ -127,19 +128,19 @@ class CustomerManagementController implements CustomersApi {
         final Customer registeredCustomer = enrolling.register(cmd);
 
         return ResponseEntity.created(
-            URI.create(BASE_PATH + registeredCustomer.customerId().asText())
+                URI.create(BASE_PATH + registeredCustomer.customerId().asText())
         ).body(mapCustomerToModel.apply(registeredCustomer));
     }
 
     private ChangeCustomerDetails assembleCommand(final String customerId,
                                                   final ChangeCustomerDetailsModel model) {
         return new ChangeCustomerDetails.Builder()
-            .customerId(CustomerId.from(customerId))
-            .fullName(FullName.from(model.getFirstName(), model.getLastName()))
-            .gender(mapGenderModelToDomain.apply(model.getGender()))
-            .birthDate(model.getBirthDate())
-            .address(mapAddressModelToDomain.apply(model.getAddress()))
-            .email(EmailAddress.from(model.getEmailAddress()))
-            .assemble();
+                .customerId(CustomerId.from(customerId))
+                .fullName(FullName.from(model.getFirstName(), model.getLastName()))
+                .gender(mapGenderModelToDomain.apply(model.getGender()))
+                .birthDate(model.getBirthDate())
+                .address(mapAddressModelToDomain.apply(model.getAddress()))
+                .email(EmailAddress.from(model.getEmailAddress()))
+                .assemble();
     }
 }

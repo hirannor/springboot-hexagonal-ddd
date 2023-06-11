@@ -33,7 +33,7 @@ public enum GenderModel {
         }
 
         throw new IllegalArgumentException(
-            String.format("Unexpected value %s", text)
+                String.format("Unexpected value %s", text)
         );
     }
 

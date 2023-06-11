@@ -1,6 +1,7 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
 /**
@@ -16,13 +17,13 @@ public class CustomerModel {
 
     @Id
     @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "customer_seq"
+            strategy = GenerationType.SEQUENCE,
+            generator = "customer_seq"
     )
     @SequenceGenerator(
-        name = "customer_seq",
-        sequenceName = "customer_seq",
-        allocationSize = ALLOCATION_SIZE
+            name = "customer_seq",
+            sequenceName = "customer_seq",
+            allocationSize = ALLOCATION_SIZE
     )
     private Long id;
 

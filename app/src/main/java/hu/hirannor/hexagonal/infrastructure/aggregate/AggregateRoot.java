@@ -1,6 +1,7 @@
 package hu.hirannor.hexagonal.infrastructure.aggregate;
 
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
+
 import java.util.List;
 
 /**

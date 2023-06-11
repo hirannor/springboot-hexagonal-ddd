@@ -4,8 +4,9 @@ import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerMode
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel_;
 import hu.hirannor.hexagonal.domain.customer.EmailAddress;
 import jakarta.persistence.criteria.*;
-import java.io.Serial;
 import org.springframework.data.jpa.domain.Specification;
+
+import java.io.Serial;
 
 /**
  * Specification implementation for matching a given email address.
@@ -24,16 +25,16 @@ final class EmailAddressMatcher implements Specification<CustomerModel> {
     }
 
     static Specification<CustomerModel> matchWith(
-        final EmailAddress email
+            final EmailAddress email
     ) {
         return new EmailAddressMatcher(email.value());
     }
 
     @Override
     public Predicate toPredicate(
-        final Root<CustomerModel> root,
-        final CriteriaQuery<?> query,
-        final CriteriaBuilder cb
+            final Root<CustomerModel> root,
+            final CriteriaQuery<?> query,
+            final CriteriaBuilder cb
     ) {
         return cb.equal(root.get(CustomerModel_.EMAIL_ADDRESS), emailAddressToMatchWith);
     }

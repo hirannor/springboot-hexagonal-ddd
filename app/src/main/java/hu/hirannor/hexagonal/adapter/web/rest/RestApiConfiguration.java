@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan
 @ConditionalOnProperty(
-    value = "adapter.web",
-    havingValue = "rest",
-    matchIfMissing = true
+        value = "adapter.web",
+        havingValue = "rest",
+        matchIfMissing = true
 )
 public class RestApiConfiguration {
 

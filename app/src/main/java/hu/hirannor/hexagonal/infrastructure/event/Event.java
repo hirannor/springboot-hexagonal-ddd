@@ -1,6 +1,7 @@
 package hu.hirannor.hexagonal.infrastructure.event;
 
 import hu.hirannor.hexagonal.infrastructure.messaging.Message;
+
 import java.time.Instant;
 
 /**
@@ -20,7 +21,7 @@ public interface Event extends Message {
     }
 
     /**
-     * Retrieves the id of event
+     * Retrieves the value of event
      *
      * @return a {@link EventId}
      */

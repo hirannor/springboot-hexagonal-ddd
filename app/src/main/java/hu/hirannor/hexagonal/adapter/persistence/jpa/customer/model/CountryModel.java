@@ -32,7 +32,7 @@ public enum CountryModel {
         }
 
         throw new IllegalArgumentException(
-            String.format("Unexpected value %s", text)
+                String.format("Unexpected value %s", text)
         );
     }
 

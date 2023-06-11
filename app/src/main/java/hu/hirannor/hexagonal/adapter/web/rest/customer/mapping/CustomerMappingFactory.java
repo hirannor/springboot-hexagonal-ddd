@@ -1,8 +1,9 @@
 package hu.hirannor.hexagonal.adapter.web.rest.customer.mapping;
 
-import hu.hirannor.hexagonal.adapter.web.rest.model.*;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
 import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.domain.customer.command.RegisterCustomer;
+
 import java.util.function.Function;
 
 /**

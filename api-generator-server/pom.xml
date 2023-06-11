@@ -19,6 +19,10 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <rest-api-definition.version>1.0.0-SNAPSHOT</rest-api-definition.version>
+        <openapi-generator-maven-plugin.apiPackage>hu.hirannor.hexagonal.adapter.web.rest.customer.api
+        </openapi-generator-maven-plugin.apiPackage>
+        <openapi-generator-maven-plugin.modelPackage>hu.hirannor.hexagonal.adapter.web.rest.customer.model
+        </openapi-generator-maven-plugin.modelPackage>
     </properties>
 
     <dependencies>
@@ -111,8 +115,8 @@
                         </goals>
                         <configuration>
                             <inputSpec>${project.build.directory}/internal/customers-api.yml</inputSpec>
-                            <apiPackage>hu.hirannor.hexagonal.adapter.web.rest.api</apiPackage>
-                            <modelPackage>hu.hirannor.hexagonal.adapter.web.rest.model</modelPackage>
+                            <apiPackage>${openapi-generator-maven-plugin.apiPackage}</apiPackage>
+                            <modelPackage>${openapi-generator-maven-plugin.modelPackage}</modelPackage>
                             <typeMappings>
                                 <typeMapping>OffsetDateTime=Instant</typeMapping>
                             </typeMappings>

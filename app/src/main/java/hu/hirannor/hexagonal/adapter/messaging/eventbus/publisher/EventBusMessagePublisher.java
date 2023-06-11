@@ -3,13 +3,14 @@ package hu.hirannor.hexagonal.adapter.messaging.eventbus.publisher;
 import hu.hirannor.hexagonal.application.port.messaging.MessagePublisher;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
 import hu.hirannor.hexagonal.infrastructure.messaging.Message;
-import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.*;
+
+import java.util.List;
 
 /**
  * Event bus message publisher implementation of {@link MessagePublisher}.
@@ -19,21 +20,21 @@ import org.springframework.transaction.annotation.*;
  */
 @Component
 @Transactional(
-    propagation = Propagation.MANDATORY,
-    isolation = Isolation.REPEATABLE_READ
+        propagation = Propagation.MANDATORY,
+        isolation = Isolation.REPEATABLE_READ
 )
 @DrivenAdapter
 class EventBusMessagePublisher implements MessagePublisher {
 
     private static final Logger LOGGER = LogManager.getLogger(
-        EventBusMessagePublisher.class
+            EventBusMessagePublisher.class
     );
 
     private final ApplicationEventPublisher springEvents;
 
     @Autowired
     EventBusMessagePublisher(
-        final ApplicationEventPublisher springEvents
+            final ApplicationEventPublisher springEvents
     ) {
         this.springEvents = springEvents;
     }

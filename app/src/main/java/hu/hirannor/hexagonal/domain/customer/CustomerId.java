@@ -3,9 +3,9 @@ package hu.hirannor.hexagonal.domain.customer;
 import java.util.UUID;
 
 /**
- * An immutable record to hold customer's id.
+ * An immutable record to hold customer's value.
  *
- * @param value {@link String} raw value of customer id.
+ * @param value {@link String} raw value of customer value.
  * @author Mate Karolyi
  */
 public record CustomerId(String value) {
@@ -15,19 +15,19 @@ public record CustomerId(String value) {
     }
 
     /**
-     * Create an instance of {@link CustomerId} id.
+     * Create an instance of {@link CustomerId} value.
      *
-     * @param value {@link String} raw value of customer id
-     * @return create an instance of {@link CustomerId} id
+     * @param value {@link String} raw value of customer value
+     * @return create an instance of {@link CustomerId} value
      */
     public static CustomerId from(final String value) {
         return new CustomerId(value);
     }
 
     /**
-     * Generate a random unique identifier for customer id.
+     * Generate a random unique identifier for customer value.
      *
-     * @return create an instance of {@link CustomerId} id
+     * @return create an instance of {@link CustomerId} value
      */
     public static CustomerId generate() {
         return new CustomerId(UUID.randomUUID().toString());

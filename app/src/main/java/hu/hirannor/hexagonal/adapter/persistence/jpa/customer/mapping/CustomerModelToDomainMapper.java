@@ -2,6 +2,7 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.*;
 import hu.hirannor.hexagonal.domain.customer.*;
+
 import java.util.function.Function;
 
 /**
@@ -16,8 +17,8 @@ class CustomerModelToDomainMapper implements Function<CustomerModel, Customer> {
 
     CustomerModelToDomainMapper() {
         this(
-            new CountryModelToDomainMapper(),
-            new GenderModelToDomainMapper()
+                new CountryModelToDomainMapper(),
+                new GenderModelToDomainMapper()
         );
     }
 
@@ -32,20 +33,20 @@ class CustomerModelToDomainMapper implements Function<CustomerModel, Customer> {
         if (model == null) return null;
 
         return Customer.from(
-            CustomerId.from(model.getCustomerId()),
-            FullName.from(
-                model.getFirstName(),
-                model.getLastName()
-            ),
-            model.getBirthDate(),
-            mapGenderModelToDomain.apply(model.getGender()),
-            Address.from(
-                mapCountryModelToDomain.apply(model.getCountry()),
-                model.getCity(),
-                PostalCode.from(model.getPostalCode()),
-                model.getStreetAddress()
-            ),
-            EmailAddress.from(model.getEmailAddress())
+                CustomerId.from(model.getCustomerId()),
+                FullName.from(
+                        model.getFirstName(),
+                        model.getLastName()
+                ),
+                model.getBirthDate(),
+                mapGenderModelToDomain.apply(model.getGender()),
+                Address.from(
+                        mapCountryModelToDomain.apply(model.getCountry()),
+                        model.getCity(),
+                        PostalCode.from(model.getPostalCode()),
+                        model.getStreetAddress()
+                ),
+                EmailAddress.from(model.getEmailAddress())
         );
     }
 

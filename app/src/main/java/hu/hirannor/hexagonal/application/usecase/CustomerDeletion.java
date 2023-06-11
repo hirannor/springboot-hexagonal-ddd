@@ -10,9 +10,9 @@ import hu.hirannor.hexagonal.domain.customer.CustomerId;
 public interface CustomerDeletion {
 
     /**
-     * Deletes a customer by id
+     * Deletes a customer by value
      *
-     * @param customerId {@link CustomerId} id of customer
+     * @param customerId {@link CustomerId} value of customer
      */
     void deleteBy(CustomerId customerId);
 

@@ -1,8 +1,9 @@
 package hu.hirannor.hexagonal.adapter.web.rest.customer.mapping;
 
-import hu.hirannor.hexagonal.adapter.web.rest.model.AddressModel;
-import hu.hirannor.hexagonal.adapter.web.rest.model.CountryModel;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.AddressModel;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.CountryModel;
 import hu.hirannor.hexagonal.domain.customer.*;
+
 import java.util.function.Function;
 
 /**
@@ -27,10 +28,10 @@ class AddressModelToDomainMapper implements Function<AddressModel, Address> {
         if (model == null) return null;
 
         return Address.from(
-            mapModelToDomain.apply(model.getCountry()),
-            model.getCity(),
-            PostalCode.from(model.getPostalCode()),
-            model.getStreetAddress()
+                mapModelToDomain.apply(model.getCountry()),
+                model.getCity(),
+                PostalCode.from(model.getPostalCode()),
+                model.getStreetAddress()
         );
     }
 

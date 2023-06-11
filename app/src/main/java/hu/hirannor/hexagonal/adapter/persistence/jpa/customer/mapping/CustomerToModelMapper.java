@@ -2,6 +2,7 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.*;
 import hu.hirannor.hexagonal.domain.customer.*;
+
 import java.util.function.Function;
 
 /**
@@ -16,14 +17,14 @@ class CustomerToModelMapper implements Function<Customer, CustomerModel> {
 
     CustomerToModelMapper() {
         this(
-            new GenderToModelMapper(),
-            new CountryToModelMapper()
+                new GenderToModelMapper(),
+                new CountryToModelMapper()
         );
     }
 
     CustomerToModelMapper(
-        final Function<Gender, GenderModel> mapGenderToModel,
-        final Function<Country, CountryModel> mapCountryToModel) {
+            final Function<Gender, GenderModel> mapGenderToModel,
+            final Function<Country, CountryModel> mapCountryToModel) {
 
         this.mapGenderToModel = mapGenderToModel;
         this.mapCountryToModel = mapCountryToModel;

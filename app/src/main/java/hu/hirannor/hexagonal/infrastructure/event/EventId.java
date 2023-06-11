@@ -3,7 +3,7 @@ package hu.hirannor.hexagonal.infrastructure.event;
 import java.util.UUID;
 
 /**
- * Immutable record to hold event id
+ * Immutable record to hold event value
  *
  * @param id {@link UUID} unique identifier of event
  * @author Mate Karolyi
@@ -29,7 +29,7 @@ public record EventId(UUID id) {
     }
 
     /**
-     * Generates an unique {@link EventId} event id.
+     * Generates an unique {@link EventId} event value.
      *
      * @return an instance of {@link EventId} type
      */

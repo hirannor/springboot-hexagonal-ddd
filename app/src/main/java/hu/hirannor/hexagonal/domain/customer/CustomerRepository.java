@@ -1,6 +1,7 @@
 package hu.hirannor.hexagonal.domain.customer;
 
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -20,9 +21,9 @@ public interface CustomerRepository {
     Customer updateDetails(Customer customer);
 
     /**
-     * Deletes a customer by id
+     * Deletes a customer by value
      *
-     * @param customerId {@link CustomerId} id of customer
+     * @param customerId {@link CustomerId} value of customer
      */
     void deleteBy(CustomerId customerId);
 
@@ -35,7 +36,7 @@ public interface CustomerRepository {
     List<Customer> findAllBy(FilterCriteria query);
 
     /**
-     * Retrieves a customer by {@link CustomerId} id
+     * Retrieves a customer by {@link CustomerId} value
      *
      * @param customerId {@link CustomerId} unique identifier of customer
      * @return found customer

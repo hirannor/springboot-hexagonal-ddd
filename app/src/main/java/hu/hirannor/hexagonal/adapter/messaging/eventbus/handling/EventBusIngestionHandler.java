@@ -19,7 +19,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 class EventBusIngestionHandler {
 
     private static final Logger LOGGER = LogManager.getLogger(
-        EventBusIngestionHandler.class
+            EventBusIngestionHandler.class
     );
 
     EventBusIngestionHandler() {

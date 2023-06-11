@@ -4,20 +4,20 @@ package hu.hirannor.hexagonal.infrastructure.command;
 import java.util.UUID;
 
 /**
- * Immutable record to hold command id
+ * Immutable record to hold command value
  *
- * @param id {@link UUID} unique identifier of command
+ * @param value {@link UUID} unique identifier of command
  * @author Mate Karolyi
  */
-public record CommandId(UUID id) {
+public record CommandId(UUID value) {
 
     /**
      * Default constructor
      *
-     * @param id {@link UUID} unique identifier of command
+     * @param value {@link UUID} unique identifier of command
      */
     public CommandId {
-        if (id == null) throw new IllegalArgumentException("CommandId cannot be null!");
+        if (value == null) throw new IllegalArgumentException("CommandId cannot be null!");
     }
 
     /**
@@ -31,7 +31,7 @@ public record CommandId(UUID id) {
     }
 
     /**
-     * Generates an unique {@link CommandId} command id.
+     * Generates an unique {@link CommandId} command value.
      *
      * @return an instance of {@link CommandId} type
      */

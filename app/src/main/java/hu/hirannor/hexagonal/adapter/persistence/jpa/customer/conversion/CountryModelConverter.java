@@ -13,14 +13,14 @@ import jakarta.persistence.Converter;
  */
 @Converter(autoApply = true)
 public class CountryModelConverter
-    implements AttributeConverter<CountryModel, String> {
+        implements AttributeConverter<CountryModel, String> {
 
     CountryModelConverter() {
     }
 
     @Override
     public String convertToDatabaseColumn(
-        final CountryModel statusAttribute) {
+            final CountryModel statusAttribute) {
         if (statusAttribute == null) return null;
 
         return statusAttribute.dbRepresentation();

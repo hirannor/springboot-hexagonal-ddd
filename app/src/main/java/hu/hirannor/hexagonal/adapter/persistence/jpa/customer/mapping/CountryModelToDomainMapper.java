@@ -2,6 +2,7 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CountryModel;
 import hu.hirannor.hexagonal.domain.customer.Country;
+
 import java.util.function.Function;
 
 /**

@@ -6,6 +6,7 @@ import hu.hirannor.hexagonal.domain.customer.event.CustomerDetailsChanged;
 import hu.hirannor.hexagonal.domain.customer.event.CustomerRegistered;
 import hu.hirannor.hexagonal.infrastructure.aggregate.AggregateRoot;
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
+
 import java.time.LocalDate;
 import java.util.*;
 
@@ -48,12 +49,12 @@ public class Customer implements AggregateRoot {
     }
 
     public static Customer from(
-        final CustomerId customerId,
-        final FullName fullName,
-        final LocalDate birthDate,
-        final Gender gender,
-        final Address address,
-        final EmailAddress emailAddress) {
+            final CustomerId customerId,
+            final FullName fullName,
+            final LocalDate birthDate,
+            final Gender gender,
+            final Address address,
+            final EmailAddress emailAddress) {
 
         return new Customer(customerId, fullName, birthDate, gender, address, emailAddress);
     }
@@ -70,12 +71,12 @@ public class Customer implements AggregateRoot {
         final CustomerId customerId = CustomerId.generate();
 
         final Customer newCustomer = new Customer(
-            customerId,
-            cmd.fullName(),
-            cmd.birthDate(),
-            cmd.gender(),
-            cmd.address(),
-            cmd.emailAddress()
+                customerId,
+                cmd.fullName(),
+                cmd.birthDate(),
+                cmd.gender(),
+                cmd.address(),
+                cmd.emailAddress()
         );
 
         newCustomer.events.add(CustomerRegistered.issue(customerId));

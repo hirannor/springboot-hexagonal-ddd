@@ -1,8 +1,9 @@
 package hu.hirannor.hexagonal.adapter.web.rest.customer.mapping;
 
-import hu.hirannor.hexagonal.adapter.web.rest.model.*;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
 import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.domain.customer.command.RegisterCustomer;
+
 import java.util.function.Function;
 
 /**
@@ -17,8 +18,8 @@ class RegisterCustomerModelToDomainMapper implements Function<RegisterCustomerMo
 
     RegisterCustomerModelToDomainMapper() {
         this(
-            new AddressModelToDomainMapper(),
-            new GenderModelToDomainMapper()
+                new AddressModelToDomainMapper(),
+                new GenderModelToDomainMapper()
         );
     }
 
@@ -33,14 +34,14 @@ class RegisterCustomerModelToDomainMapper implements Function<RegisterCustomerMo
         if (model == null) return null;
 
         return RegisterCustomer.issue(
-            FullName.from(
-                model.getFirstName(),
-                model.getLastName()
-            ),
-            model.getBirthDate(),
-            mapGenderModelToDomain.apply(model.getGender()),
-            mapAddressModelToDomain.apply(model.getAddress()),
-            EmailAddress.from(model.getEmailAddress())
+                FullName.from(
+                        model.getFirstName(),
+                        model.getLastName()
+                ),
+                model.getBirthDate(),
+                mapGenderModelToDomain.apply(model.getGender()),
+                mapAddressModelToDomain.apply(model.getAddress()),
+                EmailAddress.from(model.getEmailAddress())
         );
     }
 

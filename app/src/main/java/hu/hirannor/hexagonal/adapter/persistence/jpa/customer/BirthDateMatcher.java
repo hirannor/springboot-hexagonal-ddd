@@ -3,9 +3,10 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.customer;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel_;
 import jakarta.persistence.criteria.*;
+import org.springframework.data.jpa.domain.Specification;
+
 import java.io.Serial;
 import java.time.LocalDate;
-import org.springframework.data.jpa.domain.Specification;
 
 /**
  * Specification implementation for birthdate matcher.
@@ -22,8 +23,8 @@ final class BirthDateMatcher implements Specification<CustomerModel> {
     private final Timing timing;
 
     private BirthDateMatcher(
-        final LocalDate birthDate,
-        final Timing timing
+            final LocalDate birthDate,
+            final Timing timing
     ) {
         this.birthDate = birthDate;
         this.timing = timing;
@@ -39,9 +40,9 @@ final class BirthDateMatcher implements Specification<CustomerModel> {
 
     @Override
     public Predicate toPredicate(
-        final Root<CustomerModel> root,
-        final CriteriaQuery<?> query,
-        final CriteriaBuilder criteriaBuilder
+            final Root<CustomerModel> root,
+            final CriteriaQuery<?> query,
+            final CriteriaBuilder criteriaBuilder
     ) {
         switch (timing) {
             case AFTER -> {
@@ -51,28 +52,28 @@ final class BirthDateMatcher implements Specification<CustomerModel> {
                 return isBefore(root, criteriaBuilder);
             }
             default -> throw new IllegalStateException(
-                String.format("No enum constant found for: " + timing)
+                    String.format("No enum constant found for: " + timing)
             );
         }
     }
 
     private Predicate isBefore(
-        final Root<CustomerModel> root,
-        final CriteriaBuilder criteriaBuilder
+            final Root<CustomerModel> root,
+            final CriteriaBuilder criteriaBuilder
     ) {
         return criteriaBuilder.lessThan(
-            root.get(CustomerModel_.BIRTH_DATE),
-            birthDate
+                root.get(CustomerModel_.BIRTH_DATE),
+                birthDate
         );
     }
 
     private Predicate isAfter(
-        final Root<CustomerModel> root,
-        final CriteriaBuilder criteriaBuilder
+            final Root<CustomerModel> root,
+            final CriteriaBuilder criteriaBuilder
     ) {
         return criteriaBuilder.greaterThanOrEqualTo(
-            root.get(CustomerModel_.BIRTH_DATE),
-            birthDate
+                root.get(CustomerModel_.BIRTH_DATE),
+                birthDate
         );
     }
 

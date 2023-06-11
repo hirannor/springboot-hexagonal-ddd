@@ -1,7 +1,8 @@
 package hu.hirannor.hexagonal.adapter.web.rest.customer.mapping;
 
-import hu.hirannor.hexagonal.adapter.web.rest.model.*;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
 import hu.hirannor.hexagonal.domain.customer.*;
+
 import java.util.function.Function;
 
 /**
@@ -16,8 +17,8 @@ class CustomerToModelMapper implements Function<Customer, CustomerModel> {
 
     CustomerToModelMapper() {
         this(
-            new GenderToModelMapper(),
-            new AddressToModelMapper()
+                new GenderToModelMapper(),
+                new AddressToModelMapper()
         );
     }
 
@@ -33,13 +34,13 @@ class CustomerToModelMapper implements Function<Customer, CustomerModel> {
         if (customer == null) return null;
 
         return new CustomerModel()
-            .customerId(customer.customerId().value())
-            .firstName(customer.fullName().firstName())
-            .lastName(customer.fullName().lastName())
-            .birthDate(customer.birthDate())
-            .gender(mapGenderToModel.apply(customer.gender()))
-            .address(mapAddressToModel.apply(customer.address()))
-            .emailAddress(customer.emailAddress().value());
+                .customerId(customer.customerId().value())
+                .firstName(customer.fullName().firstName())
+                .lastName(customer.fullName().lastName())
+                .birthDate(customer.birthDate())
+                .gender(mapGenderToModel.apply(customer.gender()))
+                .address(mapAddressToModel.apply(customer.address()))
+                .emailAddress(customer.emailAddress().value());
     }
 
 }

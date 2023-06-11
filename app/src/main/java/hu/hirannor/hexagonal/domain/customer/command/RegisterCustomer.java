@@ -3,6 +3,7 @@ package hu.hirannor.hexagonal.domain.customer.command;
 import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.infrastructure.command.Command;
 import hu.hirannor.hexagonal.infrastructure.command.CommandId;
+
 import java.time.Instant;
 import java.time.LocalDate;
 
@@ -43,13 +44,13 @@ public record RegisterCustomer(CommandId id,
                                          final Address address,
                                          final EmailAddress emailAddress) {
         return new RegisterCustomer(
-            CommandId.generate(),
-            Command.now(),
-            fullName,
-            birthDate,
-            gender,
-            address,
-            emailAddress
+                CommandId.generate(),
+                Command.now(),
+                fullName,
+                birthDate,
+                gender,
+                address,
+                emailAddress
         );
     }
 }
