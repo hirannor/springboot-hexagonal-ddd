@@ -23,8 +23,8 @@
         <maven-failsafe-plugin.version>3.0.0-M7</maven-failsafe-plugin.version>
         <maven-surfire-plugin.version>3.0.0-M7</maven-surfire-plugin.version>
         <arch-unit.version>1.0.0</arch-unit.version>
-        <testcontainers.version>1.17.3</testcontainers.version>
-        <postgresql.version>42.5.0</postgresql.version>
+        <testcontainers.version>1.17.6</testcontainers.version>
+        <postgresql.version>42.5.4</postgresql.version>
     </properties>
 
     <dependencies>

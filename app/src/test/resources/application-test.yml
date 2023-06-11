@@ -1,9 +1,9 @@
 spring:
   datasource:
-    driver-class-name: org.postgresql.Driver
-    username: root
-    password: test
-    url: jdbc:postgresql://localhost:5342/devdb
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    username: sa
+    password: sa
+    url: jdbc:tc:postgresql:14:///test-db
     hikari:
       auto-commit: false
   jpa:
