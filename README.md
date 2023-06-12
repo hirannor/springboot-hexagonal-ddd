@@ -45,5 +45,13 @@ adapter:
   web: rest
 ```
 
+## API Documentation
+
+You can access the live API documentation at http://localhost:8080/swagger-ui/index.html
+
+![Preview](img/openapi-swagger-ui.PNG)
+
+
+
 
 

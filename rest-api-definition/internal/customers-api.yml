@@ -3,14 +3,9 @@ info:
   title: Customers API
   description: Customers API
   version: 1.0.0
-tags:
-  - name: customer
-
 paths:
   /customers:
     post:
-      tags:
-        - customer
       summary: Registers a customer
       description: registers a customer
       operationId: register
@@ -28,8 +23,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Customer'
     get:
-      tags:
-        - customer
       summary: Retrieves all customer
       description: Retrieves all customer
       operationId: displayAll
@@ -67,8 +60,6 @@ paths:
                   $ref: '#/components/schemas/Customer'
   /customers/{customerId}:
     get:
-      tags:
-        - customer
       summary: Retrieves customer by id
       description: Retrieves customer by id
       operationId: displayBy
@@ -86,8 +77,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Customer'
     delete:
-      tags:
-        - customer
       summary: Deletes a customer by id
       description: Deletes a customer by id
       operationId: deleteBy
@@ -107,8 +96,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorMessage'
     put:
-      tags:
-        - customer
       summary: Change customer details
       description: Change customer details
       operationId: changeDetails
