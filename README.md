@@ -15,7 +15,7 @@ An example of a Spring-Boot application, which based on the port and adapters/he
 - [Maven](https://maven.apache.org/download.cgi)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-## Key concept
+## Implementing new adapter
 
 The key concept is that the component scan for the adapter package is excluded in the application, so the unnecessary adapter beans won't be loaded into the application context, just the configured ones.
 Each adapter defines her own spring configuration class, which is imported via the **@Import** annotation (on top of the application's main class) but getting only component scanned if the condition fulfills for it via **@ConditionalOnProperty** annotation.
