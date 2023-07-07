@@ -7,7 +7,4 @@
     <!-- DDL -->
     <include file="adapter/persistence/ddl/customers-ddl-1.0.0.xml"/>
 
-    <!-- DML -->
-    <include file="adapter/persistence/dml/customers-demo-dml-1.0.0.xml"/>
-
 </databaseChangeLog>

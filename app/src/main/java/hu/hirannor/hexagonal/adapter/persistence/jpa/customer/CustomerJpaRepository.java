@@ -69,11 +69,11 @@ class CustomerJpaRepository implements CustomerRepository {
     public Customer updateDetails(final Customer domain) {
         if (domain == null) throw new IllegalArgumentException(ERR_CUSTOMER_IS_NULL);
 
-        LOGGER.debug("Changing customer details for customer value: {}", domain.customerId());
+        LOGGER.debug("Changing customer details for customer id: {}", domain.customerId());
 
         final CustomerModel model = customers.findByCustomerId(domain.customerId().asText())
                 .orElseThrow(
-                        () -> new CustomerNotFound("Customer not found with value: " + domain)
+                        () -> new CustomerNotFound("Customer not found with id: " + domain)
                 );
 
         final CustomerModel modifiedCustomer = CustomerModeller.applyChangesFrom(domain).to(model);
@@ -86,7 +86,7 @@ class CustomerJpaRepository implements CustomerRepository {
     public void deleteBy(final CustomerId id) {
         if (id == null) throw new IllegalArgumentException(ERR_CUSTOMER_ID_IS_NULL);
 
-        LOGGER.debug("Attempting to delete customer by value: {}", id);
+        LOGGER.debug("Attempting to delete customer by id: {}", id);
 
         customers.deleteByCustomerId(id.asText());
     }
@@ -111,7 +111,7 @@ class CustomerJpaRepository implements CustomerRepository {
     public Optional<Customer> findBy(final CustomerId id) {
         if (id == null) throw new IllegalArgumentException(ERR_CUSTOMER_ID_IS_NULL);
 
-        LOGGER.debug("Fetching customer by value: {}", id);
+        LOGGER.debug("Fetching customer by id: {}", id);
 
         return customers.findByCustomerId(id.value())
                 .map(mapModelToDomain);

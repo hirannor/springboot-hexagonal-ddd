@@ -2,6 +2,7 @@ package hu.hirannor.hexagonal.adapter.web.rest.customer.mapping;
 
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
 import hu.hirannor.hexagonal.domain.customer.*;
+import hu.hirannor.hexagonal.domain.customer.command.ChangeCustomerDetails;
 import hu.hirannor.hexagonal.domain.customer.command.RegisterCustomer;
 
 import java.util.function.Function;
@@ -51,6 +52,18 @@ public interface CustomerMappingFactory {
      */
     static Function<AddressModel, Address> createAddressModelToAddressMapper() {
         return new AddressModelToDomainMapper();
+    }
+
+    /**
+     * Create an instance of {@link ChangeCustomerDetailsModelToDomainMapper},
+     * which maps a {@link ChangeCustomerDetailsModel} model type
+     * to a {@link ChangeCustomerDetails} domain type.
+     *
+     * @return an instance of {@link ChangeCustomerDetailsModelToDomainMapper}
+     */
+    static Function<ChangeCustomerDetailsModel, ChangeCustomerDetails> createChangeCustomerDetailsModelToDomainMapper(
+            final String customerId) {
+        return new ChangeCustomerDetailsModelToDomainMapper(customerId);
     }
 
 }

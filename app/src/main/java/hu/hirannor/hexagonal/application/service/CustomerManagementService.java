@@ -50,7 +50,7 @@ class CustomerManagementService implements
     }
 
     @Override
-    public Customer changeDetailsBy(final ChangeCustomerDetails cmd) {
+    public Customer changeBy(final ChangeCustomerDetails cmd) {
         if (cmd == null) throw new IllegalArgumentException("ChangeCustomerDetails command cannot be null!");
 
         final Customer foundCustomer = customers.findBy(cmd.customerId())
@@ -64,7 +64,7 @@ class CustomerManagementService implements
         messages.publish(updatedCustomer.listEvents());
         updatedCustomer.clearEvents();
 
-        LOGGER.info("Customer details for customer value: {} are updated successfully!", updatedCustomer.customerId());
+        LOGGER.info("Customer details for customer id: {} are updated successfully!", updatedCustomer.customerId());
 
         return updatedCustomer;
     }
@@ -78,7 +78,7 @@ class CustomerManagementService implements
                         () -> new CustomerNotFound(String.format(ERR_CUSTOMER_NOT_FOUND, customerId.asText()))
                 );
 
-        LOGGER.info("Attempting to delete customer by value: {}", customerId.asText());
+        LOGGER.info("Attempting to delete customer by id: {}", customerId.asText());
 
         customers.deleteBy(customerId);
     }
@@ -96,7 +96,7 @@ class CustomerManagementService implements
     public Optional<Customer> displayBy(final CustomerId customerId) {
         if (customerId == null) throw new IllegalArgumentException(ERR_CUSTOMER_ID_IS_NULL);
 
-        LOGGER.info("Retrieving customer by value: {}", customerId);
+        LOGGER.info("Retrieving customer by id: {}", customerId);
 
         return customers.findBy(customerId);
     }

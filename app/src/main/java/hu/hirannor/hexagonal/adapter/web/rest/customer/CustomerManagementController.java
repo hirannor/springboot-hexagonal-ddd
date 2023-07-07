@@ -10,10 +10,10 @@ import hu.hirannor.hexagonal.domain.customer.command.RegisterCustomer;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -28,11 +28,8 @@ import java.util.function.Function;
 @DriverAdapter
 class CustomerManagementController implements CustomersApi {
 
-    private static final String BASE_PATH = "/customers/";
-
     private final Function<Customer, CustomerModel> mapCustomerToModel;
     private final Function<RegisterCustomerModel, RegisterCustomer> mapRegisterCustomerToModel;
-    private final Function<AddressModel, Address> mapAddressModelToDomain;
     private final Function<GenderModel, Gender> mapGenderModelToDomain;
 
     private final CustomerDisplay customers;
@@ -52,7 +49,6 @@ class CustomerManagementController implements CustomersApi {
                 deletion,
                 CustomerMappingFactory.createCustomerToModelMapper(),
                 CustomerMappingFactory.createRegisterCustomerModelToDomainMapper(),
-                CustomerMappingFactory.createAddressModelToAddressMapper(),
                 CustomerMappingFactory.createGenderModelToDomainMapper()
         );
     }
@@ -63,7 +59,6 @@ class CustomerManagementController implements CustomersApi {
                                  final CustomerDeletion deletion,
                                  final Function<Customer, CustomerModel> mapCustomerToModel,
                                  final Function<RegisterCustomerModel, RegisterCustomer> mapRegisterCustomerToModel,
-                                 final Function<AddressModel, Address> mapAddressModelToDomain,
                                  final Function<GenderModel, Gender> mapGenderModelToDomain) {
         this.customers = customers;
         this.details = details;
@@ -71,16 +66,17 @@ class CustomerManagementController implements CustomersApi {
         this.enrolling = enrolling;
         this.mapCustomerToModel = mapCustomerToModel;
         this.mapRegisterCustomerToModel = mapRegisterCustomerToModel;
-        this.mapAddressModelToDomain = mapAddressModelToDomain;
         this.mapGenderModelToDomain = mapGenderModelToDomain;
     }
 
     @Override
     public ResponseEntity<CustomerModel> changeDetails(final String customerId,
                                                        final ChangeCustomerDetailsModel model) {
-        final ChangeCustomerDetails cmd = assembleCommand(customerId, model);
+        final ChangeCustomerDetails cmd = CustomerMappingFactory
+                .createChangeCustomerDetailsModelToDomainMapper(customerId)
+                .apply(model);
 
-        final Customer changedCustomer = details.changeDetailsBy(cmd);
+        final Customer changedCustomer = details.changeBy(cmd);
         final CustomerModel response = mapCustomerToModel.apply(changedCustomer);
 
         return ResponseEntity.ok(response);
@@ -127,20 +123,7 @@ class CustomerManagementController implements CustomersApi {
         final RegisterCustomer cmd = mapRegisterCustomerToModel.apply(model);
         final Customer registeredCustomer = enrolling.register(cmd);
 
-        return ResponseEntity.created(
-                URI.create(BASE_PATH + registeredCustomer.customerId().asText())
-        ).body(mapCustomerToModel.apply(registeredCustomer));
+        return new ResponseEntity<>(mapCustomerToModel.apply(registeredCustomer), HttpStatus.CREATED);
     }
 
-    private ChangeCustomerDetails assembleCommand(final String customerId,
-                                                  final ChangeCustomerDetailsModel model) {
-        return new ChangeCustomerDetails.Builder()
-                .customerId(CustomerId.from(customerId))
-                .fullName(FullName.from(model.getFirstName(), model.getLastName()))
-                .gender(mapGenderModelToDomain.apply(model.getGender()))
-                .birthDate(model.getBirthDate())
-                .address(mapAddressModelToDomain.apply(model.getAddress()))
-                .email(EmailAddress.from(model.getEmailAddress()))
-                .assemble();
-    }
 }

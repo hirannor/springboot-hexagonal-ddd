@@ -1,24 +1,31 @@
 package hu.hirannor.hexagonal.functional;
 
-import hu.hirannor.hexagonal.TestContainerBase;
 import hu.hirannor.hexagonal.adapter.web.rest.customer.api.CustomersApi;
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
-
+import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Testcontainers
 @ActiveProfiles("test")
 @DisplayName("CustomerEnrolling")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class CustomerEnrollingFunctionalTest extends TestContainerBase {
+class CustomerEnrollingFunctionalTest {
+
+    @Container
+    private final PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer<>("postgres:14")
+            .withDatabaseName("test-db")
+            .withUsername("sa")
+            .withPassword("sa");
 
     private final CustomersApi api;
 

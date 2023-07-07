@@ -17,9 +17,11 @@ An example of a Spring-Boot application, which based on the port and adapters/he
 
 ## Implementing new adapter
 
-The key concept is that the component scan for the adapter package is excluded in the application, so the unnecessary adapter beans won't be loaded into the application context, just the configured ones.
+The whole component scan for the adapter package is excluded in the application, so the unnecessary adapter beans won't be loaded into the application context, just the configured ones.
 Each adapter defines her own spring configuration class, which is imported via the **@Import** annotation (on top of the application's main class) but getting only component scanned if the condition fulfills for it via **@ConditionalOnProperty** annotation.
 
+Based on the below example if you define "spring-data-jpa" value as a persistence adapter in the application-[profile].yml, 
+then it will activate the corresponding Configuration class, which is going to component scan the underlying packages for spring beans.
 
 ### Example
 
@@ -45,9 +47,30 @@ adapter:
   web: rest
 ```
 
-## API Documentation
+## Build and test with Maven
+```
+mvn clean verify
+```
 
-You can access the live API documentation at http://localhost:8080/swagger-ui/index.html
+**Building and verifying the application requires a running docker, since some tests are using
+Testcontainers library!
+
+
+### Test catalog and Maven lifecycle bindings
+
+| Test catalog type | Maven lifecycle |
+|:-----------------:|:---------------:|
+|     Unit test     |      test       |
+|  Component test   |      test       |
+|   ArchUnit test   |      test       |
+| Integration test  |     verify      |
+|  Functional test  |     verify      |
+
+## API Documentation
+You can access the API documentation locally at the following URL:
+
+[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+
 
 ![Preview](img/openapi-swagger-ui.PNG)
 
