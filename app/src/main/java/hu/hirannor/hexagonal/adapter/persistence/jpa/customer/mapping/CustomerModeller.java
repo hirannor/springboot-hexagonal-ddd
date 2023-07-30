@@ -46,7 +46,7 @@ public class CustomerModeller implements Modeller<CustomerModel> {
         model.setPostalCode(domain.address().postalCode().value());
         model.setCity(domain.address().city());
         model.setStreetAddress(domain.address().streetAddress());
-        model.setEmailAddress(model.getEmailAddress());
+        model.setEmailAddress(domain.emailAddress().value());
 
         return model;
 
