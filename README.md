@@ -15,10 +15,10 @@ An example of a Spring-Boot application, which based on the port and adapters/he
 - [Maven](https://maven.apache.org/download.cgi)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-## Implementing new adapter
+## Implementing a new adapter
 
-The whole component scan for the adapter package is excluded in the application, so the unnecessary adapter beans won't be loaded into the application context, just the configured ones.
-Each adapter defines her own spring configuration class, which is imported via the **@Import** annotation (on top of the application's main class) but getting only component scanned if the condition fulfills for it via **@ConditionalOnProperty** annotation.
+In the application the whole component scan for the adapter package is excluded, so the unnecessary adapter beans won't be loaded into the application context, just the configured ones.
+Each adapter defines her own spring configuration class, which is imported via the **@Import** annotation (on top of the application's main class) but only those get component scanned where the condition(s) fulfills for it via **@ConditionalOnProperty** annotation.
 
 Based on the below example if you define "spring-data-jpa" value as a persistence adapter in the application-[profile].yml, 
 then it will activate the corresponding Configuration class, which is going to component scan the underlying packages for spring beans.

@@ -5,8 +5,8 @@ import hu.hirannor.hexagonal.adapter.web.rest.customer.mapping.CustomerMappingFa
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
 import hu.hirannor.hexagonal.application.usecase.*;
 import hu.hirannor.hexagonal.domain.customer.*;
-import hu.hirannor.hexagonal.domain.customer.command.ChangeCustomerDetails;
-import hu.hirannor.hexagonal.domain.customer.command.RegisterCustomer;
+import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
+import hu.hirannor.hexagonal.domain.customer.command.EnrollCustomer;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,24 +29,24 @@ import java.util.function.Function;
 class CustomerManagementController implements CustomersApi {
 
     private final Function<Customer, CustomerModel> mapCustomerToModel;
-    private final Function<RegisterCustomerModel, RegisterCustomer> mapRegisterCustomerToModel;
+    private final Function<RegisterCustomerModel, EnrollCustomer> mapRegisterCustomerToModel;
     private final Function<GenderModel, Gender> mapGenderModelToDomain;
 
     private final CustomerDisplay customers;
-    private final CustomerEnrolling enrolling;
-    private final CustomerModification details;
-    private final CustomerDeletion deletion;
+    private final CustomerRegistration registration;
+    private final CustomerModification personalDetails;
+    private final CustomerDeletion customer;
 
     @Autowired
     CustomerManagementController(final CustomerDisplay customers,
-                                 final CustomerEnrolling enrolling,
-                                 final CustomerModification details,
-                                 final CustomerDeletion deletion) {
+                                 final CustomerRegistration registration,
+                                 final CustomerModification personalDetails,
+                                 final CustomerDeletion customer) {
         this(
                 customers,
-                enrolling,
-                details,
-                deletion,
+                registration,
+                personalDetails,
+                customer,
                 CustomerMappingFactory.createCustomerToModelMapper(),
                 CustomerMappingFactory.createRegisterCustomerModelToDomainMapper(),
                 CustomerMappingFactory.createGenderModelToDomainMapper()
@@ -54,16 +54,16 @@ class CustomerManagementController implements CustomersApi {
     }
 
     CustomerManagementController(final CustomerDisplay customers,
-                                 final CustomerEnrolling enrolling,
-                                 final CustomerModification details,
-                                 final CustomerDeletion deletion,
+                                 final CustomerRegistration registration,
+                                 final CustomerModification personalDetails,
+                                 final CustomerDeletion customer,
                                  final Function<Customer, CustomerModel> mapCustomerToModel,
-                                 final Function<RegisterCustomerModel, RegisterCustomer> mapRegisterCustomerToModel,
+                                 final Function<RegisterCustomerModel, EnrollCustomer> mapRegisterCustomerToModel,
                                  final Function<GenderModel, Gender> mapGenderModelToDomain) {
         this.customers = customers;
-        this.details = details;
-        this.deletion = deletion;
-        this.enrolling = enrolling;
+        this.personalDetails = personalDetails;
+        this.customer = customer;
+        this.registration = registration;
         this.mapCustomerToModel = mapCustomerToModel;
         this.mapRegisterCustomerToModel = mapRegisterCustomerToModel;
         this.mapGenderModelToDomain = mapGenderModelToDomain;
@@ -72,19 +72,19 @@ class CustomerManagementController implements CustomersApi {
     @Override
     public ResponseEntity<CustomerModel> changeDetails(final String customerId,
                                                        final ChangeCustomerDetailsModel model) {
-        final ChangeCustomerDetails cmd = CustomerMappingFactory
+        final ChangePersonalDetails cmd = CustomerMappingFactory
                 .createChangeCustomerDetailsModelToDomainMapper(customerId)
                 .apply(model);
 
-        final Customer changedCustomer = details.changeBy(cmd);
-        final CustomerModel response = mapCustomerToModel.apply(changedCustomer);
+        final Customer personalDetailsChanged = personalDetails.changeBy(cmd);
+        final CustomerModel response = mapCustomerToModel.apply(personalDetailsChanged);
 
         return ResponseEntity.ok(response);
     }
 
     @Override
     public ResponseEntity<Void> deleteBy(final String customerId) {
-        deletion.deleteBy(CustomerId.from(customerId));
+        customer.deleteBy(CustomerId.from(customerId));
 
         return ResponseEntity.noContent().build();
     }
@@ -120,8 +120,8 @@ class CustomerManagementController implements CustomersApi {
 
     @Override
     public ResponseEntity<CustomerModel> register(final RegisterCustomerModel model) {
-        final RegisterCustomer cmd = mapRegisterCustomerToModel.apply(model);
-        final Customer registeredCustomer = enrolling.register(cmd);
+        final EnrollCustomer cmd = mapRegisterCustomerToModel.apply(model);
+        final Customer registeredCustomer = registration.enroll(cmd);
 
         return new ResponseEntity<>(mapCustomerToModel.apply(registeredCustomer), HttpStatus.CREATED);
     }

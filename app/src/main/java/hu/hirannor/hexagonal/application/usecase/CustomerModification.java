@@ -1,7 +1,7 @@
 package hu.hirannor.hexagonal.application.usecase;
 
 import hu.hirannor.hexagonal.domain.customer.Customer;
-import hu.hirannor.hexagonal.domain.customer.command.ChangeCustomerDetails;
+import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
 
 /**
  * Customer related use case for changing customer related details.
@@ -11,10 +11,10 @@ import hu.hirannor.hexagonal.domain.customer.command.ChangeCustomerDetails;
 public interface CustomerModification {
 
     /**
-     * Changes customer details based on the incoming {@link ChangeCustomerDetails} command.
+     * Changes customer details based on the incoming {@link ChangePersonalDetails} command.
      *
-     * @param cmd {@link ChangeCustomerDetails} including the modifications
+     * @param cmd {@link ChangePersonalDetails} including the modifications
      * @return {@link Customer} customer with modified details
      */
-    Customer changeBy(ChangeCustomerDetails cmd);
+    Customer changeBy(ChangePersonalDetails cmd);
 }

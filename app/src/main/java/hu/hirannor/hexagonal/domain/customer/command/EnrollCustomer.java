@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 
 /**
- * Immutable record that represents a command to register a new customer.
+ * Immutable record that represents a command to enroll a new customer.
  *
  * @param id           {@link CommandId} unique identifier of command operation
  * @param registeredAt {@link Instant} registration time of command
@@ -19,31 +19,31 @@ import java.time.LocalDate;
  * @param emailAddress {@link EmailAddress} email address of customer
  * @author Mate Karolyi
  */
-public record RegisterCustomer(CommandId id,
-                               Instant registeredAt,
-                               FullName fullName,
-                               LocalDate birthDate,
-                               Gender gender,
-                               Address address,
-                               EmailAddress emailAddress) implements Command {
+public record EnrollCustomer(CommandId id,
+                             Instant registeredAt,
+                             FullName fullName,
+                             LocalDate birthDate,
+                             Gender gender,
+                             Address address,
+                             EmailAddress emailAddress) implements Command {
 
 
     /**
-     * Issues a {@link RegisterCustomer} command.
+     * Issues a {@link EnrollCustomer} command.
      *
      * @param fullName
      * @param birthDate
      * @param gender
      * @param address
      * @param emailAddress
-     * @return an instance of {@link RegisterCustomer} command
+     * @return an instance of {@link EnrollCustomer} command
      */
-    public static RegisterCustomer issue(final FullName fullName,
-                                         final LocalDate birthDate,
-                                         final Gender gender,
-                                         final Address address,
-                                         final EmailAddress emailAddress) {
-        return new RegisterCustomer(
+    public static EnrollCustomer issue(final FullName fullName,
+                                       final LocalDate birthDate,
+                                       final Gender gender,
+                                       final Address address,
+                                       final EmailAddress emailAddress) {
+        return new EnrollCustomer(
                 CommandId.generate(),
                 Command.now(),
                 fullName,

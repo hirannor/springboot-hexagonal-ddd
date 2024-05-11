@@ -2,16 +2,16 @@ package hu.hirannor.hexagonal.adapter.web.rest.customer.mapping;
 
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
 import hu.hirannor.hexagonal.domain.customer.*;
-import hu.hirannor.hexagonal.domain.customer.command.RegisterCustomer;
+import hu.hirannor.hexagonal.domain.customer.command.EnrollCustomer;
 
 import java.util.function.Function;
 
 /**
- * Maps a {@link RegisterCustomerModel} model type to {@link RegisterCustomer} domain type.
+ * Maps a {@link RegisterCustomerModel} model type to {@link EnrollCustomer} domain type.
  *
  * @author Mate Karolyi
  */
-class RegisterCustomerModelToDomainMapper implements Function<RegisterCustomerModel, RegisterCustomer> {
+class RegisterCustomerModelToDomainMapper implements Function<RegisterCustomerModel, EnrollCustomer> {
 
     private final Function<AddressModel, Address> mapAddressModelToDomain;
     private final Function<GenderModel, Gender> mapGenderModelToDomain;
@@ -30,10 +30,10 @@ class RegisterCustomerModelToDomainMapper implements Function<RegisterCustomerMo
     }
 
     @Override
-    public RegisterCustomer apply(final RegisterCustomerModel model) {
+    public EnrollCustomer apply(final RegisterCustomerModel model) {
         if (model == null) return null;
 
-        return RegisterCustomer.issue(
+        return EnrollCustomer.issue(
                 FullName.from(
                         model.getFirstName(),
                         model.getLastName()

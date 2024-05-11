@@ -4,16 +4,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>hu.hirannor.hexagonal</groupId>
-    <artifactId>api-generator-server</artifactId>
+    <artifactId>rest-api-spring-server</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
-    <name>API Generator</name>
+    <name>REST API Spring server generator</name>
 
     <properties>
-        <spring-boot.version>3.1.0</spring-boot.version>
+        <spring-boot.version>3.2.5</spring-boot.version>
         <open-api-generator.version>6.0.1</open-api-generator.version>
         <openapitools-jackson-databind-nullable.version>0.2.6</openapitools-jackson-databind-nullable.version>
-        <swagger-parser.version>2.1.14</swagger-parser.version>
+        <swagger-parser.version>2.1.22</swagger-parser.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>17</maven.compiler.source>
@@ -31,13 +31,11 @@
             <artifactId>rest-api-definition</artifactId>
             <version>${rest-api-definition.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
             <version>${openapitools-jackson-databind-nullable.version}</version>
         </dependency>
-
         <dependency>
             <groupId>io.swagger.parser.v3</groupId>
             <artifactId>swagger-parser</artifactId>
@@ -49,21 +47,18 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring-boot.version}</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
             <version>${spring-boot.version}</version>
             <scope>provided</scope>
         </dependency>
-
     </dependencies>
 
     <build>

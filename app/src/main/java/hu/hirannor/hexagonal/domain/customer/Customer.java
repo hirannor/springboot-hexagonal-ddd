@@ -1,8 +1,8 @@
 package hu.hirannor.hexagonal.domain.customer;
 
-import hu.hirannor.hexagonal.domain.customer.command.ChangeCustomerDetails;
-import hu.hirannor.hexagonal.domain.customer.command.RegisterCustomer;
-import hu.hirannor.hexagonal.domain.customer.event.CustomerDetailsChanged;
+import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
+import hu.hirannor.hexagonal.domain.customer.command.EnrollCustomer;
+import hu.hirannor.hexagonal.domain.customer.event.PersonalDetailsChanged;
 import hu.hirannor.hexagonal.domain.customer.event.CustomerRegistered;
 import hu.hirannor.hexagonal.infrastructure.aggregate.AggregateRoot;
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
@@ -25,12 +25,12 @@ public class Customer implements AggregateRoot {
     private Address address;
     private EmailAddress emailAddress;
 
-    private Customer(final CustomerId customerId,
-                     final FullName fullName,
-                     final LocalDate birthDate,
-                     final Gender gender,
-                     final Address address,
-                     final EmailAddress emailAddress) {
+    Customer(final CustomerId customerId,
+             final FullName fullName,
+             final LocalDate birthDate,
+             final Gender gender,
+             final Address address,
+             final EmailAddress emailAddress) {
 
         Objects.requireNonNull(customerId);
         Objects.requireNonNull(fullName);
@@ -56,28 +56,35 @@ public class Customer implements AggregateRoot {
             final Address address,
             final EmailAddress emailAddress) {
 
-        return new Customer(customerId, fullName, birthDate, gender, address, emailAddress);
+        return CustomerBuilder.empty()
+                .customerId(customerId)
+                .fullName(fullName)
+                .birthDate(birthDate)
+                .gender(gender)
+                .address(address)
+                .emailAddress(emailAddress)
+                .createCustomer();
     }
 
     /**
      * Registers a customer by a command.
      *
-     * @param cmd {@link RegisterCustomer} command
+     * @param cmd {@link EnrollCustomer} command
      * @return an instance of newly created {@link Customer} object
      */
-    public static Customer registerBy(final RegisterCustomer cmd) {
+    public static Customer registerBy(final EnrollCustomer cmd) {
         if (cmd == null) throw new IllegalArgumentException("AddCustomer command cannot be null!");
 
         final CustomerId customerId = CustomerId.generate();
 
-        final Customer newCustomer = new Customer(
-                customerId,
-                cmd.fullName(),
-                cmd.birthDate(),
-                cmd.gender(),
-                cmd.address(),
-                cmd.emailAddress()
-        );
+        final Customer newCustomer = CustomerBuilder.empty()
+                .customerId(customerId)
+                .fullName(cmd.fullName())
+                .birthDate(cmd.birthDate())
+                .gender(cmd.gender())
+                .address(cmd.address())
+                .emailAddress(cmd.emailAddress())
+                .createCustomer();
 
         newCustomer.events.add(CustomerRegistered.issue(customerId));
 
@@ -87,17 +94,17 @@ public class Customer implements AggregateRoot {
     /**
      * Change customer details based on the command
      *
-     * @param cmd {@link ChangeCustomerDetails}
+     * @param cmd {@link ChangePersonalDetails}
      * @return a modified instance of {@link Customer}
      */
-    public Customer changeDetailsBy(final ChangeCustomerDetails cmd) {
+    public Customer changeDetailsBy(final ChangePersonalDetails cmd) {
         this.fullName = cmd.fullName();
         this.birthDate = cmd.birthDate();
         this.address = cmd.address();
         this.gender = cmd.gender();
         this.emailAddress = cmd.email();
 
-        this.events.add(CustomerDetailsChanged.issue(customerId));
+        this.events.add(PersonalDetailsChanged.issue(customerId));
 
         return this;
     }

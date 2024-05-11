@@ -46,7 +46,7 @@ class ErrorHandler {
         final ErrorMessageModel message = new ErrorMessageModel()
                 .timestamp(Instant.now())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.toString())
-                .message("Internal server error");
+                .message(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
 
         return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }

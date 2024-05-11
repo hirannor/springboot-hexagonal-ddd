@@ -13,16 +13,16 @@ import java.time.Instant;
  * @param userId       {@link CustomerId} unique identifier of customer
  * @author Mate Karolyi
  */
-public record CustomerDetailsChanged(EventId id, Instant registeredAt, CustomerId userId) implements DomainEvent {
+public record PersonalDetailsChanged(EventId id, Instant registeredAt, CustomerId userId) implements DomainEvent {
 
     /**
-     * Issues a {@link CustomerDetailsChanged} domain event.
+     * Issues a {@link PersonalDetailsChanged} domain event.
      *
      * @param userId {@link CustomerId}
-     * @return an instance of {@link CustomerDetailsChanged} domain event
+     * @return an instance of {@link PersonalDetailsChanged} domain event
      */
-    public static CustomerDetailsChanged issue(final CustomerId userId) {
-        return new CustomerDetailsChanged(EventId.generate(), Event.now(), userId);
+    public static PersonalDetailsChanged issue(final CustomerId userId) {
+        return new PersonalDetailsChanged(EventId.generate(), Event.now(), userId);
     }
 
 }

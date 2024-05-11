@@ -2,8 +2,8 @@ package hu.hirannor.hexagonal.adapter.web.rest.customer.mapping;
 
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
 import hu.hirannor.hexagonal.domain.customer.*;
-import hu.hirannor.hexagonal.domain.customer.command.ChangeCustomerDetails;
-import hu.hirannor.hexagonal.domain.customer.command.RegisterCustomer;
+import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
+import hu.hirannor.hexagonal.domain.customer.command.EnrollCustomer;
 
 import java.util.function.Function;
 
@@ -26,11 +26,11 @@ public interface CustomerMappingFactory {
 
     /**
      * Create an instance of {@link RegisterCustomerModelToDomainMapper}, which maps a {@link RegisterCustomerModel} model type
-     * to a {@link RegisterCustomer} domain type.
+     * to a {@link EnrollCustomer} domain type.
      *
      * @return an instance of {@link RegisterCustomerModelToDomainMapper}
      */
-    static Function<RegisterCustomerModel, RegisterCustomer> createRegisterCustomerModelToDomainMapper() {
+    static Function<RegisterCustomerModel, EnrollCustomer> createRegisterCustomerModelToDomainMapper() {
         return new RegisterCustomerModelToDomainMapper();
     }
 
@@ -57,11 +57,11 @@ public interface CustomerMappingFactory {
     /**
      * Create an instance of {@link ChangeCustomerDetailsModelToDomainMapper},
      * which maps a {@link ChangeCustomerDetailsModel} model type
-     * to a {@link ChangeCustomerDetails} domain type.
+     * to a {@link ChangePersonalDetails} domain type.
      *
      * @return an instance of {@link ChangeCustomerDetailsModelToDomainMapper}
      */
-    static Function<ChangeCustomerDetailsModel, ChangeCustomerDetails> createChangeCustomerDetailsModelToDomainMapper(
+    static Function<ChangeCustomerDetailsModel, ChangePersonalDetails> createChangeCustomerDetailsModelToDomainMapper(
             final String customerId) {
         return new ChangeCustomerDetailsModelToDomainMapper(customerId);
     }

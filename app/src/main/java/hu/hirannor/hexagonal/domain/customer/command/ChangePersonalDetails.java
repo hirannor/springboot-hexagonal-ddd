@@ -20,7 +20,7 @@ import java.time.LocalDate;
  * @param email        {@link EmailAddress} email address of customer
  * @author Mate Karolyi
  */
-public record ChangeCustomerDetails(
+public record ChangePersonalDetails(
         CommandId id,
         Instant registeredAt,
         CustomerId customerId,
@@ -69,8 +69,8 @@ public record ChangeCustomerDetails(
             return this;
         }
 
-        public ChangeCustomerDetails assemble() {
-            return new ChangeCustomerDetails(
+        public ChangePersonalDetails assemble() {
+            return new ChangePersonalDetails(
                     CommandId.generate(),
                     Command.now(),
                     customerId,

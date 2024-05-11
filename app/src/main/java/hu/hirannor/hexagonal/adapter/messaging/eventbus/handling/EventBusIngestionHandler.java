@@ -1,6 +1,6 @@
 package hu.hirannor.hexagonal.adapter.messaging.eventbus.handling;
 
-import hu.hirannor.hexagonal.domain.customer.event.CustomerDetailsChanged;
+import hu.hirannor.hexagonal.domain.customer.event.PersonalDetailsChanged;
 import hu.hirannor.hexagonal.domain.customer.event.CustomerRegistered;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
 import org.apache.logging.log4j.LogManager;
@@ -39,13 +39,13 @@ class EventBusIngestionHandler {
     }
 
     /**
-     * Handles incoming {@link CustomerDetailsChanged} event.
+     * Handles incoming {@link PersonalDetailsChanged} event.
      *
-     * @param evt {@link CustomerDetailsChanged} to be handled
+     * @param evt {@link PersonalDetailsChanged} to be handled
      */
     @Async
     @TransactionalEventListener
-    public void handle(final CustomerDetailsChanged evt) {
+    public void handle(final PersonalDetailsChanged evt) {
         if (evt == null) throw new IllegalArgumentException("Customer details changed event cannot be null!");
 
         LOGGER.debug("CustomerDetailsChanged event received: {}", evt);

@@ -2,7 +2,8 @@ package hu.hirannor.hexagonal.functional;
 
 import hu.hirannor.hexagonal.adapter.web.rest.customer.api.CustomersApi;
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -19,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 @DisplayName("CustomerEnrolling")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class CustomerEnrollingFunctionalTest {
+class CustomerRegistrationFunctionalTest {
 
     @Container
     private final PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer<>("postgres:14")
@@ -30,7 +32,7 @@ class CustomerEnrollingFunctionalTest {
     private final CustomersApi api;
 
     @Autowired
-    CustomerEnrollingFunctionalTest(final CustomersApi api) {
+    CustomerRegistrationFunctionalTest(final CustomersApi api) {
         this.api = api;
     }
 

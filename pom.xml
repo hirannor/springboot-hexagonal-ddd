@@ -14,9 +14,9 @@
     <description>hexagonal-architecture</description>
 
     <modules>
-        <module>app</module>
-        <module>api-generator-server</module>
         <module>rest-api-definition</module>
+        <module>rest-api-spring-server</module>
+        <module>app</module>
     </modules>
 
 </project>

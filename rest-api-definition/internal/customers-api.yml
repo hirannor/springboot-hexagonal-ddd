@@ -138,51 +138,64 @@ components:
       properties:
         firstName:
           type: string
+          example: John
         lastName:
           type: string
+          example: Digweed
         birthDate:
           type: string
           format: date
+          example: 1990-01-01
         address:
           $ref: '#/components/schemas/Address'
         gender:
           $ref: '#/components/schemas/Gender'
         emailAddress:
           type: string
+          example: test@test.com
     ChangeCustomerDetails:
       type: object
       properties:
         firstName:
           type: string
+          example: John
         lastName:
           type: string
+          example: Digweed
         birthDate:
           type: string
           format: date
+          example: 1990-01-01
         address:
           $ref: '#/components/schemas/Address'
         gender:
           $ref: '#/components/schemas/Gender'
         emailAddress:
           type: string
+          example: test@test.com
     Customer:
       type: object
       properties:
         customerId:
           type: string
+          example: f8ba9856-29ca-4611-89c3-a2711be08994
         firstName:
           type: string
+          example: John
         lastName:
           type: string
+          example: Digweed
         birthDate:
           type: string
           format: date
+          example: 1990-01-01
         address:
           $ref: '#/components/schemas/Address'
         gender:
           $ref: '#/components/schemas/Gender'
         emailAddress:
           type: string
+          example: test@test.com
     Address:
       type: object
       properties:
@@ -190,10 +203,13 @@ components:
           $ref: '#/components/schemas/Country'
         city:
           type: string
+          example: Budapest
         postalCode:
           type: integer
+          example: 1007
         streetAddress:
           type: string
+          example: Wolf street
     ErrorMessage:
       type: object
       properties:
@@ -209,8 +225,10 @@ components:
       enum:
         - HUNGARY
         - GERMANY
+      example: HUNGARY
     Gender:
       type: string
       enum:
         - MALE
         - FEMALE
+      example: MALE

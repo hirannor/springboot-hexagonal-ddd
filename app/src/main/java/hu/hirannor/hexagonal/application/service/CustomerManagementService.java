@@ -5,8 +5,8 @@ import hu.hirannor.hexagonal.application.error.CustomerNotFound;
 import hu.hirannor.hexagonal.application.port.messaging.MessagePublisher;
 import hu.hirannor.hexagonal.application.usecase.*;
 import hu.hirannor.hexagonal.domain.customer.*;
-import hu.hirannor.hexagonal.domain.customer.command.ChangeCustomerDetails;
-import hu.hirannor.hexagonal.domain.customer.command.RegisterCustomer;
+import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
+import hu.hirannor.hexagonal.domain.customer.command.EnrollCustomer;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,7 +28,7 @@ import java.util.Optional;
         isolation = Isolation.REPEATABLE_READ
 )
 class CustomerManagementService implements
-        CustomerEnrolling,
+        CustomerRegistration,
         CustomerDisplay,
         CustomerModification,
         CustomerDeletion {
@@ -50,7 +50,7 @@ class CustomerManagementService implements
     }
 
     @Override
-    public Customer changeBy(final ChangeCustomerDetails cmd) {
+    public Customer changeBy(final ChangePersonalDetails cmd) {
         if (cmd == null) throw new IllegalArgumentException("ChangeCustomerDetails command cannot be null!");
 
         final Customer foundCustomer = customers.findBy(cmd.customerId())
@@ -59,12 +59,12 @@ class CustomerManagementService implements
                 );
 
         final Customer updatedCustomer = foundCustomer.changeDetailsBy(cmd);
-        customers.updateDetails(updatedCustomer);
+        customers.changePersonalDetails(updatedCustomer);
 
         messages.publish(updatedCustomer.listEvents());
         updatedCustomer.clearEvents();
 
-        LOGGER.info("Customer details for customer id: {} are updated successfully!", updatedCustomer.customerId());
+        LOGGER.info("Personal details for customer id: {} are updated successfully!", updatedCustomer.customerId());
 
         return updatedCustomer;
     }
@@ -78,7 +78,7 @@ class CustomerManagementService implements
                         () -> new CustomerNotFound(String.format(ERR_CUSTOMER_NOT_FOUND, customerId.asText()))
                 );
 
-        LOGGER.info("Attempting to delete customer by id: {}", customerId.asText());
+        LOGGER.info("Attempting to delete customer with id: {}", customerId.asText());
 
         customers.deleteBy(customerId);
     }
@@ -102,14 +102,14 @@ class CustomerManagementService implements
     }
 
     @Override
-    public Customer register(final RegisterCustomer command) {
-        if (command == null) throw new IllegalArgumentException("RegisterCustomer command cannot be null!");
+    public Customer enroll(final EnrollCustomer command) {
+        if (command == null) throw new IllegalArgumentException("EnrollCustomer command cannot be null!");
 
         final Optional<Customer> existingCustomer = customers.findByEmailAddress(command.emailAddress());
 
         if (existingCustomer.isPresent()) {
             throw new CustomerAlreadyExist(
-                    String.format("Customer already exist with the given e-mail address: %s", command.emailAddress())
+                    String.format("Customer already exist with the given e-mail address: %s", command.emailAddress().value())
             );
         }
 
@@ -119,7 +119,7 @@ class CustomerManagementService implements
         messages.publish(newCustomer.listEvents());
         newCustomer.clearEvents();
 
-        LOGGER.info("Customer with value: {} is successfully registered!", newCustomer.customerId());
+        LOGGER.info("Customer with id: {} is successfully registered!", newCustomer.customerId());
 
         return newCustomer;
     }

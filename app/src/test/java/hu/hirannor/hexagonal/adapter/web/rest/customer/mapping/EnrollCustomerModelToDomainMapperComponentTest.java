@@ -2,7 +2,7 @@ package hu.hirannor.hexagonal.adapter.web.rest.customer.mapping;
 
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
 import hu.hirannor.hexagonal.domain.customer.*;
-import hu.hirannor.hexagonal.domain.customer.command.RegisterCustomer;
+import hu.hirannor.hexagonal.domain.customer.command.EnrollCustomer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,18 +13,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @DisplayName("RegisterCustomerModelToDomainMapper")
-class RegisterCustomerModelToDomainMapperComponentTest {
+class EnrollCustomerModelToDomainMapperComponentTest {
 
-    private final Function<RegisterCustomerModel, RegisterCustomer> mapper;
+    private final Function<RegisterCustomerModel, EnrollCustomer> mapper;
 
-    RegisterCustomerModelToDomainMapperComponentTest() {
+    EnrollCustomerModelToDomainMapperComponentTest() {
         mapper = new RegisterCustomerModelToDomainMapper();
     }
 
     @Test
     @DisplayName("should map null to literal null")
     void testNull() {
-        final RegisterCustomer mappingResult = mapper.apply(null);
+        final EnrollCustomer mappingResult = mapper.apply(null);
         assertThat(mappingResult).isNull();
     }
 
@@ -33,17 +33,17 @@ class RegisterCustomerModelToDomainMapperComponentTest {
     void testValidMapping() {
         final RegisterCustomerModel input = constructInput();
 
-        final RegisterCustomer expected = constructExpectedResult();
+        final EnrollCustomer expected = constructExpectedResult();
 
-        final RegisterCustomer result = mapper.apply(input);
+        final EnrollCustomer result = mapper.apply(input);
 
         assertThat(result).usingRecursiveComparison()
                 .ignoringFields("id", "registeredAt")
                 .isEqualTo(expected);
     }
 
-    private RegisterCustomer constructExpectedResult() {
-        return RegisterCustomer.issue(
+    private EnrollCustomer constructExpectedResult() {
+        return EnrollCustomer.issue(
                 FullName.from("John", "Doe"),
                 LocalDate.of(1992, 2, 10),
                 Gender.MALE,

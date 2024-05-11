@@ -14,115 +14,112 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-boot.version>3.1.0</spring-boot.version>
+        <spring-boot.version>3.2.5</spring-boot.version>
         <liquibase-core.version>4.20.0</liquibase-core.version>
         <h2.version>2.1.214</h2.version>
         <jackson-annotations.version>2.15.1</jackson-annotations.version>
-        <api-generator-server.version>1.0.0-SNAPSHOT</api-generator-server.version>
+        <rest-api-spring-server.version>1.0.0-SNAPSHOT</rest-api-spring-server.version>
         <hibernate-jpamodelgen.version>6.1.7.Final</hibernate-jpamodelgen.version>
         <maven-failsafe-plugin.version>3.0.0-M7</maven-failsafe-plugin.version>
         <maven-surfire-plugin.version>3.0.0-M7</maven-surfire-plugin.version>
         <arch-unit.version>1.0.0</arch-unit.version>
-        <testcontainers.version>1.17.6</testcontainers.version>
-        <postgresql.version>42.5.4</postgresql.version>
+        <testcontainers.version>1.19.8</testcontainers.version>
+        <postgresql.version>42.7.3</postgresql.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.1.0</springdoc-openapi-starter-webmvc-ui.version>
-        <junit-jupiter.version>1.18.3</junit-jupiter.version>
+        <junit-jupiter.version>1.19.8</junit-jupiter.version>
         <spring-boot-maven-plugin.mainClass>hu.hirannor.hexagonal.HexagonalApplication
         </spring-boot-maven-plugin.mainClass>
+        <snakeyaml.version>2.2</snakeyaml.version>
+        <jakarta.validation-api.version>3.1.0-M2</jakarta.validation-api.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>hu.hirannor.hexagonal</groupId>
-            <artifactId>api-generator-server</artifactId>
-            <version>${api-generator-server.version}</version>
+            <artifactId>rest-api-spring-server</artifactId>
+            <version>${rest-api-spring-server.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
             <version>${spring-boot.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
             <version>${spring-boot.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
             <version>${spring-boot.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>${jakarta.validation-api.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase-core.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
             <version>${h2.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>${jackson-annotations.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-jpamodelgen</artifactId>
             <version>${hibernate-jpamodelgen.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
             <version>${spring-boot.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>postgresql</artifactId>
             <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-
-
         <dependency>
             <groupId>com.tngtech.archunit</groupId>
             <artifactId>archunit-junit5</artifactId>
             <version>${arch-unit.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>${postgresql.version}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>

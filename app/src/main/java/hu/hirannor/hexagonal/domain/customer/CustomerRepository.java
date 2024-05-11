@@ -13,12 +13,12 @@ import java.util.Optional;
 public interface CustomerRepository {
 
     /**
-     * Change details of a customer
+     * Change personal details of a customer
      *
      * @param customer {@link Customer} including modified details.
      * @return {@link Customer} with modified details
      */
-    Customer updateDetails(Customer customer);
+    Customer changePersonalDetails(Customer customer);
 
     /**
      * Deletes a customer by value
