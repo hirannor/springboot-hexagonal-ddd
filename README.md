@@ -1,6 +1,5 @@
 # Spring-Boot - Ports-And-Adapters / Hexagonal Architecture with DDD
 
-
 |Build Status|License|
 |------------|-------|
 |[![Build Status](https://img.shields.io/github/actions/workflow/status/hirannor/springboot-hexagonal-ddd/.github/workflows/maven.yml)](https://github.com/hirannor/springboot-hexagonal-ddd/actions/workflows/maven.yml)|[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)|
@@ -8,45 +7,80 @@
 
 ## Overview
 
-An example of a Spring Boot application following **Port & Adapters / Hexagonal Architecture** and **Domain-Driven Design (DDD)** principles.
+This project is a **Spring Boot** example implementing **Ports & Adapters / Hexagonal Architecture** with **Domain-Driven Design (DDD)** principles.
 
-This project enforces architectural rules using **[ArchUnit](https://www.archunit.org/)** to maintain a clean and consistent structure:
+The architecture enforces separation of concerns:
 
-- **Domain Layer** contains pure business logic and **does not depend** on any external frameworks or infrastructure.
-- **Application Layer** orchestrates use cases and mediates between domain objects and external adapters.
-- **Adapters / Infrastructure Layer** implements technical details such as messaging, databases, and external APIs.
+* **Domain Layer:** Pure business logic, framework-agnostic.
+* **Application Layer:** Orchestrates use cases and mediates between domain and adapters.
+* **Adapters / Infrastructure Layer:** Implements technical concerns such as messaging, persistence, and external APIs.
 
-## Architecture
+Architectural rules are validated using **[ArchUnit](https://www.archunit.org/)** to maintain a clean and consistent project structure.
+
+
+## 🛠 Tech Stack
+
+![Java](https://img.shields.io/badge/Java-ED8B00?style=flat\&logo=java\&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat\&logo=spring-boot\&logoColor=white)
+![Git](https://img.shields.io/badge/Git-F05032?style=flat\&logo=git\&logoColor=white)
+![SQL](https://img.shields.io/badge/SQL-003B57?style=flat\&logo=microsoft-sql-server\&logoColor=white)
+
+
+## Architecture Overview
 
 ![Architecture](img/architecture.svg)
 
+Key principles enforced via ArchUnit tests:
 
-### ArchUnit Tests
+* Dependency rules between layers (Domain → Application → Adapters).
+* Isolation of Domain Layer from frameworks.
+* Compliance with naming conventions and package structure.
 
-All core architectural rules are enforced via ArchUnit tests, including:
+Running these tests ensures **architectural integrity** as the project evolves.
 
-- Dependency rules between layers (Domain → Application → Adapters).
-- Layer isolation (Domain is framework-agnostic).
-- Naming conventions and package structure compliance.
 
-Running the tests ensures that any violations of these rules are detected early during development, keeping the architecture **structurally sound** as the project evolves.
+## Getting Started
 
-## Prerequisites for development
+### Prerequisites
 
-- [Git](https://git-scm.com/downloads)
-- [JDK 21](https://adoptium.net/)
-- [Maven](https://maven.apache.org/download.cgi)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+* [Git](https://git-scm.com/downloads)
+* [JDK 21](https://adoptium.net/)
+* [Maven](https://maven.apache.org/download.cgi)
+* [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
-## Implementing a new adapter
+### Quick Start
 
-In the application the whole component scan for the adapter package is excluded, so the unnecessary adapter beans won't be loaded into the application context, just the configured ones.
-Each adapter defines her own spring configuration class, which is imported via the **@Import** annotation (on top of the application's main class) but only those get component scanned where the condition(s) fulfills for it via **@ConditionalOnProperty** annotation.
+1. Clone the repository:
 
-Based on the below example if you define "spring-data-jpa" value as a persistence adapter in the application-[profile].yml, 
-then it will activate the corresponding Configuration class, which is going to component scan the underlying packages for spring beans.
+```bash
+git clone https://github.com/hirannor/springboot-hexagonal-ddd.git
+cd springboot-hexagonal-ddd
+```
 
-### Example
+2. Start the PostgreSQL database with Docker:
+
+```bash
+docker-compose up -d
+```
+
+3. Build and run tests:
+
+```bash
+mvn clean verify
+```
+
+***Note:*** Some tests use **Testcontainers**, so Docker must be running.
+
+
+## Implementing a New Adapter
+
+Adapters are **explicitly configured**—the application excludes scanning the entire adapter package to avoid loading unnecessary beans.
+
+* Each adapter defines its own Spring configuration class.
+* Classes are imported via **@Import** on the main application class.
+* Component scanning occurs **only if conditions are met** via **@ConditionalOnProperty**.
+
+### Example: JPA Persistence Adapter
 
 ```java
 @Configuration
@@ -61,8 +95,8 @@ public class JpaPersistenceConfiguration {
 }
 ```
 
-application-[profile].yml
-```YAML
+```yaml
+# application-[profile].yml
 adapter:
   authentication: basic
   persistence: spring-data-jpa
@@ -70,51 +104,41 @@ adapter:
   web: rest
 ```
 
-## Build and test with Maven
-```
-mvn clean verify
-```
+## Testing
 
-***Important:*** Building and verifying the application requires a running docker, since some tests are using
-Testcontainers library!
+### Test Catalog and Maven Lifecycle
+
+|     Test Type    | Maven Lifecycle |
+| :--------------: | :-------------: |
+|     Unit test    |       test      |
+|  Component test  |       test      |
+|   ArchUnit test  |       test      |
+| Integration test |      verify     |
 
 
-### Test catalog and Maven lifecycle bindings
+## API Documentation
 
-| Test catalog type | Maven lifecycle |
-|:-----------------:|:---------------:|
-|     Unit test     |      test       |
-|  Component test   |      test       |
-|   ArchUnit test   |      test       |
-| Integration test  |     verify      |
+* Accessible locally at: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
+
+![Preview](img/openapi-swagger-ui.PNG)
+
+### Authentication
+
+* HTTP Basic Authentication enabled by default:
+
+  * **Username:** `user`
+  * **Password:** `password`
+
+All API requests must include these credentials.
 
 
 ## Docker Setup
 
-A **Docker Compose** file is included in the project folder to run a PostgreSQL database.
+* **File:** `docker-compose.yml`
+* **Environment variables:** stored in `.env`
 
-- **File:** `docker-compose.yml`
-- **Database credentials and name** are stored in the `.env` file.
-
-Start the database with:
+Start the database:
 
 ```bash
 docker-compose up -d
 ```
-
-## API Documentation
-You can access the API documentation locally at the following URL:
-
-[http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
-
-![Preview](img/openapi-swagger-ui.PNG)
-
-## Basic Authentication
-
-By default, the application uses **HTTP Basic Authentication**. Use the following credentials to access the API:
-
-- **Username:** `user`
-- **Password:** `password`
-
-All API requests must include these credentials.
-
