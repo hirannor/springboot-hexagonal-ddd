@@ -28,6 +28,7 @@ class PackageStructureArchTest {
     }
 
     @ArchTest
+    @DisplayName("should respect onion rules")
     void shouldRespectOnionRules(final JavaClasses classes) {
         onion()
                 .whereLayer(ADAPTER.ringName()).mayOnlyBeAccessedByLayers(HEXAGONAL_APP)
@@ -39,6 +40,7 @@ class PackageStructureArchTest {
     }
 
     @ArchTest
+    @DisplayName("should have adapter packages separated")
     void shouldHaveAdapterPackagesSeparated(final JavaClasses classes) {
         adapters()
                 .whereLayer(MESSAGING.ringName())

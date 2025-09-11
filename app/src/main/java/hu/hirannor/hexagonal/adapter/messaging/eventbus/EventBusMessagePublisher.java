@@ -1,4 +1,4 @@
-package hu.hirannor.hexagonal.adapter.messaging.eventbus.publisher;
+package hu.hirannor.hexagonal.adapter.messaging.eventbus;
 
 import hu.hirannor.hexagonal.infrastructure.messaging.MessagePublisher;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;

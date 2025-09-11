@@ -66,6 +66,7 @@ class TestArchTest {
     }
 
     @ArchTest
+    @DisplayName("should not have public test classes")
     void shouldNotHavePublicTestClasses(final JavaClasses classes) {
         testClasses
                 .should().notBePublic().as("Test classes shouldn't be public")
@@ -74,6 +75,7 @@ class TestArchTest {
     }
 
     @ArchTest
+    @DisplayName("should not have public test cases")
     void shouldNotHavePublicTestCases(final JavaClasses classes) {
         testCases
                 .should().notBePublic()
@@ -83,6 +85,7 @@ class TestArchTest {
     }
 
     @ArchTest
+    @DisplayName("should describe test classes")
     void shouldDescribeTestClasses(final JavaClasses classes) {
         testClasses
                 .should().beAnnotatedWith(DisplayName.class)
@@ -92,6 +95,7 @@ class TestArchTest {
     }
 
     @ArchTest
+    @DisplayName("should describe test cases")
     void shouldDescribeTestCases(final JavaClasses classes) {
         testCases
                 .should().beAnnotatedWith(DisplayName.class)

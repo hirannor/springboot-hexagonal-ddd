@@ -18,6 +18,7 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 class GeneralRulesArchTest {
 
     @ArchTest
+    @DisplayName("should limit implementations of function interfaces to package scope at most")
     void shouldLimitImplementationsOfFunctionalInterfacesToPackageScopeAtMost(
             final JavaClasses classes
     ) {
@@ -33,6 +34,7 @@ class GeneralRulesArchTest {
     }
 
     @ArchTest
+    @DisplayName("should use functions as mappers")
     void shouldUseFunctionsAsMappers(final JavaClasses classes) {
         classes()
                 .that().haveSimpleNameEndingWith("Mapper")
@@ -44,6 +46,7 @@ class GeneralRulesArchTest {
     }
 
     @ArchTest
+    @DisplayName("should not use field injection")
     void shouldNotUseFieldInjection(final JavaClasses classes) {
         GeneralCodingRules.NO_CLASSES_SHOULD_USE_FIELD_INJECTION
                 .as("Classes should not use field injection")
@@ -52,6 +55,7 @@ class GeneralRulesArchTest {
     }
 
     @ArchTest
+    @DisplayName("should not use mapstruct")
     void shouldNotUseMapstruct(final JavaClasses classes) {
         noClasses()
                 .should()
@@ -65,6 +69,7 @@ class GeneralRulesArchTest {
     }
 
     @ArchTest
+    @DisplayName("should not depend services on services")
     void shouldNotDependServiceOnService(final JavaClasses classes) {
         noClasses()
                 .that()

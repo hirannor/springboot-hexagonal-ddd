@@ -52,7 +52,7 @@ class CustomerManagementService implements
 
         final Customer foundCustomer = customers.findBy(cmd.customerId())
             .orElseThrow(
-                becauseCustomerWasNotFoundBy(cmd.customerId())
+                failBecauseCustomerWasNotFoundBy(cmd.customerId())
             );
 
         final Customer updatedCustomer = foundCustomer.changeDetailsBy(cmd);
@@ -69,7 +69,7 @@ class CustomerManagementService implements
 
         customers.findBy(id)
             .orElseThrow(
-                becauseCustomerWasNotFoundBy(id)
+                failBecauseCustomerWasNotFoundBy(id)
             );
 
         LOGGER.info("Attempting to delete customer with id: {}", id.asText());
@@ -99,26 +99,24 @@ class CustomerManagementService implements
     public Customer enroll(final EnrollCustomer command) {
         if (command == null) throw new IllegalArgumentException("EnrollCustomer command cannot be null!");
 
-        final Optional<Customer> existingCustomer = customers.findByEmailAddress(command.emailAddress());
+        customers.findByEmailAddress(command.emailAddress())
+            .ifPresent(customer -> failBecauseCustomerAlreadyExistBy(customer.emailAddress()));
 
-        if (existingCustomer.isPresent())
-            errorBecauseCustomerAlreadyExistBy(command.emailAddress());
+        final Customer registeredCustomer = Customer.registerBy(command);
+        customers.save(registeredCustomer);
 
-        final Customer newCustomer = Customer.registerBy(command);
-        customers.save(newCustomer);
+        LOGGER.info("Customer with id: {} is successfully registered!", registeredCustomer.customerId());
 
-        LOGGER.info("Customer with id: {} is successfully registered!", newCustomer.customerId());
-
-        return newCustomer;
+        return registeredCustomer;
     }
 
-    private void errorBecauseCustomerAlreadyExistBy(final EmailAddress email) {
+    private void failBecauseCustomerAlreadyExistBy(final EmailAddress email) {
         throw new CustomerAlreadyExist(
             String.format("Customer already exist with the given e-mail address: %s", email.value())
         );
     }
 
-    private Supplier<CustomerNotFound> becauseCustomerWasNotFoundBy(final CustomerId id) {
+    private Supplier<CustomerNotFound> failBecauseCustomerWasNotFoundBy(final CustomerId id) {
         return () -> new CustomerNotFound(String.format(ERR_CUSTOMER_NOT_FOUND, id.asText()));
     }
 

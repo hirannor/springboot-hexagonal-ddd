@@ -1,12 +1,30 @@
 # Spring-Boot - Ports-And-Adapters / Hexagonal Architecture with DDD
 
 
-## Overview
-An example of a Spring-Boot application, which based on the port and adapters/hexagonal architecture and DDD.
-
 |Build Status|License|
 |------------|-------|
 |[![Build Status](https://img.shields.io/github/actions/workflow/status/hirannor/springboot-hexagonal-ddd/.github/workflows/maven.yml)](https://github.com/hirannor/springboot-hexagonal-ddd/actions/workflows/maven.yml)|[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)|
+
+
+## Overview
+
+An example of a Spring Boot application following **Port & Adapters / Hexagonal Architecture** and **Domain-Driven Design (DDD)** principles.
+
+This project enforces architectural rules using **[ArchUnit](https://www.archunit.org/)** to maintain a clean and consistent structure:
+
+- **Domain Layer** contains pure business logic and **does not depend** on any external frameworks or infrastructure.
+- **Application Layer** orchestrates use cases and mediates between domain objects and external adapters.
+- **Adapters / Infrastructure Layer** implements technical details such as messaging, databases, and external APIs.
+
+### ArchUnit Tests
+
+All core architectural rules are enforced via ArchUnit tests, including:
+
+- Dependency rules between layers (Domain → Application → Adapters).
+- Layer isolation (Domain is framework-agnostic).
+- Naming conventions and package structure compliance.
+
+Running the tests ensures that any violations of these rules are detected early during development, keeping the architecture **structurally sound** as the project evolves.
 
 ## Prerequisites for development
 
@@ -52,7 +70,7 @@ adapter:
 mvn clean verify
 ```
 
-**Building and verifying the application requires a running docker, since some tests are using
+***Important:*** Building and verifying the application requires a running docker, since some tests are using
 Testcontainers library!
 
 
@@ -66,16 +84,6 @@ Testcontainers library!
 | Integration test  |     verify      |
 |  Functional test  |     verify      |
 
-
-
-## Basic Authentication
-
-By default, the application uses **HTTP Basic Authentication**. Use the following credentials to access the API:
-
-- **Username:** `user`
-- **Password:** `password`
-
-All API requests must include these credentials.
 
 ## Docker Setup
 
@@ -97,4 +105,13 @@ You can access the API documentation locally at the following URL:
 
 
 ![Preview](img/openapi-swagger-ui.PNG)
+
+## Basic Authentication
+
+By default, the application uses **HTTP Basic Authentication**. Use the following credentials to access the API:
+
+- **Username:** `user`
+- **Password:** `password`
+
+All API requests must include these credentials.
 
