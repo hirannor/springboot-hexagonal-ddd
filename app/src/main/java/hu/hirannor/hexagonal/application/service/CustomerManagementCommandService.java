@@ -18,23 +18,22 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 /**
- * A service implementation of customer related use cases.
+ * A service implementation of command related operations for customer management
  *
  * @author Mate Karolyi
  */
 @Service
 @Transactional(
-        propagation = Propagation.REQUIRES_NEW,
-        isolation = Isolation.REPEATABLE_READ
+    propagation = Propagation.REQUIRES_NEW,
+    isolation = Isolation.REPEATABLE_READ
 )
-class CustomerManagementService implements
+class CustomerManagementCommandService implements
         CustomerRegistration,
-        CustomerDisplaying,
         CustomerModification,
         CustomerDeletion {
 
     private static final Logger LOGGER = LogManager.getLogger(
-            CustomerManagementService.class
+        CustomerManagementCommandService.class
     );
     private static final String ERR_CUSTOMER_ID_IS_NULL = "CustomerId cannot be null!";
     private static final String ERR_CUSTOMER_NOT_FOUND = "Customer not found with value: %s";
@@ -42,25 +41,25 @@ class CustomerManagementService implements
     private final CustomerRepository customers;
 
     @Autowired
-    CustomerManagementService(final CustomerRepository customers) {
+    CustomerManagementCommandService(final CustomerRepository customers) {
         this.customers = customers;
     }
 
     @Override
-    public Customer changeBy(final ChangePersonalDetails cmd) {
+    public Customer changePersonalDetailsBy(final ChangePersonalDetails cmd) {
         if (cmd == null) throw new IllegalArgumentException("ChangeCustomerDetails command cannot be null!");
 
         final Customer foundCustomer = customers.findBy(cmd.customerId())
-            .orElseThrow(
-                failBecauseCustomerWasNotFoundBy(cmd.customerId())
-            );
+                .orElseThrow(
+                    failBecauseCustomerWasNotFoundBy(cmd.customerId())
+                );
 
-        final Customer modifiedCustomer = foundCustomer.changePersonalDetailsBy(cmd);
-        customers.save(modifiedCustomer);
+        final Customer withModifiedPersonalDetails = foundCustomer.changePersonalDetailsBy(cmd);
+        customers.save(withModifiedPersonalDetails);
 
-        LOGGER.info("Personal details for customer id: {} are updated successfully!", modifiedCustomer.customerId());
+        LOGGER.info("Personal details for customer id: {} are updated successfully!", withModifiedPersonalDetails.customerId());
 
-        return modifiedCustomer;
+        return withModifiedPersonalDetails;
     }
 
     @Override
@@ -68,9 +67,9 @@ class CustomerManagementService implements
         if (id == null) throw new IllegalArgumentException(ERR_CUSTOMER_ID_IS_NULL);
 
         customers.findBy(id)
-            .orElseThrow(
-                failBecauseCustomerWasNotFoundBy(id)
-            );
+                .orElseThrow(
+                    failBecauseCustomerWasNotFoundBy(id)
+                );
 
         LOGGER.info("Attempting to delete customer with id: {}", id.asText());
 
@@ -78,41 +77,23 @@ class CustomerManagementService implements
     }
 
     @Override
-    public List<Customer> displayAllBy(final FilterCriteria criteria) {
-        if (criteria == null) throw new IllegalArgumentException("FilterCriteria object cannot be null!");
-
-        LOGGER.info("Retrieving customers...");
-
-        return customers.findAllBy(criteria);
-    }
-
-    @Override
-    public Optional<Customer> displayBy(final CustomerId customerId) {
-        if (customerId == null) throw new IllegalArgumentException(ERR_CUSTOMER_ID_IS_NULL);
-
-        LOGGER.info("Retrieving customer by id: {}", customerId);
-
-        return customers.findBy(customerId);
-    }
-
-    @Override
     public Customer enroll(final EnrollCustomer command) {
         if (command == null) throw new IllegalArgumentException("EnrollCustomer command cannot be null!");
 
         customers.findByEmailAddress(command.emailAddress())
-            .ifPresent(customer -> failBecauseCustomerAlreadyExistBy(customer.emailAddress()));
+                .ifPresent(customer -> failBecauseCustomerAlreadyExistBy(customer.emailAddress()));
 
-        final Customer registeredCustomer = Customer.registerBy(command);
-        customers.save(registeredCustomer);
+        final Customer newlyRegistered = Customer.registerBy(command);
+        customers.save(newlyRegistered);
 
-        LOGGER.info("Customer with id: {} is successfully registered!", registeredCustomer.customerId());
+        LOGGER.info("Customer with id: {} is successfully registered!", newlyRegistered.customerId());
 
-        return registeredCustomer;
+        return newlyRegistered;
     }
 
     private void failBecauseCustomerAlreadyExistBy(final EmailAddress email) {
         throw new CustomerAlreadyExistWithEmailAddress(
-            String.format("Customer already exist with the given e-mail address: %s", email.value())
+                String.format("Customer already exist with the given e-mail address: %s", email.value())
         );
     }
 

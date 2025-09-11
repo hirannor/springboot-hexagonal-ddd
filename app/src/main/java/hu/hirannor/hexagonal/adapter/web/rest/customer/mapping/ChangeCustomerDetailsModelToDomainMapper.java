@@ -7,11 +7,11 @@ import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
 import java.util.function.Function;
 
 /**
- * Maps a {@link ChangeCustomerDetailsModel} model type to {@link ChangePersonalDetails} domain type.
+ * Maps a {@link ChangePersonalDetailsModel} model type to {@link ChangePersonalDetails} domain type.
  *
  * @author Mate Karolyi
  */
-class ChangeCustomerDetailsModelToDomainMapper implements Function<ChangeCustomerDetailsModel, ChangePersonalDetails> {
+class ChangeCustomerDetailsModelToDomainMapper implements Function<ChangePersonalDetailsModel, ChangePersonalDetails> {
 
     private final String customerId;
 
@@ -36,7 +36,7 @@ class ChangeCustomerDetailsModelToDomainMapper implements Function<ChangeCustome
 
 
     @Override
-    public ChangePersonalDetails apply(final ChangeCustomerDetailsModel model) {
+    public ChangePersonalDetails apply(final ChangePersonalDetailsModel model) {
         if (model == null) return null;
 
         return new ChangePersonalDetails.Builder()

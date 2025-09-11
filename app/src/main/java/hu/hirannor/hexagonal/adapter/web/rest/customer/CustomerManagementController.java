@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -70,16 +72,15 @@ class CustomerManagementController implements CustomersApi {
     }
 
     @Override
-    public ResponseEntity<CustomerModel> changeDetails(final String customerId,
-                                                       final ChangeCustomerDetailsModel model) {
+    public ResponseEntity<CustomerModel> changePersonalDetails(final String customerId,
+                                                       final ChangePersonalDetailsModel model) {
         final ChangePersonalDetails cmd = CustomerMappingFactory
-                .createChangeCustomerDetailsModelToDomainMapper(customerId)
+                .createChangePersonalDetailsModelToDomainMapper(customerId)
                 .apply(model);
 
-        final Customer personalDetailsChanged = personalDetails.changeBy(cmd);
-        final CustomerModel response = mapCustomerToModel.apply(personalDetailsChanged);
+        final Customer personalDetailsChanged = personalDetails.changePersonalDetailsBy(cmd);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(mapCustomerToModel.apply(personalDetailsChanged));
     }
 
     @Override
@@ -102,12 +103,12 @@ class CustomerManagementController implements CustomersApi {
                 .email(emailAddress.map(EmailAddress::from))
                 .assemble();
 
-        final List<CustomerModel> response = customers.displayAllBy(criteria)
+        final List<CustomerModel> customers = this.customers.displayAllBy(criteria)
                 .stream()
                 .map(mapCustomerToModel)
                 .toList();
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(customers);
     }
 
     @Override
@@ -123,7 +124,17 @@ class CustomerManagementController implements CustomersApi {
         final EnrollCustomer cmd = mapRegisterCustomerToModel.apply(model);
         final Customer registeredCustomer = registration.enroll(cmd);
 
-        return new ResponseEntity<>(mapCustomerToModel.apply(registeredCustomer), HttpStatus.CREATED);
+        return ResponseEntity
+                .created(buildCustomerLocation(registeredCustomer.customerId()))
+                .body(mapCustomerToModel.apply(registeredCustomer));
+    }
+
+    private URI buildCustomerLocation(final CustomerId id) {
+        return ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(id.asText())
+                .toUri();
     }
 
 }

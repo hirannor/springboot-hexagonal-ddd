@@ -1,14 +1,18 @@
-package hu.hirannor.hexagonal.functional;
+package hu.hirannor.hexagonal.integration;
 
 import hu.hirannor.hexagonal.adapter.web.rest.customer.api.CustomersApi;
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -21,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 @DisplayName("CustomerEnrolling")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class CustomerRegistrationFunctionalTest {
+class CustomerRegistrationIntegrationTest {
 
     @Container
     private final PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer<>("postgres:14")
@@ -32,8 +36,14 @@ class CustomerRegistrationFunctionalTest {
     private final CustomersApi api;
 
     @Autowired
-    CustomerRegistrationFunctionalTest(final CustomersApi api) {
+    CustomerRegistrationIntegrationTest(final CustomersApi api) {
         this.api = api;
+    }
+
+    @BeforeEach
+    void setUp() {
+        final MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
     }
 
     @Test

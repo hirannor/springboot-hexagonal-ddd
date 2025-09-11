@@ -16,5 +16,5 @@ public interface CustomerModification {
      * @param cmd {@link ChangePersonalDetails} including the modifications
      * @return {@link Customer} customer with modified details
      */
-    Customer changeBy(ChangePersonalDetails cmd);
+    Customer changePersonalDetailsBy(ChangePersonalDetails cmd);
 }

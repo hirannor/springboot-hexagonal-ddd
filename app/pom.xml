@@ -148,7 +148,7 @@
                         <include>**/*ComponentTest.java</include>
                         <include>**/*ArchTest.java</include>
                     </includes>
-                    <excludes>**/*IntegrationTest.java, **/*FunctionalTest.java</excludes>
+                    <excludes>**/*IntegrationTest.java</excludes>
                     <statelessTestsetReporter
                             implementation="org.apache.maven.plugin.surefire.extensions.junit5.JUnit5Xml30StatelessReporter">
                         <disable>false</disable>

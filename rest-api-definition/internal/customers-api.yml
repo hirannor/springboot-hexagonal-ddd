@@ -94,17 +94,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessage'
+                $ref: '#/components/schemas/ProblemDetails'
     put:
-      summary: Change customer details
-      description: Change customer details
-      operationId: changeDetails
+      summary: Change customer personal details
+      description: Change customer personal details
+      operationId: changePersonalDetails
       requestBody:
         description: Changed customer details
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ChangeCustomerDetails'
+              $ref: '#/components/schemas/ChangePersonalDetails'
       parameters:
         - name: customerId
           in: path
@@ -123,7 +123,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorMessage'
+                $ref: '#/components/schemas/ProblemDetails'
 components:
   schemas:
     RegisterCustomer:
@@ -153,7 +153,7 @@ components:
         emailAddress:
           type: string
           example: test@test.com
-    ChangeCustomerDetails:
+    ChangePersonalDetails:
       type: object
       properties:
         firstName:
@@ -210,15 +210,19 @@ components:
         streetAddress:
           type: string
           example: Wolf street
-    ErrorMessage:
+    ProblemDetails:
       type: object
       properties:
         timestamp:
           type: string
           format: date-time
-        status:
+        title:
           type: string
-        message:
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
           type: string
     Country:
       type: string

@@ -87,7 +87,6 @@ Testcontainers library!
 |  Component test   |      test       |
 |   ArchUnit test   |      test       |
 | Integration test  |     verify      |
-|  Functional test  |     verify      |
 
 
 ## Docker Setup

@@ -56,12 +56,12 @@ public interface CustomerMappingFactory {
 
     /**
      * Create an instance of {@link ChangeCustomerDetailsModelToDomainMapper},
-     * which maps a {@link ChangeCustomerDetailsModel} model type
+     * which maps a {@link ChangePersonalDetailsModel} model type
      * to a {@link ChangePersonalDetails} domain type.
      *
      * @return an instance of {@link ChangeCustomerDetailsModelToDomainMapper}
      */
-    static Function<ChangeCustomerDetailsModel, ChangePersonalDetails> createChangeCustomerDetailsModelToDomainMapper(
+    static Function<ChangePersonalDetailsModel, ChangePersonalDetails> createChangePersonalDetailsModelToDomainMapper(
             final String customerId) {
         return new ChangeCustomerDetailsModelToDomainMapper(customerId);
     }
