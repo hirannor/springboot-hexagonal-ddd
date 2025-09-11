@@ -1,6 +1,7 @@
-package hu.hirannor.hexagonal.infrastructure.messaging;
+package hu.hirannor.hexagonal.infrastructure.event;
 
 import hu.hirannor.hexagonal.infrastructure.aggregate.Evented;
+import hu.hirannor.hexagonal.infrastructure.messaging.MessagePublisher;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;

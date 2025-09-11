@@ -16,6 +16,11 @@ This project enforces architectural rules using **[ArchUnit](https://www.archuni
 - **Application Layer** orchestrates use cases and mediates between domain objects and external adapters.
 - **Adapters / Infrastructure Layer** implements technical details such as messaging, databases, and external APIs.
 
+## Architecture
+
+![Architecture](img/architecture.svg)
+
+
 ### ArchUnit Tests
 
 All core architectural rules are enforced via ArchUnit tests, including:
@@ -102,7 +107,6 @@ docker-compose up -d
 You can access the API documentation locally at the following URL:
 
 [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
-
 
 ![Preview](img/openapi-swagger-ui.PNG)
 
