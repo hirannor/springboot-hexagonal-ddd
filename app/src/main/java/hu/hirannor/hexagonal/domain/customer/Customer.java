@@ -97,7 +97,7 @@ public class Customer extends AggregateRoot {
      * @param cmd {@link ChangePersonalDetails}
      * @return a modified instance of {@link Customer}
      */
-    public Customer changeDetailsBy(final ChangePersonalDetails cmd) {
+    public Customer changePersonalDetailsBy(final ChangePersonalDetails cmd) {
         this.fullName = cmd.fullName();
         this.birthDate = cmd.birthDate();
         this.address = cmd.address();

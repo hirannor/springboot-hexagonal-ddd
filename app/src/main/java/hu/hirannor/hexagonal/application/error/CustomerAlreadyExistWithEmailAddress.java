@@ -5,14 +5,14 @@ package hu.hirannor.hexagonal.application.error;
  *
  * @author Mate Karolyi
  */
-public class CustomerAlreadyExist extends RuntimeException {
+public class CustomerAlreadyExistWithEmailAddress extends RuntimeException {
 
     /**
      * Default constructor
      *
      * @param message {@link String} error message
      */
-    public CustomerAlreadyExist(final String message) {
+    public CustomerAlreadyExistWithEmailAddress(final String message) {
         super(message);
     }
 

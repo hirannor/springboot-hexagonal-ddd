@@ -1,6 +1,6 @@
 package hu.hirannor.hexagonal.application.service;
 
-import hu.hirannor.hexagonal.application.error.CustomerAlreadyExist;
+import hu.hirannor.hexagonal.application.error.CustomerAlreadyExistWithEmailAddress;
 import hu.hirannor.hexagonal.application.error.CustomerNotFound;
 import hu.hirannor.hexagonal.application.usecase.*;
 import hu.hirannor.hexagonal.domain.customer.*;
@@ -55,12 +55,12 @@ class CustomerManagementService implements
                 failBecauseCustomerWasNotFoundBy(cmd.customerId())
             );
 
-        final Customer updatedCustomer = foundCustomer.changeDetailsBy(cmd);
-        customers.changePersonalDetails(updatedCustomer);
+        final Customer modifiedCustomer = foundCustomer.changePersonalDetailsBy(cmd);
+        customers.save(modifiedCustomer);
 
-        LOGGER.info("Personal details for customer id: {} are updated successfully!", updatedCustomer.customerId());
+        LOGGER.info("Personal details for customer id: {} are updated successfully!", modifiedCustomer.customerId());
 
-        return updatedCustomer;
+        return modifiedCustomer;
     }
 
     @Override
@@ -111,7 +111,7 @@ class CustomerManagementService implements
     }
 
     private void failBecauseCustomerAlreadyExistBy(final EmailAddress email) {
-        throw new CustomerAlreadyExist(
+        throw new CustomerAlreadyExistWithEmailAddress(
             String.format("Customer already exist with the given e-mail address: %s", email.value())
         );
     }

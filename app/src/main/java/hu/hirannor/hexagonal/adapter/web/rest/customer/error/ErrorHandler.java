@@ -1,7 +1,7 @@
 package hu.hirannor.hexagonal.adapter.web.rest.customer.error;
 
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.ErrorMessageModel;
-import hu.hirannor.hexagonal.application.error.CustomerAlreadyExist;
+import hu.hirannor.hexagonal.application.error.CustomerAlreadyExistWithEmailAddress;
 import hu.hirannor.hexagonal.application.error.CustomerNotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +31,8 @@ class ErrorHandler {
         return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(CustomerAlreadyExist.class)
-    ResponseEntity<?> customerAlreadyExist(final CustomerAlreadyExist ex) {
+    @ExceptionHandler(CustomerAlreadyExistWithEmailAddress.class)
+    ResponseEntity<?> customerAlreadyExist(final CustomerAlreadyExistWithEmailAddress ex) {
         final ErrorMessageModel message = new ErrorMessageModel()
                 .timestamp(Instant.now())
                 .status(HttpStatus.BAD_REQUEST.toString())

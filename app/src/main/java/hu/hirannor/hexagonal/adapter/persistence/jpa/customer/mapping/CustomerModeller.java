@@ -38,6 +38,9 @@ public class CustomerModeller implements Modeller<CustomerModel> {
 
     @Override
     public CustomerModel to(final CustomerModel model) {
+        if (model == null) throw new IllegalArgumentException("Model cannot be null");
+
+        model.setCustomerId(domain.customerId().asText());
         model.setFirstName(domain.fullName().firstName());
         model.setLastName(domain.fullName().lastName());
         model.setGender(mapGenderToModel.apply(domain.gender()));

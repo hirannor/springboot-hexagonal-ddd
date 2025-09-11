@@ -69,22 +69,6 @@ class CustomerJpaRepository implements CustomerRepository {
     }
 
     @Override
-    @EventPublisher
-    public Customer changePersonalDetails(final Customer domain) {
-        if (domain == null) throw new IllegalArgumentException(ERR_CUSTOMER_IS_NULL);
-
-        LOGGER.debug("Changing personal details for customer id: {}", domain.customerId());
-
-        final CustomerModel foundCustomer = customers.findByCustomerId(domain.customerId().asText())
-                .orElseThrow(customerNotFound(domain));
-
-        final CustomerModel modifiedCustomer = CustomerModeller.applyChangesFrom(domain).to(foundCustomer);
-        customers.save(modifiedCustomer);
-
-        return domain;
-    }
-
-    @Override
     public void deleteBy(final CustomerId id) {
         if (id == null) throw new IllegalArgumentException(ERR_CUSTOMER_ID_IS_NULL);
 
@@ -136,14 +120,13 @@ class CustomerJpaRepository implements CustomerRepository {
 
         LOGGER.debug("Saving customer....");
 
-        final CustomerModel model = mapDomainToModel.apply(domain);
-        customers.save(model);
+        final CustomerModel toPersist = customers.findByCustomerId(domain.customerId().asText())
+            .orElseGet(CustomerModel::new);
 
-        LOGGER.debug("Customer with id: {} is successfully saved!", model.getCustomerId());
-    }
+        CustomerModeller.applyChangesFrom(domain).to(toPersist);
+        customers.save(toPersist);
 
-    private Supplier<CustomerNotFound> customerNotFound(final Customer domain) {
-        return () -> new CustomerNotFound("Customer not found with id: " + domain);
+        LOGGER.debug("Customer with id: {} is successfully saved!", toPersist.getCustomerId());
     }
 
 }
