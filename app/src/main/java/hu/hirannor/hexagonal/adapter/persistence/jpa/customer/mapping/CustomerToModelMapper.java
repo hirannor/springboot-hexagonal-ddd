@@ -17,8 +17,8 @@ class CustomerToModelMapper implements Function<Customer, CustomerModel> {
 
     CustomerToModelMapper() {
         this(
-                new GenderToModelMapper(),
-                new CountryToModelMapper()
+            new GenderToModelMapper(),
+            new CountryToModelMapper()
         );
     }
 

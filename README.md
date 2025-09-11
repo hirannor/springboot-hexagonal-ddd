@@ -11,7 +11,7 @@ An example of a Spring-Boot application, which based on the port and adapters/he
 ## Prerequisites for development
 
 - [Git](https://git-scm.com/downloads)
-- [JDK 17](https://adoptium.net/)
+- [JDK 21](https://adoptium.net/)
 - [Maven](https://maven.apache.org/download.cgi)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 
@@ -66,6 +66,30 @@ Testcontainers library!
 | Integration test  |     verify      |
 |  Functional test  |     verify      |
 
+
+
+## Basic Authentication
+
+By default, the application uses **HTTP Basic Authentication**. Use the following credentials to access the API:
+
+- **Username:** `user`
+- **Password:** `password`
+
+All API requests must include these credentials.
+
+## Docker Setup
+
+A **Docker Compose** file is included in the project folder to run a PostgreSQL database.
+
+- **File:** `docker-compose.yml`
+- **Database credentials and name** are stored in the `.env` file.
+
+Start the database with:
+
+```bash
+docker-compose up -d
+```
+
 ## API Documentation
 You can access the API documentation locally at the following URL:
 
@@ -73,8 +97,4 @@ You can access the API documentation locally at the following URL:
 
 
 ![Preview](img/openapi-swagger-ui.PNG)
-
-
-
-
 

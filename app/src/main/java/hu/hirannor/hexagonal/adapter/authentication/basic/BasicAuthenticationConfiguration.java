@@ -31,11 +31,11 @@ public class BasicAuthenticationConfiguration {
     SecurityFilterChain createSecurityFilterChain(final HttpSecurity http)
             throws Exception {
         http.authorizeHttpRequests(authz ->
-                        authz
-                                .requestMatchers("/error", "/h2-console/**")
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated()
+                    authz
+                        .requestMatchers("/error", "/h2-console/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
                 )
                 .httpBasic(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable);

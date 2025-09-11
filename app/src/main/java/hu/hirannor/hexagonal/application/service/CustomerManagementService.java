@@ -2,7 +2,6 @@ package hu.hirannor.hexagonal.application.service;
 
 import hu.hirannor.hexagonal.application.error.CustomerAlreadyExist;
 import hu.hirannor.hexagonal.application.error.CustomerNotFound;
-import hu.hirannor.hexagonal.application.port.messaging.MessagePublisher;
 import hu.hirannor.hexagonal.application.usecase.*;
 import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * A service implementation of customer related use cases.
@@ -29,7 +29,7 @@ import java.util.Optional;
 )
 class CustomerManagementService implements
         CustomerRegistration,
-        CustomerDisplay,
+        CustomerDisplaying,
         CustomerModification,
         CustomerDeletion {
 
@@ -40,13 +40,10 @@ class CustomerManagementService implements
     private static final String ERR_CUSTOMER_NOT_FOUND = "Customer not found with value: %s";
 
     private final CustomerRepository customers;
-    private final MessagePublisher messages;
 
     @Autowired
-    CustomerManagementService(final CustomerRepository customers,
-                              final MessagePublisher messages) {
+    CustomerManagementService(final CustomerRepository customers) {
         this.customers = customers;
-        this.messages = messages;
     }
 
     @Override
@@ -54,15 +51,12 @@ class CustomerManagementService implements
         if (cmd == null) throw new IllegalArgumentException("ChangeCustomerDetails command cannot be null!");
 
         final Customer foundCustomer = customers.findBy(cmd.customerId())
-                .orElseThrow(
-                        () -> new CustomerNotFound(String.format(ERR_CUSTOMER_NOT_FOUND, cmd.customerId().asText()))
-                );
+            .orElseThrow(
+                becauseCustomerWasNotFoundBy(cmd.customerId())
+            );
 
         final Customer updatedCustomer = foundCustomer.changeDetailsBy(cmd);
         customers.changePersonalDetails(updatedCustomer);
-
-        messages.publish(updatedCustomer.listEvents());
-        updatedCustomer.clearEvents();
 
         LOGGER.info("Personal details for customer id: {} are updated successfully!", updatedCustomer.customerId());
 
@@ -70,17 +64,17 @@ class CustomerManagementService implements
     }
 
     @Override
-    public void deleteBy(final CustomerId customerId) {
-        if (customerId == null) throw new IllegalArgumentException(ERR_CUSTOMER_ID_IS_NULL);
+    public void deleteBy(final CustomerId id) {
+        if (id == null) throw new IllegalArgumentException(ERR_CUSTOMER_ID_IS_NULL);
 
-        customers.findBy(customerId)
-                .orElseThrow(
-                        () -> new CustomerNotFound(String.format(ERR_CUSTOMER_NOT_FOUND, customerId.asText()))
-                );
+        customers.findBy(id)
+            .orElseThrow(
+                becauseCustomerWasNotFoundBy(id)
+            );
 
-        LOGGER.info("Attempting to delete customer with id: {}", customerId.asText());
+        LOGGER.info("Attempting to delete customer with id: {}", id.asText());
 
-        customers.deleteBy(customerId);
+        customers.deleteBy(id);
     }
 
     @Override
@@ -107,21 +101,25 @@ class CustomerManagementService implements
 
         final Optional<Customer> existingCustomer = customers.findByEmailAddress(command.emailAddress());
 
-        if (existingCustomer.isPresent()) {
-            throw new CustomerAlreadyExist(
-                    String.format("Customer already exist with the given e-mail address: %s", command.emailAddress().value())
-            );
-        }
+        if (existingCustomer.isPresent())
+            errorBecauseCustomerAlreadyExistBy(command.emailAddress());
 
         final Customer newCustomer = Customer.registerBy(command);
         customers.save(newCustomer);
 
-        messages.publish(newCustomer.listEvents());
-        newCustomer.clearEvents();
-
         LOGGER.info("Customer with id: {} is successfully registered!", newCustomer.customerId());
 
         return newCustomer;
+    }
+
+    private void errorBecauseCustomerAlreadyExistBy(final EmailAddress email) {
+        throw new CustomerAlreadyExist(
+            String.format("Customer already exist with the given e-mail address: %s", email.value())
+        );
+    }
+
+    private Supplier<CustomerNotFound> becauseCustomerWasNotFoundBy(final CustomerId id) {
+        return () -> new CustomerNotFound(String.format(ERR_CUSTOMER_NOT_FOUND, id.asText()));
     }
 
 }

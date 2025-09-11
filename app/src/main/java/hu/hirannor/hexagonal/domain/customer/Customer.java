@@ -15,7 +15,7 @@ import java.util.*;
  *
  * @author Mate Karolyi
  */
-public class Customer implements AggregateRoot {
+public class Customer extends AggregateRoot {
 
     private final List<DomainEvent> events;
     private final CustomerId customerId;
@@ -109,7 +109,6 @@ public class Customer implements AggregateRoot {
         return this;
     }
 
-
     public CustomerId customerId() {
         return customerId;
     }
@@ -140,7 +139,7 @@ public class Customer implements AggregateRoot {
     }
 
     @Override
-    public List<DomainEvent> listEvents() {
+    public List<DomainEvent> events() {
         return List.copyOf(events);
     }
 }

@@ -1,6 +1,4 @@
-package hu.hirannor.hexagonal.application.port.messaging;
-
-import hu.hirannor.hexagonal.infrastructure.messaging.Message;
+package hu.hirannor.hexagonal.infrastructure.messaging;
 
 import java.util.List;
 

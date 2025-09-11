@@ -8,6 +8,7 @@ import hu.hirannor.hexagonal.application.error.CustomerNotFound;
 import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
+import hu.hirannor.hexagonal.infrastructure.event.EventPublisher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,7 @@ class CustomerJpaRepository implements CustomerRepository {
     }
 
     @Override
+    @EventPublisher
     public Customer changePersonalDetails(final Customer domain) {
         if (domain == null) throw new IllegalArgumentException(ERR_CUSTOMER_IS_NULL);
 
@@ -128,6 +130,7 @@ class CustomerJpaRepository implements CustomerRepository {
     }
 
     @Override
+    @EventPublisher
     public void save(final Customer domain) {
         if (domain == null) throw new IllegalArgumentException(ERR_CUSTOMER_IS_NULL);
 

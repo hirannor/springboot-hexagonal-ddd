@@ -2,23 +2,31 @@ package hu.hirannor.hexagonal.infrastructure.aggregate;
 
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
- * Base interface for aggregate roots.
+ * Abstraction of aggregate root
  *
  * @author Mate Karolyi
  */
-public interface AggregateRoot {
-    /**
-     * Method for clearing domain events.
-     */
-    void clearEvents();
+public abstract class AggregateRoot implements Evented {
 
-    /**
-     * Method for listing domain events.
-     *
-     * @return a list of domain events
-     */
-    List<DomainEvent> listEvents();
+    private final List<DomainEvent> events;
+
+    public AggregateRoot() {
+        events = new ArrayList<>();
+    }
+
+    @Override
+    public List<DomainEvent> events() {
+        return Collections.unmodifiableList(events);
+    }
+
+    @Override
+    public void clearEvents() {
+        events.clear();
+    }
+
 }

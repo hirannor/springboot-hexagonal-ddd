@@ -18,8 +18,8 @@ class RegisterCustomerModelToDomainMapper implements Function<RegisterCustomerMo
 
     RegisterCustomerModelToDomainMapper() {
         this(
-                new AddressModelToDomainMapper(),
-                new GenderModelToDomainMapper()
+            new AddressModelToDomainMapper(),
+            new GenderModelToDomainMapper()
         );
     }
 
@@ -35,8 +35,8 @@ class RegisterCustomerModelToDomainMapper implements Function<RegisterCustomerMo
 
         return EnrollCustomer.issue(
                 FullName.from(
-                        model.getFirstName(),
-                        model.getLastName()
+                    model.getFirstName(),
+                    model.getLastName()
                 ),
                 model.getBirthDate(),
                 mapGenderModelToDomain.apply(model.getGender()),

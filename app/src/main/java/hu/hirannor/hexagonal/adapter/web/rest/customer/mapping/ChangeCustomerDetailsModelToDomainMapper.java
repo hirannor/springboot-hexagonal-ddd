@@ -20,9 +20,9 @@ class ChangeCustomerDetailsModelToDomainMapper implements Function<ChangeCustome
 
     ChangeCustomerDetailsModelToDomainMapper(final String customerId) {
         this(
-                customerId,
-                CustomerMappingFactory.createGenderModelToDomainMapper(),
-                CustomerMappingFactory.createAddressModelToAddressMapper()
+            customerId,
+            CustomerMappingFactory.createGenderModelToDomainMapper(),
+            CustomerMappingFactory.createAddressModelToAddressMapper()
         );
     }
 

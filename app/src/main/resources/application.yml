@@ -5,22 +5,19 @@ logging:
     path: logs
 
 spring:
-  h2:
-    console:
-      enabled: true
   datasource:
-    driver-class-name: org.h2.Driver
-    username: sa
-    password: password
-    url: jdbc:h2:mem:hexagondb
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5342/hexagondb
+    username: root
+    password: hexagonal123
     hikari:
       auto-commit: false
   jpa:
     show-sql: false
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-    generate-ddl: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        generate-ddl: false
     hibernate:
       ddl-auto: validate
   application:

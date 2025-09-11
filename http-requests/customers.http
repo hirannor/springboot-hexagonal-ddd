@@ -1,0 +1,62 @@
+# -------------------------------
+# Customers API - HTTP Requests
+# -------------------------------
+
+# Inline Base64 credentials for Basic Auth
+@auth_base64 = dXNlcjpwYXNzd29yZA==
+
+### Register a customer (POST /customers)
+POST http://localhost:8080/customers
+Authorization: Basic {{auth_base64}}
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "birthDate": "1990-01-01",
+  "address": {
+    "country": "HUNGARY",
+    "city": "Budapest",
+    "postalCode": 1007,
+    "streetAddress": "Wolf street 12"
+  },
+  "gender": "MALE",
+  "emailAddress": "john.doe@test.com"
+}
+
+> {% client.global.set("customerId", response.body.customerId) %}
+
+### Get all customers (GET /customers)
+GET http://localhost:8080/customers
+Authorization: Basic {{auth_base64}}
+
+### Get all customers with query parameters
+GET http://localhost:8080/customers?birthDateFrom=1980-01-01&birthDateTo=2000-12-31&gender=MALE&emailAddress=john.doe@test.com
+Authorization: Basic {{auth_base64}}
+
+### Get a customer by ID (GET /customers/{customerId})
+GET http://localhost:8080/customers/{{customerId}}
+Authorization: Basic {{auth_base64}}
+
+### Update a customer by ID (PUT /customers/{customerId})
+PUT http://localhost:8080/customers/{{customerId}}
+Authorization: Basic {{auth_base64}}
+Content-Type: application/json
+
+{
+  "firstName": "Johnny",
+  "lastName": "Doe",
+  "birthDate": "1990-01-01",
+  "address": {
+    "country": "HUNGARY",
+    "city": "Budapest",
+    "postalCode": 1007,
+    "streetAddress": "Wolf street 15"
+  },
+  "gender": "MALE",
+  "emailAddress": "johnny.doe@test.com"
+}
+
+### Delete a customer by ID (DELETE /customers/{customerId})
+DELETE http://localhost:8080/customers/{{customerId}}
+Authorization: Basic {{auth_base64}}

@@ -17,8 +17,8 @@ class CustomerModelToDomainMapper implements Function<CustomerModel, Customer> {
 
     CustomerModelToDomainMapper() {
         this(
-                new CountryModelToDomainMapper(),
-                new GenderModelToDomainMapper()
+            new CountryModelToDomainMapper(),
+            new GenderModelToDomainMapper()
         );
     }
 
@@ -35,8 +35,8 @@ class CustomerModelToDomainMapper implements Function<CustomerModel, Customer> {
         return Customer.from(
                 CustomerId.from(model.getCustomerId()),
                 FullName.from(
-                        model.getFirstName(),
-                        model.getLastName()
+                    model.getFirstName(),
+                    model.getLastName()
                 ),
                 model.getBirthDate(),
                 mapGenderModelToDomain.apply(model.getGender()),

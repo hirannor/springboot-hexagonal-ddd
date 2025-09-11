@@ -32,13 +32,13 @@ class CustomerManagementController implements CustomersApi {
     private final Function<RegisterCustomerModel, EnrollCustomer> mapRegisterCustomerToModel;
     private final Function<GenderModel, Gender> mapGenderModelToDomain;
 
-    private final CustomerDisplay customers;
+    private final CustomerDisplaying customers;
     private final CustomerRegistration registration;
     private final CustomerModification personalDetails;
     private final CustomerDeletion customer;
 
     @Autowired
-    CustomerManagementController(final CustomerDisplay customers,
+    CustomerManagementController(final CustomerDisplaying customers,
                                  final CustomerRegistration registration,
                                  final CustomerModification personalDetails,
                                  final CustomerDeletion customer) {
@@ -53,7 +53,7 @@ class CustomerManagementController implements CustomersApi {
         );
     }
 
-    CustomerManagementController(final CustomerDisplay customers,
+    CustomerManagementController(final CustomerDisplaying customers,
                                  final CustomerRegistration registration,
                                  final CustomerModification personalDetails,
                                  final CustomerDeletion customer,

@@ -1,6 +1,6 @@
 package hu.hirannor.hexagonal.adapter.messaging.eventbus.publisher;
 
-import hu.hirannor.hexagonal.application.port.messaging.MessagePublisher;
+import hu.hirannor.hexagonal.infrastructure.messaging.MessagePublisher;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
 import hu.hirannor.hexagonal.infrastructure.messaging.Message;
 import org.apache.logging.log4j.LogManager;

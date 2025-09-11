@@ -12,7 +12,7 @@ import java.util.Optional;
  *
  * @author Mate Karolyi
  */
-public interface CustomerDisplay {
+public interface CustomerDisplaying {
 
     /**
      * Displays all available customers.
