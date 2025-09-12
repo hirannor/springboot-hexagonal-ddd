@@ -36,6 +36,8 @@ class RegistrationController implements RegisterApi {
     public ResponseEntity<Void> register(final RegisterModel registerModel) {
         final Register command = mapRegisterModelToCommand.apply(registerModel);
         user.register(command);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .build();
     }
 }

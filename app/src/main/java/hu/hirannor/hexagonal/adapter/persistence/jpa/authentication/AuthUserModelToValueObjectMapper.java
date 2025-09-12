@@ -8,6 +8,8 @@ import java.util.function.Function;
 
 class AuthUserModelToValueObjectMapper implements Function<AuthUserModel, AuthUser> {
 
+    AuthUserModelToValueObjectMapper() {}
+
     @Override
     public AuthUser apply(final AuthUserModel model) {
         if (model == null) return null;

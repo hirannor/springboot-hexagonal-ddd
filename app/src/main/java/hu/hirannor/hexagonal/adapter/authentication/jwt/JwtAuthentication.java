@@ -3,10 +3,15 @@ package hu.hirannor.hexagonal.adapter.authentication.jwt;
 import hu.hirannor.hexagonal.application.port.Authenticator;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.authentication.*;
+import hu.hirannor.hexagonal.domain.error.CustomerNotFound;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +27,10 @@ import java.util.function.Supplier;
  */
 @Component
 class JwtAuthentication implements Authenticator {
+
+    private static final Logger LOGGER = LogManager.getLogger(
+        JwtAuthentication.class
+    );
 
     private final AuthenticationRepository authentications;
     private final Key jwtKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
@@ -54,14 +63,19 @@ class JwtAuthentication implements Authenticator {
 
     @Override
     public AuthUser validateToken(final String token) {
-        final String email = Jwts.parserBuilder()
-                .setSigningKey(jwtKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+        if (token == null) throw new IllegalArgumentException("token is null");
 
-        return AuthUser.of(EmailAddress.from(email), null);
+        try {
+            final String email = Jwts.parserBuilder()
+                    .setSigningKey(jwtKey)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
+            return AuthUser.of(EmailAddress.from(email), null);
+        } catch(final SignatureException ex) {
+            throw new AuthenticationServiceException("Invalid JWT signature", ex);
+        }
     }
 
     @Override
@@ -76,8 +90,8 @@ class JwtAuthentication implements Authenticator {
         authentications.save(hashedUser);
     }
 
-    private Supplier<IllegalStateException> failBecauseEmailAddressWasNotFound(final EmailAddress emailAddress) {
-        return () -> new IllegalStateException("email address: " + emailAddress + " not found");
+    private Supplier<CustomerNotFound> failBecauseEmailAddressWasNotFound(final EmailAddress emailAddress) {
+        return () -> new CustomerNotFound("Customer was not found by: " + emailAddress.value());
     }
 
     private String generateToken(final EmailAddress email) {

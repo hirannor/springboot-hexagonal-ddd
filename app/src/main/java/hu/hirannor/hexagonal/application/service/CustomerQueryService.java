@@ -29,7 +29,6 @@ class CustomerQueryService implements CustomerDisplaying {
         CustomerQueryService.class
     );
     private static final String ERR_CUSTOMER_ID_IS_NULL = "CustomerId cannot be null!";
-    private static final String ERR_EMAIL_ADDRESS_ID_IS_NULL = "EmailAddress cannot be null!";
 
     private final CustomerRepository customers;
 

@@ -8,22 +8,26 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.http.Header;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
 @Component
 public class AuthenticationFilter extends OncePerRequestFilter {
-    private static final String[] EXCLUDED_PATHS = {
+    private static final String[] WHITELISTED_PATHS = {
             "/swagger-ui",
             "/swagger-ui.html",
             "/swagger-ui/index.html",
@@ -49,7 +53,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(final HttpServletRequest request) throws ServletException {
         final String path = request.getRequestURI();
-        return Arrays.stream(EXCLUDED_PATHS)
+        return Arrays.stream(WHITELISTED_PATHS)
                 .anyMatch(path::startsWith);
     }
 
@@ -60,10 +64,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-
         if (authHeader == null || authHeader.isBlank()) {
-            final ProblemDetailsModel headerIsMissing = createUnauthorizedProblemDetailsFrom(request, "Authorization header is missing!");
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,  mapper.writeValueAsString(headerIsMissing));
+            sendError(request, response, "Authorization header is missing");
             return;
         }
 
@@ -79,24 +81,30 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             } else {
-                final ProblemDetailsModel unsupportedAuthMethod = createUnauthorizedProblemDetailsFrom(request, "Unsupported authentication method!");
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, mapper.writeValueAsString(unsupportedAuthMethod));
+                sendError(request, response, "Unsupported authentication type");
                 return;
             }
         } catch (Exception ex) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
-            return;
+            sendError(request, response, ex.getMessage());
         }
 
         filterChain.doFilter(request, response);
     }
 
-    private ProblemDetailsModel createUnauthorizedProblemDetailsFrom(final HttpServletRequest request, final String detail) {
-       return new ProblemDetailsModel()
+    private void sendError(final HttpServletRequest request,
+                           final HttpServletResponse response,
+                           final String detail) throws IOException {
+
+        final ProblemDetailsModel details = new ProblemDetailsModel()
                 .status(HttpStatus.UNAUTHORIZED.value())
                 .instance(request.getRequestURI())
                 .title("Unauthorized")
                 .timestamp(Instant.now())
                 .detail(detail);
+
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.displayName());
+        mapper.writeValue(response.getWriter(), details);
     }
 }

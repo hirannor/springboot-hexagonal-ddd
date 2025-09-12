@@ -1,6 +1,6 @@
 package hu.hirannor.hexagonal.application.service;
 
-import hu.hirannor.hexagonal.application.error.CustomerNotFound;
+import hu.hirannor.hexagonal.domain.error.CustomerNotFound;
 import hu.hirannor.hexagonal.application.usecase.*;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.customer.*;

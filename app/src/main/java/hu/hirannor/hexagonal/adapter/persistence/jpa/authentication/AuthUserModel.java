@@ -20,7 +20,6 @@ public class AuthUserModel {
     )
     private Long id;
 
-
     @Column(name = "EMAIL_ADDRESS")
     private String emailAddress;
 

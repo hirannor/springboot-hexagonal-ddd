@@ -5,6 +5,9 @@ import hu.hirannor.hexagonal.domain.authentication.AuthUser;
 import java.util.function.Function;
 
 class AuthUserToModelMapper implements Function<AuthUser, AuthUserModel> {
+
+    AuthUserToModelMapper() {}
+    
     @Override
     public AuthUserModel apply(final AuthUser valueObject) {
         if (valueObject == null) return null;

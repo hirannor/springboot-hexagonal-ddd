@@ -1,6 +1,5 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.authentication;
 
-import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
 import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;

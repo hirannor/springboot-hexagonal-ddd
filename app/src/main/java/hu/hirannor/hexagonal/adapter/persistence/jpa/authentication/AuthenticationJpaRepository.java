@@ -4,6 +4,8 @@ import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.authentication.AuthUser;
 import hu.hirannor.hexagonal.domain.authentication.AuthenticationRepository;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Isolation;
@@ -20,6 +22,10 @@ import java.util.function.Function;
 )
 @DrivenAdapter
 class AuthenticationJpaRepository implements AuthenticationRepository {
+
+    private static final Logger LOGGER = LogManager.getLogger(
+        AuthenticationJpaRepository.class
+    );
 
     private final Function<AuthUser, AuthUserModel> mapAuthUserToModel;
     private final Function<AuthUserModel, AuthUser> mapAuthUserModelToValueObject;
@@ -41,14 +47,17 @@ class AuthenticationJpaRepository implements AuthenticationRepository {
 
     @Override
     public void save(final AuthUser auth) {
+        if (auth == null) throw new IllegalArgumentException("auth cannot be null");
+
         final AuthUserModel toPersist = mapAuthUserToModel.apply(auth);
 
         authentications.save(toPersist);
-
     }
 
     @Override
     public Optional<AuthUser> findByEmail(final EmailAddress email) {
+        if (email == null) throw new IllegalArgumentException("email cannot be null");
+
         return authentications.findByEmailAddress(email.value())
                 .map(mapAuthUserModelToValueObject);
     }

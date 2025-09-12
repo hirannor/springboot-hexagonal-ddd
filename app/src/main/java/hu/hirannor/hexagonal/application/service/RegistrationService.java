@@ -1,6 +1,6 @@
 package hu.hirannor.hexagonal.application.service;
 
-import hu.hirannor.hexagonal.application.error.CustomerAlreadyExistWithEmailAddress;
+import hu.hirannor.hexagonal.domain.error.CustomerAlreadyExistWithEmailAddress;
 import hu.hirannor.hexagonal.application.port.Authenticator;
 import hu.hirannor.hexagonal.application.usecase.Registrating;
 import hu.hirannor.hexagonal.domain.EmailAddress;
@@ -37,6 +37,8 @@ class RegistrationService implements Registrating {
     @Override
     public void register(final Register command) {
         if (command == null) throw new IllegalArgumentException("Register command cannot be null!");
+
+        LOGGER.info("Registrating customer with email: {}", command.emailAddress());
 
         customers.findByEmailAddress(command.emailAddress())
                 .ifPresent(customer -> failBecauseCustomerAlreadyExistBy(customer.emailAddress()));

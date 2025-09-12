@@ -8,6 +8,9 @@ import hu.hirannor.hexagonal.domain.authentication.Register;
 import java.util.function.Function;
 
 class RegisterModelToCommandMapper implements Function<RegisterModel, Register> {
+
+    RegisterModelToCommandMapper() {}
+
     @Override
     public Register apply(final RegisterModel model) {
         if (model == null) return null;
