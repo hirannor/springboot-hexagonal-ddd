@@ -1,6 +1,5 @@
 package hu.hirannor.hexagonal.domain.customer;
 
-import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.authentication.Register;
 import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;

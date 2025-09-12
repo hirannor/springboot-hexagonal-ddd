@@ -4,7 +4,7 @@ import hu.hirannor.hexagonal.adapter.web.rest.customer.api.CustomersApi;
 import hu.hirannor.hexagonal.adapter.web.rest.customer.mapping.CustomerMappingFactory;
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
 import hu.hirannor.hexagonal.application.usecase.*;
-import hu.hirannor.hexagonal.domain.CustomerId;
+import hu.hirannor.hexagonal.domain.customer.CustomerId;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
