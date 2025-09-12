@@ -3,10 +3,7 @@ package hu.hirannor.hexagonal.adapter.web.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.ProblemDetailsModel;
 import hu.hirannor.hexagonal.application.port.Authenticator;
-import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.authentication.AuthUser;
-import hu.hirannor.hexagonal.domain.authentication.AuthenticationResult;
-import hu.hirannor.hexagonal.domain.authentication.Password;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,12 +16,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 
 @Component
@@ -85,23 +79,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                         List.of(new SimpleGrantedAuthority("USER"))
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
-            } else if (authHeader.startsWith(BASIC)) {
-                final String base64Credentials = authHeader.substring(BASIC.length()).trim();
-                final String decoded = new String(Base64.getDecoder().decode(base64Credentials), StandardCharsets.UTF_8);
-                final String[] parts = decoded.split(":", 2);
-
-                final AuthenticationResult result = authenticator.authenticate(AuthUser.of(
-                        EmailAddress.from(parts[0]),
-                        Password.from(parts[1])
-                ));
-
-                final UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        result.emailAddress().value(),
-                        null,
-                        List.of(new SimpleGrantedAuthority("USER"))
-                );
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-
             } else {
                 final ProblemDetailsModel unsupportedAuthMethod = createUnauthorizedProblemDetailsFrom(request, "Unsupported authentication method!");
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, mapper.writeValueAsString(unsupportedAuthMethod));

@@ -97,7 +97,7 @@ public class JwtAuthenticationConfiguration {
 ```yaml
 # application-[profile].yml
 adapter:
-  authentication: # basic | jwt
+  authentication: # jwt
   persistence: # spring-data-jpa | in-memory
   messaging: # spring-event-bus
   web: # rest

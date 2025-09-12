@@ -1,6 +1,5 @@
 package hu.hirannor.hexagonal;
 
-import hu.hirannor.hexagonal.adapter.authentication.basic.BasicAuthenticationConfiguration;
 import hu.hirannor.hexagonal.adapter.authentication.jwt.JwtAuthenticationConfiguration;
 import hu.hirannor.hexagonal.adapter.messaging.eventbus.SpringEventBusMessagingConfiguration;
 import hu.hirannor.hexagonal.adapter.persistence.inmemory.InMemoryPersistenceConfiguration;
@@ -19,7 +18,6 @@ import org.springframework.context.annotation.*;
         JpaPersistenceConfiguration.class,
         InMemoryPersistenceConfiguration.class,
         RestApiConfiguration.class,
-        BasicAuthenticationConfiguration.class,
         JwtAuthenticationConfiguration.class,
         SpringEventBusMessagingConfiguration.class
 })

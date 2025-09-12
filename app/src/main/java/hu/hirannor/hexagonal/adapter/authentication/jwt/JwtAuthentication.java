@@ -37,19 +37,19 @@ class JwtAuthentication implements Authenticator {
     }
 
     @Override
-    public AuthenticationResult authenticate(final AuthUser auth) {
-        if (auth == null) throw new IllegalArgumentException("auth cannot be null");
+    public AuthenticationResult authenticate(final AuthUser user) {
+        if (user == null) throw new IllegalArgumentException("auth cannot be null");
 
-        final AuthUser storedUser = authentications.findByEmail(auth.emailAddress())
-                .orElseThrow(failBecauseEmailAddressWasNotFound(auth));
+        final AuthUser storedUser = authentications.findByEmail(user.emailAddress())
+                .orElseThrow(failBecauseEmailAddressWasNotFound(user));
 
-        if (!encoder.matches(auth.password().value(), storedUser.password().value()))
+        if (!encoder.matches(user.password().value(), storedUser.password().value()))
             throw new IllegalStateException("Invalid password");
 
         final String token = generateToken(storedUser.emailAddress());
 
         return AuthenticationResult.from(
-                auth.emailAddress(),
+                user.emailAddress(),
                 token
         );
     }

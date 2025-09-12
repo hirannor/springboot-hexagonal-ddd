@@ -37,11 +37,6 @@
     <text x="120" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">REST API</text>
     <text x="120" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#f8c9c9">HTTP Controllers</text>
 
-    <!-- Basic Authentication Adapter -->
-    <rect x="50" y="280" width="140" height="70" rx="8" fill="#e74c3c" stroke="#c0392b" stroke-width="2" filter="url(#shadow)"/>
-    <text x="120" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">Authentication</text>
-    <text x="120" y="325" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#f8c9c9">Basic Auth</text>
-
     <!-- JWT Authentication Adapter -->
     <rect x="50" y="380" width="140" height="70" rx="8" fill="#e74c3c" stroke="#c0392b" stroke-width="2" filter="url(#shadow)"/>
     <text x="120" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">Authentication</text>
@@ -93,7 +88,6 @@
 
     <!-- Primary side connections -->
     <path d="M 190 215 L 220 215" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
-    <path d="M 190 315 L 220 335" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
     <path d="M 190 415 L 220 350" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
 
     <!-- Port to Core connections -->
@@ -119,7 +113,7 @@
     <text x="100" y="612" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Application Core - Contains business logic and use cases</text>
 
     <rect x="70" y="630" width="20" height="15" fill="#e74c3c"/>
-    <text x="100" y="642" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Primary Adapters - Drive the application (REST API, Basic Auth, JWT Auth)</text>
+    <text x="100" y="642" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Primary Adapters - Drive the application (REST API, JWT Auth)</text>
 
     <rect x="70" y="660" width="20" height="15" fill="#27ae60"/>
     <text x="100" y="672" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Secondary Adapters - Driven by application (Persistence, Messaging)</text>
