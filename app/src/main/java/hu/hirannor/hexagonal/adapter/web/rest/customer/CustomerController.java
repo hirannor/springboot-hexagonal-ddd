@@ -12,6 +12,8 @@ import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +30,7 @@ import java.util.function.Function;
 @RestController
 @RequestMapping(value = "/api")
 @DriverAdapter
-class CustomerManagementController implements CustomersApi {
+class CustomerController implements CustomersApi {
 
     private final Function<Customer, CustomerModel> mapCustomerToModel;
     private final Function<GenderModel, Gender> mapGenderModelToDomain;
@@ -38,9 +40,9 @@ class CustomerManagementController implements CustomersApi {
     private final CustomerDeletion customer;
 
     @Autowired
-    CustomerManagementController(final CustomerDisplaying customers,
-                                 final CustomerModification personalDetails,
-                                 final CustomerDeletion customer) {
+    CustomerController(final CustomerDisplaying customers,
+                       final CustomerModification personalDetails,
+                       final CustomerDeletion customer) {
         this(
                 customers,
                 personalDetails,
@@ -50,11 +52,11 @@ class CustomerManagementController implements CustomersApi {
         );
     }
 
-    CustomerManagementController(final CustomerDisplaying customers,
-                                 final CustomerModification personalDetails,
-                                 final CustomerDeletion customer,
-                                 final Function<Customer, CustomerModel> mapCustomerToModel,
-                                 final Function<GenderModel, Gender> mapGenderModelToDomain) {
+    CustomerController(final CustomerDisplaying customers,
+                       final CustomerModification personalDetails,
+                       final CustomerDeletion customer,
+                       final Function<Customer, CustomerModel> mapCustomerToModel,
+                       final Function<GenderModel, Gender> mapGenderModelToDomain) {
         this.customers = customers;
         this.personalDetails = personalDetails;
         this.customer = customer;
@@ -105,6 +107,17 @@ class CustomerManagementController implements CustomersApi {
     @Override
     public ResponseEntity<CustomerModel> displayBy(final String rawCustomerId) {
         return customers.displayBy(CustomerId.from(rawCustomerId))
+                .map(mapCustomerToModel)
+                .map(ResponseEntity::ok)
+                .orElseGet(ResponseEntity.notFound()::build);
+    }
+
+
+    @Override
+    public ResponseEntity<CustomerModel> authenticatedCustomer() {
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        return customers.displayBy(EmailAddress.from(auth.getName()))
                 .map(mapCustomerToModel)
                 .map(ResponseEntity::ok)
                 .orElseGet(ResponseEntity.notFound()::build);

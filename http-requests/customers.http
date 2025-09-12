@@ -34,29 +34,6 @@ Authorization: Bearer {{bearerToken}}
 GET http://localhost:8080/api/customers?birthDateFrom=1980-01-01&birthDateTo=2000-12-31&gender=MALE&emailAddress=john.doe@test.com
 Authorization: Bearer {{bearerToken}}
 
-### Get a customer by ID (GET /api/customers/{customerId})
-GET http://localhost:8080/api/customers/{{customerId}}
-Authorization: Bearer {{bearerToken}}
-
-### Update a customer by ID (PUT /api/customers/{customerId})
-PUT http://localhost:8080/api/customers/{{customerId}}
-Content-Type: application/json
-Authorization: Bearer {{bearerToken}}
-
-{
-  "firstName": "Johnny",
-  "lastName": "Doe",
-  "birthDate": "1990-01-01",
-  "address": {
-    "country": "HUNGARY",
-    "city": "Budapest",
-    "postalCode": 1007,
-    "streetAddress": "Wolf street 15"
-  },
-  "gender": "MALE",
-  "emailAddress": "johnny.doe@test.com"
-}
-
-### Delete a customer by ID (DELETE /api/customers/{customerId})
-DELETE http://localhost:8080/api/customers/{{customerId}}
+### Get the logged-in customer (GET /api/customers/me)
+GET http://localhost:8080/api/customers/me
 Authorization: Bearer {{bearerToken}}

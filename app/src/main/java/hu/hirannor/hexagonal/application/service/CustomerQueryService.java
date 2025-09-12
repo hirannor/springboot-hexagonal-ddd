@@ -1,6 +1,7 @@
 package hu.hirannor.hexagonal.application.service;
 
 import hu.hirannor.hexagonal.application.usecase.CustomerDisplaying;
+import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.Customer;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.customer.CustomerRepository;
@@ -28,6 +29,7 @@ class CustomerQueryService implements CustomerDisplaying {
         CustomerQueryService.class
     );
     private static final String ERR_CUSTOMER_ID_IS_NULL = "CustomerId cannot be null!";
+    private static final String ERR_EMAIL_ADDRESS_ID_IS_NULL = "EmailAddress cannot be null!";
 
     private final CustomerRepository customers;
 
@@ -53,6 +55,15 @@ class CustomerQueryService implements CustomerDisplaying {
         LOGGER.info("Retrieving customer by id: {}", customerId);
 
         return customers.findBy(customerId);
+    }
+
+    @Override
+    public Optional<Customer> displayBy(EmailAddress emailAddress) {
+        if (emailAddress == null) throw new IllegalArgumentException(ERR_CUSTOMER_ID_IS_NULL);
+
+        LOGGER.info("Retrieving customer by id: {}", emailAddress);
+
+        return customers.findByEmailAddress(emailAddress);
     }
 
 }

@@ -1,5 +1,6 @@
 package hu.hirannor.hexagonal.application.usecase;
 
+import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.Customer;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
@@ -29,5 +30,13 @@ public interface CustomerDisplaying {
      * @return found customer
      */
     Optional<Customer> displayBy(CustomerId customerId);
+
+    /**
+     * Displays a customer by {@link CustomerId} value.
+     *
+     * @param emailAddress {@link CustomerId} unique identifier of a customer
+     * @return found customer
+     */
+    Optional<Customer> displayBy(EmailAddress emailAddress);
 
 }

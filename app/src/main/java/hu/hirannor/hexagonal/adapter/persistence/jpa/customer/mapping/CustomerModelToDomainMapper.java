@@ -5,6 +5,7 @@ import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.*;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -34,22 +35,34 @@ class CustomerModelToDomainMapper implements Function<CustomerModel, Customer> {
     public Customer apply(final CustomerModel model) {
         if (model == null) return null;
 
-        return Customer.from(
-                CustomerId.from(model.getCustomerId()),
-                FullName.from(
-                    model.getFirstName(),
-                    model.getLastName()
-                ),
-                model.getBirthDate(),
-                mapGenderModelToDomain.apply(model.getGender()),
-                Address.from(
-                        mapCountryModelToDomain.apply(model.getCountry()),
-                        model.getCity(),
-                        PostalCode.from(model.getPostalCode()),
-                        model.getStreetAddress()
-                ),
-                EmailAddress.from(model.getEmailAddress())
+        final CustomerBuilder builder = CustomerBuilder.empty()
+                .customerId(CustomerId.from(model.getCustomerId()))
+                .emailAddress(EmailAddress.from(model.getEmailAddress()));
+
+        Optional.ofNullable(model.getGender())
+                .map(mapGenderModelToDomain)
+                .ifPresent(builder::gender);
+
+        final FullName name = FullName.from(
+                Optional.ofNullable(model.getFirstName()).orElse(""),
+                Optional.ofNullable(model.getLastName()).orElse("")
         );
+
+        builder.fullName(name);
+
+        final Address address = Address.from(
+                Optional.ofNullable(model.getCountry()).map(mapCountryModelToDomain).orElse(Country.HUNGARY),
+                Optional.ofNullable(model.getCity()).orElse(""),
+                Optional.ofNullable(model.getPostalCode()).map(PostalCode::from).orElse(PostalCode.empty()),
+                Optional.ofNullable(model.getStreetAddress()).orElse("")
+        );
+
+        builder.address(address);
+
+        Optional.ofNullable(model.getBirthDate())
+                .ifPresent(builder::birthDate);
+
+        return builder.createCustomer();
     }
 
 }

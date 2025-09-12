@@ -5,24 +5,16 @@ info:
   version: 1.0.0
 security:
   - bearerAuth: []
-  - basicAuth: []
 paths:
-  /customers:
-    post:
-      summary: Registers a customer
+  /customers/me:
+    get:
+      summary: Retrieves the current logged-in customer
       security:
         - bearerAuth: [ ]
-        - basicAuth: [ ]
-      description: registers a customer
-      operationId: register
-      requestBody:
-        description: Customer registration details
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/RegisterCustomer'
+      description: Fetches the customer corresponding to the current authenticated user.
+      operationId: authenticatedCustomer
       responses:
-        '201':
+        '200':
           description: Successful operation
           content:
             application/json:
@@ -34,11 +26,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+  /customers:
     get:
       summary: Retrieves all customer
       security:
         - bearerAuth: [ ]
-        - basicAuth: [ ]
       description: Retrieves all customer
       operationId: displayAll
       parameters:
@@ -84,7 +82,6 @@ paths:
       summary: Retrieves customer by id
       security:
         - bearerAuth: [ ]
-        - basicAuth: [ ]
       description: Retrieves customer by id
       operationId: displayBy
       parameters:
@@ -116,7 +113,6 @@ paths:
       summary: Deletes a customer by id
       security:
         - bearerAuth: [ ]
-        - basicAuth: [ ]
       description: Deletes a customer by id
       operationId: deleteBy
       parameters:
@@ -144,7 +140,6 @@ paths:
       summary: Change customer personal details
       security:
         - bearerAuth: [ ]
-        - basicAuth: [ ]
       description: Change customer personal details
       operationId: changePersonalDetails
       requestBody:
@@ -188,33 +183,6 @@ components:
       type: http
       scheme: basic
   schemas:
-    RegisterCustomer:
-      type: object
-      required:
-        - firstName
-        - lastName
-        - birthDate
-        - address
-        - gender
-        - emailAddress
-      properties:
-        firstName:
-          type: string
-          example: John
-        lastName:
-          type: string
-          example: Digweed
-        birthDate:
-          type: string
-          format: date
-          example: 1990-01-01
-        address:
-          $ref: '#/components/schemas/Address'
-        gender:
-          $ref: '#/components/schemas/Gender'
-        emailAddress:
-          type: string
-          example: test@test.com
     ChangePersonalDetails:
       type: object
       properties:

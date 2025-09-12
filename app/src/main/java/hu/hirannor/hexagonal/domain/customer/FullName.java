@@ -16,9 +16,8 @@ public record FullName(String firstName, String lastName) {
      * @param lastName
      */
     public FullName {
-        if (firstName == null || firstName.isBlank() ||
-                lastName == null || lastName.isBlank())
-            throw new IllegalArgumentException("Firstname or Lastname cannot be null or empty!");
+        if (firstName == null || lastName == null)
+            throw new IllegalArgumentException("Firstname or Lastname cannot be null!");
     }
 
     /**

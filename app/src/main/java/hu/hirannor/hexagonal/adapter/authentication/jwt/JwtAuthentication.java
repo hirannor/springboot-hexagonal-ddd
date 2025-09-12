@@ -1,6 +1,5 @@
 package hu.hirannor.hexagonal.adapter.authentication.jwt;
 
-import hu.hirannor.hexagonal.adapter.persistence.jpa.authentication.AuthUserModel;
 import hu.hirannor.hexagonal.application.port.Authenticator;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.authentication.*;
@@ -28,7 +27,6 @@ class JwtAuthentication implements Authenticator {
     private final Key jwtKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final BCryptPasswordEncoder encoder;
 
-
     @Autowired
     JwtAuthentication(final AuthenticationRepository authentications,
                       final BCryptPasswordEncoder encoder) {
@@ -41,7 +39,7 @@ class JwtAuthentication implements Authenticator {
         if (user == null) throw new IllegalArgumentException("auth cannot be null");
 
         final AuthUser storedUser = authentications.findByEmail(user.emailAddress())
-                .orElseThrow(failBecauseEmailAddressWasNotFound(user));
+                .orElseThrow(failBecauseEmailAddressWasNotFound(user.emailAddress()));
 
         if (!encoder.matches(user.password().value(), storedUser.password().value()))
             throw new IllegalStateException("Invalid password");
@@ -78,8 +76,8 @@ class JwtAuthentication implements Authenticator {
         authentications.save(hashedUser);
     }
 
-    private Supplier<IllegalStateException> failBecauseEmailAddressWasNotFound(AuthUser auth) {
-        return () -> new IllegalStateException("email address: " + auth.emailAddress() + " not found");
+    private Supplier<IllegalStateException> failBecauseEmailAddressWasNotFound(final EmailAddress emailAddress) {
+        return () -> new IllegalStateException("email address: " + emailAddress + " not found");
     }
 
     private String generateToken(final EmailAddress email) {

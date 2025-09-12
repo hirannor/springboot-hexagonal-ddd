@@ -23,12 +23,12 @@ import java.util.function.Supplier;
     propagation = Propagation.REQUIRES_NEW,
     isolation = Isolation.REPEATABLE_READ
 )
-class CustomerManagementCommandService implements
+class CustomerCommandService implements
         CustomerModification,
         CustomerDeletion {
 
     private static final Logger LOGGER = LogManager.getLogger(
-        CustomerManagementCommandService.class
+        CustomerCommandService.class
     );
     private static final String ERR_CUSTOMER_ID_IS_NULL = "CustomerId cannot be null!";
     private static final String ERR_CUSTOMER_NOT_FOUND = "Customer not found with value: %s";
@@ -36,7 +36,7 @@ class CustomerManagementCommandService implements
     private final CustomerRepository customers;
 
     @Autowired
-    CustomerManagementCommandService(final CustomerRepository customers) {
+    CustomerCommandService(final CustomerRepository customers) {
         this.customers = customers;
     }
 

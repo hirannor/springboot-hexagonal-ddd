@@ -16,10 +16,6 @@ public enum Ring {
         "messaging adapter",
         "hu.hirannor.hexagonal.adapter.messaging.."
     ),
-    AUTH_BASIC(
-        "authentication basic adapter",
-        "hu.hirannor.hexagonal.adapter.authentication.basic.."
-    ),
     AUTH_JWT(
         "authentication jwt adapter",
         "hu.hirannor.hexagonal.adapter.authentication.jwt.."
