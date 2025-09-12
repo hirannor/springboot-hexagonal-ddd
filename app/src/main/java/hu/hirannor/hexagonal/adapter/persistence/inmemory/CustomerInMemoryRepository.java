@@ -24,12 +24,12 @@ import java.util.stream.Collectors;
  * @author Mate Karolyi
  */
 @Component
-class InMemoryRepository implements CustomerRepository {
+class CustomerInMemoryRepository implements CustomerRepository {
 
     private final Map<CustomerId, Customer> customerStore;
     private final Map<EmailAddress, Customer> emailIndex;
 
-    InMemoryRepository() {
+    CustomerInMemoryRepository() {
         this.customerStore = new ConcurrentHashMap<>();
         this.emailIndex = new ConcurrentHashMap<>();
     }
