@@ -120,6 +120,13 @@ adapter:
 
 * Accessible locally at: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
+
+### HTTP Requests
+All API requests for testing registration, authentication, and customer operations can be found in the project under:
+```
+/http-requests/customers.http
+```
+
 ## Docker Setup
 
 * **File:** `docker-compose.yml`
