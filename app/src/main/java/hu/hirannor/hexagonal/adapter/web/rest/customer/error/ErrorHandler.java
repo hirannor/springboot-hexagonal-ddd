@@ -1,11 +1,11 @@
 package hu.hirannor.hexagonal.adapter.web.rest.customer.error;
 
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.ProblemDetailsModel;
+import hu.hirannor.hexagonal.domain.error.CustomerAlreadyExistWithEmailAddress;
 import hu.hirannor.hexagonal.domain.error.CustomerNotFound;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -34,12 +34,24 @@ class ErrorHandler {
         return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(AuthenticationServiceException.class)
-    ResponseEntity<?> customerAlreadyExist(final AuthenticationServiceException ex, final HttpServletRequest request) {
+    @ExceptionHandler(CustomerAlreadyExistWithEmailAddress.class)
+    ResponseEntity<?> customerAlreadyExist(final CustomerAlreadyExistWithEmailAddress ex, final HttpServletRequest request) {
         final ProblemDetailsModel message = new ProblemDetailsModel()
                 .timestamp(Instant.now())
-                .status(HttpStatus.UNAUTHORIZED.value())
-                .title("Unauthorized")
+                .status(HttpStatus.BAD_REQUEST.value())
+                .title(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .instance(request.getRequestURI())
+                .detail(ex.getMessage());
+
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    ResponseEntity<?> badRequest(final IllegalStateException ex, final HttpServletRequest request) {
+        final ProblemDetailsModel message = new ProblemDetailsModel()
+                .timestamp(Instant.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .title(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .instance(request.getRequestURI())
                 .detail(ex.getMessage());
 
