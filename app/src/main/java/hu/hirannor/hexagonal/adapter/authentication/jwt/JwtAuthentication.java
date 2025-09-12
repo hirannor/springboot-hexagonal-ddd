@@ -1,9 +1,11 @@
 package hu.hirannor.hexagonal.adapter.authentication.jwt;
 
-import hu.hirannor.hexagonal.application.port.Authenticator;
+import hu.hirannor.hexagonal.application.port.authentication.Authenticator;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.authentication.*;
 import hu.hirannor.hexagonal.domain.error.CustomerNotFound;
+import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
+import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -26,6 +28,7 @@ import java.util.function.Supplier;
  * @author Mate Karolyi
  */
 @Component
+@DriverAdapter
 class JwtAuthentication implements Authenticator {
 
     private static final Logger LOGGER = LogManager.getLogger(

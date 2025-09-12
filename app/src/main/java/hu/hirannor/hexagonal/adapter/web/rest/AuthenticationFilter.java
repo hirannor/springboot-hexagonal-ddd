@@ -2,14 +2,12 @@ package hu.hirannor.hexagonal.adapter.web.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.ProblemDetailsModel;
-import hu.hirannor.hexagonal.application.port.Authenticator;
+import hu.hirannor.hexagonal.application.port.authentication.Authenticator;
 import hu.hirannor.hexagonal.domain.authentication.AuthUser;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.http.Header;
-import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

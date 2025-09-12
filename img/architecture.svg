@@ -45,22 +45,34 @@
     <!-- Secondary Adapters (Driven/Right Side) -->
 
     <!-- JPA Persistence Adapter -->
-    <rect x="710" y="150" width="140" height="70" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
-    <text x="780" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">JPA Persistence</text>
-    <text x="780" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#a9dfbf">Java Persistence API</text>
-    <text x="780" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#a9dfbf">Database Storage</text>
+    <rect x="710" y="120" width="140" height="60" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
+    <text x="780" y="142" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">JPA Store</text>
+    <text x="780" y="157" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#a9dfbf">Java Persistence API</text>
+    <text x="780" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#a9dfbf">Database Storage</text>
 
     <!-- In-Memory Persistence Adapter -->
-    <rect x="710" y="250" width="140" height="70" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
-    <text x="780" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">In-Memory</text>
-    <text x="780" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#a9dfbf">Memory Storage</text>
-    <text x="780" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#a9dfbf">Testing</text>
+    <rect x="710" y="190" width="140" height="60" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
+    <text x="780" y="212" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">In-Memory Store</text>
+    <text x="780" y="227" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#a9dfbf">Memory Storage</text>
+    <text x="780" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#a9dfbf">Testing</text>
 
     <!-- Event Bus Adapter -->
-    <rect x="710" y="350" width="140" height="70" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
-    <text x="780" y="375" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">Event Bus</text>
-    <text x="780" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#a9dfbf">Messaging</text>
-    <text x="780" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#a9dfbf">Event Publishing</text>
+    <rect x="710" y="260" width="140" height="60" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
+    <text x="780" y="282" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">Event Bus</text>
+    <text x="780" y="297" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#a9dfbf">Messaging</text>
+    <text x="780" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#a9dfbf">Event Publishing</text>
+
+    <!-- SMS Notification Adapter -->
+    <rect x="710" y="330" width="140" height="60" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
+    <text x="780" y="352" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">SMS Notification</text>
+    <text x="780" y="367" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#a9dfbf">SMS Gateway</text>
+    <text x="780" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#a9dfbf">Text Messages</text>
+
+    <!-- Email Notification Adapter -->
+    <rect x="710" y="400" width="140" height="60" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
+    <text x="780" y="422" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">Email Notification</text>
+    <text x="780" y="437" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#a9dfbf">SMTP Server</text>
+    <text x="780" y="450" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#a9dfbf">Email Service</text>
 
     <!-- Primary Ports (Interfaces) -->
     <circle cx="250" cy="215" r="30" fill="#f39c12" stroke="#e67e22" stroke-width="2" filter="url(#shadow)"/>
@@ -72,17 +84,25 @@
     <text x="250" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Port</text>
 
     <!-- Secondary Ports (Interfaces) -->
-    <circle cx="650" cy="185" r="30" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
-    <text x="650" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">Repository</text>
-    <text x="650" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">Port</text>
+    <circle cx="650" cy="150" r="25" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
+    <text x="650" y="145" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Repository</text>
+    <text x="650" y="157" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Port</text>
 
-    <circle cx="650" cy="285" r="30" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
-    <text x="650" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">Repository</text>
-    <text x="650" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">Port</text>
+    <circle cx="650" cy="220" r="25" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
+    <text x="650" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Repository</text>
+    <text x="650" y="227" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Port</text>
 
-    <circle cx="650" cy="385" r="30" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
-    <text x="650" y="380" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">Messaging</text>
-    <text x="650" y="395" text-anchor="middle" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="white">Port</text>
+    <circle cx="650" cy="290" r="25" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
+    <text x="650" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Messaging</text>
+    <text x="650" y="297" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Port</text>
+
+    <circle cx="650" cy="360" r="25" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
+    <text x="650" y="355" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Notification</text>
+    <text x="650" y="367" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Port</text>
+
+    <circle cx="650" cy="430" r="25" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
+    <text x="650" y="425" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Notification</text>
+    <text x="650" y="437" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Port</text>
 
     <!-- Connection Lines -->
 
@@ -95,33 +115,40 @@
     <path d="M 280 335 L 340 300" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
 
     <!-- Core to Port connections -->
-    <path d="M 560 230 L 620 185" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
-    <path d="M 560 250 L 620 285" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
-    <path d="M 560 290 L 620 385" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+    <path d="M 560 220 L 625 150" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+    <path d="M 560 240 L 625 220" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+    <path d="M 560 260 L 625 290" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+    <path d="M 560 280 L 625 360" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+    <path d="M 560 300 L 625 430" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
 
     <!-- Secondary side connections -->
-    <path d="M 680 185 L 710 185" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
-    <path d="M 680 285 L 710 285" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
-    <path d="M 680 385 L 710 385" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+    <path d="M 675 150 L 710 150" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+    <path d="M 675 220 L 710 220" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+    <path d="M 675 290 L 710 290" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+    <path d="M 675 360 L 710 360" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+    <path d="M 675 430 L 710 430" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
 
     <!-- Legend -->
-    <rect x="50" y="550" width="800" height="200" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" rx="8"/>
-    <text x="70" y="580" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#2c3e50">Architecture Components</text>
+    <rect x="50" y="520" width="800" height="230" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" rx="8"/>
+    <text x="70" y="550" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#2c3e50">Architecture Components</text>
 
     <!-- Legend items -->
-    <rect x="70" y="600" width="20" height="15" fill="#3498db"/>
-    <text x="100" y="612" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Application Core - Contains business logic and use cases</text>
+    <rect x="70" y="570" width="20" height="15" fill="#3498db"/>
+    <text x="100" y="582" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Application Core - Contains business logic and use cases</text>
 
-    <rect x="70" y="630" width="20" height="15" fill="#e74c3c"/>
-    <text x="100" y="642" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Primary Adapters - Drive the application (REST API, JWT Auth)</text>
+    <rect x="70" y="595" width="20" height="15" fill="#e74c3c"/>
+    <text x="100" y="607" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Primary Adapters - Drive the application (REST API, JWT Auth)</text>
 
-    <rect x="70" y="660" width="20" height="15" fill="#27ae60"/>
-    <text x="100" y="672" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Secondary Adapters - Driven by application (Persistence, Messaging)</text>
+    <rect x="70" y="620" width="20" height="15" fill="#27ae60"/>
+    <text x="100" y="632" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Secondary Adapters - Driven by application (Persistence, Messaging, Notifications)</text>
 
-    <circle cx="80" cy="695" r="8" fill="#f39c12"/>
-    <text x="100" y="700" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Primary Ports - Interfaces for incoming requests (REST, Authentication)</text>
+    <circle cx="80" cy="652" r="8" fill="#f39c12"/>
+    <text x="100" y="657" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Primary Ports - Interfaces for incoming requests (REST, Authentication)</text>
 
-    <circle cx="80" cy="720" r="8" fill="#9b59b6"/>
-    <text x="100" y="725" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Secondary Ports - Repository, MessagePublisher interfaces</text>
+    <circle cx="80" cy="675" r="8" fill="#9b59b6"/>
+    <text x="100" y="680" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Secondary Ports - Repository, Messaging, Notification interfaces</text>
+
+    <!-- Additional note -->
+    <text x="70" y="710" font-family="Arial, sans-serif" font-size="12" font-style="italic" fill="#7f8c8d">Services: Customer, Authentication, and Registration services</text>
 
 </svg>

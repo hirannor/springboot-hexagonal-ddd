@@ -5,6 +5,7 @@ import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.customer.CustomerRepository;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
+import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
  * @author Mate Karolyi
  */
 @Component
+@DrivenAdapter
 class CustomerInMemoryRepository implements CustomerRepository {
 
     private final Map<CustomerId, Customer> customerStore;

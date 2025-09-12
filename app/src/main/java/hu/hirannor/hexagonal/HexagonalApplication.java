@@ -2,6 +2,8 @@ package hu.hirannor.hexagonal;
 
 import hu.hirannor.hexagonal.adapter.authentication.jwt.JwtAuthenticationConfiguration;
 import hu.hirannor.hexagonal.adapter.messaging.eventbus.SpringEventBusMessagingConfiguration;
+import hu.hirannor.hexagonal.adapter.notification.email.EmailNotificationConfiguration;
+import hu.hirannor.hexagonal.adapter.notification.sms.SmsNotificationConfiguration;
 import hu.hirannor.hexagonal.adapter.persistence.inmemory.InMemoryPersistenceConfiguration;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.JpaPersistenceConfiguration;
 import hu.hirannor.hexagonal.adapter.web.rest.RestApiConfiguration;
@@ -19,7 +21,9 @@ import org.springframework.context.annotation.*;
         InMemoryPersistenceConfiguration.class,
         RestApiConfiguration.class,
         JwtAuthenticationConfiguration.class,
-        SpringEventBusMessagingConfiguration.class
+        SpringEventBusMessagingConfiguration.class,
+        EmailNotificationConfiguration.class,
+        SmsNotificationConfiguration.class
 })
 @SpringBootApplication(
         exclude = {
