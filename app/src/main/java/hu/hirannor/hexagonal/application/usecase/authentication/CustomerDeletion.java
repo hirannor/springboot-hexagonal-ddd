@@ -1,6 +1,6 @@
-package hu.hirannor.hexagonal.application.usecase;
+package hu.hirannor.hexagonal.application.usecase.authentication;
 
-import hu.hirannor.hexagonal.domain.customer.CustomerId;
+import hu.hirannor.hexagonal.domain.CustomerId;
 
 /**
  * Use case for customer deletion.

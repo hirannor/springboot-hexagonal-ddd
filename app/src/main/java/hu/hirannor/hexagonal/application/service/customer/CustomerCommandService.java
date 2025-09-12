@@ -1,8 +1,9 @@
-package hu.hirannor.hexagonal.application.service;
+package hu.hirannor.hexagonal.application.service.customer;
 
+import hu.hirannor.hexagonal.application.usecase.authentication.CustomerDeletion;
+import hu.hirannor.hexagonal.application.usecase.customer.CustomerModification;
 import hu.hirannor.hexagonal.domain.error.CustomerNotFound;
-import hu.hirannor.hexagonal.application.usecase.*;
-import hu.hirannor.hexagonal.domain.customer.CustomerId;
+import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
 import org.apache.logging.log4j.LogManager;

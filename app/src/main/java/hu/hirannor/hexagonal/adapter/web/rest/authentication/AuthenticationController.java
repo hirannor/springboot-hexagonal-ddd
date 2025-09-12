@@ -3,7 +3,7 @@ package hu.hirannor.hexagonal.adapter.web.rest.authentication;
 import hu.hirannor.hexagonal.adapter.web.rest.authentication.api.AuthApi;
 import hu.hirannor.hexagonal.adapter.web.rest.authentication.model.AuthenticateModel;
 import hu.hirannor.hexagonal.adapter.web.rest.authentication.model.AuthenticationResultModel;
-import hu.hirannor.hexagonal.application.usecase.Authenticating;
+import hu.hirannor.hexagonal.application.usecase.customer.Authenticating;
 import hu.hirannor.hexagonal.domain.authentication.AuthenticationResult;
 import hu.hirannor.hexagonal.domain.authentication.DoAuthenticate;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;

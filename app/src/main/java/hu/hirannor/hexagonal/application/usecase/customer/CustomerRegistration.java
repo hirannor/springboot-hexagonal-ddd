@@ -1,4 +1,4 @@
-package hu.hirannor.hexagonal.application.usecase;
+package hu.hirannor.hexagonal.application.usecase.customer;
 
 import hu.hirannor.hexagonal.domain.customer.Customer;
 import hu.hirannor.hexagonal.domain.customer.command.EnrollCustomer;

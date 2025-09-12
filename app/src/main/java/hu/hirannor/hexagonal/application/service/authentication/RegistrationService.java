@@ -1,9 +1,9 @@
-package hu.hirannor.hexagonal.application.service;
+package hu.hirannor.hexagonal.application.service.authentication;
 
 import hu.hirannor.hexagonal.domain.authentication.Role;
 import hu.hirannor.hexagonal.domain.error.CustomerAlreadyExistWithEmailAddress;
 import hu.hirannor.hexagonal.application.port.authentication.Authenticator;
-import hu.hirannor.hexagonal.application.usecase.Registrating;
+import hu.hirannor.hexagonal.application.usecase.customer.Registrating;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.authentication.AuthUser;
 import hu.hirannor.hexagonal.domain.authentication.Register;

@@ -1,7 +1,7 @@
-package hu.hirannor.hexagonal.application.service;
+package hu.hirannor.hexagonal.application.service.authentication;
 
 import hu.hirannor.hexagonal.application.port.authentication.Authenticator;
-import hu.hirannor.hexagonal.application.usecase.Authenticating;
+import hu.hirannor.hexagonal.application.usecase.customer.Authenticating;
 import hu.hirannor.hexagonal.domain.authentication.AuthUser;
 import hu.hirannor.hexagonal.domain.authentication.AuthenticationResult;
 import hu.hirannor.hexagonal.domain.authentication.DoAuthenticate;
@@ -44,11 +44,11 @@ class AuthenticationService implements Authenticating {
     public AuthenticationResult authenticate(final DoAuthenticate cmd) {
         if (cmd == null) throw new IllegalArgumentException("DoAuthenticate cannot be null");
 
-        LOGGER.info("Attempting to authenticate " + cmd.emailAddress());
+        LOGGER.info("Attempting to authenticate: {}", cmd.emailAddress());
         final AuthUser authUser = mapCommandToUser.apply(cmd);
 
         final AuthenticationResult result = authenticator.authenticate(authUser);
-        LOGGER.info("Authentication was successful for: " + cmd.emailAddress());
+        LOGGER.info("Authentication was successful for: {} ", cmd.emailAddress());
 
         return result;
     }

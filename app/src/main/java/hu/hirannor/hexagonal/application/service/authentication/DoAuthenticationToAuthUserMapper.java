@@ -1,4 +1,4 @@
-package hu.hirannor.hexagonal.application.service;
+package hu.hirannor.hexagonal.application.service.authentication;
 
 import hu.hirannor.hexagonal.domain.authentication.AuthUser;
 import hu.hirannor.hexagonal.domain.authentication.DoAuthenticate;

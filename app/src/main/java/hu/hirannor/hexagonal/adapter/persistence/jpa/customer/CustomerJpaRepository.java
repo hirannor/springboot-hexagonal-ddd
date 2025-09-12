@@ -4,7 +4,7 @@ import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping.CustomerMa
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping.CustomerModeller;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerView;
-import hu.hirannor.hexagonal.domain.customer.CustomerId;
+import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;

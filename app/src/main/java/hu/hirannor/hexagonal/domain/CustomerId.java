@@ -1,4 +1,4 @@
-package hu.hirannor.hexagonal.domain.customer;
+package hu.hirannor.hexagonal.domain;
 
 import java.util.UUID;
 
