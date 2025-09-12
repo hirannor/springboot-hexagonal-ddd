@@ -1,9 +1,11 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.*;
+import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.*;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -34,22 +36,28 @@ class CustomerViewToDomainMapper implements Function<CustomerView, Customer> {
     public Customer apply(final CustomerView view) {
         if (view == null) return null;
 
-        return Customer.from(
-                CustomerId.from(view.getCustomerId()),
-                FullName.from(
-                    view.getFirstName(),
-                    view.getLastName()
-                ),
-                view.getBirthDate(),
-                mapGenderModelToDomain.apply(view.getGender()),
-                Address.from(
-                        mapCountryModelToDomain.apply(view.getCountry()),
-                        view.getCity(),
-                        PostalCode.from(view.getPostalCode()),
-                        view.getStreetAddress()
-                ),
-                EmailAddress.from(view.getEmailAddress())
+        final CustomerBuilder builder = CustomerBuilder.empty()
+                .customerId(CustomerId.from(view.getCustomerId()))
+                .emailAddress(EmailAddress.from(view.getEmailAddress()));
+
+        Optional.ofNullable(view.getGender())
+                .map(mapGenderModelToDomain)
+                .ifPresent(builder::gender);
+
+        final Address address = Address.from(
+                Optional.ofNullable(view.getCountry()).map(mapCountryModelToDomain).orElse(Country.HUNGARY),
+                Optional.ofNullable(view.getCity()).orElse(""),
+                Optional.ofNullable(view.getPostalCode()).map(PostalCode::from).orElse(PostalCode.empty()),
+                Optional.ofNullable(view.getStreetAddress()).orElse("")
         );
+
+        builder.address(address);
+
+        Optional.ofNullable(view.getBirthDate())
+                .ifPresent(builder::birthDate);
+
+        return builder.createCustomer();
+
     }
 
 }

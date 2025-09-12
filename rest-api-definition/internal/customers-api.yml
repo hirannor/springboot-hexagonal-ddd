@@ -3,10 +3,16 @@ info:
   title: Customers API
   description: Customers API
   version: 1.0.0
+security:
+  - bearerAuth: []
+  - basicAuth: []
 paths:
   /customers:
     post:
       summary: Registers a customer
+      security:
+        - bearerAuth: [ ]
+        - basicAuth: [ ]
       description: registers a customer
       operationId: register
       requestBody:
@@ -22,8 +28,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Customer'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
     get:
       summary: Retrieves all customer
+      security:
+        - bearerAuth: [ ]
+        - basicAuth: [ ]
       description: Retrieves all customer
       operationId: displayAll
       parameters:
@@ -58,9 +73,18 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Customer'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
   /customers/{customerId}:
     get:
       summary: Retrieves customer by id
+      security:
+        - bearerAuth: [ ]
+        - basicAuth: [ ]
       description: Retrieves customer by id
       operationId: displayBy
       parameters:
@@ -76,8 +100,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Customer'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
     delete:
       summary: Deletes a customer by id
+      security:
+        - bearerAuth: [ ]
+        - basicAuth: [ ]
       description: Deletes a customer by id
       operationId: deleteBy
       parameters:
@@ -95,8 +134,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
     put:
       summary: Change customer personal details
+      security:
+        - bearerAuth: [ ]
+        - basicAuth: [ ]
       description: Change customer personal details
       operationId: changePersonalDetails
       requestBody:
@@ -124,7 +172,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    basicAuth:
+      type: http
+      scheme: basic
   schemas:
     RegisterCustomer:
       type: object

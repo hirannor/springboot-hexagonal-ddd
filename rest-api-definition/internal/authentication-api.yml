@@ -1,0 +1,71 @@
+openapi: 3.0.3
+info:
+  title: Auth API
+  description: Auth API
+  version: 1.0.0
+paths:
+  /register:
+    post:
+      summary: registers an user
+      description: registers an user
+      operationId: register
+      requestBody:
+        description: registration details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+      responses:
+        '201':
+          description: Successful operation
+  /auth:
+    post:
+      summary: authenticates an user
+      description: authenticates an user
+      operationId: authenticate
+      requestBody:
+        description: Authentication details
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Authenticate'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResult'
+components:
+  schemas:
+    Register:
+      type: object
+      required:
+        - emailAddress
+        - password
+      properties:
+        password:
+          type: string
+          example: V7fR9pQ2
+        emailAddress:
+          type: string
+          example: test@test.com
+    Authenticate:
+      type: object
+      required:
+        - emailAddress
+        - password
+      properties:
+        password:
+          type: string
+          example: V7fR9pQ2
+        emailAddress:
+          type: string
+          example: test@test.com
+    AuthenticationResult:
+      type: object
+      properties:
+        emailAddress:
+          type: string
+        token:
+          type: string

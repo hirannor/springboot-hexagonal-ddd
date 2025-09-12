@@ -1,12 +1,10 @@
 package hu.hirannor.hexagonal.application.service;
 
-import hu.hirannor.hexagonal.application.error.CustomerAlreadyExistWithEmailAddress;
 import hu.hirannor.hexagonal.application.error.CustomerNotFound;
 import hu.hirannor.hexagonal.application.usecase.*;
-import hu.hirannor.hexagonal.domain.EmailAddress;
+import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
-import hu.hirannor.hexagonal.domain.customer.command.EnrollCustomer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,6 @@ import java.util.function.Supplier;
     isolation = Isolation.REPEATABLE_READ
 )
 class CustomerManagementCommandService implements
-        CustomerRegistration,
         CustomerModification,
         CustomerDeletion {
 
@@ -74,26 +71,6 @@ class CustomerManagementCommandService implements
         customers.deleteBy(id);
     }
 
-    @Override
-    public Customer enroll(final EnrollCustomer command) {
-        if (command == null) throw new IllegalArgumentException("EnrollCustomer command cannot be null!");
-
-        customers.findByEmailAddress(command.emailAddress())
-                .ifPresent(customer -> failBecauseCustomerAlreadyExistBy(customer.emailAddress()));
-
-        final Customer newlyRegistered = Customer.registerBy(command);
-        customers.save(newlyRegistered);
-
-        LOGGER.info("Customer with id: {} is successfully registered!", newlyRegistered.customerId());
-
-        return newlyRegistered;
-    }
-
-    private void failBecauseCustomerAlreadyExistBy(final EmailAddress email) {
-        throw new CustomerAlreadyExistWithEmailAddress(
-                String.format("Customer already exist with the given e-mail address: %s", email.value())
-        );
-    }
 
     private Supplier<CustomerNotFound> failBecauseCustomerWasNotFoundBy(final CustomerId id) {
         return () -> new CustomerNotFound(String.format(ERR_CUSTOMER_NOT_FOUND, id.asText()));

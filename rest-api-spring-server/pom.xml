@@ -19,10 +19,17 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <rest-api-definition.version>1.0.0-SNAPSHOT</rest-api-definition.version>
-        <openapi-generator-maven-plugin.apiPackage>hu.hirannor.hexagonal.adapter.web.rest.customer.api
-        </openapi-generator-maven-plugin.apiPackage>
-        <openapi-generator-maven-plugin.modelPackage>hu.hirannor.hexagonal.adapter.web.rest.customer.model
-        </openapi-generator-maven-plugin.modelPackage>
+        <openapi-generator-maven-plugin.customers.apiPackage>hu.hirannor.hexagonal.adapter.web.rest.customer.api
+        </openapi-generator-maven-plugin.customers.apiPackage>
+        <openapi-generator-maven-plugin.customers.modelPackage>hu.hirannor.hexagonal.adapter.web.rest.customer.model
+        </openapi-generator-maven-plugin.customers.modelPackage>
+        <openapi-generator-maven-plugin.authentication.apiPackage>hu.hirannor.hexagonal.adapter.web.rest.authentication.api
+        </openapi-generator-maven-plugin.authentication.apiPackage>
+        <openapi-generator-maven-plugin.authentication.modelPackage>hu.hirannor.hexagonal.adapter.web.rest.authentication.model
+        </openapi-generator-maven-plugin.authentication.modelPackage>
+        <jjwt-api.version>0.11.5</jjwt-api.version>
+        <jjwt-impl.version>0.11.5</jjwt-impl.version>
+        <jjwt-jackson.version>0.11.5</jjwt-jackson.version>
     </properties>
 
     <dependencies>
@@ -58,6 +65,23 @@
             <artifactId>spring-boot-starter-validation</artifactId>
             <version>${spring-boot.version}</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jjwt-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${jjwt-impl.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>${jjwt-jackson.version}</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
@@ -104,14 +128,31 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <id>authentication-api</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.build.directory}/internal/authentication-api.yml</inputSpec>
+                            <apiPackage>${openapi-generator-maven-plugin.authentication.apiPackage}</apiPackage>
+                            <modelPackage>${openapi-generator-maven-plugin.authentication.modelPackage}</modelPackage>
+                            <typeMappings>
+                                <typeMapping>OffsetDateTime=Instant</typeMapping>
+                            </typeMappings>
+                            <importMappings>
+                                <importMapping>java.time.OffsetDateTime=java.time.Instant</importMapping>
+                            </importMappings>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>customers-api</id>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
                             <inputSpec>${project.build.directory}/internal/customers-api.yml</inputSpec>
-                            <apiPackage>${openapi-generator-maven-plugin.apiPackage}</apiPackage>
-                            <modelPackage>${openapi-generator-maven-plugin.modelPackage}</modelPackage>
+                            <apiPackage>${openapi-generator-maven-plugin.customers.apiPackage}</apiPackage>
+                            <modelPackage>${openapi-generator-maven-plugin.customers.modelPackage}</modelPackage>
                             <typeMappings>
                                 <typeMapping>OffsetDateTime=Instant</typeMapping>
                             </typeMappings>

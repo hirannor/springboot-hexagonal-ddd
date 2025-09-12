@@ -1,6 +1,6 @@
 package hu.hirannor.hexagonal.domain.customer.event;
 
-import hu.hirannor.hexagonal.domain.customer.CustomerId;
+import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.infrastructure.event.*;
 
 import java.time.Instant;

@@ -24,8 +24,8 @@ spring:
     name: hexagonal-ddd-app
 
 adapter:
-  authentication: basic
-  persistence: in-memory
+  authentication: jwt
+  persistence: spring-data-jpa
   messaging: spring-event-bus
   web: rest
 

@@ -1,6 +1,8 @@
 package hu.hirannor.hexagonal.domain.customer;
 
+import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.EmailAddress;
+import hu.hirannor.hexagonal.domain.authentication.Register;
 import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
 import hu.hirannor.hexagonal.domain.customer.command.EnrollCustomer;
 import hu.hirannor.hexagonal.domain.customer.event.PersonalDetailsChanged;
@@ -34,10 +36,6 @@ public class Customer extends AggregateRoot {
              final EmailAddress emailAddress) {
 
         Objects.requireNonNull(customerId);
-        Objects.requireNonNull(fullName);
-        Objects.requireNonNull(birthDate);
-        Objects.requireNonNull(gender);
-        Objects.requireNonNull(address);
         Objects.requireNonNull(emailAddress);
 
         this.events = new ArrayList<>(0);
@@ -73,17 +71,13 @@ public class Customer extends AggregateRoot {
      * @param cmd {@link EnrollCustomer} command
      * @return an instance of newly created {@link Customer} object
      */
-    public static Customer registerBy(final EnrollCustomer cmd) {
+    public static Customer registerBy(final Register cmd) {
         if (cmd == null) throw new IllegalArgumentException("AddCustomer command cannot be null!");
 
         final CustomerId customerId = CustomerId.generate();
 
         final Customer newCustomer = CustomerBuilder.empty()
                 .customerId(customerId)
-                .fullName(cmd.fullName())
-                .birthDate(cmd.birthDate())
-                .gender(cmd.gender())
-                .address(cmd.address())
                 .emailAddress(cmd.emailAddress())
                 .createCustomer();
 

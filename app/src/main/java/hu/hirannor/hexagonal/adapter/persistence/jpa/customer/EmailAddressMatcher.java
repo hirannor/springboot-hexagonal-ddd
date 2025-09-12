@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import java.io.Serial;
 
 /**
- * Specification implementation for matching a given email address.
+ * Specification implementation for matching a given email emailAddress.
  *
  * @author Mate Karolyi
  */

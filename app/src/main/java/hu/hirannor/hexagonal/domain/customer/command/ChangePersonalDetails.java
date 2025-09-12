@@ -1,5 +1,6 @@
 package hu.hirannor.hexagonal.domain.customer.command;
 
+import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.infrastructure.command.Command;
@@ -17,8 +18,8 @@ import java.time.LocalDate;
  * @param fullName     {@link FullName} full name of customer
  * @param birthDate    {@link LocalDate} birth date of customer
  * @param gender       {@link Gender} gender of customer
- * @param address      {@link Address} address of customer
- * @param email        {@link EmailAddress} email address of customer
+ * @param address      {@link Address} emailAddress of customer
+ * @param email        {@link EmailAddress} email emailAddress of customer
  * @author Mate Karolyi
  */
 public record ChangePersonalDetails(

@@ -17,4 +17,8 @@ public record Password(String value) {
             throw new IllegalArgumentException("Password must contain at least one uppercase letter, one lowercase letter, and one digit");
     }
 
+    public static Password from(final String password) {
+        return new Password(password);
+    }
+
 }

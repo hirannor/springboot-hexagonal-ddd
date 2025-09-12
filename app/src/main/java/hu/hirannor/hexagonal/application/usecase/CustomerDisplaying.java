@@ -1,7 +1,7 @@
 package hu.hirannor.hexagonal.application.usecase;
 
 import hu.hirannor.hexagonal.domain.customer.Customer;
-import hu.hirannor.hexagonal.domain.customer.CustomerId;
+import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 
 import java.util.List;

@@ -1,39 +1,47 @@
 # -------------------------------
-# Customers API - HTTP Requests
+# Authentication API - HTTP Requests
 # -------------------------------
 
-### Register a customer (POST /customers)
-POST http://localhost:8080/customers
+### Register a user (POST /api/register)
+POST http://localhost:8080/api/register
 Content-Type: application/json
 
 {
-  "firstName": "John",
-  "lastName": "Doe",
-  "birthDate": "1990-01-01",
-  "address": {
-    "country": "HUNGARY",
-    "city": "Budapest",
-    "postalCode": 1007,
-    "streetAddress": "Wolf street 12"
-  },
-  "gender": "MALE",
-  "emailAddress": "john.doe@test.com"
+  "emailAddress": "john.doe@test.com",
+  "password": "V7fR9pQ2"
 }
 
-> {% client.global.set("customerId", response.body.customerId) %}
+### Authenticate a user (POST /api/auth)
+POST http://localhost:8080/api/auth
+Content-Type: application/json
 
-### Get all customers (GET /customers)
-GET http://localhost:8080/customers
+{
+  "emailAddress": "john.doe@test.com",
+  "password": "V7fR9pQ2"
+}
+
+> {% client.global.set("bearerToken", response.body.token) %}
+
+# -------------------------------
+# Customers API - HTTP Requests
+# -------------------------------
+
+### Get all customers (GET /api/customers)
+GET http://localhost:8080/api/customers
+Authorization: Bearer {{bearerToken}}
 
 ### Get all customers with query parameters
-GET http://localhost:8080/customers?birthDateFrom=1980-01-01&birthDateTo=2000-12-31&gender=MALE&emailAddress=john.doe@test.com
+GET http://localhost:8080/api/customers?birthDateFrom=1980-01-01&birthDateTo=2000-12-31&gender=MALE&emailAddress=john.doe@test.com
+Authorization: Bearer {{bearerToken}}
 
-### Get a customer by ID (GET /customers/{customerId})
-GET http://localhost:8080/customers/{{customerId}}
+### Get a customer by ID (GET /api/customers/{customerId})
+GET http://localhost:8080/api/customers/{{customerId}}
+Authorization: Bearer {{bearerToken}}
 
-### Update a customer by ID (PUT /customers/{customerId})
-PUT http://localhost:8080/customers/{{customerId}}
+### Update a customer by ID (PUT /api/customers/{customerId})
+PUT http://localhost:8080/api/customers/{{customerId}}
 Content-Type: application/json
+Authorization: Bearer {{bearerToken}}
 
 {
   "firstName": "Johnny",
@@ -49,5 +57,6 @@ Content-Type: application/json
   "emailAddress": "johnny.doe@test.com"
 }
 
-### Delete a customer by ID (DELETE /customers/{customerId})
-DELETE http://localhost:8080/customers/{{customerId}}
+### Delete a customer by ID (DELETE /api/customers/{customerId})
+DELETE http://localhost:8080/api/customers/{{customerId}}
+Authorization: Bearer {{bearerToken}}

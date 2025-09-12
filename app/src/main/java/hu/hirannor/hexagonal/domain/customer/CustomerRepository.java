@@ -1,5 +1,6 @@
 package hu.hirannor.hexagonal.domain.customer;
 
+import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 
@@ -37,9 +38,9 @@ public interface CustomerRepository {
     Optional<Customer> findBy(CustomerId customerId);
 
     /**
-     * Retrieves a customer by {@link EmailAddress} email address
+     * Retrieves a customer by {@link EmailAddress} email emailAddress
      *
-     * @param email {@link EmailAddress} unique email address of customer
+     * @param email {@link EmailAddress} unique email emailAddress of customer
      * @return found customer
      */
     Optional<Customer> findByEmailAddress(EmailAddress email);

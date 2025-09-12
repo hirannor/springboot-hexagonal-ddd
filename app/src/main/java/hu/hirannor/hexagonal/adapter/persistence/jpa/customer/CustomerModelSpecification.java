@@ -61,7 +61,7 @@ final class CustomerModelSpecification {
     }
 
     /**
-     * Specification matcher for email address field based on the incoming parameter.
+     * Specification matcher for email emailAddress field based on the incoming parameter.
      *
      * @param email {@link EmailAddress}
      * @return Specification output {@link Specification< CustomerModel >}

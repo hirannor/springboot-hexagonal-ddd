@@ -1,9 +1,8 @@
 package hu.hirannor.hexagonal.adapter.authentication.basic;
 
 import hu.hirannor.hexagonal.application.port.Authenticator;
-import hu.hirannor.hexagonal.domain.authentication.AuthenticateUser;
-import hu.hirannor.hexagonal.domain.authentication.AuthenticatedUser;
-import hu.hirannor.hexagonal.domain.authentication.RegisterUser;
+import hu.hirannor.hexagonal.domain.authentication.AuthUser;
+import hu.hirannor.hexagonal.domain.authentication.AuthenticationResult;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,12 +14,17 @@ import org.springframework.stereotype.Component;
 class BasicAuthentication implements Authenticator {
 
     @Override
-    public AuthenticatedUser authenticate(final AuthenticateUser cmd) {
+    public AuthenticationResult authenticate(final AuthUser auth) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
     @Override
-    public void register(final RegisterUser cmd) {
+    public AuthUser validateToken(String token) {
+        throw new UnsupportedOperationException("Not supported");
+    }
+
+    @Override
+    public void register(final AuthUser auth) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 }

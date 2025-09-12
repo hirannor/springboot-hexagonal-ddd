@@ -46,9 +46,9 @@ interface CustomerSpringDataJpaRepository extends Repository<CustomerModel, Long
     void save(CustomerModel model);
 
     /**
-     * Retrieves a customer by {@link String} email address.
+     * Retrieves a customer by {@link String} email emailAddress.
      *
-     * @param emailAddress {@link String} unique email address of a customer
+     * @param emailAddress {@link String} unique email emailAddress of a customer
      * @return {@link CustomerView} view
      */
     Optional<CustomerView> findByEmailAddress(String emailAddress);

@@ -1,7 +1,7 @@
 package hu.hirannor.hexagonal.domain.customer;
 
 /**
- * Immutable record to hold address details of a customer.
+ * Immutable record to hold emailAddress details of a customer.
  *
  * @param country       {@link Country}
  * @param city          {@link String}
@@ -33,7 +33,7 @@ public record Address(Country country, String city, PostalCode postalCode, Strin
      * @param city          {@link String}
      * @param postalCode    {@link PostalCode}
      * @param streetAddress {@link String}
-     * @return an instance of {@link Address} address.
+     * @return an instance of {@link Address} emailAddress.
      */
     public static Address from(final Country country,
                                final String city,

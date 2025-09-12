@@ -4,18 +4,17 @@ import hu.hirannor.hexagonal.adapter.web.rest.customer.api.CustomersApi;
 import hu.hirannor.hexagonal.adapter.web.rest.customer.mapping.CustomerMappingFactory;
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
 import hu.hirannor.hexagonal.application.usecase.*;
+import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
-import hu.hirannor.hexagonal.domain.customer.command.EnrollCustomer;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -27,47 +26,39 @@ import java.util.function.Function;
  * @author Mate Karolyi
  */
 @RestController
+@RequestMapping(value = "/api")
 @DriverAdapter
 class CustomerManagementController implements CustomersApi {
 
     private final Function<Customer, CustomerModel> mapCustomerToModel;
-    private final Function<RegisterCustomerModel, EnrollCustomer> mapRegisterCustomerToModel;
     private final Function<GenderModel, Gender> mapGenderModelToDomain;
 
     private final CustomerDisplaying customers;
-    private final CustomerRegistration registration;
     private final CustomerModification personalDetails;
     private final CustomerDeletion customer;
 
     @Autowired
     CustomerManagementController(final CustomerDisplaying customers,
-                                 final CustomerRegistration registration,
                                  final CustomerModification personalDetails,
                                  final CustomerDeletion customer) {
         this(
                 customers,
-                registration,
                 personalDetails,
                 customer,
                 CustomerMappingFactory.createCustomerToModelMapper(),
-                CustomerMappingFactory.createRegisterCustomerModelToDomainMapper(),
                 CustomerMappingFactory.createGenderModelToDomainMapper()
         );
     }
 
     CustomerManagementController(final CustomerDisplaying customers,
-                                 final CustomerRegistration registration,
                                  final CustomerModification personalDetails,
                                  final CustomerDeletion customer,
                                  final Function<Customer, CustomerModel> mapCustomerToModel,
-                                 final Function<RegisterCustomerModel, EnrollCustomer> mapRegisterCustomerToModel,
                                  final Function<GenderModel, Gender> mapGenderModelToDomain) {
         this.customers = customers;
         this.personalDetails = personalDetails;
         this.customer = customer;
-        this.registration = registration;
         this.mapCustomerToModel = mapCustomerToModel;
-        this.mapRegisterCustomerToModel = mapRegisterCustomerToModel;
         this.mapGenderModelToDomain = mapGenderModelToDomain;
     }
 
@@ -117,24 +108,6 @@ class CustomerManagementController implements CustomersApi {
                 .map(mapCustomerToModel)
                 .map(ResponseEntity::ok)
                 .orElseGet(ResponseEntity.notFound()::build);
-    }
-
-    @Override
-    public ResponseEntity<CustomerModel> register(final RegisterCustomerModel model) {
-        final EnrollCustomer cmd = mapRegisterCustomerToModel.apply(model);
-        final Customer registeredCustomer = registration.enroll(cmd);
-
-        return ResponseEntity
-                .created(buildCustomerLocation(registeredCustomer.customerId()))
-                .body(mapCustomerToModel.apply(registeredCustomer));
-    }
-
-    private URI buildCustomerLocation(final CustomerId id) {
-        return ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(id.asText())
-                .toUri();
     }
 
 }

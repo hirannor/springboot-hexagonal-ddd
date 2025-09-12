@@ -27,7 +27,7 @@ class AddressModelToDomainMapperComponentTest {
     }
 
     @Test
-    @DisplayName("should map address model to domain address")
+    @DisplayName("should map emailAddress model to domain emailAddress")
     void testValidMapping() {
         final AddressModel input = constructInput();
         final Address expected = constructExpectedDomain();

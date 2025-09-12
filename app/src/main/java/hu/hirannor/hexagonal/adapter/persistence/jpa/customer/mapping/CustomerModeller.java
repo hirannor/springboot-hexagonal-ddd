@@ -4,6 +4,7 @@ import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.*;
 import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.infrastructure.modelling.Modeller;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 /**
@@ -41,17 +42,45 @@ public class CustomerModeller implements Modeller<CustomerModel> {
         if (model == null) throw new IllegalArgumentException("Model cannot be null");
 
         model.setCustomerId(domain.customerId().asText());
-        model.setFirstName(domain.fullName().firstName());
-        model.setLastName(domain.fullName().lastName());
-        model.setGender(mapGenderToModel.apply(domain.gender()));
-        model.setBirthDate(domain.birthDate());
-        model.setCountry(mapCountryToModel.apply(domain.address().country()));
-        model.setPostalCode(domain.address().postalCode().value());
-        model.setCity(domain.address().city());
-        model.setStreetAddress(domain.address().streetAddress());
+
+        Optional.ofNullable(domain.fullName())
+                .map(FullName::firstName)
+                .ifPresent(model::setFirstName);
+        Optional.ofNullable(domain.fullName())
+                .map(FullName::lastName)
+                .ifPresent(model::setLastName);
+
+        Optional.ofNullable(domain.gender())
+                .map(mapGenderToModel)
+                .ifPresent(model::setGender);
+
+        Optional.ofNullable(domain.birthDate())
+                .ifPresent(model::setBirthDate);
+
+        Optional.ofNullable(domain.address())
+                .map(mapToCountryModel())
+                .ifPresent(model::setCountry);
+
+        Optional.ofNullable(domain.address())
+                .map(mapToPostalCode())
+                .ifPresent(model::setPostalCode);
+
+        Optional.ofNullable(domain.address())
+                .map(Address::streetAddress)
+                .ifPresent(model::setStreetAddress);
+
         model.setEmailAddress(domain.emailAddress().value());
 
         return model;
+    }
 
+    private Function<Address, CountryModel> mapToCountryModel() {
+        final Function<Address, Country> extractCountry = Address::country;
+        return extractCountry.andThen(mapCountryToModel);
+    }
+
+    private Function<Address, Integer> mapToPostalCode() {
+        Function<Address, PostalCode> extractPostalCode = Address::postalCode;
+        return extractPostalCode.andThen(PostalCode::value);
     }
 }

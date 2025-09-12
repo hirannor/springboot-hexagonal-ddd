@@ -15,35 +15,27 @@
             </column>
 
             <column name="FIRST_NAME" type="VARCHAR(255)">
-                <constraints nullable="false"/>
             </column>
 
             <column name="LAST_NAME" type="VARCHAR(255)">
-                <constraints nullable="false"/>
             </column>
 
             <column name="BIRTH_DATE" type="DATE">
-                <constraints nullable="false"/>
             </column>
 
             <column name="GENDER" type="VARCHAR(10)">
-                <constraints nullable="false"/>
             </column>
 
             <column name="COUNTRY" type="VARCHAR(255)">
-                <constraints nullable="false"/>
             </column>
 
             <column name="CITY" type="VARCHAR(255)">
-                <constraints nullable="false"/>
             </column>
 
             <column name="POSTAL_CODE" type="INT">
-                <constraints nullable="false"/>
             </column>
 
             <column name="STREET_ADDRESS" type="VARCHAR(255)">
-                <constraints nullable="false"/>
             </column>
 
             <column name="EMAIL_ADDRESS" type="VARCHAR(255)">
@@ -60,6 +52,26 @@
         <createIndex tableName="EC_CUSTOMER" indexName="EC_CUSTOMER_IX_EMAIL_ADDR">
             <column name="EMAIL_ADDRESS"/>
         </createIndex>
+
+    </changeSet>
+
+    <changeSet author="hirannor" id="create_tables::auth:ddl:1.0.0">
+        <createTable tableName="EC_AUTH_USER">
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="EMAIL_ADDRESS" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UQ_EC_AUTH_EMAIL"/>
+            </column>
+
+            <column name="PASSWORD" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <createSequence sequenceName="AUTH_USER_SEQ" incrementBy="5" startValue="100"/>
 
     </changeSet>
 

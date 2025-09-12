@@ -2,7 +2,7 @@ package hu.hirannor.hexagonal.application.service;
 
 import hu.hirannor.hexagonal.application.usecase.CustomerDisplaying;
 import hu.hirannor.hexagonal.domain.customer.Customer;
-import hu.hirannor.hexagonal.domain.customer.CustomerId;
+import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.customer.CustomerRepository;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import org.apache.logging.log4j.LogManager;
@@ -16,24 +16,23 @@ import java.util.Optional;
 
 
 /**
- * A service implementation of query related operations for customer management
+ * A service implementation of query related operations for customer
  *
  * @author Mate Karolyi
  */
 @Service
 @Transactional(readOnly = true)
-class CustomerManagementQueryService implements
-        CustomerDisplaying{
+class CustomerQueryService implements CustomerDisplaying {
 
     private static final Logger LOGGER = LogManager.getLogger(
-        CustomerManagementQueryService.class
+        CustomerQueryService.class
     );
     private static final String ERR_CUSTOMER_ID_IS_NULL = "CustomerId cannot be null!";
 
     private final CustomerRepository customers;
 
     @Autowired
-    CustomerManagementQueryService(final CustomerRepository customers) {
+    CustomerQueryService(final CustomerRepository customers) {
         this.customers = customers;
     }
 

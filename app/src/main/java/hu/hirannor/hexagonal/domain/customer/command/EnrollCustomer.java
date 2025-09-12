@@ -16,8 +16,8 @@ import java.time.LocalDate;
  * @param fullName     {@link FullName} full name of customer
  * @param birthDate    {@link LocalDate} birth date of customer
  * @param gender       {@link Gender} gender of customer
- * @param address      {@link Address} address of customer
- * @param emailAddress {@link EmailAddress} email address of customer
+ * @param address      {@link Address} emailAddress of customer
+ * @param emailAddress {@link EmailAddress} email emailAddress of customer
  * @author Mate Karolyi
  */
 public record EnrollCustomer(CommandId id,

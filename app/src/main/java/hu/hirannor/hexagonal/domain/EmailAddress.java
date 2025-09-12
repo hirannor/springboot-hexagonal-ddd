@@ -3,9 +3,9 @@ package hu.hirannor.hexagonal.domain;
 import java.util.regex.Pattern;
 
 /**
- * Immutable record to hold email address of a customer.
+ * Immutable record to hold email emailAddress of a customer.
  *
- * @param value {@link String} raw value of email address
+ * @param value {@link String} raw value of email emailAddress
  * @author Mate Karolyi
  */
 public record EmailAddress(String value) {
@@ -19,18 +19,18 @@ public record EmailAddress(String value) {
     /**
      * Default constructor
      *
-     * @param value raw email address
+     * @param value raw email emailAddress
      */
     public EmailAddress {
         if (value == null || value.isEmpty()) throw new IllegalArgumentException("EmailAddress cannot be null!");
 
-        if (!isValidEmailAddress(value)) throw new IllegalArgumentException("Format of email-address is not valid!");
+        if (!isValidEmailAddress(value)) throw new IllegalArgumentException("Format of email-emailAddress is not valid!");
     }
 
     /**
      * Create an instance of {@link EmailAddress} based on the given parameter
      *
-     * @param value email address as raw string
+     * @param value email emailAddress as raw string
      * @return an instance of {@link EmailAddress}
      */
     public static EmailAddress from(final String value) {
@@ -38,9 +38,9 @@ public record EmailAddress(String value) {
     }
 
     /**
-     * Validates if the given email address is valid or not
+     * Validates if the given email emailAddress is valid or not
      *
-     * @param value email address as raw string
+     * @param value email emailAddress as raw string
      * @return boolean value of validation result
      */
     private boolean isValidEmailAddress(final String value) {

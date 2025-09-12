@@ -1,10 +1,20 @@
 package hu.hirannor.hexagonal.adapter.authentication.jwt;
 
+import hu.hirannor.hexagonal.adapter.persistence.jpa.authentication.AuthUserModel;
 import hu.hirannor.hexagonal.application.port.Authenticator;
-import hu.hirannor.hexagonal.domain.authentication.AuthenticateUser;
-import hu.hirannor.hexagonal.domain.authentication.AuthenticatedUser;
-import hu.hirannor.hexagonal.domain.authentication.RegisterUser;
+import hu.hirannor.hexagonal.domain.EmailAddress;
+import hu.hirannor.hexagonal.domain.authentication.*;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+
+import java.security.Key;
+import java.time.Instant;
+import java.util.Date;
+import java.util.function.Supplier;
 
 /**
  * Naive implementation of {@link Authenticator}
@@ -13,13 +23,72 @@ import org.springframework.stereotype.Component;
  */
 @Component
 class JwtAuthentication implements Authenticator {
-    @Override
-    public AuthenticatedUser authenticate(final AuthenticateUser cmd) {
-        throw new UnsupportedOperationException("Not implemented yet");
+
+    private final AuthenticationRepository authentications;
+    private final Key jwtKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final BCryptPasswordEncoder encoder;
+
+
+    @Autowired
+    JwtAuthentication(final AuthenticationRepository authentications,
+                      final BCryptPasswordEncoder encoder) {
+        this.authentications = authentications;
+        this.encoder = encoder;
     }
 
     @Override
-    public void register(final RegisterUser cmd) {
-        // NOOP
+    public AuthenticationResult authenticate(final AuthUser auth) {
+        if (auth == null) throw new IllegalArgumentException("auth cannot be null");
+
+        final AuthUser storedUser = authentications.findByEmail(auth.emailAddress())
+                .orElseThrow(failBecauseEmailAddressWasNotFound(auth));
+
+        if (!encoder.matches(auth.password().value(), storedUser.password().value()))
+            throw new IllegalStateException("Invalid password");
+
+        final String token = generateToken(storedUser.emailAddress());
+
+        return AuthenticationResult.from(
+                auth.emailAddress(),
+                token
+        );
+    }
+
+    @Override
+    public AuthUser validateToken(final String token) {
+        final String email = Jwts.parserBuilder()
+                .setSigningKey(jwtKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+
+        return AuthUser.of(EmailAddress.from(email), null);
+    }
+
+    @Override
+    public void register(final AuthUser auth) {
+        if (auth == null) throw new IllegalArgumentException("auth cannot be null");
+
+        final AuthUser hashedUser = new AuthUser(
+                auth.emailAddress(),
+                new Password(encoder.encode(auth.password().value()))
+        );
+
+        authentications.save(hashedUser);
+    }
+
+    private Supplier<IllegalStateException> failBecauseEmailAddressWasNotFound(AuthUser auth) {
+        return () -> new IllegalStateException("email address: " + auth.emailAddress() + " not found");
+    }
+
+    private String generateToken(final EmailAddress email) {
+        final Instant now = Instant.now();
+        return Jwts.builder()
+                .setSubject(email.value())
+                .setIssuedAt(Date.from(now))
+                .setExpiration(Date.from(now.plusSeconds(3600)))
+                .signWith(jwtKey)
+                .compact();
     }
 }

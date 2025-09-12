@@ -4,6 +4,7 @@ import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping.CustomerMa
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping.CustomerModeller;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerView;
+import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
@@ -42,7 +43,6 @@ class CustomerJpaRepository implements CustomerRepository {
     private static final String ERR_CUSTOMER_IS_NULL = "Customer cannot be null!";
     private static final String ERR_EMAIL_ADDRESS_CANNOT_IS_NULL = "EmailAddress cannot be null!";
 
-    private final Function<Customer, CustomerModel> mapDomainToModel;
     private final Function<CustomerModel, Customer> mapModelToDomain;
     private final Function<CustomerView, Customer> mapViewToDomain;
 
@@ -51,18 +51,15 @@ class CustomerJpaRepository implements CustomerRepository {
     @Autowired
     CustomerJpaRepository(final CustomerSpringDataJpaRepository customers) {
         this(customers,
-                CustomerMappingFactory.createCustomerToModelMapper(),
                 CustomerMappingFactory.createCustomerModelToDomainMapper(),
                 CustomerMappingFactory.createCustomerViewToDomainMapper()
         );
     }
 
     CustomerJpaRepository(final CustomerSpringDataJpaRepository customers,
-                          final Function<Customer, CustomerModel> mapDomainToModel,
                           final Function<CustomerModel, Customer> mapModelToDomain,
                           final Function<CustomerView, Customer> mapViewToDomain) {
         this.customers = customers;
-        this.mapDomainToModel = mapDomainToModel;
         this.mapModelToDomain = mapModelToDomain;
         this.mapViewToDomain = mapViewToDomain;
     }
@@ -106,7 +103,7 @@ class CustomerJpaRepository implements CustomerRepository {
     public Optional<Customer> findByEmailAddress(final EmailAddress email) {
         if (email == null) throw new IllegalArgumentException(ERR_EMAIL_ADDRESS_CANNOT_IS_NULL);
 
-        LOGGER.debug("Fetching customer by e-mail address: {}", email);
+        LOGGER.debug("Fetching customer by e-mail emailAddress: {}", email);
 
         return customers.findByEmailAddress(email.value())
                 .map(mapViewToDomain);

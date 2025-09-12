@@ -119,8 +119,6 @@ adapter:
 
 * Accessible locally at: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
-![Preview](img/openapi-swagger-ui.PNG)
-
 ## Docker Setup
 
 * **File:** `docker-compose.yml`
