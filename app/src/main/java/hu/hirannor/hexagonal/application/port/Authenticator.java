@@ -6,5 +6,5 @@ import hu.hirannor.hexagonal.domain.authentication.RegisterUser;
 
 public interface Authenticator {
     AuthenticatedUser authenticate(AuthenticateUser cmd);
-    void registerUser(RegisterUser cmd);
+    void register(RegisterUser cmd);
 }

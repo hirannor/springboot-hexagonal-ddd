@@ -65,12 +65,12 @@ public class JpaPersistenceConfiguration {
             final JpaProperties jpaProperties) {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
         em.setDataSource(ds);
-        em.setPackagesToScan("hu.hirannor.hexagonal.adapter.persistence.jpa.customer");
+        em.setPackagesToScan("hu.hirannor.hexagonal.adapter.persistence.jpa");
 
         final HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setShowSql(jpaProperties.isShowSql());
-        em.setJpaVendorAdapter(vendorAdapter);
 
+        em.setJpaVendorAdapter(vendorAdapter);
         em.setJpaPropertyMap(jpaProperties.getProperties());
         return em;
     }

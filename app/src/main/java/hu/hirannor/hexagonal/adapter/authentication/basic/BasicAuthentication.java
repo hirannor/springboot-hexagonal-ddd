@@ -20,7 +20,7 @@ class BasicAuthentication implements Authenticator {
     }
 
     @Override
-    public void registerUser(final RegisterUser cmd) {
+    public void register(final RegisterUser cmd) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 }

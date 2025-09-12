@@ -19,7 +19,7 @@ class JwtAuthentication implements Authenticator {
     }
 
     @Override
-    public void registerUser(RegisterUser cmd) {
+    public void register(final RegisterUser cmd) {
         // NOOP
     }
 }
