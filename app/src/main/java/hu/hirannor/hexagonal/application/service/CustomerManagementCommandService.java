@@ -3,18 +3,16 @@ package hu.hirannor.hexagonal.application.service;
 import hu.hirannor.hexagonal.application.error.CustomerAlreadyExistWithEmailAddress;
 import hu.hirannor.hexagonal.application.error.CustomerNotFound;
 import hu.hirannor.hexagonal.application.usecase.*;
+import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
 import hu.hirannor.hexagonal.domain.customer.command.EnrollCustomer;
-import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.function.Supplier;
 
 /**

@@ -1,7 +1,7 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.customer;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
-import hu.hirannor.hexagonal.domain.customer.EmailAddress;
+import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.Gender;
 import org.springframework.data.jpa.domain.Specification;
 

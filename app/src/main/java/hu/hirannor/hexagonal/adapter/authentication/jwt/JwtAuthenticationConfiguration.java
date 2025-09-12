@@ -1,21 +1,14 @@
-package hu.hirannor.hexagonal.adapter.authentication.basic;
+package hu.hirannor.hexagonal.adapter.authentication.jwt;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Spring configuration class for basic authentication.
- *
- * @author Mate Karolyi
- */
 @Configuration
 @ComponentScan
 @ConditionalOnProperty(
     value = "adapter.authentication",
-    havingValue = "basic",
-    matchIfMissing = true
+    havingValue = "jwt"
 )
-public class BasicAuthenticationConfiguration {
-
+public class JwtAuthenticationConfiguration {
 }

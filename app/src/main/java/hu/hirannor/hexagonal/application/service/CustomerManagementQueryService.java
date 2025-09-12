@@ -1,17 +1,9 @@
 package hu.hirannor.hexagonal.application.service;
 
-import hu.hirannor.hexagonal.application.error.CustomerAlreadyExistWithEmailAddress;
-import hu.hirannor.hexagonal.application.error.CustomerNotFound;
-import hu.hirannor.hexagonal.application.usecase.CustomerDeletion;
 import hu.hirannor.hexagonal.application.usecase.CustomerDisplaying;
-import hu.hirannor.hexagonal.application.usecase.CustomerModification;
-import hu.hirannor.hexagonal.application.usecase.CustomerRegistration;
 import hu.hirannor.hexagonal.domain.customer.Customer;
 import hu.hirannor.hexagonal.domain.customer.CustomerId;
 import hu.hirannor.hexagonal.domain.customer.CustomerRepository;
-import hu.hirannor.hexagonal.domain.customer.EmailAddress;
-import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
-import hu.hirannor.hexagonal.domain.customer.command.EnrollCustomer;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

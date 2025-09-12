@@ -4,7 +4,7 @@ import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping.CustomerMa
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping.CustomerModeller;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerView;
-import hu.hirannor.hexagonal.application.error.CustomerNotFound;
+import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import static hu.hirannor.hexagonal.adapter.persistence.jpa.customer.CustomerModelSpecification.*;
 import static org.springframework.data.jpa.domain.Specification.where;

@@ -45,8 +45,16 @@ class PackageStructureArchTest {
         adapters()
                 .whereLayer(MESSAGING.ringName())
                 .mayOnlyBeAccessedByLayers(APPLICATION.ringName(), HEXAGONAL_APP)
-                .whereLayer(JPA_CUSTOMER.ringName()).mayOnlyBeAccessedByLayers(JPA.ringName())
-                .whereLayer(REST_CUSTOMER.ringName()).mayOnlyBeAccessedByLayers(REST.ringName())
+                .whereLayer(JPA_CUSTOMER.ringName())
+                .mayOnlyBeAccessedByLayers(JPA.ringName())
+                .whereLayer(IN_MEMORY_CUSTOMER.ringName())
+                .mayOnlyBeAccessedByLayers(APPLICATION.ringName(), HEXAGONAL_APP)
+                .whereLayer(REST_CUSTOMER.ringName())
+                .mayOnlyBeAccessedByLayers(REST.ringName())
+                .whereLayer(AUTH_BASIC.ringName())
+                .mayOnlyBeAccessedByLayers(APPLICATION.ringName(), HEXAGONAL_APP)
+                .whereLayer(AUTH_JWT.ringName())
+                .mayOnlyBeAccessedByLayers(APPLICATION.ringName(), HEXAGONAL_APP)
                 .check(classes);
     }
 
@@ -56,8 +64,11 @@ class PackageStructureArchTest {
                 .layer(MESSAGING.ringName()).definedBy(MESSAGING.packagePath())
                 .layer(JPA.ringName()).definedBy(JPA.packagePath())
                 .layer(JPA_CUSTOMER.ringName()).definedBy(JPA_CUSTOMER.packagePath())
+                .layer(IN_MEMORY_CUSTOMER.ringName()).definedBy(IN_MEMORY_CUSTOMER.packagePath())
                 .layer(REST.ringName()).definedBy(REST.packagePath())
                 .layer(REST_CUSTOMER.ringName()).definedBy(REST_CUSTOMER.packagePath())
+                .layer(AUTH_BASIC.ringName()).definedBy(AUTH_BASIC.packagePath())
+                .layer(AUTH_JWT.ringName()).definedBy(AUTH_JWT.packagePath())
                 .layer(HEXAGONAL_APP).definedBy(JavaClass.Predicates.simpleName(SPRING_BOOT_APPLICATION_CLASS_NAME));
     }
 

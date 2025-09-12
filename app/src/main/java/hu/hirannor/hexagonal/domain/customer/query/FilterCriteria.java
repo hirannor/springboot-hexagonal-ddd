@@ -1,6 +1,6 @@
 package hu.hirannor.hexagonal.domain.customer.query;
 
-import hu.hirannor.hexagonal.domain.customer.EmailAddress;
+import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.Gender;
 import hu.hirannor.hexagonal.infrastructure.query.Query;
 

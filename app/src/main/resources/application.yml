@@ -25,7 +25,7 @@ spring:
 
 adapter:
   authentication: basic
-  persistence: spring-data-jpa
+  persistence: in-memory
   messaging: spring-event-bus
   web: rest
 

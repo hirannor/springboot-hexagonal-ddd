@@ -1,21 +1,21 @@
-package hu.hirannor.hexagonal.adapter.authentication.basic;
+package hu.hirannor.hexagonal.adapter.persistence.inmemory;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Spring configuration class for basic authentication.
+ * In memory persistence related configuration
  *
  * @author Mate Karolyi
  */
 @Configuration
 @ComponentScan
 @ConditionalOnProperty(
-    value = "adapter.authentication",
-    havingValue = "basic",
-    matchIfMissing = true
+    value = "adapter.persistence",
+    havingValue = "in-memory"
 )
-public class BasicAuthenticationConfiguration {
+public class InMemoryPersistenceConfiguration {
 
+    InMemoryPersistenceConfiguration() {}
 }

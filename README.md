@@ -64,10 +64,10 @@ public class JpaPersistenceConfiguration {
 application-[profile].yml
 ```YAML
 adapter:
-  authentication: basic
-  persistence: spring-data-jpa
-  messaging: spring-event-bus
-  web: rest
+  authentication: # basic | jwt
+  persistence: # spring-data-jpa | in-memory
+  messaging: # spring-event-bus
+  web: # rest
 ```
 
 ## Build and test with Maven
@@ -108,13 +108,3 @@ You can access the API documentation locally at the following URL:
 [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 ![Preview](img/openapi-swagger-ui.PNG)
-
-## Basic Authentication
-
-By default, the application uses **HTTP Basic Authentication**. Use the following credentials to access the API:
-
-- **Username:** `user`
-- **Password:** `password`
-
-All API requests must include these credentials.
-

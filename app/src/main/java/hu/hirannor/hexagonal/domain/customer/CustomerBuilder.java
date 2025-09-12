@@ -1,5 +1,7 @@
 package hu.hirannor.hexagonal.domain.customer;
 
+import hu.hirannor.hexagonal.domain.EmailAddress;
+
 import java.time.LocalDate;
 
 public final class CustomerBuilder {

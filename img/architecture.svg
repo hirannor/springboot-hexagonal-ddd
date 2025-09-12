@@ -12,7 +12,7 @@
     <rect width="900" height="800" fill="#ffffff"/>
 
     <!-- Title -->
-    <text x="450" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#2c3e50">Customer Domain</text>
+    <text x="450" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#2c3e50">Customer Domain</text>
     <text x="450" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#7f8c8d">Hexagonal Architecture</text>
 
     <!-- Central Hexagon (Application Core) -->
@@ -20,15 +20,15 @@
              fill="#3498db" stroke="#2980b9" stroke-width="3" filter="url(#shadow)"/>
 
     <!-- Application Core Content -->
-    <text x="450" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="white">Customer Domain</text>
-    <text x="450" y="235" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#ecf0f1">Application Service</text>
-    <text x="450" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#bdc3c7">Customer Management</text>
+    <text x="450" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white">Customer Domain</text>
+    <text x="450" y="235" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#ecf0f1">Application Service</text>
+    <text x="450" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#bdc3c7">Customer Management</text>
 
     <!-- Use Cases -->
-    <text x="450" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#ecf0f1">• Customer Registration</text>
-    <text x="450" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#ecf0f1">• Customer Modification</text>
-    <text x="450" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#ecf0f1">• Customer Displaying</text>
-    <text x="450" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#ecf0f1">• Customer Deletion</text>
+    <text x="450" y="285" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ecf0f1">• Customer Registration</text>
+    <text x="450" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ecf0f1">• Customer Modification</text>
+    <text x="450" y="315" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ecf0f1">• Customer Displaying</text>
+    <text x="450" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ecf0f1">• Customer Deletion</text>
 
     <!-- Primary Adapters (Driving/Left Side) -->
 
@@ -37,10 +37,15 @@
     <text x="120" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">REST API</text>
     <text x="120" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#f8c9c9">HTTP Controllers</text>
 
-    <!-- Authentication Adapter -->
+    <!-- Basic Authentication Adapter -->
     <rect x="50" y="280" width="140" height="70" rx="8" fill="#e74c3c" stroke="#c0392b" stroke-width="2" filter="url(#shadow)"/>
     <text x="120" y="305" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">Authentication</text>
     <text x="120" y="325" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#f8c9c9">Basic Auth</text>
+
+    <!-- JWT Authentication Adapter -->
+    <rect x="50" y="380" width="140" height="70" rx="8" fill="#e74c3c" stroke="#c0392b" stroke-width="2" filter="url(#shadow)"/>
+    <text x="120" y="405" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">Authentication</text>
+    <text x="120" y="425" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#f8c9c9">JWT Auth</text>
 
     <!-- Secondary Adapters (Driven/Right Side) -->
 
@@ -67,9 +72,9 @@
     <text x="250" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">REST</text>
     <text x="250" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Port</text>
 
-    <circle cx="250" cy="315" r="30" fill="#f39c12" stroke="#e67e22" stroke-width="2" filter="url(#shadow)"/>
-    <text x="250" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Auth</text>
-    <text x="250" y="325" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Port</text>
+    <circle cx="250" cy="335" r="30" fill="#f39c12" stroke="#e67e22" stroke-width="2" filter="url(#shadow)"/>
+    <text x="250" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Auth</text>
+    <text x="250" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Port</text>
 
     <!-- Secondary Ports (Interfaces) -->
     <circle cx="650" cy="185" r="30" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
@@ -88,11 +93,12 @@
 
     <!-- Primary side connections -->
     <path d="M 190 215 L 220 215" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
-    <path d="M 190 315 L 220 315" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+    <path d="M 190 315 L 220 335" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+    <path d="M 190 415 L 220 350" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
 
     <!-- Port to Core connections -->
     <path d="M 280 215 L 340 230" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
-    <path d="M 280 315 L 340 290" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
+    <path d="M 280 335 L 340 300" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
 
     <!-- Core to Port connections -->
     <path d="M 560 230 L 620 185" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)" fill="none"/>
@@ -113,13 +119,13 @@
     <text x="100" y="612" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Application Core - Contains business logic and use cases</text>
 
     <rect x="70" y="630" width="20" height="15" fill="#e74c3c"/>
-    <text x="100" y="642" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Primary Adapters - Drive the application (REST API, Authentication)</text>
+    <text x="100" y="642" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Primary Adapters - Drive the application (REST API, Basic Auth, JWT Auth)</text>
 
     <rect x="70" y="660" width="20" height="15" fill="#27ae60"/>
     <text x="100" y="672" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Secondary Adapters - Driven by application (Persistence, Messaging)</text>
 
     <circle cx="80" cy="695" r="8" fill="#f39c12"/>
-    <text x="100" y="700" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Primary Ports - Interfaces for incoming requests</text>
+    <text x="100" y="700" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Primary Ports - Interfaces for incoming requests (REST, Authentication)</text>
 
     <circle cx="80" cy="720" r="8" fill="#9b59b6"/>
     <text x="100" y="725" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Secondary Ports - Repository, MessagePublisher interfaces</text>

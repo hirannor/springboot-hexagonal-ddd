@@ -9,22 +9,34 @@ public enum Ring {
     APPLICATION("application", "hu.hirannor.hexagonal.application.."),
     DOMAIN("domain", "hu.hirannor.hexagonal.domain.."),
     INFRASTRUCTURE(
-            "infrastructure",
-            "hu.hirannor.hexagonal.infrastructure.."
+        "infrastructure",
+        "hu.hirannor.hexagonal.infrastructure.."
     ),
     MESSAGING(
-            "messaging adapter",
-            "hu.hirannor.hexagonal.adapter.messaging.."
+        "messaging adapter",
+        "hu.hirannor.hexagonal.adapter.messaging.."
+    ),
+    AUTH_BASIC(
+        "authentication basic adapter",
+        "hu.hirannor.hexagonal.adapter.authentication.basic.."
+    ),
+    AUTH_JWT(
+        "authentication jwt adapter",
+        "hu.hirannor.hexagonal.adapter.authentication.jwt.."
     ),
     JPA("jpa adapter", "hu.hirannor.hexagonal.adapter.persistence.jpa.."),
     JPA_CUSTOMER(
-            "jpa customer adapter",
-            "hu.hirannor.hexagonal.adapter.persistence.jpa.customer.."
+        "jpa customer adapter",
+        "hu.hirannor.hexagonal.adapter.persistence.jpa.customer.."
+    ),
+    IN_MEMORY_CUSTOMER(
+        "in memory customer adapter",
+        "hu.hirannor.hexagonal.adapter.persistence.inmemory.."
     ),
     REST("web rest adapter", "hu.hirannor.hexagonal.adapter.web.rest.."),
     REST_CUSTOMER(
-            "web rest customer adapter",
-            "hu.hirannor.hexagonal.adapter.web.rest.customer.."
+        "web rest customer adapter",
+        "hu.hirannor.hexagonal.adapter.web.rest.customer.."
     );
     private final String ringName;
     private final String packagePath;

@@ -1,6 +1,7 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.*;
+import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.*;
 
 import java.util.function.Function;
