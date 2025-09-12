@@ -36,7 +36,6 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     };
 
     private static final String BEARER = "Bearer ";
-    private static final String BASIC = "Basic ";
 
     private final Authenticator authenticator;
     private final ObjectMapper mapper;
