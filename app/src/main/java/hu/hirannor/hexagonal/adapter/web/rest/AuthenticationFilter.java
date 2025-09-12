@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.ProblemDetailsModel;
 import hu.hirannor.hexagonal.application.port.authentication.Authenticator;
 import hu.hirannor.hexagonal.domain.authentication.AuthUser;
+import hu.hirannor.hexagonal.domain.authentication.Role;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +22,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.List;
 
 @Component
 public class AuthenticationFilter extends OncePerRequestFilter {
@@ -75,7 +75,10 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 final UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         auth.emailAddress().value(),
                         null,
-                        List.of(new SimpleGrantedAuthority("USER"))
+                        auth.roles()
+                            .stream()
+                            .map(AuthenticationFilter::addRolePrefix)
+                            .toList()
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             } else {
@@ -104,5 +107,9 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.displayName());
         mapper.writeValue(response.getWriter(), details);
+    }
+
+    private static SimpleGrantedAuthority addRolePrefix(final Role role) {
+        return new SimpleGrantedAuthority("ROLE_" + role.name());
     }
 }

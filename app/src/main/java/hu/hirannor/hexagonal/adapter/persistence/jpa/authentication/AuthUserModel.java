@@ -1,6 +1,10 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.authentication;
 
+import hu.hirannor.hexagonal.adapter.persistence.jpa.authentication.role.RoleModel;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "EC_AUTH_USER")
@@ -26,6 +30,14 @@ public class AuthUserModel {
     @Column(name = "PASSWORD")
     private String password;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "EC_AUTH_USER_ROLE",
+        joinColumns = @JoinColumn(name = "USER_ID"),
+        inverseJoinColumns = @JoinColumn(name = "ROLE_ID")
+    )
+    private Set<RoleModel> roles = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -48,5 +60,13 @@ public class AuthUserModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Set<RoleModel> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<RoleModel> roles) {
+        this.roles = roles;
     }
 }

@@ -1,8 +1,10 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.authentication;
 
+import hu.hirannor.hexagonal.adapter.persistence.jpa.authentication.role.*;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.authentication.AuthUser;
 import hu.hirannor.hexagonal.domain.authentication.AuthenticationRepository;
+import hu.hirannor.hexagonal.domain.authentication.Role;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +15,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @Repository
 @Transactional(
@@ -23,26 +28,37 @@ import java.util.function.Function;
 @DrivenAdapter
 class AuthenticationJpaRepository implements AuthenticationRepository {
 
-    private static final Logger LOGGER = LogManager.getLogger(
-        AuthenticationJpaRepository.class
-    );
+    private static final Logger LOGGER = LogManager.getLogger(AuthenticationJpaRepository.class);
 
     private final Function<AuthUser, AuthUserModel> mapAuthUserToModel;
     private final Function<AuthUserModel, AuthUser> mapAuthUserModelToValueObject;
 
+    private final Function<Role, PermissionRoleModel> mapRoleToModel;
+
     private final AuthenticationSpringDataJpaRepository authentications;
+    private final RoleSpringDataJpaRepository roles;
 
     @Autowired
-    AuthenticationJpaRepository(final AuthenticationSpringDataJpaRepository authentications) {
-        this(authentications, new AuthUserToModelMapper(), new AuthUserModelToValueObjectMapper());
+    AuthenticationJpaRepository(final AuthenticationSpringDataJpaRepository authentications,
+                                final RoleSpringDataJpaRepository roles) {
+        this(
+            authentications,
+            roles,
+            new AuthUserToModelMapper(),
+            new AuthUserModelToValueObjectMapper(),
+            RoleMappingFactory.createRoleModelToRoleMapper());
     }
 
     AuthenticationJpaRepository(final AuthenticationSpringDataJpaRepository authentications,
+                                final RoleSpringDataJpaRepository roles,
                                 final Function<AuthUser, AuthUserModel> mapAuthUserToModel,
-                                final Function<AuthUserModel, AuthUser> mapAuthUserModelToValueObject) {
+                                final Function<AuthUserModel, AuthUser> mapAuthUserModelToValueObject,
+                                final Function<Role, PermissionRoleModel> mapRoleToModel) {
         this.authentications = authentications;
+        this.roles = roles;
         this.mapAuthUserToModel = mapAuthUserToModel;
         this.mapAuthUserModelToValueObject = mapAuthUserModelToValueObject;
+        this.mapRoleToModel = mapRoleToModel;
     }
 
     @Override
@@ -50,6 +66,17 @@ class AuthenticationJpaRepository implements AuthenticationRepository {
         if (auth == null) throw new IllegalArgumentException("auth cannot be null");
 
         final AuthUserModel toPersist = mapAuthUserToModel.apply(auth);
+
+        final Set<Role> rolesToSave = auth.roles().isEmpty()
+                ? Set.of(Role.CUSTOMER)
+                : auth.roles();
+
+        final Set<RoleModel> persistedRoles = rolesToSave
+                .stream()
+                .map(this::mapRoleToPersisted)
+                .collect(Collectors.toSet());
+
+        toPersist.setRoles(persistedRoles);
 
         authentications.save(toPersist);
     }
@@ -60,5 +87,15 @@ class AuthenticationJpaRepository implements AuthenticationRepository {
 
         return authentications.findByEmailAddress(email.value())
                 .map(mapAuthUserModelToValueObject);
+    }
+
+    private RoleModel mapRoleToPersisted(Role role) {
+        final PermissionRoleModel permission = mapRoleToModel.apply(role);
+        return roles.findByName(permission.dbRepresentation())
+                .orElseThrow(failBecauseRoleNotFoundBy(permission));
+    }
+
+    private Supplier<IllegalStateException> failBecauseRoleNotFoundBy(PermissionRoleModel permission) {
+        return () -> new IllegalStateException("Role not found: " + permission);
     }
 }

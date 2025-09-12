@@ -2,14 +2,16 @@ package hu.hirannor.hexagonal.domain.authentication;
 
 import hu.hirannor.hexagonal.domain.EmailAddress;
 
-public record AuthUser(EmailAddress emailAddress, Password password) {
+import java.util.Set;
+
+public record AuthUser(EmailAddress emailAddress, Password password, Set<Role> roles) {
 
     public AuthUser {
         if (emailAddress == null)
             throw new IllegalArgumentException("EmailAddress cannot be null");
     }
 
-    public static AuthUser of(final EmailAddress emailAddress, final Password password) {
-        return new AuthUser(emailAddress, password);
+    public static AuthUser of(final EmailAddress emailAddress, final Password password, final Set<Role> roles) {
+        return new AuthUser(emailAddress, password, roles);
     }
 }

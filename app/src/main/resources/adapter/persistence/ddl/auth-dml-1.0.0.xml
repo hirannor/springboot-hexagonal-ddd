@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="insert_default_roles" author="hirannor">
+        <insert tableName="EC_ROLE">
+            <column name="ID" valueNumeric="1"/>
+            <column name="NAME" value="Customer"/>
+        </insert>
+
+        <insert tableName="EC_ROLE">
+            <column name="ID" valueNumeric="2"/>
+            <column name="NAME" value="Admin"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert_admin_user" author="hirannor">
+        <insert tableName="EC_AUTH_USER">
+            <column name="ID" valueNumeric="1"/>
+            <column name="EMAIL_ADDRESS" value="admin@example.com"/>
+            <column name="PASSWORD" value="$2a$10$AmBv.OKIxcLu.q5x26/cAeDneh2G6NGmufRbXjfqGmuwFpul1hvva"/>
+        </insert>
+
+        <insert tableName="EC_AUTH_USER_ROLE">
+            <column name="USER_ID" valueNumeric="1"/>
+            <column name="ROLE_ID" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+
+
+</databaseChangeLog>

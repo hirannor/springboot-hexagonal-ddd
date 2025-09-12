@@ -66,6 +66,10 @@ public class CustomerModeller implements Modeller<CustomerModel> {
                 .ifPresent(model::setPostalCode);
 
         Optional.ofNullable(domain.address())
+                .map(Address::city)
+                .ifPresent(model::setCity);
+
+        Optional.ofNullable(domain.address())
                 .map(Address::streetAddress)
                 .ifPresent(model::setStreetAddress);
 

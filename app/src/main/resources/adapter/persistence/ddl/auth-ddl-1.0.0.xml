@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="hirannor" id="create_tables::auth:ddl:1.0.0">
+        <createTable tableName="EC_AUTH_USER">
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="EMAIL_ADDRESS" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UQ_EC_AUTH_EMAIL"/>
+            </column>
+
+            <column name="PASSWORD" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <createSequence sequenceName="AUTH_USER_SEQ" incrementBy="5" startValue="100"/>
+
+        <createTable tableName="EC_ROLE">
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="NAME" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UQ_EC_ROLE_NAME"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="ROLE_SEQ" incrementBy="5" startValue="10"/>
+
+        <createTable tableName="EC_AUTH_USER_ROLE">
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="ROLE_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="EC_AUTH_USER_ROLE" columnNames="USER_ID,ROLE_ID" constraintName="PK_USER_ROLE"/>
+
+        <addForeignKeyConstraint baseTableName="EC_AUTH_USER_ROLE"
+                                 baseColumnNames="USER_ID"
+                                 referencedTableName="EC_AUTH_USER"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_USER_ROLE_USER"/>
+
+        <addForeignKeyConstraint baseTableName="EC_AUTH_USER_ROLE"
+                                 baseColumnNames="ROLE_ID"
+                                 referencedTableName="EC_ROLE"
+                                 referencedColumnNames="ID"
+                                 constraintName="FK_USER_ROLE_ROLE"/>
+
+    </changeSet>
+
+
+</databaseChangeLog>

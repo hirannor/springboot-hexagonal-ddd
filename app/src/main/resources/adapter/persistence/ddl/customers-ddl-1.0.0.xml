@@ -55,25 +55,5 @@
 
     </changeSet>
 
-    <changeSet author="hirannor" id="create_tables::auth:ddl:1.0.0">
-        <createTable tableName="EC_AUTH_USER">
-            <column name="ID" type="BIGINT">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-
-            <column name="EMAIL_ADDRESS" type="VARCHAR(255)">
-                <constraints nullable="false" unique="true" uniqueConstraintName="UQ_EC_AUTH_EMAIL"/>
-            </column>
-
-            <column name="PASSWORD" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-
-        </createTable>
-
-        <createSequence sequenceName="AUTH_USER_SEQ" incrementBy="5" startValue="100"/>
-
-    </changeSet>
-
 
 </databaseChangeLog>

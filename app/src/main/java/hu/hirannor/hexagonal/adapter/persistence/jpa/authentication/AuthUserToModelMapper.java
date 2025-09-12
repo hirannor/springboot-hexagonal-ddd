@@ -6,7 +6,8 @@ import java.util.function.Function;
 
 class AuthUserToModelMapper implements Function<AuthUser, AuthUserModel> {
 
-    AuthUserToModelMapper() {}
+    AuthUserToModelMapper() {
+    }
     
     @Override
     public AuthUserModel apply(final AuthUser valueObject) {
@@ -15,6 +16,7 @@ class AuthUserToModelMapper implements Function<AuthUser, AuthUserModel> {
         final AuthUserModel model = new AuthUserModel();
         model.setPassword(valueObject.password().value());
         model.setEmailAddress(valueObject.emailAddress().value());
+
         return model;
     }
 }

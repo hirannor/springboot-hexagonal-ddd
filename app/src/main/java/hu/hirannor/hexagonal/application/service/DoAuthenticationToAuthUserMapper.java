@@ -13,6 +13,6 @@ class DoAuthenticationToAuthUserMapper implements Function<DoAuthenticate, AuthU
     public AuthUser apply(final DoAuthenticate cmd) {
         if (cmd == null) throw new IllegalArgumentException("DoAuthenticate cannot be null");
 
-        return AuthUser.of(cmd.emailAddress(), cmd.password());
+        return AuthUser.of(cmd.emailAddress(), cmd.password(), null);
     }
 }

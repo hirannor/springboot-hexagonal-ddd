@@ -1,5 +1,6 @@
 package hu.hirannor.hexagonal.application.service;
 
+import hu.hirannor.hexagonal.domain.authentication.Role;
 import hu.hirannor.hexagonal.domain.error.CustomerAlreadyExistWithEmailAddress;
 import hu.hirannor.hexagonal.application.port.authentication.Authenticator;
 import hu.hirannor.hexagonal.application.usecase.Registrating;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 
 @Service
 @Transactional(
@@ -45,7 +48,7 @@ class RegistrationService implements Registrating {
 
         final Customer newlyRegistered = Customer.registerBy(command);
         customers.save(newlyRegistered);
-        authenticator.register(AuthUser.of(command.emailAddress(), command.password()));
+        authenticator.register(AuthUser.of(command.emailAddress(), command.password(), Set.of(Role.CUSTOMER)));
 
         LOGGER.info("Customer with id: {} is successfully registered!", newlyRegistered.customerId());
     }

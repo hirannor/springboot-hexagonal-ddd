@@ -4,12 +4,12 @@ import hu.hirannor.hexagonal.application.port.authentication.Authenticator;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.authentication.*;
 import hu.hirannor.hexagonal.domain.error.CustomerNotFound;
-import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
+import hu.hirannor.hexagonal.domain.error.InvalidPassword;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,11 @@ import org.springframework.stereotype.Component;
 import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * Naive implementation of {@link Authenticator}
@@ -35,6 +39,8 @@ class JwtAuthentication implements Authenticator {
         JwtAuthentication.class
     );
 
+    private final Function<RoleModel, Role> mapRoleModelToRole;
+
     private final AuthenticationRepository authentications;
     private final Key jwtKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final BCryptPasswordEncoder encoder;
@@ -42,8 +48,15 @@ class JwtAuthentication implements Authenticator {
     @Autowired
     JwtAuthentication(final AuthenticationRepository authentications,
                       final BCryptPasswordEncoder encoder) {
+       this(authentications, encoder, new RoleModelToRoleMapper());
+    }
+
+    JwtAuthentication(final AuthenticationRepository authentications,
+                      final BCryptPasswordEncoder encoder,
+                      final Function<RoleModel, Role> mapRoleModelToRole) {
         this.authentications = authentications;
         this.encoder = encoder;
+        this.mapRoleModelToRole = mapRoleModelToRole;
     }
 
     @Override
@@ -54,9 +67,9 @@ class JwtAuthentication implements Authenticator {
                 .orElseThrow(failBecauseEmailAddressWasNotFound(user.emailAddress()));
 
         if (!encoder.matches(user.password().value(), storedUser.password().value()))
-            throw new IllegalStateException("Invalid password");
+            throw new InvalidPassword("Invalid password");
 
-        final String token = generateToken(storedUser.emailAddress());
+        final String token = generateTokenFrom(storedUser);
 
         return AuthenticationResult.from(
                 user.emailAddress(),
@@ -66,18 +79,23 @@ class JwtAuthentication implements Authenticator {
 
     @Override
     public AuthUser validateToken(final String token) {
-        if (token == null) throw new IllegalArgumentException("token is null");
-
         try {
-            final String email = Jwts.parserBuilder()
+            final Claims claims = Jwts.parserBuilder()
                     .setSigningKey(jwtKey)
                     .build()
                     .parseClaimsJws(token)
-                    .getBody()
-                    .getSubject();
-            return AuthUser.of(EmailAddress.from(email), null);
-        } catch(final SignatureException ex) {
-            throw new AuthenticationServiceException("Invalid JWT signature", ex);
+                    .getBody();
+
+            final String email = claims.getSubject();
+            final Set<Role> roles = ((List<String>) claims.get("roles"))
+                    .stream()
+                    .map(mapToRoleModel()
+                            .andThen(mapRoleModelToRole))
+                    .collect(Collectors.toSet());
+
+            return AuthUser.of(EmailAddress.from(email), null, roles);
+        } catch (final Exception ex) {
+            throw new AuthenticationServiceException("Invalid JWT token", ex);
         }
     }
 
@@ -87,7 +105,8 @@ class JwtAuthentication implements Authenticator {
 
         final AuthUser hashedUser = new AuthUser(
                 auth.emailAddress(),
-                new Password(encoder.encode(auth.password().value()))
+                new Password(encoder.encode(auth.password().value())),
+                auth.roles()
         );
 
         authentications.save(hashedUser);
@@ -97,13 +116,24 @@ class JwtAuthentication implements Authenticator {
         return () -> new CustomerNotFound("Customer was not found by: " + emailAddress.value());
     }
 
-    private String generateToken(final EmailAddress email) {
+    private String generateTokenFrom(final AuthUser user) {
         final Instant now = Instant.now();
+
+        final List<String> roles = user.roles()
+                .stream()
+                .map(Enum::name)
+                .toList();
+
         return Jwts.builder()
-                .setSubject(email.value())
+                .setSubject(user.emailAddress().value())
+                .claim("roles", roles)
                 .setIssuedAt(Date.from(now))
                 .setExpiration(Date.from(now.plusSeconds(3600)))
                 .signWith(jwtKey)
                 .compact();
+    }
+
+    private Function<String, RoleModel> mapToRoleModel() {
+        return RoleModel::from;
     }
 }

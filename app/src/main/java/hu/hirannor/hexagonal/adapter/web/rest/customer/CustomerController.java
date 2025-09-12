@@ -12,6 +12,7 @@ import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,6 +66,7 @@ class CustomerController implements CustomersApi {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('CUSTOMER')")
     public ResponseEntity<CustomerModel> changePersonalDetails(final String customerId,
                                                        final ChangePersonalDetailsModel model) {
         final ChangePersonalDetails cmd = CustomerMappingFactory
@@ -77,6 +79,7 @@ class CustomerController implements CustomersApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteBy(final String customerId) {
         customer.deleteBy(CustomerId.from(customerId));
 
@@ -84,6 +87,7 @@ class CustomerController implements CustomersApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<CustomerModel>> displayAll(final Optional<LocalDate> birthDateFrom,
                                                           final Optional<LocalDate> birthDateTo,
                                                           final Optional<GenderModel> gender,
@@ -105,6 +109,7 @@ class CustomerController implements CustomersApi {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('CUSTOMER')")
     public ResponseEntity<CustomerModel> displayBy(final String rawCustomerId) {
         return customers.displayBy(CustomerId.from(rawCustomerId))
                 .map(mapCustomerToModel)
@@ -114,6 +119,7 @@ class CustomerController implements CustomersApi {
 
 
     @Override
+    @PreAuthorize("hasAnyRole('CUSTOMER')")
     public ResponseEntity<CustomerModel> authenticatedCustomer() {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 

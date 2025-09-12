@@ -18,9 +18,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @ComponentScan
 @ConditionalOnProperty(
-        value = "adapter.web",
-        havingValue = "rest",
-        matchIfMissing = true
+    value = "adapter.web",
+    havingValue = "rest",
+    matchIfMissing = true
 )
 @EnableWebSecurity
 public class RestApiConfiguration {
@@ -36,7 +36,10 @@ public class RestApiConfiguration {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/api/customers", "/api/customers/**").authenticated()
+                    .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/customers").hasAnyRole("ADMIN")
+                    .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/customers/**").hasAnyRole("CUSTOMER")
+                    .requestMatchers(org.springframework.http.HttpMethod.PUT, "/api/customers/**").hasAnyRole("CUSTOMER")
+                    .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/customers/**").hasRole("ADMIN")
                     .anyRequest().permitAll()
             )
             .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);

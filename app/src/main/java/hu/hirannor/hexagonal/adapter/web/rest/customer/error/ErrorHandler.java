@@ -3,6 +3,7 @@ package hu.hirannor.hexagonal.adapter.web.rest.customer.error;
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.ProblemDetailsModel;
 import hu.hirannor.hexagonal.domain.error.CustomerAlreadyExistWithEmailAddress;
 import hu.hirannor.hexagonal.domain.error.CustomerNotFound;
+import hu.hirannor.hexagonal.domain.error.InvalidPassword;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +45,18 @@ class ErrorHandler {
                 .detail(ex.getMessage());
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidPassword.class)
+    ResponseEntity<?> invalidPassword(final InvalidPassword ex, final HttpServletRequest request) {
+        final ProblemDetailsModel message = new ProblemDetailsModel()
+                .timestamp(Instant.now())
+                .status(HttpStatus.FORBIDDEN.value())
+                .title(HttpStatus.FORBIDDEN.getReasonPhrase())
+                .instance(request.getRequestURI())
+                .detail(ex.getMessage());
+
+        return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(IllegalStateException.class)

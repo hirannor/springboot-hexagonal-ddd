@@ -7,16 +7,27 @@ POST http://localhost:8080/api/register
 Content-Type: application/json
 
 {
-  "emailAddress": "john.doe@test.com",
+  "emailAddress": "test@example.com",
   "password": "V7fR9pQ2"
 }
 
-### Authenticate a user (POST /api/auth)
+### Authenticate as an CUSTOMER (POST /api/auth)
 POST http://localhost:8080/api/auth
 Content-Type: application/json
 
 {
-  "emailAddress": "john.doe@test.com",
+  "emailAddress": "test@example.com",
+  "password": "V7fR9pQ2"
+}
+
+> {% client.global.set("bearerToken", response.body.token) %}
+
+### Authenticate as an ADMIN (POST /api/auth)
+POST http://localhost:8080/api/auth
+Content-Type: application/json
+
+{
+  "emailAddress": "admin@example.com",
   "password": "V7fR9pQ2"
 }
 
@@ -56,7 +67,7 @@ Authorization: Bearer {{bearerToken}}
     "streetAddress": "Wolf street 15"
   },
   "gender": "MALE",
-  "emailAddress": "johnny.doe@test.com"
+  "emailAddress": "test@example.com"
 }
 
 ### Get all customers with query parameters (GET /api/customers)

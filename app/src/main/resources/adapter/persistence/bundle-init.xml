@@ -5,6 +5,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <!-- DDL -->
+    <include file="adapter/persistence/ddl/auth-ddl-1.0.0.xml"/>
+    <include file="adapter/persistence/ddl/auth-dml-1.0.0.xml"/>
     <include file="adapter/persistence/ddl/customers-ddl-1.0.0.xml"/>
 
 </databaseChangeLog>
