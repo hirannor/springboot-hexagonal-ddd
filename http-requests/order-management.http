@@ -100,3 +100,14 @@ Authorization: Bearer {{bearerToken}}
     "currency": "HUF"
   }
 }
+
+> {%
+    const location = response.headers.valueOf("Location");
+    const productId = location.substring(location.lastIndexOf("/") + 1);
+    client.global.set("productId", productId);
+%}
+
+### Query product by ID (earlier created one)
+GET http://localhost:8080/api/products/{{productId}}
+Content-Type: application/json
+Authorization: Bearer {{bearerToken}}
