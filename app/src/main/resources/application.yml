@@ -26,6 +26,7 @@ spring:
 adapter:
   authentication: jwt
   persistence: spring-data-jpa
+  payment: mock
   notification: email
   messaging: spring-event-bus
   web: rest

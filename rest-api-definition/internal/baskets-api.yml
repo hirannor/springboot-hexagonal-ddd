@@ -1,0 +1,206 @@
+openapi: 3.0.3
+info:
+  title: Basket API
+  version: 1.0.0
+  description: API for managing customer baskets
+security:
+  - bearerAuth: []
+
+paths:
+  /baskets:
+    post:
+      summary: Create a new basket
+      operationId: createBasket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBasket'
+      responses:
+        '201':
+          description: Basket created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Basket'
+    get:
+      summary: List all baskets (admin)
+      operationId: displayAll
+      responses:
+        '200':
+          description: A list of baskets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Basket'
+
+  /baskets/{basketId}:
+    get:
+      summary: Get a basket by ID
+      operationId: displayBy
+      parameters:
+        - name: basketId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: The basket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Basket'
+        '404':
+          description: Basket not found
+
+  /baskets/{basketId}/items:
+    post:
+      summary: Add item to basket
+      operationId: addItem
+      parameters:
+        - name: basketId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BasketItem'
+      responses:
+        '200':
+          description: Item added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Basket'
+        '404':
+          description: Basket not found
+
+    delete:
+      summary: Remove item from basket
+      operationId: removeItem
+      parameters:
+        - name: basketId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BasketItem'
+      responses:
+        '200':
+          description: Item removed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Basket'
+        '404':
+          description: Basket not found
+
+  /baskets/{basketId}/checkout:
+    post:
+      summary: Checkout basket
+      operationId: checkout
+      parameters:
+        - name: basketId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Basket checked out
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Basket'
+        '404':
+          description: Basket not found
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Currency:
+      type: string
+      enum:
+        - HUF
+        - EUR
+
+    Money:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: decimal
+          example: "99.99"
+        currency:
+          $ref: '#/components/schemas/Currency'
+      required:
+        - amount
+        - currency
+
+    BasketItem:
+      type: object
+      properties:
+        productId:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+          minimum: 1
+        price:
+          $ref: '#/components/schemas/Money'
+      required:
+        - productId
+        - quantity
+        - price
+
+    CreateBasket:
+      type: object
+      properties:
+        customerId:
+          type: string
+          format: uuid
+      required:
+        - customerId
+
+    Basket:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        customerId:
+          type: string
+          format: uuid
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/BasketItem'
+        totalPrice:
+          $ref: '#/components/schemas/Money'
+      required:
+        - id
+        - customerId
+        - items
+        - totalPrice

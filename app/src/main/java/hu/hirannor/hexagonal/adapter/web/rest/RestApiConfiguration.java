@@ -52,6 +52,16 @@ public class RestApiConfiguration {
                         .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/products/**")
                         .hasRole(PermissionRoleModel.ADMIN.value())
 
+                        // Baskets API
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/baskets")
+                        .hasRole(PermissionRoleModel.ADMIN.value())
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/baskets/**")
+                        .hasAnyRole(PermissionRoleModel.CUSTOMER.value())
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/baskets")
+                        .hasRole(PermissionRoleModel.CUSTOMER.value())
+                        .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/baskets/**")
+                        .hasRole(PermissionRoleModel.ADMIN.value())
+
                         // Orders API
                         .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/orders/**")
                         .hasRole(PermissionRoleModel.CUSTOMER.value())

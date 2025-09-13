@@ -68,7 +68,7 @@ class CustomerController implements CustomersApi {
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('CUSTOMER')")
+    @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<CustomerModel> changePersonalDetails(final String customerId,
                                                        final ChangePersonalDetailsModel model) {
         final ChangePersonalDetails cmd = CustomerMappingFactory
@@ -111,7 +111,7 @@ class CustomerController implements CustomersApi {
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('CUSTOMER')")
+    @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<CustomerModel> displayBy(final String rawCustomerId) {
         return customers.displayBy(CustomerId.from(rawCustomerId))
                 .map(mapCustomerToModel)
@@ -120,7 +120,7 @@ class CustomerController implements CustomersApi {
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('CUSTOMER')")
+    @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<CustomerModel> authenticatedCustomer() {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 

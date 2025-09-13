@@ -8,6 +8,7 @@ import hu.hirannor.hexagonal.application.usecase.product.ProductDisplaying;
 import hu.hirannor.hexagonal.domain.product.CreateProduct;
 import hu.hirannor.hexagonal.domain.product.Product;
 import hu.hirannor.hexagonal.domain.product.ProductId;
+import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import java.util.function.Function;
 
 @RestController
 @RequestMapping("/api")
+@DriverAdapter
 class ProductController implements ProductsApi {
 
     private final Function<CreateProductModel, CreateProduct> mapCreateProductModelToCommand;

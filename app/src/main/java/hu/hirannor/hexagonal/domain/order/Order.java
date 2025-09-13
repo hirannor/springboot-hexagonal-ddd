@@ -2,7 +2,6 @@ package hu.hirannor.hexagonal.domain.order;
 
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.Money;
-import hu.hirannor.hexagonal.domain.order.command.AddToCar;
 import hu.hirannor.hexagonal.domain.order.command.MakeOrder;
 import hu.hirannor.hexagonal.domain.order.events.*;
 import hu.hirannor.hexagonal.infrastructure.aggregate.AggregateRoot;
@@ -80,6 +79,14 @@ public class Order extends AggregateRoot {
 
     public CustomerId customer() {
         return customer;
+    }
+
+    public void changeStatus(final OrderStatus target) {
+        if (!status.canTransitionTo(target)) {
+            throw new IllegalStateException("Cannot change to " + target +  " status");
+        }
+
+        this.status = target;
     }
 
     public void pay(final CustomerId customer) {

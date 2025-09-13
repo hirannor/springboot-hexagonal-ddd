@@ -1,9 +1,7 @@
 package hu.hirannor.hexagonal.adapter.web.rest.order;
 
 import hu.hirannor.hexagonal.adapter.web.rest.orders.api.OrdersApi;
-import hu.hirannor.hexagonal.adapter.web.rest.orders.model.CreateOrderModel;
-import hu.hirannor.hexagonal.adapter.web.rest.orders.model.OrderModel;
-import hu.hirannor.hexagonal.adapter.web.rest.orders.model.PayOrderModel;
+import hu.hirannor.hexagonal.adapter.web.rest.orders.model.*;
 import hu.hirannor.hexagonal.application.usecase.order.OrderCreation;
 import hu.hirannor.hexagonal.application.usecase.order.OrderDisplaying;
 import hu.hirannor.hexagonal.application.usecase.order.OrderPayment;
@@ -11,8 +9,10 @@ import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.command.MakeOrder;
 import hu.hirannor.hexagonal.domain.order.command.PayOrder;
+import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -25,6 +25,7 @@ import java.util.function.Supplier;
 
 @RestController
 @RequestMapping("/api")
+@DriverAdapter
 class OrderController implements OrdersApi {
 
     private final Function<CreateOrderModel, MakeOrder> mapCreateOrderModelToCommand;
@@ -60,6 +61,7 @@ class OrderController implements OrdersApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<OrderModel> createOrder(final CreateOrderModel model) {
         final MakeOrder command = mapCreateOrderModelToCommand.apply(model);
         final Order order = orderCreation.create(command);
@@ -75,6 +77,7 @@ class OrderController implements OrdersApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<OrderModel> pay(final UUID orderId, final PayOrderModel model) {
         final Function<PayOrderModel, PayOrder> mapPayOrderModelToCommand = new CreatePayOrderModelToCommandMapper(orderId);
         final PayOrder command = mapPayOrderModelToCommand.apply(model);
@@ -87,6 +90,7 @@ class OrderController implements OrdersApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<OrderModel> displayBy(final UUID orderId) {
         return orders.displayBy(OrderId.from(orderId.toString()))
                 .map(mapOrderToModel.andThen(ResponseEntity::ok))
@@ -94,12 +98,25 @@ class OrderController implements OrdersApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<OrderModel>> displayAll() {
         final List<OrderModel> list = orders.displayAll()
                 .stream()
                 .map(mapOrderToModel)
                 .toList();
         return ResponseEntity.ok(list);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<OrderModel> change(final UUID orderId, final ChangeOrderStatusModel changeOrderStatusModel) {
+        return OrdersApi.super.change(orderId, changeOrderStatusModel);
+    }
+
+    @Override
+    @PreAuthorize("hasAnyRole('CUSTOMER','ADMIN')")
+    public ResponseEntity<OrderModel> cancel(final UUID orderId, final CancelOrderModel cancelOrderModel) {
+        return OrdersApi.super.cancel(orderId, cancelOrderModel);
     }
 
     private Supplier<IllegalStateException> failBecauseOrderWasNotFoundBy(final UUID orderId) {

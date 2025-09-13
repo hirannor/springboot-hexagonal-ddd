@@ -3,7 +3,9 @@ package hu.hirannor.hexagonal.domain.basket;
 import hu.hirannor.hexagonal.domain.Currency;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.Money;
-import hu.hirannor.hexagonal.domain.order.OrderedProduct;
+import hu.hirannor.hexagonal.domain.basket.command.CreateBasket;
+import hu.hirannor.hexagonal.domain.basket.events.BasketCheckedOut;
+import hu.hirannor.hexagonal.domain.basket.events.BasketCreated;
 import hu.hirannor.hexagonal.infrastructure.aggregate.AggregateRoot;
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
 
@@ -12,45 +14,64 @@ import java.util.function.Function;
 
 public class Basket extends AggregateRoot {
 
+    private final BasketId id;
     private final CustomerId customer;
-    private final Set<OrderedProduct> products;
+    private final Set<BasketItem> items;
     private final List<DomainEvent> events;
 
-    public Basket(final CustomerId customer) {
+    Basket(final BasketId id, final CustomerId customer) {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(customer);
+
+        this.id = id;
         this.customer = customer;
-        this.products = new HashSet<>();
+        this.items = new HashSet<>();
         this.events = new ArrayList<>();
+    }
+
+    public static Basket create(final CreateBasket create) {
+        Objects.requireNonNull(create, "CreateBasket command cannot be null");
+
+        final Basket basket = new Basket(BasketId.generate(), create.customerId());
+
+        basket.events.add(BasketCreated.record(create.basketId(), create.customerId()));
+
+        return basket;
+    }
+
+    public BasketId id() {
+        return id;
     }
 
     public CustomerId customer() {
         return customer;
     }
 
-    public Set<OrderedProduct> products() {
-        return Collections.unmodifiableSet(products);
+    public Set<BasketItem> items() {
+        return Collections.unmodifiableSet(items);
     }
 
-    public void addProduct(final OrderedProduct product) {
-        products.add(product);
+    public void addProduct(final BasketItem item) {
+        items.add(item);
     }
 
-    public void removeProduct(final OrderedProduct product) {
-        products.remove(product);
+    public void removeProduct(final BasketItem item) {
+        items.remove(item);
     }
 
     public Money totalPrice() {
-        return products.stream()
-                .map(OrderedProduct::lineTotal)
+        return items.stream()
+                .map(BasketItem::lineTotal)
                 .reduce(Money::add)
                 .orElseGet(() -> Money.zero(defaultCurrency()));
     }
 
     public BasketSnapshot snapshot() {
-        return new BasketSnapshot(customer, products);
+        return new BasketSnapshot(customer, items);
     }
 
     public void checkout() {
-        events.add(BasketCheckedOut.record(customer, products));
+        events.add(BasketCheckedOut.record(customer, items));
     }
 
     @Override
@@ -64,14 +85,14 @@ public class Basket extends AggregateRoot {
     }
 
     private Currency defaultCurrency() {
-        return products.stream()
+        return items.stream()
                 .findFirst()
                 .map(extractPrice()
                         .andThen(Money::currency))
                 .orElse(Currency.EUR);
     }
 
-    private Function<OrderedProduct, Money> extractPrice() {
-        return OrderedProduct::price;
+    private Function<BasketItem, Money> extractPrice() {
+        return BasketItem::price;
     }
 }

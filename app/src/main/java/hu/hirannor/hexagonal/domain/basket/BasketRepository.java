@@ -1,0 +1,17 @@
+package hu.hirannor.hexagonal.domain.basket;
+
+import hu.hirannor.hexagonal.domain.CustomerId;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface BasketRepository {
+
+    Optional<Basket> findBy(CustomerId customerId);
+
+    List<Basket> findAll();
+
+    void save(Basket basket);
+
+    void delete(CustomerId customer);
+}
