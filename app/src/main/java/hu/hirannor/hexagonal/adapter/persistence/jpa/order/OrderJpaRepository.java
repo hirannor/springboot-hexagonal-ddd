@@ -6,15 +6,24 @@ import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.OrderRepository;
+import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Component
+@Repository
+@Transactional(
+    propagation = Propagation.MANDATORY,
+    isolation = Isolation.REPEATABLE_READ
+)
+@DrivenAdapter
 class OrderJpaRepository implements OrderRepository {
 
     private final Function<Order, OrderModel> mapDomainToModel;
