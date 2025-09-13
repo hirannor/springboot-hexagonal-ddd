@@ -63,15 +63,8 @@ class OrderCommandService implements
             "PAYMENT_METHOD"
         ));
 
-        switch (receipt.status()) {
-            case SUCCESS: {
-                order.markAsPaid(order.customer());
-                orders.save(order);
-                break;
-            }
-            case PENDING, CANCELLED: break; // TODO
-            case FAILURE: break; // TODO
-        }
+        order.handlePaymentResult(receipt);
+        orders.save(order);
     }
 
     @Override

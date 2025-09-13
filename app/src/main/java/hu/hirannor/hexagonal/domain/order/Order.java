@@ -1,5 +1,6 @@
 package hu.hirannor.hexagonal.domain.order;
 
+import hu.hirannor.hexagonal.application.service.payment.PaymentReceipt;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.Money;
 import hu.hirannor.hexagonal.domain.order.command.MakeOrder;
@@ -81,21 +82,22 @@ public class Order extends AggregateRoot {
         return customer;
     }
 
+    public void handlePaymentResult(final PaymentReceipt receipt) {
+        switch (receipt.status()) {
+            case SUCCESS -> markAsPaid(customer);
+            case PENDING -> markPaymentPending();
+            case CANCELLED -> markPaymentCanceled();
+            case FAILURE -> markPaymentFailed();
+            default -> throw new IllegalStateException("Unknown payment status: " + receipt.status());
+        }
+    }
+
     public void changeStatus(final OrderStatus target) {
         if (!status.canTransitionTo(target)) {
             throw new IllegalStateException("Cannot change to " + target +  " status");
         }
 
         this.status = target;
-    }
-
-    public void markAsPaid(final CustomerId customer) {
-        if (this.customer.equals(customer)) throw new IllegalArgumentException("Payment failed: the provided customer ID does not match the order's customer");
-
-        if (!status.canTransitionTo(OrderStatus.PAID)) throw new IllegalStateException("Cannot mark as paid");
-
-        this.status = OrderStatus.PAID;
-        events.add(OrderPaid.record(customer, id));
     }
 
     public void startProcessing() {
@@ -166,5 +168,35 @@ public class Order extends AggregateRoot {
 
     private Supplier<IllegalStateException> failBecauseOrderDoesntContainProduct() {
         return () -> new IllegalStateException("Order must contain at least one product");
+    }
+
+    private void markPaymentPending() {
+        if (!status.canTransitionTo(OrderStatus.PAYMENT_PENDING)) {
+            throw new IllegalStateException("Cannot mark order as payment pending from status " + status);
+        }
+        this.status = OrderStatus.PAYMENT_PENDING;
+    }
+
+    private void markPaymentFailed() {
+        if (!status.canTransitionTo(OrderStatus.PAYMENT_FAILED)) {
+            throw new IllegalStateException("Cannot mark order as payment failed from status " + status);
+        }
+        this.status = OrderStatus.PAYMENT_FAILED;
+    }
+
+    private void markPaymentCanceled() {
+        if (!status.canTransitionTo(OrderStatus.PAYMENT_CANCELED)) {
+            throw new IllegalStateException("Cannot mark order as payment canceled from status " + status);
+        }
+        this.status = OrderStatus.PAYMENT_CANCELED;
+    }
+
+    private void markAsPaid(final CustomerId customer) {
+        if (this.customer.equals(customer)) throw new IllegalArgumentException("Payment failed: the provided customer ID does not match the order's customer");
+
+        if (!status.canTransitionTo(OrderStatus.PAID)) throw new IllegalStateException("Cannot mark as paid");
+
+        this.status = OrderStatus.PAID;
+        events.add(OrderPaid.record(customer, id));
     }
 }
