@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.function.Function;
 
 @Component
 public class AuthenticationFilter extends OncePerRequestFilter {
@@ -39,13 +40,23 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
     private static final String BEARER = "Bearer ";
 
+    private final Function<Role, PermissionRoleModel> mapRoleToModel;
+
     private final Authenticator authenticator;
     private final ObjectMapper mapper;
 
     @Autowired
-    AuthenticationFilter(Authenticator authenticator, final ObjectMapper mapper) {
+    AuthenticationFilter(final Authenticator authenticator,
+                         final ObjectMapper mapper) {
+      this(authenticator, mapper, new RoleToPermissionRoleModelMapper());
+    }
+
+    AuthenticationFilter(final Authenticator authenticator,
+                         final ObjectMapper mapper,
+                         final Function<Role, PermissionRoleModel> mapRoleToModel) {
         this.authenticator = authenticator;
         this.mapper = mapper;
+        this.mapRoleToModel = mapRoleToModel;
     }
 
     @Override
@@ -77,7 +88,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                         null,
                         auth.roles()
                             .stream()
-                            .map(AuthenticationFilter::addRolePrefix)
+                            .map(mapRoleToModel
+                                    .andThen(AuthenticationFilter::addRolePrefix))
                             .toList()
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
@@ -109,7 +121,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         mapper.writeValue(response.getWriter(), details);
     }
 
-    private static SimpleGrantedAuthority addRolePrefix(final Role role) {
-        return new SimpleGrantedAuthority("ROLE_" + role.name());
+    private static SimpleGrantedAuthority addRolePrefix(final PermissionRoleModel role) {
+        return new SimpleGrantedAuthority("ROLE_" + role.value());
     }
 }

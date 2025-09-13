@@ -67,7 +67,7 @@ class OrderController implements OrdersApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<OrderModel> createOrder(final CreateOrderModel model) {
         final MakeOrder command = mapCreateOrderModelToCommand.apply(model);
         final Order order = orderCreation.create(command);
@@ -83,8 +83,8 @@ class OrderController implements OrdersApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<Void> pay(final UUID orderId, final PayOrderModel model) {
+    @PreAuthorize("hasRole('Customer')")
+    public ResponseEntity<PayOrderResponseModel> pay(final UUID orderId, final PayOrderModel model) {
         final Function<PayOrderModel, PayOrder> mapPayOrderModelToCommand = new CreatePayOrderModelToCommandMapper(orderId);
         final PayOrder command = mapPayOrderModelToCommand.apply(model);
 
@@ -94,7 +94,7 @@ class OrderController implements OrdersApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<OrderModel> displayBy(final UUID orderId) {
         return orders.displayBy(OrderId.from(orderId.toString()))
                 .map(mapOrderToModel.andThen(ResponseEntity::ok))
@@ -102,7 +102,7 @@ class OrderController implements OrdersApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<OrderModel>> displayAll() {
         final List<OrderModel> list = orders.displayAll()
                 .stream()
@@ -112,13 +112,13 @@ class OrderController implements OrdersApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Void> change(final UUID orderId, final ChangeOrderStatusModel changeOrderStatusModel) {
         return OrdersApi.super.change(orderId, changeOrderStatusModel);
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('CUSTOMER','ADMIN')")
+    @PreAuthorize("hasAnyRole('Customer','Admin')")
     public ResponseEntity<Void> cancel(final UUID orderId, final CancelOrderModel cancelOrderModel) {
         return OrdersApi.super.cancel(orderId, cancelOrderModel);
     }

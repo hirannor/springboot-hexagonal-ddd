@@ -6,7 +6,13 @@
 
     <!-- DDL -->
     <include file="adapter/persistence/ddl/auth-ddl-1.0.0.xml"/>
-    <include file="adapter/persistence/ddl/auth-dml-1.0.0.xml"/>
     <include file="adapter/persistence/ddl/customers-ddl-1.0.0.xml"/>
+    <include file="adapter/persistence/ddl/product-ddl-1.0.0.xml"/>
+    <include file="adapter/persistence/ddl/order-ddl-1.0.0.xml"/>
+    <include file="adapter/persistence/ddl/basket-ddl-1.0.0.xml"/>
+
+    <!-- DML -->
+    <include file="/adapter/persistence/dml/auth-dml-1.0.0.xml"/>
+    <include file="adapter/persistence/dml/product-dml-1.0.0.xml"/>
 
 </databaseChangeLog>

@@ -13,5 +13,5 @@ public interface BasketRepository {
 
     void save(Basket basket);
 
-    void delete(CustomerId customer);
+    void deleteBy(CustomerId basket);
 }

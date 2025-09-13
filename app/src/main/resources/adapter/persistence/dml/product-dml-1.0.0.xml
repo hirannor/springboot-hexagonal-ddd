@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="hirannor" id="insert_data::product:dml:1.0.0">
+        <insert tableName="ec_product">
+            <column name="id" valueNumeric="1"/>
+            <column name="product_id" value="550e8400-e29b-41d4-a716-446655440001"/>
+            <column name="name" value="Wireless Mouse"/>
+            <column name="description" value="Ergonomic wireless mouse with adjustable DPI"/>
+            <column name="price_amount" value="24.99"/>
+            <column name="price_currency" value="EUR"/>
+        </insert>
+
+        <insert tableName="ec_product">
+            <column name="id" valueNumeric="2"/>
+            <column name="product_id" value="550e8400-e29b-41d4-a716-446655440002"/>
+            <column name="name" value="Mechanical Keyboard"/>
+            <column name="description" value="RGB backlit mechanical keyboard with blue switches"/>
+            <column name="price_amount" value="89.50"/>
+            <column name="price_currency" value="EUR"/>
+        </insert>
+
+        <insert tableName="ec_product">
+            <column name="id" valueNumeric="3"/>
+            <column name="product_id" value="550e8400-e29b-41d4-a716-446655440003"/>
+            <column name="name" value="Gaming Headset"/>
+            <column name="description" value="Surround sound headset with noise-cancelling microphone"/>
+            <column name="price_amount" value="59.99"/>
+            <column name="price_currency" value="EUR"/>
+        </insert>
+
+        <insert tableName="ec_product">
+            <column name="id" valueNumeric="4"/>
+            <column name="product_id" value="550e8400-e29b-41d4-a716-446655440004"/>
+            <column name="name" value="4K Monitor"/>
+            <column name="description" value="27-inch 4K UHD monitor with HDR support"/>
+            <column name="price_amount" value="329.00"/>
+            <column name="price_currency" value="EUR"/>
+        </insert>
+
+        <insert tableName="ec_product">
+            <column name="id" valueNumeric="5"/>
+            <column name="product_id" value="550e8400-e29b-41d4-a716-446655440005"/>
+            <column name="name" value="External SSD 1TB"/>
+            <column name="description" value="Portable high-speed SSD with USB-C connectivity"/>
+            <column name="price_amount" value="149.90"/>
+            <column name="price_currency" value="EUR"/>
+        </insert>
+
+        <insert tableName="ec_product">
+            <column name="id" valueNumeric="6"/>
+            <column name="product_id" value="550e8400-e29b-41d4-a716-446655440006"/>
+            <column name="name" value="Smartwatch"/>
+            <column name="description" value="Water-resistant smartwatch with heart rate tracking"/>
+            <column name="price_amount" value="199.00"/>
+            <column name="price_currency" value="EUR"/>
+        </insert>
+
+        <insert tableName="ec_product">
+            <column name="id" valueNumeric="7"/>
+            <column name="product_id" value="550e8400-e29b-41d4-a716-446655440007"/>
+            <column name="name" value="Bluetooth Speaker"/>
+            <column name="description" value="Portable Bluetooth speaker with 12h battery life"/>
+            <column name="price_amount" value="45.99"/>
+            <column name="price_currency" value="EUR"/>
+        </insert>
+
+        <insert tableName="ec_product">
+            <column name="id" valueNumeric="8"/>
+            <column name="product_id" value="550e8400-e29b-41d4-a716-446655440008"/>
+            <column name="name" value="USB-C Hub"/>
+            <column name="description" value="7-in-1 USB-C hub with HDMI, SD card, and USB 3.0 ports"/>
+            <column name="price_amount" value="34.95"/>
+            <column name="price_currency" value="EUR"/>
+        </insert>
+
+        <insert tableName="ec_product">
+            <column name="id" valueNumeric="9"/>
+            <column name="product_id" value="550e8400-e29b-41d4-a716-446655440009"/>
+            <column name="name" value="Laptop Stand"/>
+            <column name="description" value="Adjustable aluminum laptop stand for better ergonomics"/>
+            <column name="price_amount" value="29.99"/>
+            <column name="price_currency" value="EUR"/>
+        </insert>
+
+        <insert tableName="ec_product">
+            <column name="id" valueNumeric="10"/>
+            <column name="product_id" value="550e8400-e29b-41d4-a716-446655440010"/>
+            <column name="name" value="Wireless Charger"/>
+            <column name="description" value="Fast wireless charging pad compatible with Qi-enabled devices"/>
+            <column name="price_amount" value="19.90"/>
+            <column name="price_currency" value="EUR"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,4 +1,4 @@
-<svg width="900" height="850" xmlns="http://www.w3.org/2000/svg">
+<svg width="950" height="900" xmlns="http://www.w3.org/2000/svg">
     <defs>
         <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
             <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.2)"/>
@@ -9,166 +9,181 @@
     </defs>
 
     <!-- Background -->
-    <rect width="900" height="850" fill="#ffffff"/>
+    <rect width="950" height="900" fill="#ffffff"/>
 
     <!-- Title -->
-    <text x="450" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#2c3e50">Multi-Domain Application</text>
-    <text x="450" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#7f8c8d">Hexagonal Architecture</text>
+    <text x="475" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#2c3e50">Multi-Domain Application</text>
+    <text x="475" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#7f8c8d">Hexagonal Architecture with Stripe Integration</text>
 
-    <!-- Central Hexagon (Application Core) - Made larger to fit Basket domain -->
-    <polygon points="450,420 590,320 590,180 450,80 310,180 310,320"
+    <!-- Central Hexagon (Application Core) -->
+    <polygon points="475,440 615,340 615,200 475,100 335,200 335,340"
              fill="#3498db" stroke="#2980b9" stroke-width="3" filter="url(#shadow)"/>
 
     <!-- Application Core Content -->
-    <text x="450" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">Business Domains</text>
+    <text x="475" y="170" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">Business Domains</text>
 
     <!-- Domain sections -->
-    <text x="450" y="175" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#ecf0f1">Customer Domain</text>
-    <text x="450" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">Customer Command Service</text>
-    <text x="450" y="202" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">Customer Query Service</text>
+    <text x="475" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#ecf0f1">Customer Domain</text>
+    <text x="475" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">Customer Command Service</text>
+    <text x="475" y="222" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">Customer Query Service</text>
 
-    <text x="450" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#ecf0f1">Product Domain</text>
-    <text x="450" y="240" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">Product Command Service</text>
-    <text x="450" y="252" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">Product Query Service</text>
+    <text x="475" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#ecf0f1">Product Domain</text>
+    <text x="475" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">Product Command Service</text>
+    <text x="475" y="272" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">Product Query Service</text>
 
-    <text x="450" y="275" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#ecf0f1">Basket Domain</text>
-    <text x="450" y="290" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">Basket Command Service</text>
-    <text x="450" y="302" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">Basket Query Service</text>
+    <text x="475" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#ecf0f1">Basket Domain</text>
+    <text x="475" y="310" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">Basket Command Service</text>
+    <text x="475" y="322" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">Basket Query Service</text>
 
-    <text x="450" y="325" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#ecf0f1">Order Domain</text>
-    <text x="450" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">Order Command Service</text>
-    <text x="450" y="352" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">Order Query Service</text>
+    <text x="475" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="#ecf0f1">Order Domain</text>
+    <text x="475" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">Order Command Service</text>
+    <text x="475" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bdc3c7">Order Query Service</text>
 
     <!-- Primary Adapters (Driving/Left Side) -->
     <!-- REST Adapter -->
-    <rect x="50" y="180" width="140" height="70" rx="8" fill="#e74c3c" stroke="#c0392b" stroke-width="2" filter="url(#shadow)"/>
-    <text x="120" y="205" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">REST API</text>
-    <text x="120" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#f8c9c9">HTTP Controllers</text>
+    <rect x="75" y="200" width="140" height="70" rx="8" fill="#e74c3c" stroke="#c0392b" stroke-width="2" filter="url(#shadow)"/>
+    <text x="145" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">REST API</text>
+    <text x="145" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#f8c9c9">HTTP Controllers</text>
 
     <!-- JWT Authentication Adapter -->
-    <rect x="50" y="300" width="140" height="70" rx="8" fill="#e74c3c" stroke="#c0392b" stroke-width="2" filter="url(#shadow)"/>
-    <text x="120" y="325" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">Authentication</text>
-    <text x="120" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#f8c9c9">JWT Auth</text>
+    <rect x="75" y="320" width="140" height="70" rx="8" fill="#e74c3c" stroke="#c0392b" stroke-width="2" filter="url(#shadow)"/>
+    <text x="145" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white">Authentication</text>
+    <text x="145" y="365" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#f8c9c9">JWT Auth</text>
 
     <!-- Secondary Adapters (Driven/Right Side) -->
     <!-- JPA Persistence Adapter -->
-    <rect x="710" y="110" width="140" height="55" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
-    <text x="780" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">JPA Store</text>
-    <text x="780" y="144" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Java Persistence API</text>
-    <text x="780" y="156" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Database Storage</text>
+    <rect x="735" y="130" width="140" height="55" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
+    <text x="805" y="150" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">JPA Store</text>
+    <text x="805" y="164" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Java Persistence API</text>
+    <text x="805" y="176" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Database Storage</text>
 
     <!-- In-Memory Persistence Adapter -->
-    <rect x="710" y="175" width="140" height="55" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
-    <text x="780" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">In-Memory Store</text>
-    <text x="780" y="209" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Memory Storage</text>
-    <text x="780" y="221" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Testing</text>
+    <rect x="735" y="195" width="140" height="55" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
+    <text x="805" y="215" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">In-Memory Store</text>
+    <text x="805" y="229" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Memory Storage</text>
+    <text x="805" y="241" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Testing</text>
 
     <!-- Event Bus Adapter -->
-    <rect x="710" y="240" width="140" height="55" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
-    <text x="780" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">Event Bus</text>
-    <text x="780" y="274" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Messaging</text>
-    <text x="780" y="286" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Event Publishing</text>
+    <rect x="735" y="260" width="140" height="55" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
+    <text x="805" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">Event Bus</text>
+    <text x="805" y="294" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Messaging</text>
+    <text x="805" y="306" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Event Publishing</text>
+
+    <!-- Stripe Payment Gateway Adapter -->
+    <rect x="735" y="325" width="140" height="55" rx="8" fill="#6f42c1" stroke="#5a359a" stroke-width="2" filter="url(#shadow)"/>
+    <text x="805" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">Stripe Payment</text>
+    <text x="805" y="359" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#c8a9ff">Payment Gateway</text>
+    <text x="805" y="371" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#c8a9ff">Credit Card Processing</text>
 
     <!-- Mock Payment Gateway Adapter -->
-    <rect x="710" y="305" width="140" height="55" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
-    <text x="780" y="325" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">Mock Payment</text>
-    <text x="780" y="339" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Payment Gateway</text>
-    <text x="780" y="351" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Processing Payment</text>
+    <rect x="735" y="390" width="140" height="55" rx="8" fill="#f39c12" stroke="#e67e22" stroke-width="2" filter="url(#shadow)"/>
+    <text x="805" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">Mock Payment</text>
+    <text x="805" y="424" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f4d03f">Payment Gateway</text>
+    <text x="805" y="436" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#f4d03f">Testing &amp; Development</text>
 
     <!-- SMS Notification Adapter -->
-    <rect x="710" y="370" width="140" height="55" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
-    <text x="780" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">SMS Notification</text>
-    <text x="780" y="404" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">SMS Gateway</text>
-    <text x="780" y="416" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Text Messages</text>
+    <rect x="735" y="455" width="140" height="55" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
+    <text x="805" y="475" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">SMS Notification</text>
+    <text x="805" y="489" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">SMS Gateway</text>
+    <text x="805" y="501" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Text Messages</text>
 
     <!-- Email Notification Adapter -->
-    <rect x="710" y="435" width="140" height="55" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
-    <text x="780" y="455" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">Email Notification</text>
-    <text x="780" y="469" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">SMTP Server</text>
-    <text x="780" y="481" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Email Service</text>
+    <rect x="735" y="520" width="140" height="55" rx="8" fill="#27ae60" stroke="#229954" stroke-width="2" filter="url(#shadow)"/>
+    <text x="805" y="540" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="bold" fill="white">Email Notification</text>
+    <text x="805" y="554" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">SMTP Server</text>
+    <text x="805" y="566" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#a9dfbf">Email Service</text>
 
     <!-- Primary Ports (Interfaces) -->
-    <circle cx="250" cy="215" r="30" fill="#f39c12" stroke="#e67e22" stroke-width="2" filter="url(#shadow)"/>
-    <text x="250" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">REST</text>
-    <text x="250" y="225" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Port</text>
+    <circle cx="275" cy="235" r="30" fill="#f39c12" stroke="#e67e22" stroke-width="2" filter="url(#shadow)"/>
+    <text x="275" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">REST</text>
+    <text x="275" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Port</text>
 
-    <circle cx="250" cy="335" r="30" fill="#f39c12" stroke="#e67e22" stroke-width="2" filter="url(#shadow)"/>
-    <text x="250" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Auth</text>
-    <text x="250" y="345" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Port</text>
+    <circle cx="275" cy="355" r="30" fill="#f39c12" stroke="#e67e22" stroke-width="2" filter="url(#shadow)"/>
+    <text x="275" y="350" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Auth</text>
+    <text x="275" y="365" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white">Port</text>
 
     <!-- Secondary Ports (Interfaces) -->
-    <circle cx="650" cy="137" r="23" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
-    <text x="650" y="133" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Repository</text>
-    <text x="650" y="143" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Port</text>
+    <circle cx="675" cy="157" r="23" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
+    <text x="675" y="153" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Repository</text>
+    <text x="675" y="163" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Port</text>
 
-    <circle cx="650" cy="202" r="23" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
-    <text x="650" y="198" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Repository</text>
-    <text x="650" y="208" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Port</text>
+    <circle cx="675" cy="222" r="23" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
+    <text x="675" y="218" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Repository</text>
+    <text x="675" y="228" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Port</text>
 
-    <circle cx="650" cy="267" r="23" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
-    <text x="650" y="263" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Messaging</text>
-    <text x="650" y="273" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Port</text>
+    <circle cx="675" cy="287" r="23" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
+    <text x="675" y="283" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Messaging</text>
+    <text x="675" y="293" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Port</text>
 
-    <circle cx="650" cy="332" r="23" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
-    <text x="650" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="white">Payment</text>
-    <text x="650" y="338" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="white">Port</text>
+    <circle cx="675" cy="352" r="23" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
+    <text x="675" y="348" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="white">Payment</text>
+    <text x="675" y="358" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="white">Port</text>
 
-    <circle cx="650" cy="397" r="23" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
-    <text x="650" y="393" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Notification</text>
-    <text x="650" y="403" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Port</text>
+    <circle cx="675" cy="417" r="23" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
+    <text x="675" y="413" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="white">Payment</text>
+    <text x="675" y="423" text-anchor="middle" font-family="Arial, sans-serif" font-size="7" font-weight="bold" fill="white">Port</text>
 
-    <circle cx="650" cy="462" r="23" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
-    <text x="650" y="458" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Notification</text>
-    <text x="650" y="468" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Port</text>
+    <circle cx="675" cy="482" r="23" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
+    <text x="675" y="478" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Notification</text>
+    <text x="675" y="488" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Port</text>
+
+    <circle cx="675" cy="547" r="23" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" filter="url(#shadow)"/>
+    <text x="675" y="543" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Notification</text>
+    <text x="675" y="553" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white">Port</text>
 
     <!-- Connection Lines -->
     <!-- Primary side connections -->
-    <line x1="190" y1="215" x2="220" y2="215" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
-    <line x1="190" y1="335" x2="220" y2="335" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="215" y1="235" x2="245" y2="235" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="215" y1="355" x2="245" y2="355" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
 
     <!-- Port to Core connections -->
-    <line x1="280" y1="215" x2="320" y2="230" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
-    <line x1="280" y1="335" x2="320" y2="320" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="305" y1="235" x2="340" y2="250" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="305" y1="355" x2="340" y2="340" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
 
     <!-- Core to Port connections -->
-    <line x1="580" y1="220" x2="627" y2="137" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
-    <line x1="580" y1="240" x2="627" y2="202" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
-    <line x1="580" y1="260" x2="627" y2="267" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
-    <line x1="580" y1="280" x2="627" y2="332" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
-    <line x1="580" y1="300" x2="627" y2="397" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
-    <line x1="580" y1="320" x2="627" y2="462" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="610" y1="240" x2="652" y2="157" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="610" y1="260" x2="652" y2="222" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="610" y1="280" x2="652" y2="287" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="610" y1="300" x2="652" y2="352" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="610" y1="315" x2="652" y2="417" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="610" y1="330" x2="652" y2="482" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="610" y1="340" x2="652" y2="547" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
 
     <!-- Secondary side connections -->
-    <line x1="673" y1="137" x2="710" y2="137" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
-    <line x1="673" y1="202" x2="710" y2="202" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
-    <line x1="673" y1="267" x2="710" y2="267" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
-    <line x1="673" y1="332" x2="710" y2="332" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
-    <line x1="673" y1="397" x2="710" y2="397" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
-    <line x1="673" y1="462" x2="710" y2="462" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="698" y1="157" x2="735" y2="157" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="698" y1="222" x2="735" y2="222" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="698" y1="287" x2="735" y2="287" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="698" y1="352" x2="735" y2="352" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="698" y1="417" x2="735" y2="417" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="698" y1="482" x2="735" y2="482" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="698" y1="547" x2="735" y2="547" stroke="#34495e" stroke-width="2" marker-end="url(#arrowhead)"/>
 
     <!-- Legend -->
-    <rect x="50" y="530" width="800" height="260" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" rx="8"/>
-    <text x="70" y="560" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#2c3e50">Architecture Components</text>
+    <rect x="75" y="620" width="800" height="240" fill="#f8f9fa" stroke="#dee2e6" stroke-width="1" rx="8"/>
+    <text x="95" y="650" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#2c3e50">Architecture Components</text>
 
     <!-- Legend items -->
-    <rect x="70" y="580" width="20" height="15" fill="#3498db"/>
-    <text x="100" y="592" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Application Core - Contains business domains and application services</text>
+    <rect x="95" y="670" width="20" height="15" fill="#3498db"/>
+    <text x="125" y="682" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Application Core - Contains business domains and application services</text>
 
-    <rect x="70" y="605" width="20" height="15" fill="#e74c3c"/>
-    <text x="100" y="617" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Primary Adapters - Drive the application (REST API, JWT Auth)</text>
+    <rect x="95" y="695" width="20" height="15" fill="#e74c3c"/>
+    <text x="125" y="707" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Primary Adapters - Drive the application (REST API, JWT Auth)</text>
 
-    <rect x="70" y="630" width="20" height="15" fill="#27ae60"/>
-    <text x="100" y="642" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Secondary Adapters - Driven by application (Persistence, Messaging, Payments, Notifications)</text>
+    <rect x="95" y="720" width="20" height="15" fill="#27ae60"/>
+    <text x="125" y="732" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Secondary Adapters - Driven by application (Persistence, Messaging, Notifications)</text>
 
-    <circle cx="80" cy="662" r="8" fill="#f39c12"/>
-    <text x="100" y="667" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Primary Ports - Interfaces for incoming requests (REST, Authentication)</text>
+    <rect x="95" y="745" width="20" height="15" fill="#6f42c1"/>
+    <text x="125" y="757" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Stripe Payment - Secondary adapter for production payment processing</text>
 
-    <circle cx="80" cy="685" r="8" fill="#9b59b6"/>
-    <text x="100" y="690" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Secondary Ports - Repository, Messaging, Payment Gateway, Notification interfaces</text>
+    <rect x="95" y="770" width="20" height="15" fill="#f39c12"/>
+    <text x="125" y="782" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Mock Payment - Secondary adapter for testing and development</text>
+
+    <circle cx="105" cy="802" r="8" fill="#f39c12"/>
+    <text x="125" y="807" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Primary Ports - Interfaces for incoming requests (REST, Authentication)</text>
+
+    <circle cx="105" cy="825" r="8" fill="#9b59b6"/>
+    <text x="125" y="830" font-family="Arial, sans-serif" font-size="14" fill="#2c3e50">Secondary Ports - Repository, Messaging, Payment, Notification interfaces</text>
 
     <!-- Additional note -->
-    <text x="70" y="720" font-family="Arial, sans-serif" font-size="12" font-style="italic" fill="#7f8c8d">Application Services: Customer Command &amp; Query, Product Command &amp; Query,</text>
-    <text x="70" y="735" font-family="Arial, sans-serif" font-size="12" font-style="italic" fill="#7f8c8d">Basket Command &amp; Query, Order Command &amp; Query</text>
-
-
+    <text x="95" y="850" font-family="Arial, sans-serif" font-size="12" font-style="italic" fill="#7f8c8d">Dual Payment System: Stripe for production, Mock for testing - both implement payment port interface</text>
 </svg>

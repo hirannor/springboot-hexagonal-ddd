@@ -68,7 +68,7 @@ class CustomerController implements CustomersApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<CustomerModel> changePersonalDetails(final String customerId,
                                                        final ChangePersonalDetailsModel model) {
         final ChangePersonalDetails cmd = CustomerMappingFactory
@@ -81,7 +81,7 @@ class CustomerController implements CustomersApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Void> deleteBy(final String customerId) {
         customer.deleteBy(CustomerId.from(customerId));
 
@@ -89,7 +89,7 @@ class CustomerController implements CustomersApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<CustomerModel>> displayAll(final Optional<LocalDate> birthDateFrom,
                                                           final Optional<LocalDate> birthDateTo,
                                                           final Optional<GenderModel> gender,
@@ -111,7 +111,7 @@ class CustomerController implements CustomersApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<CustomerModel> displayBy(final String rawCustomerId) {
         return customers.displayBy(CustomerId.from(rawCustomerId))
                 .map(mapCustomerToModel)
@@ -120,7 +120,7 @@ class CustomerController implements CustomersApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<CustomerModel> authenticatedCustomer() {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 

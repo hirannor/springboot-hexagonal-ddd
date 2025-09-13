@@ -84,10 +84,10 @@ public class Order extends AggregateRoot {
 
     public void handlePaymentResult(final PaymentReceipt receipt) {
         switch (receipt.status()) {
-            case SUCCESS -> markAsPaid();
-            case PENDING -> markPaymentPending();
-            case CANCELLED -> markPaymentCanceled();
-            case FAILURE -> markPaymentFailed();
+            case SUCCESS -> markPaymentAsPaid();
+            case PENDING -> markPaymentAsPending();
+            case CANCELLED -> markPaymentAsCanceled();
+            case FAILURE -> markPaymentAsFailed();
             default -> throw new IllegalStateException("Unknown payment status: " + receipt.status());
         }
     }
@@ -100,13 +100,12 @@ public class Order extends AggregateRoot {
         this.status = target;
     }
 
-    public void changeStatus(final OrderStatus target, final DomainEvent event) {
-        if (!status.canTransitionTo(target)) {
-            throw new IllegalStateException("Cannot change to " + target +  " status");
+    public void initializePayment() {
+        if (!status.canTransitionTo(OrderStatus.PAYMENT_PENDING)) {
+            throw new IllegalStateException("Cannot start processing from status " + status);
         }
-
-        this.status = target;
-        this.events.add(event);
+        this.status = OrderStatus.PAYMENT_PENDING;
+        events.add(OrderPaymentPending.record(id, customer));
     }
 
     public void startProcessing() {
@@ -178,17 +177,21 @@ public class Order extends AggregateRoot {
         return () -> new IllegalStateException("Order must contain at least one product");
     }
 
-    private void markAsPaid() {
-        changeStatus(OrderStatus.PAID, OrderPaid.record(customer, id));
+    private void markPaymentAsPaid() {
+        changeStatus(OrderStatus.PAID_SUCCESSFULLY);
+        this.events.add(OrderPaid.record(customer, id));
     }
-    private void markPaymentPending() {
-        changeStatus(OrderStatus.PAYMENT_PENDING, OrderPaymentPending.record(customer, id));
+    private void markPaymentAsPending() {
+        changeStatus(OrderStatus.PAYMENT_PENDING);
+        this.events.add(OrderPaymentPending.record(id, customer));
     }
-    private void markPaymentCanceled() {
-        changeStatus(OrderStatus.PAYMENT_CANCELED, OrderPaymentCanceled.record(customer, id));
+    private void markPaymentAsCanceled() {
+        changeStatus(OrderStatus.PAYMENT_CANCELED);
+        this.events.add(OrderPaymentCanceled.record(customer, id));
     }
-    private void markPaymentFailed() {
-        changeStatus(OrderStatus.PAYMENT_FAILED, OrderPaymentFailed.record(customer, id));
+    private void markPaymentAsFailed() {
+        changeStatus(OrderStatus.PAYMENT_FAILED);
+        this.events.add(OrderPaymentFailed.record(customer, id));
     }
 
 }

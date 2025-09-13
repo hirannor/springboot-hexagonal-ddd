@@ -6,7 +6,7 @@ import java.util.Set;
 public enum OrderStatus {
     CREATED,
     WAITING_FOR_PAYMENT,
-    PAID,
+    PAID_SUCCESSFULLY,
     PAYMENT_CANCELED,
     PAYMENT_FAILED,
     PAYMENT_PENDING,
@@ -20,11 +20,11 @@ public enum OrderStatus {
     public Set<OrderStatus> allowedTransitions() {
         return switch (this) {
             case CREATED -> EnumSet.of(WAITING_FOR_PAYMENT, CANCELLED);
-            case WAITING_FOR_PAYMENT -> EnumSet.of(PAYMENT_PENDING, PAID, PAYMENT_FAILED, PAYMENT_CANCELED, CANCELLED);
-            case PAYMENT_PENDING -> EnumSet.of(PAID, PAYMENT_FAILED, PAYMENT_CANCELED, CANCELLED);
+            case WAITING_FOR_PAYMENT -> EnumSet.of(PAYMENT_PENDING, PAID_SUCCESSFULLY, PAYMENT_FAILED, PAYMENT_CANCELED, CANCELLED);
+            case PAYMENT_PENDING -> EnumSet.of(PAID_SUCCESSFULLY, PAYMENT_FAILED, PAYMENT_CANCELED, CANCELLED);
             case PAYMENT_FAILED -> EnumSet.of(WAITING_FOR_PAYMENT, CANCELLED);
             case PAYMENT_CANCELED -> EnumSet.of(WAITING_FOR_PAYMENT, CANCELLED);
-            case PAID -> EnumSet.of(PROCESSING, CANCELLED, REFUNDED);
+            case PAID_SUCCESSFULLY -> EnumSet.of(PROCESSING, CANCELLED, REFUNDED);
             case PROCESSING -> EnumSet.of(SHIPPED, CANCELLED);
             case SHIPPED -> EnumSet.of(DELIVERED, RETURNED);
             case DELIVERED -> EnumSet.of(RETURNED);
@@ -38,7 +38,7 @@ public enum OrderStatus {
     }
 
     public boolean isPaid() {
-        return this == PAID;
+        return this == PAID_SUCCESSFULLY;
     }
 
     public boolean isShipped() {

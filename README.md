@@ -99,7 +99,7 @@ public class JwtAuthenticationConfiguration {
 adapter:
   authentication: # jwt
   persistence: # spring-data-jpa | in-memory
-  payment: # mock
+  payment: # mock | stripe
   notification: # sms | email
   messaging: # spring-event-bus
   web: # rest

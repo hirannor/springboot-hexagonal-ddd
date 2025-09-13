@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <!-- ====================== -->
+    <!-- Basket table           -->
+    <!-- ====================== -->
+    <changeSet author="hirannor" id="create_tables::basket:ddl:1.0.0">
+        <createTable tableName="EC_BASKETS">
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="BASKET_ID" type="UUID">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="CUSTOMER_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="basket_seq" startValue="1" incrementBy="5"/>
+    </changeSet>
+
+    <!-- ====================== -->
+    <!-- Basket items table     -->
+    <!-- ====================== -->
+    <changeSet author="hirannor" id="create_tables::basket_items:ddl:1.0.0">
+        <createTable tableName="EC_BASKET_ITEMS">
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="BASKET_ID_FK" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRODUCT_ID" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="QUANTITY" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRICE_AMOUNT" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PRICE_CURRENCY" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="basket_item_seq" startValue="1" incrementBy="5"/>
+
+        <addForeignKeyConstraint
+                baseTableName="EC_BASKET_ITEMS"
+                baseColumnNames="BASKET_ID_FK"
+                constraintName="fk_basket_items_basket"
+                referencedTableName="EC_BASKETS"
+                referencedColumnNames="ID"/>
+    </changeSet>
+
+</databaseChangeLog>

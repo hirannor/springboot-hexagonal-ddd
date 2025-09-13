@@ -11,6 +11,7 @@ import hu.hirannor.hexagonal.domain.product.ProductId;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -50,6 +51,7 @@ class ProductController implements ProductsApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Void> create(final CreateProductModel createProductModel) {
         final CreateProduct create = mapCreateProductModelToCommand.apply(createProductModel);
         final Product product = productCreator.create(create);
@@ -65,6 +67,7 @@ class ProductController implements ProductsApi {
     }
 
     @Override
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<ProductModel>> displayAll() {
         final List<ProductModel> products = this.products.displayAll()
                 .stream()
@@ -75,6 +78,7 @@ class ProductController implements ProductsApi {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('Admin', 'Customer')")
     public ResponseEntity<ProductModel> displayBy(final String id) {
         return products.displayBy(ProductId.from(id))
                 .map(mapProductToModel

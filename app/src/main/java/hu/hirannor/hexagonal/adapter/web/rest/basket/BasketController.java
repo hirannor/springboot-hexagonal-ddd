@@ -42,37 +42,37 @@ class BasketController implements BasketsApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<BasketModel> addItem(final UUID basketId, final BasketItemModel basketItemModel) {
         return BasketsApi.super.addItem(basketId, basketItemModel);
     }
 
     @Override
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<BasketModel> checkout(final UUID basketId) {
         return BasketsApi.super.checkout(basketId);
     }
 
     @Override
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<BasketModel> createBasket(final CreateBasketModel createBasketModel) {
         return BasketsApi.super.createBasket(createBasketModel);
     }
 
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<BasketModel>> displayAll() {
         return BasketsApi.super.displayAll();
     }
 
     @Override
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<BasketModel> displayBy(final UUID basketId) {
         return BasketsApi.super.displayBy(basketId);
     }
 
     @Override
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<BasketModel> removeItem(final UUID basketId, final BasketItemModel basketItemModel) {
         return BasketsApi.super.removeItem(basketId, basketItemModel);
     }

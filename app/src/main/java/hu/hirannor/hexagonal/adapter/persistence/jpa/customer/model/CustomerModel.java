@@ -40,6 +40,7 @@ public class CustomerModel {
     private LocalDate birthDate;
 
     @Column(name = "GENDER")
+    @Enumerated(EnumType.STRING)
     private GenderModel gender;
 
     @Column

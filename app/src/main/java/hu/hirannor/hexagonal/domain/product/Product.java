@@ -28,15 +28,19 @@ public class Product extends AggregateRoot {
         this.events = new ArrayList<>(0);
     }
 
+    public static ProductBuilder empty() {
+        return new ProductBuilder();
+    }
+
     public static Product create(final CreateProduct cmd) {
         Objects.requireNonNull(cmd);
 
-        final Product product = new Product(
-            cmd.productId(),
-            cmd.name(),
-            cmd.description(),
-            cmd.price()
-        );
+        final Product product = empty()
+                .id(cmd.productId())
+                .name(cmd.name())
+                .description(cmd.description())
+                .price(cmd.price())
+                .assemble();
 
         product.events.add(ProductCreated.record(
                 product.id,

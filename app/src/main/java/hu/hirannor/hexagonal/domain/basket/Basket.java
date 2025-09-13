@@ -29,6 +29,20 @@ public class Basket extends AggregateRoot {
         this.events = new ArrayList<>();
     }
 
+    Basket(final BasketId id, final CustomerId customer,  final Set<BasketItem> items) {
+        Objects.requireNonNull(id);
+        Objects.requireNonNull(customer);
+
+        this.id = id;
+        this.customer = customer;
+        this.items = items;
+        this.events = new ArrayList<>();
+    }
+
+    public static Basket from(final BasketId id, final CustomerId customer, final Set<BasketItem> items) {
+        return new Basket(id, customer, items);
+    }
+
     public static Basket create(final CreateBasket create) {
         Objects.requireNonNull(create, "CreateBasket command cannot be null");
 

@@ -48,7 +48,7 @@ class BasketCommandService implements
     public void deleteBy(final CustomerId customer) {
         if (customer == null) throw new IllegalArgumentException("CustomerId is null");
 
-        baskets.delete(customer);
+        baskets.deleteBy(customer);
     }
 
     @Override

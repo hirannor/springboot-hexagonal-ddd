@@ -75,7 +75,11 @@ paths:
               $ref: '#/components/schemas/PayOrder'
       responses:
         '200':
-          description: Order marked as paid
+          description: The order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayOrderResponse'
         '400':
           description: Invalid order status or customer mismatch
         '404':
@@ -188,6 +192,27 @@ components:
           format: uuid
       required: [orderId]
 
+    PayOrderResponse:
+      type: object
+      properties:
+        paymentStatus:
+          type: string
+          enum:
+            - PENDING
+            - SUCCESS
+            - FAILURE
+        paymentUrl:
+          type: string
+          description: "Redirect URL to the Checkout page or payment gateway page"
+        orderId:
+          type: string
+          format: uuid
+        amount:
+          $ref: '#/components/schemas/Money'
+        currency:
+          $ref: '#/components/schemas/Currency'
+      required: [ paymentStatus, paymentUrl, orderId, amount, currency ]
+
     CancelOrder:
       type: object
       properties:
@@ -235,3 +260,9 @@ components:
         - CANCELLED
         - RETURNED
         - REFUNDED
+    PaymentStatus:
+      type: string
+      enum:
+        - PENDING
+        - SUCCESS
+        - FAILURE
