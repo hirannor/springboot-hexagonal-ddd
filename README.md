@@ -125,7 +125,7 @@ adapter:
 ### HTTP Requests
 All API requests for testing registration, authentication, and customer operations can be found in the project under:
 ```
-/http-requests/customers.http
+/http-requests/order-management.http
 ```
 
 ## Docker Setup

@@ -9,7 +9,7 @@
             <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="product_id" type="UUID">
+            <column name="product_id" type="VARCHAR(255)">
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="name" type="VARCHAR(255)">

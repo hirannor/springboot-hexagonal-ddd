@@ -63,11 +63,10 @@ class ProductController implements ProductsApi {
                 .toUri();
 
         return ResponseEntity.created(location).build();
-
     }
 
     @Override
-    @PreAuthorize("hasRole('Admin')")
+    @PreAuthorize("hasAnyRole('Admin', 'Customer')")
     public ResponseEntity<List<ProductModel>> displayAll() {
         final List<ProductModel> products = this.products.displayAll()
                 .stream()

@@ -77,3 +77,26 @@ Authorization: Bearer {{bearerToken}}
 ### Delete a customer by ID (DELETE /api/customers/{customerId})
 DELETE http://localhost:8080/api/customers/{{customerId}}
 Authorization: Bearer {{bearerToken}}
+
+
+# -------------------------------
+# Products API - HTTP Requests
+# -------------------------------
+
+### Get all products (GET /api/products)
+GET http://localhost:8080/api/products
+Authorization: Bearer {{bearerToken}}
+
+### Create a product (POST /api/products) - Only ADMIN can access this endpoint
+POST http://localhost:8080/api/products
+Content-Type: application/json
+Authorization: Bearer {{bearerToken}}
+
+{
+  "name": "Gaming Laptop",
+  "description": "High performance laptop with NVIDIA RTX graphics and 16GB RAM",
+  "price": {
+    "amount": "599999.00",
+    "currency": "HUF"
+  }
+}

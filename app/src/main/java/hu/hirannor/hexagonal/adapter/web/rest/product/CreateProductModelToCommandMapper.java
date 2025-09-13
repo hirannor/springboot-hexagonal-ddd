@@ -1,16 +1,28 @@
 package hu.hirannor.hexagonal.adapter.web.rest.product;
 
 import hu.hirannor.hexagonal.adapter.web.rest.products.model.CreateProductModel;
+import hu.hirannor.hexagonal.adapter.web.rest.products.model.MoneyModel;
+import hu.hirannor.hexagonal.domain.Money;
 import hu.hirannor.hexagonal.domain.product.CreateProduct;
 
 import java.util.function.Function;
 
 class CreateProductModelToCommandMapper implements Function<CreateProductModel, CreateProduct> {
 
-    CreateProductModelToCommandMapper() {}
+    private final Function<MoneyModel, Money> mapModelToDomain;
+
+    CreateProductModelToCommandMapper() {
+        this.mapModelToDomain = new MoneyModelToDomainMapper();
+    }
 
     @Override
     public CreateProduct apply(final CreateProductModel model) {
-        return null;
+        if (model == null) return null;
+
+        return CreateProduct.issue(
+                model.getName(),
+                model.getDescription(),
+                mapModelToDomain.apply(model.getPrice())
+        );
     }
 }

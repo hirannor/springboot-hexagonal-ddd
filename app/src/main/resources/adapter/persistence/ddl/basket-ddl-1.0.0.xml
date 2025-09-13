@@ -13,7 +13,7 @@
             <column name="ID" type="BIGINT">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="BASKET_ID" type="UUID">
+            <column name="BASKET_ID" type="VARCHAR(255)">
                 <constraints nullable="false" unique="true"/>
             </column>
             <column name="CUSTOMER_ID" type="UUID">
@@ -35,7 +35,7 @@
             <column name="BASKET_ID_FK" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="PRODUCT_ID" type="UUID">
+            <column name="PRODUCT_ID" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="QUANTITY" type="INT">

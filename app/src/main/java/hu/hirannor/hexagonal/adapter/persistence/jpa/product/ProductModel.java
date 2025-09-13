@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "products")
+@Table(name = "EC_PRODUCT")
 public class ProductModel {
 
     private static final int ALLOCATION_SIZE = 5;

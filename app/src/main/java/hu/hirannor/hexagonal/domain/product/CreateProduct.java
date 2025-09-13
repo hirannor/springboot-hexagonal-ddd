@@ -26,10 +26,9 @@ public record CreateProduct(
     }
 
     public static CreateProduct issue(
-            final ProductId productId,
             final String name,
             final String description,
             final Money price) {
-        return new CreateProduct(CommandId.generate(), productId, name, description, price);
+        return new CreateProduct(CommandId.generate(), ProductId.generate(), name, description, price);
     }
 }
