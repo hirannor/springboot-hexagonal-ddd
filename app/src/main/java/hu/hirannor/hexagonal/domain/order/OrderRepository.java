@@ -7,8 +7,8 @@ import java.util.Optional;
 
 public interface OrderRepository {
     void deleteBy(OrderId id);
-    void save(OrderId order);
-    Optional<OrderId> findBy(OrderId id);
-    List<OrderId> findBy(CustomerId id);
-    List<OrderId> findAll();
+    void save(Order order);
+    Optional<Order> findBy(OrderId id);
+    List<Order> findBy(CustomerId id);
+    List<Order> findAll();
 }

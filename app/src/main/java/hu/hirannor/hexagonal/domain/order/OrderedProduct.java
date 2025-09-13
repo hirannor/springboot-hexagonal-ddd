@@ -1,0 +1,25 @@
+package hu.hirannor.hexagonal.domain.order;
+
+import hu.hirannor.hexagonal.domain.Money;
+import hu.hirannor.hexagonal.domain.product.ProductId;
+
+import java.util.Objects;
+
+public record OrderedProduct(ProductId productId, int quantity, Money price) {
+
+    public OrderedProduct {
+        Objects.requireNonNull(productId);
+        Objects.requireNonNull(price);
+
+        if (quantity <= 0) throw new IllegalArgumentException("Quantity must be greater than zero");
+        if (price.amount().signum() <= 0) throw new IllegalArgumentException("Price must be positive");
+    }
+
+    public static OrderedProduct create(final ProductId productId, final int quantity, final Money price) {
+        return new OrderedProduct(productId, quantity, price);
+    }
+
+    public Money lineTotal() {
+        return price.multiply(quantity);
+    }
+}

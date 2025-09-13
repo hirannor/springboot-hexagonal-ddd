@@ -12,15 +12,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 /**
  * Spring configuration class for REST API adapter.
- *
- * @author Mate Karolyi
  */
 @Configuration
 @ComponentScan
 @ConditionalOnProperty(
-    value = "adapter.web",
-    havingValue = "rest",
-    matchIfMissing = true
+        value = "adapter.web",
+        havingValue = "rest",
+        matchIfMissing = true
 )
 @EnableWebSecurity
 public class RestApiConfiguration {
@@ -34,17 +32,38 @@ public class RestApiConfiguration {
     @Bean
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         http
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/customers").hasAnyRole("ADMIN")
-                    .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/customers/**").hasAnyRole("CUSTOMER")
-                    .requestMatchers(org.springframework.http.HttpMethod.PUT, "/api/customers/**").hasAnyRole("CUSTOMER")
-                    .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/customers/**").hasRole("ADMIN")
-                    .anyRequest().permitAll()
-            )
-            .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        // Customers API
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/customers")
+                        .hasRole(PermissionRoleModel.ADMIN.value())
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/customers/**")
+                        .hasRole(PermissionRoleModel.CUSTOMER.value())
+                        .requestMatchers(org.springframework.http.HttpMethod.PUT, "/api/customers/**")
+                        .hasRole(PermissionRoleModel.CUSTOMER.value())
+                        .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/customers/**")
+                        .hasRole(PermissionRoleModel.ADMIN.value())
+
+                        // Products API
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/products/**")
+                        .hasAnyRole(PermissionRoleModel.ADMIN.value(), PermissionRoleModel.CUSTOMER.value())
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/products")
+                        .hasRole(PermissionRoleModel.ADMIN.value())
+                        .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/products/**")
+                        .hasRole(PermissionRoleModel.ADMIN.value())
+
+                        // Orders API
+                        .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/orders/**")
+                        .hasRole(PermissionRoleModel.CUSTOMER.value())
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/orders")
+                        .hasRole(PermissionRoleModel.CUSTOMER.value())
+                        .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/orders/**")
+                        .hasRole(PermissionRoleModel.ADMIN.value())
+
+                        .anyRequest().permitAll()
+                )
+                .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-
 }

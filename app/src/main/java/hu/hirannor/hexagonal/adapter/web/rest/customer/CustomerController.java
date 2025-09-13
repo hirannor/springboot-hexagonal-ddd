@@ -119,7 +119,6 @@ class CustomerController implements CustomersApi {
                 .orElseGet(ResponseEntity.notFound()::build);
     }
 
-
     @Override
     @PreAuthorize("hasAnyRole('CUSTOMER')")
     public ResponseEntity<CustomerModel> authenticatedCustomer() {

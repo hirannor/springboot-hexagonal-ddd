@@ -27,7 +27,15 @@
         </openapi-generator-maven-plugin.authentication.apiPackage>
         <openapi-generator-maven-plugin.authentication.modelPackage>hu.hirannor.hexagonal.adapter.web.rest.authentication.model
         </openapi-generator-maven-plugin.authentication.modelPackage>
-        <jjwt-api.version>0.11.5</jjwt-api.version>
+        <openapi-generator-maven-plugin.products.apiPackage>hu.hirannor.hexagonal.adapter.web.rest.products.api
+        </openapi-generator-maven-plugin.products.apiPackage>
+        <openapi-generator-maven-plugin.products.modelPackage>hu.hirannor.hexagonal.adapter.web.rest.products.model
+        </openapi-generator-maven-plugin.products.modelPackage>
+        <openapi-generator-maven-plugin.orders.apiPackage>hu.hirannor.hexagonal.adapter.web.rest.orders.api
+        </openapi-generator-maven-plugin.orders.apiPackage>
+        <openapi-generator-maven-plugin.orders.modelPackage>hu.hirannor.hexagonal.adapter.web.rest.orders.model
+        </openapi-generator-maven-plugin.orders.modelPackage>
+    <jjwt-api.version>0.11.5</jjwt-api.version>
         <jjwt-impl.version>0.11.5</jjwt-impl.version>
         <jjwt-jackson.version>0.11.5</jjwt-jackson.version>
     </properties>
@@ -153,6 +161,40 @@
                             <inputSpec>${project.build.directory}/internal/customers-api.yml</inputSpec>
                             <apiPackage>${openapi-generator-maven-plugin.customers.apiPackage}</apiPackage>
                             <modelPackage>${openapi-generator-maven-plugin.customers.modelPackage}</modelPackage>
+                            <typeMappings>
+                                <typeMapping>OffsetDateTime=Instant</typeMapping>
+                            </typeMappings>
+                            <importMappings>
+                                <importMapping>java.time.OffsetDateTime=java.time.Instant</importMapping>
+                            </importMappings>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>products-api</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.build.directory}/internal/products-api.yml</inputSpec>
+                            <apiPackage>${openapi-generator-maven-plugin.products.apiPackage}</apiPackage>
+                            <modelPackage>${openapi-generator-maven-plugin.products.modelPackage}</modelPackage>
+                            <typeMappings>
+                                <typeMapping>OffsetDateTime=Instant</typeMapping>
+                            </typeMappings>
+                            <importMappings>
+                                <importMapping>java.time.OffsetDateTime=java.time.Instant</importMapping>
+                            </importMappings>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>orders-api</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.build.directory}/internal/orders-api.yml</inputSpec>
+                            <apiPackage>${openapi-generator-maven-plugin.orders.apiPackage}</apiPackage>
+                            <modelPackage>${openapi-generator-maven-plugin.orders.modelPackage}</modelPackage>
                             <typeMappings>
                                 <typeMapping>OffsetDateTime=Instant</typeMapping>
                             </typeMappings>

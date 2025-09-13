@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface OrderDisplaying {
     List<Order> displayAll();
-    Optional<Order> displayById(OrderId id);
+    Optional<Order> displayBy(OrderId id);
 }

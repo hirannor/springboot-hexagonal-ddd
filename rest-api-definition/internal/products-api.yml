@@ -1,0 +1,105 @@
+openapi: 3.0.3
+info:
+  title: Products API
+  description: Products API
+  version: 1.0.0
+security:
+  - bearerAuth: []
+paths:
+  /products:
+    get:
+      summary: List all products
+      operationId: displayAll
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+    post:
+      summary: Create a new product
+      operationId: create
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProduct'
+      responses:
+        '201':
+          description: Product created
+          headers:
+            Location:
+              schema:
+                type: string
+                description: URI of the created product
+        '400':
+          description: bad request
+  /products/{id}:
+    get:
+      summary: Get product by ID
+      operationId: displayBy
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    basicAuth:
+      type: http
+      scheme: basic
+  schemas:
+    CreateProduct:
+      type: object
+      required: [name, description, price, currency]
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          $ref: '#/components/schemas/Money'
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          $ref: '#/components/schemas/Money'
+    Money:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: decimal
+          example: "99.99"
+        currency:
+          $ref: '#/components/schemas/Currency'
+      required: [ amount, currency ]
+    Currency:
+      type: string
+      enum:
+        - HUF
+        - EUR

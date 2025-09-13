@@ -28,6 +28,26 @@ public class Product extends AggregateRoot {
         this.events = new ArrayList<>(0);
     }
 
+    public static Product create(final CreateProduct cmd) {
+        Objects.requireNonNull(cmd);
+
+        final Product product = new Product(
+            cmd.productId(),
+            cmd.name(),
+            cmd.description(),
+            cmd.price()
+        );
+
+        product.events.add(ProductCreated.record(
+                product.id,
+                product.name(),
+                product.description(),
+                product.price()
+        ));
+
+        return product;
+    }
+
     public ProductId id() {
         return id;
     }

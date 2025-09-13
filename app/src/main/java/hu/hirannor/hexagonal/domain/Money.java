@@ -50,12 +50,6 @@ public class Money {
         return new Money(this.amount.multiply(BigDecimal.valueOf(factor)), currency);
     }
 
-    private void requireSameCurrency(Money other) {
-        if (!this.currency.equals(other.currency)) {
-            throw new IllegalArgumentException("Currency mismatch: " + this.currency + " vs " + other.currency);
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -72,5 +66,11 @@ public class Money {
     @Override
     public String toString() {
         return amount + " " + currency;
+    }
+
+    private void requireSameCurrency(Money other) {
+        if (!this.currency.equals(other.currency)) {
+            throw new IllegalArgumentException("Currency mismatch: " + this.currency + " vs " + other.currency);
+        }
     }
 }
