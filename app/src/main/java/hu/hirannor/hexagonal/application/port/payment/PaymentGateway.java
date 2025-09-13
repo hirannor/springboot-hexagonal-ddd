@@ -1,5 +1,8 @@
 package hu.hirannor.hexagonal.application.port.payment;
 
+import hu.hirannor.hexagonal.application.service.payment.PaymentReceipt;
+import hu.hirannor.hexagonal.application.service.payment.ProcessPayment;
+
 public interface PaymentGateway {
-    void pay();
+    PaymentReceipt process(ProcessPayment payment);
 }

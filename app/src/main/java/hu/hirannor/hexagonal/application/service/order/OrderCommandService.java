@@ -1,5 +1,8 @@
 package hu.hirannor.hexagonal.application.service.order;
 
+import hu.hirannor.hexagonal.application.port.payment.PaymentGateway;
+import hu.hirannor.hexagonal.application.service.payment.PaymentReceipt;
+import hu.hirannor.hexagonal.application.service.payment.ProcessPayment;
 import hu.hirannor.hexagonal.application.usecase.order.ChangeOrderStatus;
 import hu.hirannor.hexagonal.application.usecase.order.OrderCreation;
 import hu.hirannor.hexagonal.application.usecase.order.OrderPayment;
@@ -29,10 +32,12 @@ class OrderCommandService implements
         OrderStatusChanging {
 
     private final OrderRepository orders;
+    private final PaymentGateway payment;
 
     @Autowired
-    OrderCommandService(final OrderRepository orders) {
+    OrderCommandService(final OrderRepository orders, final PaymentGateway payment) {
         this.orders = orders;
+        this.payment = payment;
     }
 
     @Override
@@ -46,15 +51,27 @@ class OrderCommandService implements
     }
 
     @Override
-    public void pay(final PayOrder payment) {
-        if (payment == null) throw new IllegalArgumentException("payment is null");
+    public void pay(final PayOrder command) {
+        if (command == null) throw new IllegalArgumentException("command is null");
 
-        final Order order = orders.findBy(payment.orderId())
-                .orElseThrow(failBecauseOrderWasNotFoundBy(payment.orderId()));
+        final Order order = orders.findBy(command.orderId())
+                .orElseThrow(failBecauseOrderWasNotFoundBy(command.orderId()));
 
-        order.pay(order.customer());
+        final PaymentReceipt receipt = payment.process(ProcessPayment.create(
+            order.id(),
+            order.totalPrice(),
+            "PAYMENT_METHOD"
+        ));
 
-        orders.save(order);
+        switch (receipt.status()) {
+            case SUCCESS: {
+                order.markAsPaid(order.customer());
+                orders.save(order);
+                break;
+            }
+            case PENDING, CANCELLED: break; // TODO
+            case FAILURE: break; // TODO
+        }
     }
 
     @Override

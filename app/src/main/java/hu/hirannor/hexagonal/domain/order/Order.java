@@ -89,7 +89,7 @@ public class Order extends AggregateRoot {
         this.status = target;
     }
 
-    public void pay(final CustomerId customer) {
+    public void markAsPaid(final CustomerId customer) {
         if (this.customer.equals(customer)) throw new IllegalArgumentException("Payment failed: the provided customer ID does not match the order's customer");
 
         if (!status.canTransitionTo(OrderStatus.PAID)) throw new IllegalStateException("Cannot mark as paid");
