@@ -76,10 +76,6 @@ paths:
       responses:
         '200':
           description: Order marked as paid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Order'
         '400':
           description: Invalid order status or customer mismatch
         '404':
@@ -103,11 +99,7 @@ paths:
               $ref: '#/components/schemas/CancelOrder'
       responses:
         '200':
-          description: Order marked as paid
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Order'
+          description: Order marked as canceled
         '400':
           description: Invalid order status or customer mismatch
         '404':
@@ -132,10 +124,6 @@ paths:
       responses:
         '200':
           description: Order status updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Order'
         '400':
           description: Invalid status transition
         '404':

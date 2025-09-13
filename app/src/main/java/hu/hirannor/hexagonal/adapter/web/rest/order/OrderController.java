@@ -5,6 +5,7 @@ import hu.hirannor.hexagonal.adapter.web.rest.orders.model.*;
 import hu.hirannor.hexagonal.application.usecase.order.OrderCreation;
 import hu.hirannor.hexagonal.application.usecase.order.OrderDisplaying;
 import hu.hirannor.hexagonal.application.usecase.order.OrderPayment;
+import hu.hirannor.hexagonal.application.usecase.order.OrderStatusChanging;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.command.MakeOrder;
@@ -34,15 +35,18 @@ class OrderController implements OrdersApi {
     private final OrderCreation orderCreation;
     private final OrderPayment orderPayment;
     private final OrderDisplaying orders;
+    private final OrderStatusChanging status;
 
     @Autowired
     OrderController(final OrderCreation orderCreation,
                     final OrderPayment orderPayment,
-                    final OrderDisplaying orders) {
+                    final OrderDisplaying orders,
+                    final OrderStatusChanging status) {
         this(
             orderCreation,
             orderPayment,
             orders,
+            status,
             new CreateOrderModelToCommandMapper(),
             new OrderToModelMapper()
         );
@@ -51,11 +55,13 @@ class OrderController implements OrdersApi {
     OrderController(final OrderCreation orderCreation,
                     final OrderPayment orderPayment,
                     final OrderDisplaying orders,
+                    final OrderStatusChanging status,
                     final Function<CreateOrderModel, MakeOrder> mapCreateOrderModelToCommand,
                     final Function<Order, OrderModel> mapOrderToModel) {
         this.orderCreation = orderCreation;
         this.orderPayment = orderPayment;
         this.orders = orders;
+        this.status = status;
         this.mapCreateOrderModelToCommand = mapCreateOrderModelToCommand;
         this.mapOrderToModel = mapOrderToModel;
     }
@@ -78,15 +84,13 @@ class OrderController implements OrdersApi {
 
     @Override
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<OrderModel> pay(final UUID orderId, final PayOrderModel model) {
+    public ResponseEntity<Void> pay(final UUID orderId, final PayOrderModel model) {
         final Function<PayOrderModel, PayOrder> mapPayOrderModelToCommand = new CreatePayOrderModelToCommandMapper(orderId);
         final PayOrder command = mapPayOrderModelToCommand.apply(model);
 
         orderPayment.pay(command);
 
-        final Order updated = orders.displayBy(OrderId.from(orderId.toString()))
-                .orElseThrow(failBecauseOrderWasNotFoundBy(orderId));
-        return ResponseEntity.ok(mapOrderToModel.apply(updated));
+        return ResponseEntity.ok().build();
     }
 
     @Override
@@ -109,13 +113,13 @@ class OrderController implements OrdersApi {
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<OrderModel> change(final UUID orderId, final ChangeOrderStatusModel changeOrderStatusModel) {
+    public ResponseEntity<Void> change(final UUID orderId, final ChangeOrderStatusModel changeOrderStatusModel) {
         return OrdersApi.super.change(orderId, changeOrderStatusModel);
     }
 
     @Override
     @PreAuthorize("hasAnyRole('CUSTOMER','ADMIN')")
-    public ResponseEntity<OrderModel> cancel(final UUID orderId, final CancelOrderModel cancelOrderModel) {
+    public ResponseEntity<Void> cancel(final UUID orderId, final CancelOrderModel cancelOrderModel) {
         return OrdersApi.super.cancel(orderId, cancelOrderModel);
     }
 
