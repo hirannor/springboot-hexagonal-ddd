@@ -31,6 +31,7 @@ class OrderController implements OrdersApi {
 
     private final Function<CreateOrderModel, CreateOrder> mapCreateOrderModelToCommand;
     private final Function<Order, OrderModel> mapOrderToModel;
+    private final Function<PayOrderModel, PayOrder> mapPayOrderModelToCommand;
 
     private final OrderCreation orderCreation;
     private final OrderPaymentInitialization orderPayment;
@@ -48,7 +49,8 @@ class OrderController implements OrdersApi {
             orders,
             status,
             new CreateOrderModelToCommandMapper(),
-            new OrderToModelMapper()
+            new OrderToModelMapper(),
+            new CreatePayOrderModelToCommandMapper()
         );
     }
 
@@ -57,13 +59,15 @@ class OrderController implements OrdersApi {
                     final OrderDisplaying orders,
                     final OrderStatusChanging status,
                     final Function<CreateOrderModel, CreateOrder> mapCreateOrderModelToCommand,
-                    final Function<Order, OrderModel> mapOrderToModel) {
+                    final Function<Order, OrderModel> mapOrderToModel,
+                    final Function<PayOrderModel, PayOrder> mapPayOrderModelToCommand) {
         this.orderCreation = orderCreation;
         this.orderPayment = orderPayment;
         this.orders = orders;
         this.status = status;
         this.mapCreateOrderModelToCommand = mapCreateOrderModelToCommand;
         this.mapOrderToModel = mapOrderToModel;
+        this.mapPayOrderModelToCommand = mapPayOrderModelToCommand;
     }
 
     @Override
@@ -85,7 +89,6 @@ class OrderController implements OrdersApi {
     @Override
     @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<PayOrderResponseModel> pay(final String orderId, final PayOrderModel model) {
-        final Function<PayOrderModel, PayOrder> mapPayOrderModelToCommand = new CreatePayOrderModelToCommandMapper(orderId);
         final PayOrder command = mapPayOrderModelToCommand.apply(model);
 
         orderPayment.initPay(command);
