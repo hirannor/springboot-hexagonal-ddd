@@ -1,12 +1,12 @@
 package hu.hirannor.hexagonal.application.service.payment;
 
 import hu.hirannor.hexagonal.application.port.payment.PaymentGateway;
-import hu.hirannor.hexagonal.domain.order.payment.PaymentReceipt;
 import hu.hirannor.hexagonal.application.usecase.payment.HandlePaymentCallback;
 import hu.hirannor.hexagonal.application.usecase.payment.PaymentCallbackHandling;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.OrderRepository;
+import hu.hirannor.hexagonal.domain.order.payment.PaymentReceipt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;

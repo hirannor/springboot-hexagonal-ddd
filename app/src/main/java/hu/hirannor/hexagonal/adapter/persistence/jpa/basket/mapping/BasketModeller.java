@@ -30,11 +30,12 @@ public class BasketModeller implements Modeller<BasketModel> {
         from.setBasketId(domain.id().asText());
         from.setCustomerId(domain.id().asText());
 
+        from.getItems().clear();
         domain.items()
                 .stream()
                 .map(mapItemToModel)
                 .forEach(from::addItem);
 
-        return null;
+        return from;
     }
 }

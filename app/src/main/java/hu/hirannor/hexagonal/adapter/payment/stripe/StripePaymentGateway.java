@@ -7,13 +7,21 @@ import com.stripe.model.Event;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 import com.stripe.param.checkout.SessionCreateParams;
-import hu.hirannor.hexagonal.application.port.payment.*;
+import hu.hirannor.hexagonal.adapter.payment.stripe.mapping.CurrencyModelToDomainMapper;
+import hu.hirannor.hexagonal.adapter.payment.stripe.mapping.CurrencyToModelMapper;
+import hu.hirannor.hexagonal.adapter.payment.stripe.mapping.PaymentMethodModelToDomainMapper;
+import hu.hirannor.hexagonal.adapter.payment.stripe.mapping.PaymentMethodToTypeMapper;
+import hu.hirannor.hexagonal.application.port.payment.PaymentGateway;
+import hu.hirannor.hexagonal.application.port.payment.PaymentInitializationFailed;
+import hu.hirannor.hexagonal.application.port.payment.PaymentItem;
+import hu.hirannor.hexagonal.application.port.payment.PaymentRequest;
 import hu.hirannor.hexagonal.domain.Currency;
 import hu.hirannor.hexagonal.domain.Money;
 import hu.hirannor.hexagonal.domain.order.OrderId;
+import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
+import hu.hirannor.hexagonal.domain.order.payment.PaymentMethod;
 import hu.hirannor.hexagonal.domain.order.payment.PaymentReceipt;
 import hu.hirannor.hexagonal.domain.order.payment.PaymentStatus;
-import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,6 +35,7 @@ class StripePaymentGateway implements PaymentGateway {
     private final Function<PaymentMethod, SessionCreateParams.PaymentMethodType> mapPaymentMethodToType;
     private final Function<Currency, CurrencyModel> mapCurrencyToModel;
     private final Function<CurrencyModel, Currency> mapCurrencyModelToDomain;
+    private final Function<PaymentMethodModel, PaymentMethod> mapPaymentMethodModelToDomain;
 
     private final StripeClient client;
     private final StripeConfigurationProperties config;
@@ -38,7 +47,8 @@ class StripePaymentGateway implements PaymentGateway {
            config,
            new PaymentMethodToTypeMapper(),
            new CurrencyToModelMapper(),
-           new CurrencyModelToDomainMapper()
+           new CurrencyModelToDomainMapper(),
+           new PaymentMethodModelToDomainMapper()
        );
     }
 
@@ -46,12 +56,14 @@ class StripePaymentGateway implements PaymentGateway {
                          final StripeConfigurationProperties config,
                          final Function<PaymentMethod, SessionCreateParams.PaymentMethodType> mapPaymentMethodToType,
                          final Function<Currency, CurrencyModel> mapCurrencyToModel,
-                         final Function<CurrencyModel, Currency> mapCurrencyModelToDomain) {
+                         final Function<CurrencyModel, Currency> mapCurrencyModelToDomain,
+                         final Function<PaymentMethodModel, PaymentMethod> mapPaymentMethodModelToDomain) {
         this.client = client;
         this.config = config;
         this.mapPaymentMethodToType = mapPaymentMethodToType;
         this.mapCurrencyToModel = mapCurrencyToModel;
         this.mapCurrencyModelToDomain = mapCurrencyModelToDomain;
+        this.mapPaymentMethodModelToDomain = mapPaymentMethodModelToDomain;
     }
 
     @Override
@@ -116,6 +128,8 @@ class StripePaymentGateway implements PaymentGateway {
                 final Currency currency = mapCurrencyModelToDomain.apply(
                         CurrencyModel.from(session.getCurrency().toUpperCase())
                 );
+                final PaymentMethodModel paymentMethod = PaymentMethodModel.from(session.getPaymentMethodTypes().getFirst());
+                final String transactionId = session.getPaymentIntent();
 
                 final Money amount = Money.of(
                         session.getAmountTotal() / 100.0,
@@ -125,10 +139,12 @@ class StripePaymentGateway implements PaymentGateway {
                 final PaymentStatus status = mapToPaymentStatus(checkoutSession);
 
                 return PaymentReceipt.create(
-                            OrderId.from(orderId),
-                            status,
-                            session.getId(),
-                            amount
+                        transactionId,
+                        mapPaymentMethodModelToDomain.apply(paymentMethod),
+                        OrderId.from(orderId),
+                        status,
+                        session.getId(),
+                        amount
                 );
 
             } catch (IllegalArgumentException ignored) {
@@ -136,6 +152,8 @@ class StripePaymentGateway implements PaymentGateway {
             }
 
             return PaymentReceipt.create(
+                    "UNKNOWN",
+                    PaymentMethod.CARD,
                     OrderId.unknown(),
                     PaymentStatus.PENDING,
                     event.getId(),

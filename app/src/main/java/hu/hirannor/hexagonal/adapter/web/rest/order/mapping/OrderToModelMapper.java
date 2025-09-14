@@ -34,6 +34,7 @@ public class OrderToModelMapper implements Function<Order, OrderModel> {
         return new OrderModel()
                 .id(domain.id().asText())
                 .orderedProducts(products)
+                .customerId(domain.customer().asText())
                 .createdAt(domain.createdAt())
                 .totalPrice(mapMoneyToModel.apply(domain.totalPrice()))
                 .status(mapStatusToModel.apply(domain.status()));

@@ -2,7 +2,6 @@ package hu.hirannor.hexagonal.application.service.order;
 
 import hu.hirannor.hexagonal.application.port.payment.PaymentGateway;
 import hu.hirannor.hexagonal.application.port.payment.PaymentItem;
-import hu.hirannor.hexagonal.application.port.payment.PaymentMethod;
 import hu.hirannor.hexagonal.application.port.payment.PaymentRequest;
 import hu.hirannor.hexagonal.application.usecase.order.ChangeOrderStatus;
 import hu.hirannor.hexagonal.application.usecase.order.OrderCreation;
@@ -15,6 +14,7 @@ import hu.hirannor.hexagonal.domain.order.OrderedProduct;
 import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
 import hu.hirannor.hexagonal.domain.order.command.InitializePayment;
 import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
+import hu.hirannor.hexagonal.domain.order.payment.PaymentMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;

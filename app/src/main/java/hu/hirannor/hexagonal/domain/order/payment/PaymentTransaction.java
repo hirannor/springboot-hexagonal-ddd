@@ -5,48 +5,48 @@ import hu.hirannor.hexagonal.domain.order.OrderId;
 
 import java.time.Instant;
 import java.util.Objects;
-import java.util.UUID;
 
 public record PaymentTransaction(
         String transactionId,
+        PaymentMethod paymentMethod,
         OrderId orderId,
         PaymentStatus status,
         Money amount,
-        String providerReference,
         Instant createdAt
 ) {
 
     public PaymentTransaction {
         Objects.requireNonNull(transactionId);
+        Objects.requireNonNull(paymentMethod);
         Objects.requireNonNull(orderId);
         Objects.requireNonNull(status);
         Objects.requireNonNull(amount);
-        Objects.requireNonNull(providerReference);
         Objects.requireNonNull(createdAt);
     }
 
     public static PaymentTransaction from(final PaymentReceipt receipt) {
         return new PaymentTransaction(
-                UUID.randomUUID().toString(),
+                receipt.transactionId(),
+                receipt.paymentMethod(),
                 receipt.orderId(),
                 receipt.status(),
                 receipt.amount(),
-                receipt.providerReference(),
                 Instant.now()
         );
     }
 
     public static PaymentTransaction create(
+            final String transactionId,
+            final PaymentMethod paymentMethod,
             final OrderId orderId,
             final PaymentStatus status,
-            final Money amount,
-            final String providerReference) {
+            final Money amount) {
         return new PaymentTransaction(
-                UUID.randomUUID().toString(),
+                transactionId,
+                paymentMethod,
                 orderId,
                 status,
                 amount,
-                providerReference,
                 Instant.now()
         );
     }

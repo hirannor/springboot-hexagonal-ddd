@@ -1,4 +1,5 @@
-package hu.hirannor.hexagonal.adapter.payment.stripe;
+package hu.hirannor.hexagonal.adapter.payment.stripe.mapping;
+import hu.hirannor.hexagonal.adapter.payment.stripe.CurrencyModel;
 import hu.hirannor.hexagonal.domain.Currency;
 
 import java.util.function.Function;

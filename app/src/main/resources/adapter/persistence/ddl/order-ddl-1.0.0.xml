@@ -72,6 +72,47 @@
                 referencedTableName="EC_ORDERS"
                 referencedColumnNames="ID"
                 constraintName="fk_ordered_products_order"/>
+
+        <!-- ========================================================= -->
+        <!-- ORDER PAYMENTS -->
+        <!-- ========================================================= -->
+
+        <createTable tableName="EC_ORDER_PAYMENTS">
+            <column name="ID" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="TRANSACTION_ID" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="STATUS" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="AMOUNT" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CURRENCY" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PAYMENT_METHOD" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_AT" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ORDER_ID_FK" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="order_tx_seq"
+                        startValue="1"
+                        incrementBy="5"/>
+
+        <addForeignKeyConstraint baseTableName="EC_ORDER_PAYMENTS"
+                                 baseColumnNames="ORDER_ID_FK"
+                                 constraintName="fk_order_tx_order"
+                                 referencedTableName="EC_ORDERS"
+                                 referencedColumnNames="ID"/>
     </changeSet>
 
 </databaseChangeLog>

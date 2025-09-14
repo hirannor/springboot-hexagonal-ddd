@@ -2,7 +2,6 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.order;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.order.mapping.OrderModelToDomainMapper;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.order.mapping.OrderModeller;
-import hu.hirannor.hexagonal.adapter.persistence.jpa.order.mapping.OrderToModelMapper;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
@@ -28,21 +27,18 @@ import java.util.stream.Collectors;
 @DrivenAdapter
 class OrderJpaRepository implements OrderRepository {
 
-    private final Function<Order, OrderModel> mapDomainToModel;
     private final Function<OrderModel, Order> mapModelToDomain;
 
     private final OrderSpringDataJpaRepository orders;
 
     @Autowired
     OrderJpaRepository(final OrderSpringDataJpaRepository orders) {
-        this(orders, new OrderToModelMapper(), new OrderModelToDomainMapper());
+        this(orders, new OrderModelToDomainMapper());
     }
 
     OrderJpaRepository(final OrderSpringDataJpaRepository orders,
-                       final Function<Order, OrderModel> mapDomainToModel,
                        final Function<OrderModel, Order> mapModelToDomain) {
         this.orders = orders;
-        this.mapDomainToModel = mapDomainToModel;
         this.mapModelToDomain = mapModelToDomain;
     }
 

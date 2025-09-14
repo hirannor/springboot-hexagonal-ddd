@@ -134,7 +134,7 @@ adapter:
 
 
 ### HTTP Requests
-All API requests for testing registration, authentication, and customer operations can be found in the project under:
+All API requests for testing  can be found in the project under:
 ```
 /http-requests/order-management.http
 ```

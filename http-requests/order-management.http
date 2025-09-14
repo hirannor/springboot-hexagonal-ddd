@@ -190,6 +190,3 @@ Authorization: Bearer {{bearerToken}}
     client.global.set("paymentUrl", response.body.paymentUrl);
 %}
 
-### Open the Stripe Checkout URL (Manual step)
-# Copy this URL into your browser to complete the payment in Stripe Checkout
-GET {{paymentUrl}}

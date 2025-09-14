@@ -1,8 +1,8 @@
 package hu.hirannor.hexagonal.application.port.payment;
 
-
 import hu.hirannor.hexagonal.domain.Money;
 import hu.hirannor.hexagonal.domain.order.OrderId;
+import hu.hirannor.hexagonal.domain.order.payment.PaymentMethod;
 import hu.hirannor.hexagonal.infrastructure.command.CommandId;
 
 import java.util.List;

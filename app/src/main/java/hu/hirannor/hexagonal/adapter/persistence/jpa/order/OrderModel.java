@@ -1,6 +1,7 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.order;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.CurrencyModel;
+import hu.hirannor.hexagonal.adapter.persistence.jpa.PaymentTransactionModel;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -47,6 +48,9 @@ public class OrderModel {
     private Instant createdAt;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<PaymentTransactionModel> transactions = new HashSet<>();
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<OrderedProductModel> products = new HashSet<>();
 
     public OrderModel() {}
@@ -83,7 +87,20 @@ public class OrderModel {
 
     public Set<OrderedProductModel> getProducts() { return products; }
 
-    public void setProducts(Set<OrderedProductModel> products) { this.products = products; }
+    public void setProducts(final Set<OrderedProductModel> products) { this.products = products; }
+
+    public Set<PaymentTransactionModel> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(final Set<PaymentTransactionModel> transactions) {
+        this.transactions = transactions;
+    }
+
+    public void addTransaction(final PaymentTransactionModel transaction) {
+        transaction.setOrder(this);
+        this.transactions.add(transaction);
+    }
 
     public void addProduct(final OrderedProductModel product) {
         product.setOrder(this);

@@ -20,7 +20,7 @@ public class Order extends AggregateRoot {
     private final Set<OrderedProduct> orderedProducts;
     private final CustomerId customer;
     private final Instant createdAt;
-    private List<PaymentTransaction> transactions;
+    private final List<PaymentTransaction> transactions;
     private final List<DomainEvent> events;
 
     Order(final OrderId id,
@@ -37,7 +37,7 @@ public class Order extends AggregateRoot {
         this.status = status;
         this.createdAt = Instant.now();
         this.customer = customer;
-        this.transactions = transactions;
+        this.transactions = new ArrayList<>();
         this.events = new ArrayList<>();
     }
 
