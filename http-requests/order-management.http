@@ -149,27 +149,24 @@ POST http://localhost:8080/api/baskets/{{basketId}}/checkout
 Content-Type: application/json
 Authorization: Bearer {{bearerToken}}
 
+> {%
+    client.global.set("checkoutCustomerId", response.body.customerId);
+    client.global.set("checkoutItems", response.body.items);
+%}
+
+
 # -------------------------------
 # Orders API - HTTP Requests
 # -------------------------------
 
-### Create an Order (POST /api/orders)
+### Create an Order from checked-out basket (POST /api/orders)
 POST http://localhost:8080/api/orders
 Content-Type: application/json
 Authorization: Bearer {{bearerToken}}
 
 {
-  "customerId": "{{customerId}}",
-  "products": [
-    {
-      "productId": "550e8400-e29b-41d4-a716-446655440001",
-      "quantity": 1,
-      "price": {
-        "amount": "24.99",
-        "currency": "EUR"
-      }
-    }
-  ]
+  "customerId": "{{checkoutCustomerId}}",
+  "products": [{{checkoutItems}}]
 }
 
 > {%
