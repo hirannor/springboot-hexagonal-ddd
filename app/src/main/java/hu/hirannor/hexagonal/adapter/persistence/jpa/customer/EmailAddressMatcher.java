@@ -3,7 +3,10 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.customer;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel_;
 import hu.hirannor.hexagonal.domain.EmailAddress;
-import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.io.Serial;

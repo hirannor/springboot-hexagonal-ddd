@@ -1,6 +1,6 @@
-package hu.hirannor.hexagonal.adapter.web.rest.basket;
+package hu.hirannor.hexagonal.adapter.web.rest.product.mapping;
 
-import hu.hirannor.hexagonal.adapter.web.rest.baskets.model.CurrencyModel;
+import hu.hirannor.hexagonal.adapter.web.rest.products.model.CurrencyModel;
 import hu.hirannor.hexagonal.domain.Currency;
 
 import java.util.function.Function;

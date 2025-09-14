@@ -1,14 +1,16 @@
 package hu.hirannor.hexagonal.adapter.messaging.eventbus;
 
-import hu.hirannor.hexagonal.infrastructure.messaging.MessagePublisher;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
 import hu.hirannor.hexagonal.infrastructure.messaging.Message;
+import hu.hirannor.hexagonal.infrastructure.messaging.MessagePublisher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.*;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

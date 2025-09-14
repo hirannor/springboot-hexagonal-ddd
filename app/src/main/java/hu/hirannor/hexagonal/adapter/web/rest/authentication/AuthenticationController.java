@@ -1,6 +1,8 @@
 package hu.hirannor.hexagonal.adapter.web.rest.authentication;
 
 import hu.hirannor.hexagonal.adapter.web.rest.authentication.api.AuthApi;
+import hu.hirannor.hexagonal.adapter.web.rest.authentication.mapping.AuthenticationModelToCommandMapper;
+import hu.hirannor.hexagonal.adapter.web.rest.authentication.mapping.AuthenticationResultToModelMapper;
 import hu.hirannor.hexagonal.adapter.web.rest.authentication.model.AuthenticateModel;
 import hu.hirannor.hexagonal.adapter.web.rest.authentication.model.AuthenticationResultModel;
 import hu.hirannor.hexagonal.application.usecase.customer.Authenticating;

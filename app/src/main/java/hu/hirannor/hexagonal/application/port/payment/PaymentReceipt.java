@@ -1,9 +1,9 @@
 package hu.hirannor.hexagonal.application.port.payment;
 
-import java.util.Objects;
-
 import hu.hirannor.hexagonal.domain.Money;
 import hu.hirannor.hexagonal.domain.order.OrderId;
+
+import java.util.Objects;
 
 public record PaymentReceipt(
         OrderId orderId,

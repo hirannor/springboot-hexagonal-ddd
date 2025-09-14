@@ -1,4 +1,4 @@
-package hu.hirannor.hexagonal.adapter.web.rest.order;
+package hu.hirannor.hexagonal.adapter.web.rest.order.mapping;
 
 import hu.hirannor.hexagonal.adapter.web.rest.orders.model.OrderStatusModel;
 import hu.hirannor.hexagonal.domain.order.OrderStatus;

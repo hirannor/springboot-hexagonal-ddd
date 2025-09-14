@@ -1,4 +1,4 @@
-package hu.hirannor.hexagonal.adapter.web.rest.authentication;
+package hu.hirannor.hexagonal.adapter.web.rest.authentication.mapping;
 
 import hu.hirannor.hexagonal.adapter.web.rest.authentication.model.RegisterModel;
 import hu.hirannor.hexagonal.domain.EmailAddress;
@@ -7,9 +7,9 @@ import hu.hirannor.hexagonal.domain.authentication.Register;
 
 import java.util.function.Function;
 
-class RegisterModelToCommandMapper implements Function<RegisterModel, Register> {
+public class RegisterModelToCommandMapper implements Function<RegisterModel, Register> {
 
-    RegisterModelToCommandMapper() {}
+    public RegisterModelToCommandMapper() {}
 
     @Override
     public Register apply(final RegisterModel model) {

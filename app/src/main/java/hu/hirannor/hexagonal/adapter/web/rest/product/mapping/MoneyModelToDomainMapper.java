@@ -1,7 +1,7 @@
-package hu.hirannor.hexagonal.adapter.web.rest.basket;
+package hu.hirannor.hexagonal.adapter.web.rest.product.mapping;
 
-import hu.hirannor.hexagonal.adapter.web.rest.baskets.model.CurrencyModel;
-import hu.hirannor.hexagonal.adapter.web.rest.baskets.model.MoneyModel;
+import hu.hirannor.hexagonal.adapter.web.rest.products.model.CurrencyModel;
+import hu.hirannor.hexagonal.adapter.web.rest.products.model.MoneyModel;
 import hu.hirannor.hexagonal.domain.Currency;
 import hu.hirannor.hexagonal.domain.Money;
 
@@ -9,7 +9,7 @@ import java.util.function.Function;
 
 public class MoneyModelToDomainMapper implements Function<MoneyModel, Money> {
 
-    private final Function<CurrencyModel, Currency> mapModelToDomain;
+    private final  Function<CurrencyModel, Currency> mapModelToDomain;
 
     public MoneyModelToDomainMapper() {
         this.mapModelToDomain = new CurrencyModelToDomainMapper();

@@ -1,6 +1,7 @@
 package hu.hirannor.hexagonal.adapter.web.rest.authentication;
 
 import hu.hirannor.hexagonal.adapter.web.rest.authentication.api.RegisterApi;
+import hu.hirannor.hexagonal.adapter.web.rest.authentication.mapping.RegisterModelToCommandMapper;
 import hu.hirannor.hexagonal.adapter.web.rest.authentication.model.RegisterModel;
 import hu.hirannor.hexagonal.application.usecase.customer.Registrating;
 import hu.hirannor.hexagonal.domain.authentication.Register;

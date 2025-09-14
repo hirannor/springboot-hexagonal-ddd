@@ -1,4 +1,4 @@
-package hu.hirannor.hexagonal.adapter.web.rest.authentication;
+package hu.hirannor.hexagonal.adapter.web.rest.authentication.mapping;
 
 import hu.hirannor.hexagonal.adapter.web.rest.authentication.model.AuthenticateModel;
 import hu.hirannor.hexagonal.domain.EmailAddress;
@@ -7,9 +7,9 @@ import hu.hirannor.hexagonal.domain.authentication.Password;
 
 import java.util.function.Function;
 
-class AuthenticationModelToCommandMapper implements Function<AuthenticateModel, DoAuthenticate> {
+public class AuthenticationModelToCommandMapper implements Function<AuthenticateModel, DoAuthenticate> {
 
-    AuthenticationModelToCommandMapper() {}
+    public AuthenticationModelToCommandMapper() {}
 
     @Override
     public DoAuthenticate apply(final AuthenticateModel model) {

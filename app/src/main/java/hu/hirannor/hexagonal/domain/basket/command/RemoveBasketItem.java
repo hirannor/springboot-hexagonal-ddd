@@ -1,6 +1,5 @@
 package hu.hirannor.hexagonal.domain.basket.command;
 
-import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.basket.BasketId;
 import hu.hirannor.hexagonal.domain.basket.BasketItem;
 import hu.hirannor.hexagonal.infrastructure.command.Command;

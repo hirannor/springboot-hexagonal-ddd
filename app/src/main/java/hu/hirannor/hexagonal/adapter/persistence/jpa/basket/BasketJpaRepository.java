@@ -9,7 +9,6 @@ import hu.hirannor.hexagonal.domain.basket.BasketId;
 import hu.hirannor.hexagonal.domain.basket.BasketRepository;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
 import hu.hirannor.hexagonal.infrastructure.event.EventPublisher;
-import hu.hirannor.hexagonal.infrastructure.modelling.Modeller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Isolation;

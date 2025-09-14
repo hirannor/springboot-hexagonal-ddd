@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@DriverAdapter
 @RestController
 @RequestMapping("/api/payments")
-@DriverAdapter
-public class StripePaymentWebhookController {
+class StripePaymentWebhookController {
     private final PaymentCallbackHandling payment;
 
     @Autowired
-    public StripePaymentWebhookController(final PaymentCallbackHandling payment) {
+    StripePaymentWebhookController(final PaymentCallbackHandling payment) {
         this.payment = payment;
     }
 

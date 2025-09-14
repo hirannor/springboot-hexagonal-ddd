@@ -1,9 +1,9 @@
 package hu.hirannor.hexagonal.adapter.persistence.inmemory;
 
-import hu.hirannor.hexagonal.domain.customer.Customer;
 import hu.hirannor.hexagonal.domain.CustomerId;
-import hu.hirannor.hexagonal.domain.customer.CustomerRepository;
 import hu.hirannor.hexagonal.domain.EmailAddress;
+import hu.hirannor.hexagonal.domain.customer.Customer;
+import hu.hirannor.hexagonal.domain.customer.CustomerRepository;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
 import org.springframework.stereotype.Component;

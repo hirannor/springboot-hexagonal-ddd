@@ -13,7 +13,7 @@ import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.OrderRepository;
 import hu.hirannor.hexagonal.domain.order.OrderedProduct;
 import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
-import hu.hirannor.hexagonal.domain.order.command.PayOrder;
+import hu.hirannor.hexagonal.domain.order.command.InitializePayment;
 import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,7 +65,7 @@ class OrderCommandService implements
     }
 
     @Override
-    public PaymentInstruction initPay(final PayOrder command) {
+    public PaymentInstruction initializeBy(final InitializePayment command) {
         if (command == null) throw new IllegalArgumentException("command is null");
 
         final Order order = orders.findBy(command.orderId())

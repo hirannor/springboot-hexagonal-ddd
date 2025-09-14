@@ -99,7 +99,7 @@ paths:
             schema:
               $ref: '#/components/schemas/CancelOrder'
       responses:
-        '200':
+        '204':
           description: Order marked as canceled
         '400':
           description: Invalid order status or customer mismatch
@@ -122,7 +122,7 @@ paths:
             schema:
               $ref: '#/components/schemas/ChangeOrderStatus'
       responses:
-        '200':
+        '204':
           description: Order status updated
         '400':
           description: Invalid status transition
@@ -217,7 +217,9 @@ components:
       properties:
         newStatus:
           $ref: '#/components/schemas/OrderStatus'
-      required: [newStatus]
+        orderId:
+          type: string
+      required: [newStatus, orderId]
 
     Order:
       type: object

@@ -1,7 +1,9 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.product;
 
 import org.springframework.data.repository.Repository;
-import org.springframework.transaction.annotation.*;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;

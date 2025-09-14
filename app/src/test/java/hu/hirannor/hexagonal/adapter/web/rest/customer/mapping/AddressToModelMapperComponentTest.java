@@ -2,7 +2,9 @@ package hu.hirannor.hexagonal.adapter.web.rest.customer.mapping;
 
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.AddressModel;
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.CountryModel;
-import hu.hirannor.hexagonal.domain.customer.*;
+import hu.hirannor.hexagonal.domain.customer.Address;
+import hu.hirannor.hexagonal.domain.customer.Country;
+import hu.hirannor.hexagonal.domain.customer.PostalCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

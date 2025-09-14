@@ -1,7 +1,7 @@
-package hu.hirannor.hexagonal.adapter.web.rest.basket;
+package hu.hirannor.hexagonal.adapter.web.rest.order.mapping;
 
-import hu.hirannor.hexagonal.adapter.web.rest.baskets.model.CurrencyModel;
-import hu.hirannor.hexagonal.adapter.web.rest.baskets.model.MoneyModel;
+import hu.hirannor.hexagonal.adapter.web.rest.orders.model.CurrencyModel;
+import hu.hirannor.hexagonal.adapter.web.rest.orders.model.MoneyModel;
 import hu.hirannor.hexagonal.domain.Currency;
 import hu.hirannor.hexagonal.domain.Money;
 

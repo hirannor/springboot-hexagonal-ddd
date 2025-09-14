@@ -1,9 +1,9 @@
 package hu.hirannor.hexagonal.application.service.customer;
 
 import hu.hirannor.hexagonal.application.usecase.customer.CustomerDisplaying;
+import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.Customer;
-import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.customer.CustomerRepository;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import org.apache.logging.log4j.LogManager;

@@ -1,13 +1,13 @@
-package hu.hirannor.hexagonal.adapter.web.rest.authentication;
+package hu.hirannor.hexagonal.adapter.web.rest.authentication.mapping;
 
 import hu.hirannor.hexagonal.adapter.web.rest.authentication.model.AuthenticationResultModel;
 import hu.hirannor.hexagonal.domain.authentication.AuthenticationResult;
 
 import java.util.function.Function;
 
-class AuthenticationResultToModelMapper implements Function<AuthenticationResult, AuthenticationResultModel> {
+public class AuthenticationResultToModelMapper implements Function<AuthenticationResult, AuthenticationResultModel> {
 
-    AuthenticationResultToModelMapper() {}
+    public AuthenticationResultToModelMapper() {}
 
     @Override
     public AuthenticationResultModel apply(final AuthenticationResult result) {

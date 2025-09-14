@@ -1,14 +1,14 @@
 package hu.hirannor.hexagonal.application.service.authentication;
 
-import hu.hirannor.hexagonal.domain.authentication.Role;
-import hu.hirannor.hexagonal.domain.error.CustomerAlreadyExistWithEmailAddress;
 import hu.hirannor.hexagonal.application.port.authentication.Authenticator;
 import hu.hirannor.hexagonal.application.usecase.customer.Registrating;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.authentication.AuthUser;
 import hu.hirannor.hexagonal.domain.authentication.Register;
+import hu.hirannor.hexagonal.domain.authentication.Role;
 import hu.hirannor.hexagonal.domain.customer.Customer;
 import hu.hirannor.hexagonal.domain.customer.CustomerRepository;
+import hu.hirannor.hexagonal.domain.error.CustomerAlreadyExistWithEmailAddress;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;

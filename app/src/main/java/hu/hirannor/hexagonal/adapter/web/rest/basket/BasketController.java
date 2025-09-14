@@ -1,10 +1,16 @@
 package hu.hirannor.hexagonal.adapter.web.rest.basket;
 
+import hu.hirannor.hexagonal.adapter.web.rest.basket.mapping.BasketItemModelToDomainMapper;
+import hu.hirannor.hexagonal.adapter.web.rest.basket.mapping.BasketToModelMapper;
+import hu.hirannor.hexagonal.adapter.web.rest.basket.mapping.CreateBasketModelToCommandMapper;
 import hu.hirannor.hexagonal.adapter.web.rest.baskets.api.BasketsApi;
 import hu.hirannor.hexagonal.adapter.web.rest.baskets.model.BasketItemModel;
 import hu.hirannor.hexagonal.adapter.web.rest.baskets.model.BasketModel;
 import hu.hirannor.hexagonal.adapter.web.rest.baskets.model.CreateBasketModel;
-import hu.hirannor.hexagonal.application.usecase.basket.*;
+import hu.hirannor.hexagonal.application.usecase.basket.BasketCheckout;
+import hu.hirannor.hexagonal.application.usecase.basket.BasketCreation;
+import hu.hirannor.hexagonal.application.usecase.basket.BasketDisplaying;
+import hu.hirannor.hexagonal.application.usecase.basket.BasketProductHandling;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.basket.Basket;
 import hu.hirannor.hexagonal.domain.basket.BasketId;
@@ -34,22 +40,22 @@ class BasketController implements BasketsApi {
     private final Function<CreateBasketModel, CreateBasket> mapCreateBasketModelToCommand;
     private final Function<BasketItemModel, BasketItem> mapBasketItemToModel;
 
-    private final BasketCheckout basketCheckout;
-    private final BasketCreation basketCreation;
+    private final BasketCheckout basket;
+    private final BasketCreation basketCreator;
     private final BasketDisplaying baskets;
-    private final BasketProductHandling basketHandling;
+    private final BasketProductHandling basketHandler;
 
     @Autowired
     BasketController(
-            final BasketCheckout basketCheckout,
-            final BasketCreation basketCreation,
+            final BasketCheckout basket,
+            final BasketCreation basketCreator,
             final BasketDisplaying baskets,
-            final BasketProductHandling basketHandling) {
+            final BasketProductHandling basketHandler) {
       this(
-          basketCheckout,
-          basketCreation,
+          basket,
+              basketCreator,
           baskets,
-          basketHandling,
+              basketHandler,
           new BasketToModelMapper(),
           new CreateBasketModelToCommandMapper(),
           new BasketItemModelToDomainMapper()
@@ -57,17 +63,17 @@ class BasketController implements BasketsApi {
     }
 
     BasketController(
-            final BasketCheckout basketCheckout,
-            final BasketCreation basketCreation,
+            final BasketCheckout basket,
+            final BasketCreation basketCreator,
             final BasketDisplaying baskets,
-            final BasketProductHandling basketHandling,
+            final BasketProductHandling basketHandler,
             final Function<Basket, BasketModel> mapBasketToModel,
             final Function<CreateBasketModel, CreateBasket> mapCreateBasketModelToCommand,
             final Function<BasketItemModel, BasketItem> mapBasketItemToModel) {
-        this.basketCheckout = basketCheckout;
-        this.basketCreation = basketCreation;
+        this.basket = basket;
+        this.basketCreator = basketCreator;
         this.baskets = baskets;
-        this.basketHandling = basketHandling;
+        this.basketHandler = basketHandler;
         this.mapBasketToModel = mapBasketToModel;
         this.mapCreateBasketModelToCommand = mapCreateBasketModelToCommand;
         this.mapBasketItemToModel = mapBasketItemToModel;
@@ -76,7 +82,7 @@ class BasketController implements BasketsApi {
     @Override
     @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<BasketModel> checkout(final String customerId) {
-        final Basket basket = basketCheckout.checkout(
+        final Basket basket = this.basket.checkout(
             CheckoutBasket.issue(CustomerId.from(customerId))
         );
 
@@ -88,7 +94,7 @@ class BasketController implements BasketsApi {
     public ResponseEntity<BasketModel> createBasket(final CreateBasketModel createBasketModel) {
         final CreateBasket command = mapCreateBasketModelToCommand.apply(createBasketModel);
 
-        final Basket basket = basketCreation.create(command);
+        final Basket basket = basketCreator.create(command);
 
         final URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -137,7 +143,7 @@ class BasketController implements BasketsApi {
             BasketId.from(basketId),
             item
         );
-        basketHandling.add(command);
+        basketHandler.add(command);
         return ResponseEntity.ok().build();
     }
 
@@ -149,7 +155,7 @@ class BasketController implements BasketsApi {
             BasketId.from(basketId),
             item
         );
-        basketHandling.remove(command);
+        basketHandler.remove(command);
         return ResponseEntity.ok().build();
     }
 }

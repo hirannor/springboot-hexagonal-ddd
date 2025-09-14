@@ -1,7 +1,11 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping;
 
-import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.*;
-import hu.hirannor.hexagonal.domain.customer.*;
+import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CountryModel;
+import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
+import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.GenderModel;
+import hu.hirannor.hexagonal.domain.customer.Country;
+import hu.hirannor.hexagonal.domain.customer.Customer;
+import hu.hirannor.hexagonal.domain.customer.Gender;
 
 import java.util.function.Function;
 

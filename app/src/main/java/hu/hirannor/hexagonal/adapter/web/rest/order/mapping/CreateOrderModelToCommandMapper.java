@@ -1,4 +1,4 @@
-package hu.hirannor.hexagonal.adapter.web.rest.order;
+package hu.hirannor.hexagonal.adapter.web.rest.order.mapping;
 
 import hu.hirannor.hexagonal.adapter.web.rest.orders.model.CreateOrderModel;
 import hu.hirannor.hexagonal.adapter.web.rest.orders.model.OrderedProductModel;
@@ -10,11 +10,11 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-class CreateOrderModelToCommandMapper implements Function<CreateOrderModel, CreateOrder> {
+public class CreateOrderModelToCommandMapper implements Function<CreateOrderModel, CreateOrder> {
 
     private final Function<OrderedProductModel, OrderedProduct> mapModelToDomain;
 
-    CreateOrderModelToCommandMapper() {
+    public CreateOrderModelToCommandMapper() {
         this.mapModelToDomain = new OrderedProductModelToDomainMapper();
     }
 

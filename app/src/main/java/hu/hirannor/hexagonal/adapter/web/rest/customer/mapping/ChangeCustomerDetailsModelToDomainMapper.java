@@ -1,9 +1,13 @@
 package hu.hirannor.hexagonal.adapter.web.rest.customer.mapping;
 
-import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.AddressModel;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.ChangePersonalDetailsModel;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.GenderModel;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.EmailAddress;
-import hu.hirannor.hexagonal.domain.customer.*;
+import hu.hirannor.hexagonal.domain.customer.Address;
+import hu.hirannor.hexagonal.domain.customer.FullName;
+import hu.hirannor.hexagonal.domain.customer.Gender;
 import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
 
 import java.util.function.Function;

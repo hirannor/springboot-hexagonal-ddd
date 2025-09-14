@@ -1,6 +1,8 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping;
 
-import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.*;
+import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CountryModel;
+import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerView;
+import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.GenderModel;
 
 import java.time.LocalDate;
 

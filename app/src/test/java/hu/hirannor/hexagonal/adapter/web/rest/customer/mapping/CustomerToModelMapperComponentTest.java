@@ -1,6 +1,9 @@
 package hu.hirannor.hexagonal.adapter.web.rest.customer.mapping;
 
-import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.AddressModel;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.CountryModel;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.CustomerModel;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.GenderModel;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.*;

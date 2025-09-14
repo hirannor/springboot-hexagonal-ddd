@@ -1,6 +1,9 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.authentication;
 
-import hu.hirannor.hexagonal.adapter.persistence.jpa.authentication.role.*;
+import hu.hirannor.hexagonal.adapter.persistence.jpa.authentication.role.PermissionRoleModel;
+import hu.hirannor.hexagonal.adapter.persistence.jpa.authentication.role.RoleMappingFactory;
+import hu.hirannor.hexagonal.adapter.persistence.jpa.authentication.role.RoleModel;
+import hu.hirannor.hexagonal.adapter.persistence.jpa.authentication.role.RoleSpringDataJpaRepository;
 import hu.hirannor.hexagonal.domain.EmailAddress;
 import hu.hirannor.hexagonal.domain.authentication.AuthUser;
 import hu.hirannor.hexagonal.domain.authentication.AuthenticationRepository;

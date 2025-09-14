@@ -1,5 +1,7 @@
 package hu.hirannor.hexagonal.adapter.web.rest.product;
 
+import hu.hirannor.hexagonal.adapter.web.rest.product.mapping.CreateProductModelToCommandMapper;
+import hu.hirannor.hexagonal.adapter.web.rest.product.mapping.ProductToModelMapper;
 import hu.hirannor.hexagonal.adapter.web.rest.products.api.ProductsApi;
 import hu.hirannor.hexagonal.adapter.web.rest.products.model.CreateProductModel;
 import hu.hirannor.hexagonal.adapter.web.rest.products.model.ProductModel;

@@ -2,13 +2,16 @@ package hu.hirannor.hexagonal.adapter.web.rest.customer;
 
 import hu.hirannor.hexagonal.adapter.web.rest.customer.api.CustomersApi;
 import hu.hirannor.hexagonal.adapter.web.rest.customer.mapping.CustomerMappingFactory;
-import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.ChangePersonalDetailsModel;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.CustomerModel;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.GenderModel;
 import hu.hirannor.hexagonal.application.usecase.authentication.CustomerDeletion;
 import hu.hirannor.hexagonal.application.usecase.customer.CustomerDisplaying;
 import hu.hirannor.hexagonal.application.usecase.customer.CustomerModification;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.EmailAddress;
-import hu.hirannor.hexagonal.domain.customer.*;
+import hu.hirannor.hexagonal.domain.customer.Customer;
+import hu.hirannor.hexagonal.domain.customer.Gender;
 import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;

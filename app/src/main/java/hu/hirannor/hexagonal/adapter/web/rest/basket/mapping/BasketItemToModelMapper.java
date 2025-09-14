@@ -1,4 +1,4 @@
-package hu.hirannor.hexagonal.adapter.web.rest.basket;
+package hu.hirannor.hexagonal.adapter.web.rest.basket.mapping;
 
 
 import hu.hirannor.hexagonal.adapter.web.rest.baskets.model.BasketItemModel;

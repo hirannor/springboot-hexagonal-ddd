@@ -4,12 +4,12 @@ import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.infrastructure.command.Command;
 import hu.hirannor.hexagonal.infrastructure.command.CommandId;
 
-public record PayOrder(
+public record InitializePayment(
         CommandId id,
         OrderId orderId
 ) implements Command {
 
-    public static PayOrder issue(final OrderId orderId) {
-        return new PayOrder(CommandId.generate(), orderId);
+    public static InitializePayment issue(final OrderId orderId) {
+        return new InitializePayment(CommandId.generate(), orderId);
     }
 }

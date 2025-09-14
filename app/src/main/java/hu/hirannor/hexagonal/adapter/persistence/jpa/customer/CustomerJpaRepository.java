@@ -6,7 +6,8 @@ import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerMode
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerView;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.EmailAddress;
-import hu.hirannor.hexagonal.domain.customer.*;
+import hu.hirannor.hexagonal.domain.customer.Customer;
+import hu.hirannor.hexagonal.domain.customer.CustomerRepository;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
 import hu.hirannor.hexagonal.infrastructure.event.EventPublisher;
@@ -14,7 +15,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.*;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
