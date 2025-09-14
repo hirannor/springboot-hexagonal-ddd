@@ -201,6 +201,6 @@ Authorization: Bearer {{bearerToken}}
 }
 
 ### Cancels an order (POST /api/orders/{orderId}/cancel)
-PATCH http://localhost:8080/api/orders/{{orderId}}/cancel
+POST http://localhost:8080/api/orders/{{orderId}}/cancel
 Content-Type: application/json
 Authorization: Bearer {{bearerToken}}
