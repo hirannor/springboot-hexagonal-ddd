@@ -17,6 +17,17 @@ The architecture enforces separation of concerns:
 
 Architectural rules are validated using **[ArchUnit](https://www.archunit.org/)** to maintain a clean and consistent project structure.
 
+For DDD modeling, the project uses an **Order Management System** as the core domain, since it naturally covers a wide variety of concepts:
+
+* **Customer** – aggregate root representing a registered user of the system.  
+  Customers can register, authenticate, and manage their own profile.  
+  Admins use the same `Customer` API but with extended permissions (e.g., list all, delete).
+* **Order** – aggregate root handling the full order lifecycle: creation, status changes, payment, cancellation, shipping, etc.
+* **Basket** – aggregate root representing a shopping basket where products can be added/removed before checkout.
+* **Product** – aggregate root representing catalog items that can be queried and added to baskets or orders.
+
+Other concerns such as authentication and authorization are modeled separately via `AuthUser` (a value object), rather than as a dedicated aggregate root. Roles (`CUSTOMER`, `ADMIN`) control access to APIs instead of introducing extra domain entities.
+
 
 ## 🛠 Tech Stack
 

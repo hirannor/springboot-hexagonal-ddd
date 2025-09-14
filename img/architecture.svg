@@ -12,8 +12,8 @@
     <rect width="950" height="900" fill="#ffffff"/>
 
     <!-- Title -->
-    <text x="475" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#2c3e50">Multi-Domain Application</text>
-    <text x="475" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#7f8c8d">Hexagonal Architecture with Stripe Integration</text>
+    <text x="475" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#2c3e50">Order Management System(OMS)</text>
+    <text x="475" y="65" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#7f8c8d">Hexagonal Architecture with DDD</text>
 
     <!-- Central Hexagon (Application Core) -->
     <polygon points="475,440 615,340 615,200 475,100 335,200 335,340"
