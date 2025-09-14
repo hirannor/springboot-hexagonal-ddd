@@ -25,7 +25,7 @@ class GeneralRulesArchTest {
                 .should().beAssignableTo(Function.class)
                 .orShould().beAssignableTo(BiFunction.class)
                 .as("Mapper classes should be implementation of Functional interfaces")
-                .because("they are transforming information from one type to another")
+                .because("they are transforming information from one notificationType to another")
                 .check(classes);
     }
 

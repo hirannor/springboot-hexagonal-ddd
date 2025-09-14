@@ -100,7 +100,15 @@ public class Order extends AggregateRoot {
             throw new IllegalStateException("Cannot change to " + target +  " status");
         }
 
-        this.status = target;
+        switch (target) {
+            case SHIPPED -> ship();
+            case DELIVERED -> deliver();
+            case CANCELLED -> cancel();
+            case RETURNED -> returnOrder();
+            case REFUNDED -> refund();
+            case PROCESSING -> startProcessing();
+            default -> this.status = target;
+        }
     }
 
     public void initializePayment() {

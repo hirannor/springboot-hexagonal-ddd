@@ -7,7 +7,7 @@ import jakarta.persistence.Converter;
 
 /**
  * A {@link AttributeConverter} converter implementation to convert
- * {@link GenderModel} type to {@link String} and vica-versa
+ * {@link GenderModel} notificationType to {@link String} and vica-versa
  *
  * @author Mate Karolyi
  */

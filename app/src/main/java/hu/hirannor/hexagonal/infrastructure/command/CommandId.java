@@ -23,8 +23,8 @@ public record CommandId(UUID value) {
     /**
      * Create an instance of {@link CommandId}
      *
-     * @param value {@link String} raw string value of a UUID type
-     * @return an instance of {@link CommandId} type
+     * @param value {@link String} raw string value of a UUID notificationType
+     * @return an instance of {@link CommandId} notificationType
      */
     public static CommandId from(final String value) {
         return new CommandId(UUID.fromString(value));
@@ -33,7 +33,7 @@ public record CommandId(UUID value) {
     /**
      * Generates an unique {@link CommandId} command value.
      *
-     * @return an instance of {@link CommandId} type
+     * @return an instance of {@link CommandId} notificationType
      */
     public static CommandId generate() {
         return new CommandId(UUID.randomUUID());

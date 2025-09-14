@@ -31,4 +31,8 @@ public record FullName(String firstName, String lastName) {
         return new FullName(firstName, lastName);
     }
 
+    public String concatFirstAndLastName() {
+        return this.firstName + " " + this.lastName;
+    }
+
 }

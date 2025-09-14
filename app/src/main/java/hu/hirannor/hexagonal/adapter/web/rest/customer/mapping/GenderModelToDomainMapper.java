@@ -6,7 +6,7 @@ import hu.hirannor.hexagonal.domain.customer.Gender;
 import java.util.function.Function;
 
 /**
- * Maps a {@link GenderModel} model type to {@link Gender} domain type.
+ * Maps a {@link GenderModel} model notificationType to {@link Gender} domain notificationType.
  *
  * @author Mate Karolyi
  */

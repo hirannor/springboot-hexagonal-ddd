@@ -144,7 +144,7 @@ All API requests for testing  can be found in the project under:
 * **File:** `docker-compose.yml`
 * **Environment variables:** stored in `.env`
 
-Start the database:
+Start the database & smtp server:
 
 ```bash
 docker-compose up -d

@@ -96,7 +96,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             } else {
-                sendError(request, response, "Unsupported authentication type");
+                sendError(request, response, "Unsupported authentication notificationType");
                 return;
             }
         } catch (Exception ex) {

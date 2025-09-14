@@ -3,7 +3,7 @@ package hu.hirannor.hexagonal.infrastructure.messaging;
 import java.util.List;
 
 /**
- * Interface for publishing type of {@link Message} messages.
+ * Interface for publishing notificationType of {@link Message} messages.
  *
  * @author Mate Karolyi
  */

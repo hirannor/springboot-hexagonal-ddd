@@ -3,7 +3,7 @@ package hu.hirannor.hexagonal.infrastructure.modelling;
 /**
  * Interface to create object mutators with.
  *
- * @param <TO_MUTATE> Class type of to perform mutations on
+ * @param <TO_MUTATE> Class notificationType of to perform mutations on
  * @author Mate Karolyi
  */
 @FunctionalInterface

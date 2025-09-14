@@ -6,7 +6,7 @@ import hu.hirannor.hexagonal.domain.customer.Country;
 import java.util.function.Function;
 
 /**
- * Maps a {@link Country} domain type to {@link CountryModel} model type.
+ * Maps a {@link Country} domain notificationType to {@link CountryModel} model notificationType.
  *
  * @author Mate Karolyi
  */

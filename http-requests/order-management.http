@@ -144,8 +144,8 @@ Authorization: Bearer {{bearerToken}}
   }
 }
 
-### Checkout basket (POST /api/baskets/{basketId}/checkout)
-POST http://localhost:8080/api/baskets/{{basketId}}/checkout
+### Checkout basket (POST /api/baskets/{customerId}/checkout)
+POST http://localhost:8080/api/baskets/{{customerId}}/checkout
 Content-Type: application/json
 Authorization: Bearer {{bearerToken}}
 

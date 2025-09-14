@@ -13,7 +13,7 @@ import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
 import java.util.function.Function;
 
 /**
- * Maps a {@link ChangePersonalDetailsModel} model type to {@link ChangePersonalDetails} domain type.
+ * Maps a {@link ChangePersonalDetailsModel} model notificationType to {@link ChangePersonalDetails} domain notificationType.
  *
  * @author Mate Karolyi
  */

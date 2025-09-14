@@ -7,7 +7,7 @@ import jakarta.persistence.Converter;
 
 /**
  * A {@link AttributeConverter} converter implementation to convert
- * {@link CountryModel} type to {@link String} and vica-versa
+ * {@link CountryModel} notificationType to {@link String} and vica-versa
  *
  * @author Mate Karolyi
  */

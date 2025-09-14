@@ -19,8 +19,8 @@ import java.util.function.Function;
 public interface CustomerMappingFactory {
 
     /**
-     * Create an instance of {@link CustomerToModelMapper}, which maps a {@link Customer} domain type
-     * to a {@link CustomerModel} model type.
+     * Create an instance of {@link CustomerToModelMapper}, which maps a {@link Customer} domain notificationType
+     * to a {@link CustomerModel} model notificationType.
      *
      * @return an instance of {@link CustomerToModelMapper}
      */
@@ -29,8 +29,8 @@ public interface CustomerMappingFactory {
     }
 
     /**
-     * Create an instance of {@link GenderModelToDomainMapper}, which maps a {@link GenderModel} model type
-     * to a {@link Gender} domain type.
+     * Create an instance of {@link GenderModelToDomainMapper}, which maps a {@link GenderModel} model notificationType
+     * to a {@link Gender} domain notificationType.
      *
      * @return an instance of {@link GenderModelToDomainMapper}
      */
@@ -39,8 +39,8 @@ public interface CustomerMappingFactory {
     }
 
     /**
-     * Create an instance of {@link AddressModelToDomainMapper}, which maps a {@link AddressModel} model type
-     * to a {@link Address} domain type.
+     * Create an instance of {@link AddressModelToDomainMapper}, which maps a {@link AddressModel} model notificationType
+     * to a {@link Address} domain notificationType.
      *
      * @return an instance of {@link AddressModelToDomainMapper}
      */
@@ -50,8 +50,8 @@ public interface CustomerMappingFactory {
 
     /**
      * Create an instance of {@link ChangeCustomerDetailsModelToDomainMapper},
-     * which maps a {@link ChangePersonalDetailsModel} model type
-     * to a {@link ChangePersonalDetails} domain type.
+     * which maps a {@link ChangePersonalDetailsModel} model notificationType
+     * to a {@link ChangePersonalDetails} domain notificationType.
      *
      * @return an instance of {@link ChangeCustomerDetailsModelToDomainMapper}
      */

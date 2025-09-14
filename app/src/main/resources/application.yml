@@ -5,6 +5,14 @@ logging:
     path: logs
 
 spring:
+  mail:
+    host: localhost
+    port: 1025
+    username:
+    password:
+    properties:
+      mail.smtp.auth: false
+      mail.smtp.starttls.enable: false
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5342/hexagondb
@@ -37,3 +45,7 @@ payment:
     webhook-secret: whsec_
     success-url: http://google.com
     failure-url: http://google.com
+
+
+email:
+  from: no-reply@yourapp.com

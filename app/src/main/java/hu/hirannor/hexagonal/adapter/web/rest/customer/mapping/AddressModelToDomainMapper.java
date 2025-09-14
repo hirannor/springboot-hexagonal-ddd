@@ -9,7 +9,7 @@ import hu.hirannor.hexagonal.domain.customer.PostalCode;
 import java.util.function.Function;
 
 /**
- * Maps a {@link AddressModel} model type to {@link Address} domain type.
+ * Maps a {@link AddressModel} model notificationType to {@link Address} domain notificationType.
  *
  * @author Mate Karolyi
  */

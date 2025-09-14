@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 /**
- * Maps a {@link CustomerView} view type to {@link Customer} domain type.
+ * Maps a {@link CustomerView} view notificationType to {@link Customer} domain notificationType.
  *
  * @author Mate Karolyi
  */

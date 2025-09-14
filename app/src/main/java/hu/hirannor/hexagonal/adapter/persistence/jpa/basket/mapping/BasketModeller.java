@@ -28,7 +28,7 @@ public class BasketModeller implements Modeller<BasketModel> {
         if (from == null) return null;
 
         from.setBasketId(domain.id().asText());
-        from.setCustomerId(domain.id().asText());
+        from.setCustomerId(domain.customer().asText());
 
         from.getItems().clear();
         domain.items()

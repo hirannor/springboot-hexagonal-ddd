@@ -21,8 +21,8 @@ public record EventId(UUID id) {
     /**
      * Create an instance of {@link EventId}
      *
-     * @param value {@link String} raw string value of a UUID type
-     * @return an instance of {@link EventId} type
+     * @param value {@link String} raw string value of a UUID notificationType
+     * @return an instance of {@link EventId} notificationType
      */
     public static EventId from(final String value) {
         return new EventId(UUID.fromString(value));
@@ -31,7 +31,7 @@ public record EventId(UUID id) {
     /**
      * Generates an unique {@link EventId} event value.
      *
-     * @return an instance of {@link EventId} type
+     * @return an instance of {@link EventId} notificationType
      */
     public static EventId generate() {
         return new EventId(UUID.randomUUID());

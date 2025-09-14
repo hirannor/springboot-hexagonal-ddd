@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 /**
- * Maps a {@link CustomerModel} model type to {@link Customer} domain type.
+ * Maps a {@link CustomerModel} model notificationType to {@link Customer} domain notificationType.
  *
  * @author Mate Karolyi
  */

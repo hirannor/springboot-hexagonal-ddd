@@ -11,7 +11,7 @@ import java.util.function.Function;
 
 /**
  * An implementation of {@link Modeller} interface, which is capable of
- * applying changes from a {@link Customer} domain type to a {@link CustomerModel} model type.
+ * applying changes from a {@link Customer} domain notificationType to a {@link CustomerModel} model notificationType.
  *
  * @author Mate Karolyi
  */

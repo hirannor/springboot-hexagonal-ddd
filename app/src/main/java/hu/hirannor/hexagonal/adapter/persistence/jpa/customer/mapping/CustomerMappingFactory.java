@@ -16,8 +16,8 @@ import java.util.function.Function;
 public interface CustomerMappingFactory {
 
     /**
-     * Create an instance of {@link CustomerToModelMapper}, which maps a {@link Customer} domain type
-     * to a {@link CustomerModel} model type.
+     * Create an instance of {@link CustomerToModelMapper}, which maps a {@link Customer} domain notificationType
+     * to a {@link CustomerModel} model notificationType.
      *
      * @return an instance of {@link CustomerToModelMapper}
      */
@@ -26,8 +26,8 @@ public interface CustomerMappingFactory {
     }
 
     /**
-     * Create an instance of {@link CustomerModelToDomainMapper}, which maps a {@link CustomerModel} model type
-     * to a {@link Customer} domain type.
+     * Create an instance of {@link CustomerModelToDomainMapper}, which maps a {@link CustomerModel} model notificationType
+     * to a {@link Customer} domain notificationType.
      *
      * @return an instance of {@link CustomerModelToDomainMapper}
      */
@@ -36,8 +36,8 @@ public interface CustomerMappingFactory {
     }
 
     /**
-     * Create an instance of {@link CustomerViewToDomainMapper}, which maps a {@link CustomerView} view type
-     * to a {@link Customer} domain type.
+     * Create an instance of {@link CustomerViewToDomainMapper}, which maps a {@link CustomerView} view notificationType
+     * to a {@link Customer} domain notificationType.
      *
      * @return an instance of {@link CustomerModelToDomainMapper}
      */
@@ -46,8 +46,8 @@ public interface CustomerMappingFactory {
     }
 
     /**
-     * Create an instance of {@link GenderToModelMapper}, which maps a {@link Gender} domain type
-     * to a {@link GenderModel} model type.
+     * Create an instance of {@link GenderToModelMapper}, which maps a {@link Gender} domain notificationType
+     * to a {@link GenderModel} model notificationType.
      *
      * @return an instance of {@link GenderToModelMapper}
      */

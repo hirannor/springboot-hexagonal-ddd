@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * A spring data repository for {@link CustomerModel} model type.
+ * A spring data repository for {@link CustomerModel} model notificationType.
  *
  * @author Mate Karolyi
  */
