@@ -21,6 +21,7 @@ public class Order extends AggregateRoot {
     private final CustomerId customer;
     private final Instant createdAt;
     private final List<PaymentTransaction> transactions;
+    private final List<OrderStatusChange> history;
     private final List<DomainEvent> events;
 
     Order(final OrderId id,
@@ -37,7 +38,8 @@ public class Order extends AggregateRoot {
         this.status = status;
         this.createdAt = Instant.now();
         this.customer = customer;
-        this.transactions = new ArrayList<>();
+        this.transactions = transactions;
+        this.history = new ArrayList<>();
         this.events = new ArrayList<>();
     }
 
@@ -100,6 +102,8 @@ public class Order extends AggregateRoot {
             throw new IllegalStateException("Cannot change to " + target +  " status");
         }
 
+        this.history.add(OrderStatusChange.from(status, target, Instant.now()));
+
         switch (target) {
             case SHIPPED -> ship();
             case DELIVERED -> deliver();
@@ -115,6 +119,8 @@ public class Order extends AggregateRoot {
         if (!status.canTransitionTo(OrderStatus.PAYMENT_PENDING)) {
             throw new IllegalStateException("Cannot start processing from status " + status);
         }
+        addHistory(status, OrderStatus.PAYMENT_PENDING);
+
         this.status = OrderStatus.PAYMENT_PENDING;
         events.add(OrderPaymentPending.record(id, customer));
     }
@@ -123,6 +129,8 @@ public class Order extends AggregateRoot {
         if (!status.canTransitionTo(OrderStatus.PROCESSING)) {
             throw new IllegalStateException("Cannot start processing from status " + status);
         }
+        addHistory(status, OrderStatus.PROCESSING);
+
         this.status = OrderStatus.PROCESSING;
         events.add(OrderProcessing.record(id, customer));
     }
@@ -131,6 +139,8 @@ public class Order extends AggregateRoot {
         if (!status.canTransitionTo(OrderStatus.SHIPPED)) {
             throw new IllegalStateException("Cannot ship order from status " + status);
         }
+        addHistory(status, OrderStatus.SHIPPED);
+
         this.status = OrderStatus.SHIPPED;
         events.add(OrderShipped.record(id, customer));
     }
@@ -139,6 +149,8 @@ public class Order extends AggregateRoot {
         if (!status.canTransitionTo(OrderStatus.DELIVERED)) {
             throw new IllegalStateException("Cannot deliver order from status " + status);
         }
+        addHistory(status, OrderStatus.DELIVERED);
+
         this.status = OrderStatus.DELIVERED;
         events.add(OrderDelivered.record(id, customer));
     }
@@ -147,6 +159,8 @@ public class Order extends AggregateRoot {
         if (!status.canTransitionTo(OrderStatus.CANCELLED)) {
             throw new IllegalStateException("Cannot cancel order from status " + status);
         }
+        addHistory(status, OrderStatus.CANCELLED);
+
         this.status = OrderStatus.CANCELLED;
         events.add(OrderCanceled.record(id, customer));
     }
@@ -155,6 +169,8 @@ public class Order extends AggregateRoot {
         if (!status.canTransitionTo(OrderStatus.RETURNED)) {
             throw new IllegalStateException("Cannot return order from status " + status);
         }
+        addHistory(status, OrderStatus.RETURNED);
+
         this.status = OrderStatus.RETURNED;
         events.add(OrderReturned.record(id, customer));
     }
@@ -163,6 +179,8 @@ public class Order extends AggregateRoot {
         if (!status.canTransitionTo(OrderStatus.REFUNDED)) {
             throw new IllegalStateException("Cannot refund order from status " + status);
         }
+        addHistory(status, OrderStatus.REFUNDED);
+
         this.status = OrderStatus.REFUNDED;
         events.add(OrderRefunded.record(id, customer));
     }
@@ -176,6 +194,8 @@ public class Order extends AggregateRoot {
 
     public List<PaymentTransaction> transactions() { return Collections.unmodifiableList(transactions); }
 
+    public List<OrderStatusChange> history() { return Collections.unmodifiableList(history); }
+
     @Override
     public void clearEvents() {
         events.clear();
@@ -184,6 +204,10 @@ public class Order extends AggregateRoot {
     @Override
     public List<DomainEvent> events() {
         return Collections.unmodifiableList(events);
+    }
+
+    private void addHistory(final OrderStatus from, final OrderStatus to) {
+        this.history.add(OrderStatusChange.from(from, to, Instant.now()));
     }
 
     private Supplier<IllegalStateException> failBecauseOrderDoesntContainProduct() {
