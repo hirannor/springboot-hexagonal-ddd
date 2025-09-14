@@ -138,3 +138,58 @@ Start the database:
 ```bash
 docker-compose up -d
 ```
+
+## 🧪 Testing Payment with Stripe Payment Adapter 
+
+This project integrates with **Stripe Checkout** for payments.  
+Follow these steps to test payments locally.
+
+### 1. Create a Stripe Account
+1. Go to [https://dashboard.stripe.com/register](https://dashboard.stripe.com/register).
+2. Sign up for a free account (no credit card required).
+3. Switch to **Test Mode** in the Dashboard.
+
+### 2. Get API Keys
+* Navigate to **Developers → API Keys** in the Stripe Dashboard.
+* Copy the **Secret Key** (e.g., `sk_test_...`).
+* This will be used as `payment.stripe.api-key` in `application.yml`.
+
+### 3. Install Stripe CLI
+Install the Stripe CLI from [https://stripe.com/docs/stripe-cli](https://stripe.com/docs/stripe-cli).
+
+Verify installation:
+
+```bash
+stripe --version
+```
+
+### 4. Forward Webhooks to Your Local App
+```bash
+stripe listen --forward-to localhost:8080/api/payments/stripe/webhook
+```
+
+### 5. Update application.yml
+Add your Stripe configuration
+
+```yaml
+payment:
+  stripe:
+    api-key: sk_test_xxxxxxxxxxxxxxxxxxxxx
+    webhook-secret: whsec_xxxxxxxxxxxxxxxxxxxxx
+    success-url: http://localhost:8080/payment/success/
+    failure-url: http://localhost:8080/payment/failure/
+```
+
+- api-key → Stripe test secret key from Dashboard.
+- webhook-secret → Provided by Stripe CLI when running stripe listen.
+- success-url → Redirect URL after successful payment.
+- failure-url → Redirect URL after failed/canceled payment.
+
+### 6. Test Payments
+
+Stripe provides a list of test cards for simulating payments:
+👉 [https://docs.stripe.com/testing](https://docs.stripe.com/testing)
+
+Common test card:
+- Visa (Success): 4242 4242 4242 4242
+  - Exp: any future date, CVC: any 3 digits.
