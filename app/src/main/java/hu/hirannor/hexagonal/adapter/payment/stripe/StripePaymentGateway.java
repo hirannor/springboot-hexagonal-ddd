@@ -102,43 +102,53 @@ class StripePaymentGateway implements PaymentGateway {
         try {
             final Event event = Webhook.constructEvent(payload, signatureHeader, config.getWebHookSecret());
 
-            final Session session = (Session) event.getDataObjectDeserializer()
-                    .getObject()
-                    .orElseThrow(() -> new IllegalStateException("Invalid event data"));
+            try {
+                final CheckOutSessionModel checkoutSession = CheckOutSessionModel.from(event.getType());
 
-            final String orderId = session.getMetadata().get("orderId");
+                final Session session = (Session) event.getDataObjectDeserializer()
+                        .getObject()
+                        .orElseThrow(() -> new IllegalStateException("Invalid session data"));
 
-            final Currency currency = mapCurrencyModelToDomain.apply(
-                    CurrencyModel.from(session.getCurrency().toUpperCase())
+                final String orderId = session.getMetadata().get("orderId");
+
+                final Currency currency = mapCurrencyModelToDomain.apply(
+                        CurrencyModel.from(session.getCurrency().toUpperCase())
+                );
+
+                final Money amount = Money.of(
+                        session.getAmountTotal() / 100.0,
+                        currency
+                );
+
+                return switch (checkoutSession) {
+                    case COMPLETED -> PaymentReceipt.create(
+                            OrderId.from(orderId),
+                            PaymentStatus.SUCCESS,
+                            session.getId(),
+                            amount
+                    );
+                    case EXPIRED -> PaymentReceipt.create(
+                            OrderId.from(orderId),
+                            PaymentStatus.CANCELLED,
+                            session.getId(),
+                            amount
+                    );
+                    case FAILED -> PaymentReceipt.create(
+                            OrderId.from(orderId),
+                            PaymentStatus.FAILURE,
+                            session.getId(),
+                            amount
+                    );
+                };
+            } catch (IllegalArgumentException ignored) {
+            }
+
+            return PaymentReceipt.create(
+                    OrderId.unknown(),
+                    PaymentStatus.PENDING,
+                    event.getId(),
+                    Money.zero(Currency.EUR)
             );
-
-            final Money amount = Money.of(
-                session.getAmountTotal() / 100.0,
-                currency
-            );
-
-            final CheckOutSessionModel checkoutSession = CheckOutSessionModel.from(event.getType());
-
-            return switch (checkoutSession) {
-                case COMPLETED -> PaymentReceipt.create(
-                        OrderId.from(orderId),
-                        PaymentStatus.SUCCESS,
-                        session.getId(),
-                        amount
-                );
-                case EXPIRED -> PaymentReceipt.create(
-                        OrderId.from(orderId),
-                        PaymentStatus.CANCELLED,
-                        session.getId(),
-                        amount
-                );
-                default -> PaymentReceipt.create(
-                        OrderId.unknown(),
-                        PaymentStatus.PENDING,
-                        event.getId(),
-                        Money.zero(Currency.EUR)
-                );
-            };
 
         } catch (SignatureVerificationException e) {
             throw new IllegalArgumentException("Invalid Stripe webhook signature", e);

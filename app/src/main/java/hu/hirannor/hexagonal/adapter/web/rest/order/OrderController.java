@@ -10,6 +10,7 @@ import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
 import hu.hirannor.hexagonal.domain.order.command.PayOrder;
+import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -91,9 +92,13 @@ class OrderController implements OrdersApi {
     public ResponseEntity<PayOrderResponseModel> pay(final String orderId, final PayOrderModel model) {
         final PayOrder command = mapPayOrderModelToCommand.apply(model);
 
-        orderPayment.initPay(command);
+        final PaymentInstruction instruction = orderPayment.initPay(command);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(
+                new PayOrderResponseModel()
+                        .paymentUrl(instruction.paymentUrl())
+                        .orderId(instruction.orderId().asText())
+        );
     }
 
     @Override

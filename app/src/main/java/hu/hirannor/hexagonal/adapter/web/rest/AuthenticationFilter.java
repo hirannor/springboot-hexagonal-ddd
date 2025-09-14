@@ -35,7 +35,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             "/swagger-ui/**",
             "/webjars/**",
             "/api/register",
-            "/api/auth"
+            "/api/auth",
+            "/api/payments/stripe/webhook"
     };
 
     private static final String BEARER = "Bearer ";

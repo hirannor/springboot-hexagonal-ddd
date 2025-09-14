@@ -7,7 +7,9 @@ public enum CheckOutSessionModel {
 
     COMPLETED("checkout.session.completed"),
 
-    EXPIRED("checkout.session.expired");
+    EXPIRED("checkout.session.expired"),
+
+    FAILED("checkout.session.async_payment_failed");
 
     private final String value;
 
