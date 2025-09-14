@@ -11,6 +11,8 @@ import hu.hirannor.hexagonal.application.port.payment.*;
 import hu.hirannor.hexagonal.domain.Currency;
 import hu.hirannor.hexagonal.domain.Money;
 import hu.hirannor.hexagonal.domain.order.OrderId;
+import hu.hirannor.hexagonal.domain.order.payment.PaymentReceipt;
+import hu.hirannor.hexagonal.domain.order.payment.PaymentStatus;
 import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +55,7 @@ class StripePaymentGateway implements PaymentGateway {
     }
 
     @Override
-    public PaymentInstruction initialize(final ProcessPayment payment) {
+    public PaymentInstruction initialize(final PaymentRequest payment) {
         try {
             final SessionCreateParams.PaymentMethodType methodType = mapPaymentMethodToType.apply(payment.method());
 
@@ -120,27 +122,17 @@ class StripePaymentGateway implements PaymentGateway {
                         currency
                 );
 
-                return switch (checkoutSession) {
-                    case COMPLETED -> PaymentReceipt.create(
+                final PaymentStatus status = mapToPaymentStatus(checkoutSession);
+
+                return PaymentReceipt.create(
                             OrderId.from(orderId),
-                            PaymentStatus.SUCCESS,
+                            status,
                             session.getId(),
                             amount
-                    );
-                    case EXPIRED -> PaymentReceipt.create(
-                            OrderId.from(orderId),
-                            PaymentStatus.CANCELLED,
-                            session.getId(),
-                            amount
-                    );
-                    case FAILED -> PaymentReceipt.create(
-                            OrderId.from(orderId),
-                            PaymentStatus.FAILURE,
-                            session.getId(),
-                            amount
-                    );
-                };
+                );
+
             } catch (IllegalArgumentException ignored) {
+                // NOOP, we don't care about other events
             }
 
             return PaymentReceipt.create(
@@ -153,5 +145,13 @@ class StripePaymentGateway implements PaymentGateway {
         } catch (SignatureVerificationException e) {
             throw new IllegalArgumentException("Invalid Stripe webhook signature", e);
         }
+    }
+
+    private PaymentStatus mapToPaymentStatus(final CheckOutSessionModel checkoutSession) {
+        return switch (checkoutSession) {
+            case COMPLETED -> PaymentStatus.SUCCESS;
+            case EXPIRED -> PaymentStatus.CANCELLED;
+            case FAILED -> PaymentStatus.FAILURE;
+        };
     }
 }

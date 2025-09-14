@@ -1,10 +1,11 @@
 package hu.hirannor.hexagonal.domain.order;
 
-import hu.hirannor.hexagonal.application.port.payment.PaymentReceipt;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.Money;
 import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
 import hu.hirannor.hexagonal.domain.order.events.*;
+import hu.hirannor.hexagonal.domain.order.payment.PaymentReceipt;
+import hu.hirannor.hexagonal.domain.order.payment.PaymentTransaction;
 import hu.hirannor.hexagonal.infrastructure.aggregate.AggregateRoot;
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
 
@@ -19,12 +20,14 @@ public class Order extends AggregateRoot {
     private final Set<OrderedProduct> orderedProducts;
     private final CustomerId customer;
     private final Instant createdAt;
+    private List<PaymentTransaction> transactions;
     private final List<DomainEvent> events;
 
     Order(final OrderId id,
           final Set<OrderedProduct> orderedProducts,
           final OrderStatus status,
-          final CustomerId customer) {
+          final CustomerId customer,
+          final List<PaymentTransaction> transactions) {
         Objects.requireNonNull(id, "OrderId cannot be null");
         Objects.requireNonNull(orderedProducts, "Ordered products cannot be null");
         Objects.requireNonNull(status, "OrderStatus cannot be null");
@@ -34,6 +37,7 @@ public class Order extends AggregateRoot {
         this.status = status;
         this.createdAt = Instant.now();
         this.customer = customer;
+        this.transactions = transactions;
         this.events = new ArrayList<>();
     }
 
@@ -79,6 +83,9 @@ public class Order extends AggregateRoot {
     }
 
     public void handlePaymentResult(final PaymentReceipt receipt) {
+        final PaymentTransaction transaction = PaymentTransaction.from(receipt);
+        transactions.add(transaction);
+
         switch (receipt.status()) {
             case SUCCESS -> markPaymentAsPaid();
             case PENDING -> markPaymentAsPending();
@@ -158,6 +165,8 @@ public class Order extends AggregateRoot {
                 .reduce(Money::add)
                 .orElseThrow(failBecauseOrderDoesntContainProduct());
     }
+
+    public List<PaymentTransaction> transactions() { return Collections.unmodifiableList(transactions); }
 
     @Override
     public void clearEvents() {

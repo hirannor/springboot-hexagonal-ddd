@@ -1,4 +1,4 @@
-package hu.hirannor.hexagonal.application.port.payment;
+package hu.hirannor.hexagonal.domain.order.payment;
 
 import hu.hirannor.hexagonal.domain.Money;
 import hu.hirannor.hexagonal.domain.order.OrderId;

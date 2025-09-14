@@ -95,7 +95,7 @@ class OrderController implements OrdersApi {
     public ResponseEntity<PayOrderResponseModel> pay(final String orderId, final PayOrderModel model) {
         final InitializePayment command = mapPayOrderModelToCommand.apply(model);
 
-        final PaymentInstruction instruction = payment.initializeBy(command);
+        final PaymentInstruction instruction = payment.initialize(command);
 
         return ResponseEntity.ok().body(
                 new PayOrderResponseModel()

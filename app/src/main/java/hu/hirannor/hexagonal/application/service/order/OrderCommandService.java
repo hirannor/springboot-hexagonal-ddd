@@ -3,7 +3,7 @@ package hu.hirannor.hexagonal.application.service.order;
 import hu.hirannor.hexagonal.application.port.payment.PaymentGateway;
 import hu.hirannor.hexagonal.application.port.payment.PaymentItem;
 import hu.hirannor.hexagonal.application.port.payment.PaymentMethod;
-import hu.hirannor.hexagonal.application.port.payment.ProcessPayment;
+import hu.hirannor.hexagonal.application.port.payment.PaymentRequest;
 import hu.hirannor.hexagonal.application.usecase.order.ChangeOrderStatus;
 import hu.hirannor.hexagonal.application.usecase.order.OrderCreation;
 import hu.hirannor.hexagonal.application.usecase.order.OrderPaymentInitialization;
@@ -64,8 +64,7 @@ class OrderCommandService implements
         return order;
     }
 
-    @Override
-    public PaymentInstruction initializeBy(final InitializePayment command) {
+    public PaymentInstruction initialize(final InitializePayment command) {
         if (command == null) throw new IllegalArgumentException("command is null");
 
         final Order order = orders.findBy(command.orderId())
@@ -76,7 +75,7 @@ class OrderCommandService implements
                 .map(mapOrderedProductToPaymentItem)
                 .toList();
 
-        final PaymentInstruction instruction = payment.initialize(ProcessPayment.create(
+        final PaymentInstruction instruction = payment.initialize(PaymentRequest.create(
             order.id(),
             items,
             order.totalPrice(),

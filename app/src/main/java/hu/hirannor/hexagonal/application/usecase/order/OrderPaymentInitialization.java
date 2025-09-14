@@ -4,5 +4,5 @@ import hu.hirannor.hexagonal.domain.order.command.InitializePayment;
 import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
 
 public interface OrderPaymentInitialization {
-    PaymentInstruction initializeBy(InitializePayment order);
+    PaymentInstruction initialize(InitializePayment order);
 }

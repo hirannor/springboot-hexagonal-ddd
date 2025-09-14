@@ -8,7 +8,7 @@ import hu.hirannor.hexagonal.infrastructure.command.CommandId;
 import java.util.List;
 import java.util.Objects;
 
-public record ProcessPayment(
+public record PaymentRequest(
         CommandId id,
         OrderId orderId,
         List<PaymentItem> items,
@@ -16,19 +16,19 @@ public record ProcessPayment(
         PaymentMethod method
 ) {
 
-    public ProcessPayment {
+    public PaymentRequest {
         Objects.requireNonNull(id, "commandId must not be null");
         Objects.requireNonNull(orderId, "orderId must not be null");
         Objects.requireNonNull(totalAmount, "totalAmount must not be null");
         Objects.requireNonNull(method, "PaymentMethod must not be null");
     }
 
-    public static ProcessPayment create(
+    public static PaymentRequest create(
             final OrderId orderId,
             final List<PaymentItem> items,
             final Money totalAmount,
             final PaymentMethod method
     ) {
-        return new ProcessPayment(CommandId.generate(), orderId, items, totalAmount, method);
+        return new PaymentRequest(CommandId.generate(), orderId, items, totalAmount, method);
     }
 }
