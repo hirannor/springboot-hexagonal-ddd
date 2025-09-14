@@ -190,3 +190,17 @@ Authorization: Bearer {{bearerToken}}
     client.global.set("paymentUrl", response.body.paymentUrl);
 %}
 
+### Change order Status to SHIPPED (PUT /api/orders/{orderId}/status)
+PATCH http://localhost:8080/api/orders/{{orderId}}/status
+Content-Type: application/json
+Authorization: Bearer {{bearerToken}}
+
+{
+  "orderId": "{{orderId}}",
+  "newStatus": "SHIPPED"
+}
+
+### Cancels an order (POST /api/orders/{orderId}/cancel)
+PATCH http://localhost:8080/api/orders/{{orderId}}/cancel
+Content-Type: application/json
+Authorization: Bearer {{bearerToken}}

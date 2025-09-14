@@ -133,8 +133,8 @@ class OrderController implements OrdersApi {
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('Customer','Admin')")
-    public ResponseEntity<Void> cancel(final String orderId, final CancelOrderModel cancelOrderModel) {
+    @PreAuthorize("hasAnyRole('Customer')")
+    public ResponseEntity<Void> cancel(final String orderId) {
         return ResponseEntity.noContent().build();
     }
 

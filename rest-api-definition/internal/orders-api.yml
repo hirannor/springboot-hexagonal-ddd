@@ -92,12 +92,6 @@ paths:
           required: true
           schema:
             type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CancelOrder'
       responses:
         '204':
           description: Order marked as canceled
