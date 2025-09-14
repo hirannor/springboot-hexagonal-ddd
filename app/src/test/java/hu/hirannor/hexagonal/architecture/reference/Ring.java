@@ -20,6 +20,22 @@ public enum Ring {
         "authentication jwt adapter",
         "hu.hirannor.hexagonal.adapter.authentication.jwt.."
     ),
+    PAYMENT_MOCK(
+        "mock payment adapter",
+        "hu.hirannor.hexagonal.adapter.payment.mock.."
+    ),
+    PAYMENT_STRIPE(
+        "stripe payment adapter",
+        "hu.hirannor.hexagonal.adapter.payment.stripe.."
+    ),
+    NOTIFICATION_EMAIL(
+        "email notification adapter",
+        "hu.hirannor.hexagonal.adapter.notification.email.."
+    ),
+    NOTIFICATION_SMS(
+        "sms notification adapter",
+        "hu.hirannor.hexagonal.adapter.notification.sms.."
+    ),
     JPA("jpa adapter", "hu.hirannor.hexagonal.adapter.persistence.jpa.."),
     JPA_CUSTOMER(
         "jpa customer adapter",

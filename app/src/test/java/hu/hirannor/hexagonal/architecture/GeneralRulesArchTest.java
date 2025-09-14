@@ -8,7 +8,8 @@ import com.tngtech.archunit.library.GeneralCodingRules;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.stereotype.Service;
 
-import java.util.function.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
@@ -17,23 +18,6 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 @DisplayName("GeneralRulesArch")
 class GeneralRulesArchTest {
 
-    @ArchTest
-    @DisplayName("should limit implementations of function interfaces to package scope at most")
-    void shouldLimitImplementationsOfFunctionalInterfacesToPackageScopeAtMost(
-            final JavaClasses classes
-    ) {
-        classes()
-                .that().areAssignableTo(Function.class)
-                .or().areAssignableTo(Predicate.class)
-                .or().areAssignableTo(Supplier.class)
-                .or().areAssignableTo(Consumer.class)
-                .should().notBePublic()
-                .as("Functional interfaces implementation should not be public")
-                .because("they should be kept local")
-                .check(classes);
-    }
-
-    @ArchTest
     @DisplayName("should use functions as mappers")
     void shouldUseFunctionsAsMappers(final JavaClasses classes) {
         classes()

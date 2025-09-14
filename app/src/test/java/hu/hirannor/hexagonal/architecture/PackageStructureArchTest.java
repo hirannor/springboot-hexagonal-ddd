@@ -53,6 +53,14 @@ class PackageStructureArchTest {
                 .mayOnlyBeAccessedByLayers(REST.ringName())
                 .whereLayer(AUTH_JWT.ringName())
                 .mayOnlyBeAccessedByLayers(APPLICATION.ringName(), HEXAGONAL_APP)
+                .whereLayer(PAYMENT_MOCK.ringName())
+                .mayOnlyBeAccessedByLayers(APPLICATION.ringName(), HEXAGONAL_APP)
+                .whereLayer(PAYMENT_STRIPE.ringName())
+                .mayOnlyBeAccessedByLayers(APPLICATION.ringName(), HEXAGONAL_APP)
+                .whereLayer(NOTIFICATION_SMS.ringName())
+                .mayOnlyBeAccessedByLayers(APPLICATION.ringName(), HEXAGONAL_APP)
+                .whereLayer(NOTIFICATION_EMAIL.ringName())
+                .mayOnlyBeAccessedByLayers(APPLICATION.ringName(), HEXAGONAL_APP)
                 .check(classes);
     }
 
@@ -66,6 +74,10 @@ class PackageStructureArchTest {
                 .layer(REST.ringName()).definedBy(REST.packagePath())
                 .layer(REST_CUSTOMER.ringName()).definedBy(REST_CUSTOMER.packagePath())
                 .layer(AUTH_JWT.ringName()).definedBy(AUTH_JWT.packagePath())
+                .layer(PAYMENT_STRIPE.ringName()).definedBy(PAYMENT_STRIPE.packagePath())
+                .layer(PAYMENT_MOCK.ringName()).definedBy(PAYMENT_MOCK.packagePath())
+                .layer(NOTIFICATION_SMS.ringName()).definedBy(NOTIFICATION_SMS.packagePath())
+                .layer(NOTIFICATION_EMAIL.ringName()).definedBy(NOTIFICATION_EMAIL.packagePath())
                 .layer(HEXAGONAL_APP).definedBy(JavaClass.Predicates.simpleName(SPRING_BOOT_APPLICATION_CLASS_NAME));
     }
 
