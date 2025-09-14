@@ -17,7 +17,7 @@ import java.util.Properties;
     value = "adapter.notification",
     havingValue = "email"
 )
-@EnableConfigurationProperties(MailProperties.class)
+@EnableConfigurationProperties({MailProperties.class, EmailNotificationConfigurationProperties.class})
 public class EmailNotificationConfiguration {
 
     private final MailProperties mailProps;

@@ -7,7 +7,6 @@ import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
 import jakarta.mail.internet.MimeMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -22,14 +21,14 @@ class EmailNotificator implements Notificator {
         EmailNotificator.class
     );
 
-    @Value("${email.from}")
-    private String from;
-
+    private final EmailNotificationConfigurationProperties config;
     private final JavaMailSender mailSender;
     private final TemplateEngine template;
 
-    public EmailNotificator(final JavaMailSender mailSender,
+    public EmailNotificator(final EmailNotificationConfigurationProperties config,
+                            final JavaMailSender mailSender,
                             final TemplateEngine template) {
+        this.config = config;
         this.mailSender = mailSender;
         this.template = template;
     }
@@ -48,7 +47,7 @@ class EmailNotificator implements Notificator {
             final MimeMessage mimeMessage = mailSender.createMimeMessage();
             final MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-            helper.setFrom(from);
+            helper.setFrom(config.getFrom());
             helper.setTo(message.recipient());
             helper.setSubject(message.subject());
             helper.setText(html, true);

@@ -26,42 +26,54 @@ class EmailNotificationFactory implements NotificationFactory {
     @Override
     public NotificationMessage createNotification(final NotificationData data) {
         return switch (data.type()) {
-            case ORDER_CREATED -> EmailNotificationMessage.create(
-                    data.email().value(),
-                    "Your order confirmation",
-                    ORDER_CREATED_TEMPLATE,
-                    Map.of(
-                            VAR_CUSTOMER_NAME, data
-                                    .customerName()
-                                    .concatFirstAndLastName(),
-                            VAR_ORDER_ID, data.orderId().value()
-                    )
-            );
-            case ORDER_PAID -> EmailNotificationMessage.create(
-                    data.email().value(),
-                    "Payment received",
-                    ORDER_PAID_TEMPLATE,
-                    Map.of(
-                        VAR_CUSTOMER_NAME, data
-                                .customerName()
-                                .concatFirstAndLastName(),
-                        VAR_ORDER_ID, data.orderId().value()
-                    )
-            );
-            case ORDER_SHIPPED -> EmailNotificationMessage.create(
-                    data.email().value(),
-                    "Your order has shipped!",
-                    ORDER_SHIPPED_TEMPLATE,
-                    Map.of(
+            case ORDER_CREATED -> createOrderCreatedNotificationFrom(data);
+            case ORDER_PAID -> createOrderPaidNotificationFrom(data);
+            case ORDER_SHIPPED -> createOrderShippedNotificationFrom(data);
+        };
+    }
+
+    private EmailNotificationMessage createOrderShippedNotificationFrom(final NotificationData data) {
+        return EmailNotificationMessage.create(
+                data.email().value(),
+                "Your order has shipped!",
+                ORDER_SHIPPED_TEMPLATE,
+                Map.of(
                         VAR_CUSTOMER_NAME, data.customerName()
-                                    .concatFirstAndLastName(),
+                                .concatFirstAndLastName(),
                         VAR_ORDER_ID, data.orderId().value(),
                         VAR_COUNTRY, data.address().country().name(),
                         VAR_CITY, data.address().city(),
                         VAR_POSTAL_CODE, data.address().postalCode().value(),
                         VAR_STREET, data.address().streetAddress()
-                    )
-            );
-        };
+                )
+        );
+    }
+
+    private EmailNotificationMessage createOrderPaidNotificationFrom(final NotificationData data) {
+        return EmailNotificationMessage.create(
+                data.email().value(),
+                "Payment received",
+                ORDER_PAID_TEMPLATE,
+                Map.of(
+                        VAR_CUSTOMER_NAME, data
+                                .customerName()
+                                .concatFirstAndLastName(),
+                        VAR_ORDER_ID, data.orderId().value()
+                )
+        );
+    }
+
+    private EmailNotificationMessage createOrderCreatedNotificationFrom(final NotificationData data) {
+        return EmailNotificationMessage.create(
+                data.email().value(),
+                "Your order confirmation",
+                ORDER_CREATED_TEMPLATE,
+                Map.of(
+                        VAR_CUSTOMER_NAME, data
+                                .customerName()
+                                .concatFirstAndLastName(),
+                        VAR_ORDER_ID, data.orderId().value()
+                )
+        );
     }
 }

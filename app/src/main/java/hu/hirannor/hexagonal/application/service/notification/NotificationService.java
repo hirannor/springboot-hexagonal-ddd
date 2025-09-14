@@ -26,19 +26,19 @@ import java.util.function.Supplier;
     isolation = Isolation.REPEATABLE_READ
 )
 class NotificationService implements NotificationSending {
-    private final OrderRepository orderRepository;
-    private final CustomerRepository customerRepository;
-    private final Notificator notificator;
+    private final OrderRepository orders;
+    private final CustomerRepository customers;
+    private final Notificator notifications;
     private final NotificationFactory notificationFactory;
 
     @Autowired
-    NotificationService(final OrderRepository orderRepository,
-                               final CustomerRepository customerRepository,
-                               final Notificator notificator,
+    NotificationService(final OrderRepository orders,
+                               final CustomerRepository customers,
+                               final Notificator notifications,
                                final NotificationFactory notificationFactory) {
-        this.orderRepository = orderRepository;
-        this.customerRepository = customerRepository;
-        this.notificator = notificator;
+        this.orders = orders;
+        this.customers = customers;
+        this.notifications = notifications;
         this.notificationFactory = notificationFactory;
     }
 
@@ -46,10 +46,10 @@ class NotificationService implements NotificationSending {
     public void sentBySystem(final SendSystemNotification command) {
         if (command == null) throw new IllegalArgumentException("command is null");
 
-        final Order order = orderRepository.findBy(command.order())
+        final Order order = orders.findBy(command.order())
                 .orElseThrow(failBecauseOrderWasNotFoundBy(command.order()));
 
-        final Customer customer = customerRepository.findBy(order.customer())
+        final Customer customer = customers.findBy(order.customer())
                 .orElseThrow(failBecauseCustomerWasNotFoundBy(order.customer()));
 
         final NotificationMessage msg = notificationFactory.createNotification(
@@ -61,14 +61,14 @@ class NotificationService implements NotificationSending {
                         customer.address()
         ));
 
-        notificator.send(msg);
+        notifications.send(msg);
     }
 
-    private static Supplier<IllegalStateException> failBecauseCustomerWasNotFoundBy(final CustomerId customer) {
+    private Supplier<IllegalStateException> failBecauseCustomerWasNotFoundBy(final CustomerId customer) {
         return () -> new IllegalStateException("Customer not found by " + customer.asText());
     }
 
-    private static Supplier<IllegalStateException> failBecauseOrderWasNotFoundBy(final OrderId order) {
+    private Supplier<IllegalStateException> failBecauseOrderWasNotFoundBy(final OrderId order) {
         return () -> new IllegalStateException("Order not found by " + order.asText());
     }
 }
