@@ -71,4 +71,9 @@ public class BasketModel {
     public void setItems(Set<BasketItemModel> items) {
         this.items = items;
     }
+
+    public void addItem(final BasketItemModel item) {
+        item.setBasket(this);
+        this.items.add(item);
+    }
 }

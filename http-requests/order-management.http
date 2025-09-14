@@ -111,3 +111,88 @@ Authorization: Bearer {{bearerToken}}
 GET http://localhost:8080/api/products/{{productId}}
 Content-Type: application/json
 Authorization: Bearer {{bearerToken}}
+
+
+# -------------------------------
+# Basket API - HTTP Requests
+# -------------------------------
+
+### Create a basket (POST /api/baskets)
+POST http://localhost:8080/api/baskets
+Content-Type: application/json
+Authorization: Bearer {{bearerToken}}
+
+{
+  "customerId": "{{customerId}}"
+}
+
+> {%
+    client.global.set("basketId", response.body.id);
+%}
+
+### Add item to basket (POST /api/baskets/{basketId}/items)
+POST http://localhost:8080/api/baskets/{{basketId}}/items
+Content-Type: application/json
+Authorization: Bearer {{bearerToken}}
+
+{
+  "productId": "550e8400-e29b-41d4-a716-446655440001",
+  "quantity": 1,
+  "price": {
+    "amount": "24.99",
+    "currency": "EUR"
+  }
+}
+
+### Checkout basket (POST /api/baskets/{basketId}/checkout)
+POST http://localhost:8080/api/baskets/{{basketId}}/checkout
+Content-Type: application/json
+Authorization: Bearer {{bearerToken}}
+
+# -------------------------------
+# Orders API - HTTP Requests
+# -------------------------------
+
+### Create an Order (POST /api/orders)
+POST http://localhost:8080/api/orders
+Content-Type: application/json
+Authorization: Bearer {{bearerToken}}
+
+{
+  "customerId": "{{customerId}}",
+  "products": [
+    {
+      "productId": "550e8400-e29b-41d4-a716-446655440001",
+      "quantity": 1,
+      "price": {
+        "amount": "24.99",
+        "currency": "EUR"
+      }
+    }
+  ]
+}
+
+> {%
+    client.global.set("orderId", response.body.id);
+%}
+
+### Get the created order by ID (GET /api/orders/{orderId})
+GET http://localhost:8080/api/orders/{{orderId}}
+Authorization: Bearer {{bearerToken}}
+
+### Pay for the Order (POST /api/orders/{orderId}/pay)
+POST http://localhost:8080/api/orders/{{orderId}}/pay
+Content-Type: application/json
+Authorization: Bearer {{bearerToken}}
+
+{
+  "orderId": "{{orderId}}"
+}
+
+> {%
+    client.global.set("paymentUrl", response.body.paymentUrl);
+%}
+
+### Open the Stripe Checkout URL (Manual step)
+# Copy this URL into your browser to complete the payment in Stripe Checkout
+GET {{paymentUrl}}

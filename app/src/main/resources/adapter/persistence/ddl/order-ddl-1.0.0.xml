@@ -21,12 +21,18 @@
             <column name="STATUS" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
+            <column name="TOTAL_PRICE_AMOUNT" type="DECIMAL(19,2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TOTAL_PRICE_CURRENCY" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
             <column name="CREATED_AT" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
         </createTable>
 
-        <createSequence sequenceName="order_seq"
+        <createSequence sequenceName="orders_seq"
                         startValue="1"
                         incrementBy="5"/>
     </changeSet>

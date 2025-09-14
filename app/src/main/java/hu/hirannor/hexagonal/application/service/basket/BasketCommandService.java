@@ -3,9 +3,12 @@ package hu.hirannor.hexagonal.application.service.basket;
 import hu.hirannor.hexagonal.application.usecase.basket.*;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.basket.Basket;
+import hu.hirannor.hexagonal.domain.basket.BasketId;
 import hu.hirannor.hexagonal.domain.basket.BasketRepository;
+import hu.hirannor.hexagonal.domain.basket.command.AddBasketItem;
 import hu.hirannor.hexagonal.domain.basket.command.CheckoutBasket;
 import hu.hirannor.hexagonal.domain.basket.command.CreateBasket;
+import hu.hirannor.hexagonal.domain.basket.command.RemoveBasketItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -23,8 +26,7 @@ class BasketCommandService implements
         BasketCreation,
         BasketDeletion,
         BasketCheckout,
-        BasketProductAddition,
-        BasketProductRemoval {
+        BasketProductHandling {
 
     private final BasketRepository baskets;
 
@@ -52,7 +54,7 @@ class BasketCommandService implements
     }
 
     @Override
-    public void checkout(final CheckoutBasket command) {
+    public Basket checkout(final CheckoutBasket command) {
         if (command == null) throw new IllegalArgumentException("command is null");
 
         final Basket basket = baskets.findBy(command.customerId())
@@ -60,9 +62,33 @@ class BasketCommandService implements
 
         basket.checkout();
         baskets.save(basket);
+
+        return basket;
     }
 
-    private static Supplier<IllegalStateException> failBecauseBasketWasNotFoundBy(final CustomerId customer) {
-        return () -> new IllegalStateException("Basket with id " + customer + " not found");
+    @Override
+    public void add(final AddBasketItem command) {
+        final Basket basket = baskets.findBy(command.basketId())
+                .orElseThrow(failBecauseBasketWasNotFoundBy(command.basketId()));
+
+        basket.addProduct(command.item());
+        baskets.save(basket);
+    }
+
+    @Override
+    public void remove(final RemoveBasketItem command) {
+        final Basket basket = baskets.findBy(command.basketId())
+                .orElseThrow(failBecauseBasketWasNotFoundBy(command.basketId()));
+
+        basket.removeProduct(command.item());
+        baskets.save(basket);
+    }
+
+    private static Supplier<IllegalStateException> failBecauseBasketWasNotFoundBy(final CustomerId customerId) {
+        return () -> new IllegalStateException("Basket with id " + customerId + " not found");
+    }
+
+    private static Supplier<IllegalStateException> failBecauseBasketWasNotFoundBy(final BasketId basketId) {
+        return () -> new IllegalStateException("Basket with id " + basketId + " not found");
     }
 }

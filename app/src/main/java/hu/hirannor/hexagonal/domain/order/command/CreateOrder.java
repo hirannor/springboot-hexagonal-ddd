@@ -7,9 +7,9 @@ import hu.hirannor.hexagonal.infrastructure.command.CommandId;
 
 import java.util.Set;
 
-public record MakeOrder(CommandId id, CustomerId customer, Set<OrderedProduct> products) implements Command {
+public record CreateOrder(CommandId id, CustomerId customer, Set<OrderedProduct> products) implements Command {
 
-    public static MakeOrder issue(final CustomerId customer, final Set<OrderedProduct> orderedProducts ) {
-        return new MakeOrder(CommandId.generate(), customer,orderedProducts);
+    public static CreateOrder issue(final CustomerId customer, final Set<OrderedProduct> orderedProducts ) {
+        return new CreateOrder(CommandId.generate(), customer,orderedProducts);
     }
 }

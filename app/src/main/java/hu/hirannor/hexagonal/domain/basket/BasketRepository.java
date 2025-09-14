@@ -9,6 +9,8 @@ public interface BasketRepository {
 
     Optional<Basket> findBy(CustomerId customerId);
 
+    Optional<Basket> findBy(BasketId basketId);
+
     List<Basket> findAll();
 
     void save(Basket basket);

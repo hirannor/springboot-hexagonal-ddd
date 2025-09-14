@@ -1,12 +1,15 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.basket;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.basket.mapping.BasketModelToDomainMapper;
+import hu.hirannor.hexagonal.adapter.persistence.jpa.basket.mapping.BasketModeller;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.basket.mapping.BasketToModelMapper;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.basket.Basket;
 import hu.hirannor.hexagonal.domain.basket.BasketId;
 import hu.hirannor.hexagonal.domain.basket.BasketRepository;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
+import hu.hirannor.hexagonal.infrastructure.event.EventPublisher;
+import hu.hirannor.hexagonal.infrastructure.modelling.Modeller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Isolation;
@@ -51,6 +54,14 @@ class BasketJpaRepository implements BasketRepository {
     }
 
     @Override
+    public Optional<Basket> findBy(final BasketId basketId) {
+        if (basketId == null) throw new IllegalArgumentException("basketId cannot be null");
+
+        return baskets.findByBasketId(basketId.asText())
+                .map(mapModelToDomain);
+    }
+
+    @Override
     public List<Basket> findAll() {
         return baskets.findAll()
                 .stream()
@@ -59,10 +70,14 @@ class BasketJpaRepository implements BasketRepository {
     }
 
     @Override
+    @EventPublisher
     public void save(final Basket basket) {
         if (basket == null) throw new IllegalArgumentException("basket cannot be null");
 
-        final BasketModel toPersist = mapDomainToModel.apply(basket);
+        final BasketModel toPersist = baskets.findByBasketId(basket.id().asText())
+                .orElseGet(BasketModel::new);
+
+        BasketModeller.applyChangesFrom(basket).to(toPersist);
         baskets.save(toPersist);
     }
 

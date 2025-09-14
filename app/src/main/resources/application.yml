@@ -26,8 +26,14 @@ spring:
 adapter:
   authentication: jwt
   persistence: spring-data-jpa
-  payment: mock
+  payment: stripe
   notification: email
   messaging: spring-event-bus
   web: rest
 
+payment:
+  stripe:
+    api-key: API_KEY
+    webhook-secret: whsec_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    success-url: success_url
+    failure-url: failure_url

@@ -1,16 +1,18 @@
 package hu.hirannor.hexagonal.application.service.order;
 
 import hu.hirannor.hexagonal.application.port.payment.PaymentGateway;
-import hu.hirannor.hexagonal.application.service.payment.PaymentReceipt;
-import hu.hirannor.hexagonal.application.service.payment.ProcessPayment;
+import hu.hirannor.hexagonal.application.port.payment.PaymentItem;
+import hu.hirannor.hexagonal.application.port.payment.PaymentMethod;
+import hu.hirannor.hexagonal.application.port.payment.ProcessPayment;
 import hu.hirannor.hexagonal.application.usecase.order.ChangeOrderStatus;
 import hu.hirannor.hexagonal.application.usecase.order.OrderCreation;
-import hu.hirannor.hexagonal.application.usecase.order.OrderPayment;
+import hu.hirannor.hexagonal.application.usecase.order.OrderPaymentInitialization;
 import hu.hirannor.hexagonal.application.usecase.order.OrderStatusChanging;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.OrderRepository;
-import hu.hirannor.hexagonal.domain.order.command.MakeOrder;
+import hu.hirannor.hexagonal.domain.order.OrderedProduct;
+import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
 import hu.hirannor.hexagonal.domain.order.command.PayOrder;
 import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 
@@ -29,20 +33,29 @@ import java.util.function.Supplier;
 )
 class OrderCommandService implements
         OrderCreation,
-        OrderPayment,
+        OrderPaymentInitialization,
         OrderStatusChanging {
+
+    private final Function<OrderedProduct, PaymentItem> mapOrderedProductToPaymentItem;
 
     private final OrderRepository orders;
     private final PaymentGateway payment;
 
     @Autowired
     OrderCommandService(final OrderRepository orders, final PaymentGateway payment) {
+      this(orders, payment, new OrderedProductToPaymentItemMapper());
+    }
+
+    OrderCommandService(final OrderRepository orders,
+                        final PaymentGateway payment,
+                        final Function<OrderedProduct, PaymentItem> mapOrderedProductToPaymentItem) {
         this.orders = orders;
         this.payment = payment;
+        this.mapOrderedProductToPaymentItem = mapOrderedProductToPaymentItem;
     }
 
     @Override
-    public Order create(final MakeOrder create) {
+    public Order create(final CreateOrder create) {
         if (create == null) throw new IllegalArgumentException("create is null");
 
         final Order order = Order.create(create);
@@ -52,16 +65,22 @@ class OrderCommandService implements
     }
 
     @Override
-    public PaymentInstruction pay(final PayOrder command) {
+    public PaymentInstruction initPay(final PayOrder command) {
         if (command == null) throw new IllegalArgumentException("command is null");
 
         final Order order = orders.findBy(command.orderId())
                 .orElseThrow(failBecauseOrderWasNotFoundBy(command.orderId()));
 
+        final List<PaymentItem> items = order.products()
+                .stream()
+                .map(mapOrderedProductToPaymentItem)
+                .toList();
+
         final PaymentInstruction instruction = payment.initialize(ProcessPayment.create(
             order.id(),
+            items,
             order.totalPrice(),
-            "PAYMENT_METHOD"
+            PaymentMethod.CARD
         ));
 
         order.initializePayment();

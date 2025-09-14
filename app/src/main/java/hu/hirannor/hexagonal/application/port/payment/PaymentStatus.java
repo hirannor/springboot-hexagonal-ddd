@@ -1,4 +1,4 @@
-package hu.hirannor.hexagonal.application.service.payment;
+package hu.hirannor.hexagonal.application.port.payment;
 
 public enum PaymentStatus {
     SUCCESS,

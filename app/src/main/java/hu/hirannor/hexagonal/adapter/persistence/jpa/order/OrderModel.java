@@ -17,11 +17,11 @@ public class OrderModel {
     @Id
     @GeneratedValue(
         strategy = GenerationType.SEQUENCE,
-        generator = "ec_orders_seq"
+        generator = "orders_seq"
     )
     @SequenceGenerator(
-        name = "ec_orders_seq",
-        sequenceName = "ec_orders_seq",
+        name = "orders_seq",
+        sequenceName = "orders_seq",
         allocationSize = ALLOCATION_SIZE
     )
     private Long id;
@@ -84,4 +84,9 @@ public class OrderModel {
     public Set<OrderedProductModel> getProducts() { return products; }
 
     public void setProducts(Set<OrderedProductModel> products) { this.products = products; }
+
+    public void addProduct(final OrderedProductModel product) {
+        product.setOrder(this);
+        this.products.add(product);
+    }
 }

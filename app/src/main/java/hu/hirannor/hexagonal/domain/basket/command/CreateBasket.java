@@ -10,7 +10,7 @@ public record CreateBasket(
         BasketId basketId,
         CustomerId customerId) implements Command {
 
-    public static CreateBasket issue(final BasketId basket, final CustomerId customer) {
-        return new CreateBasket(CommandId.generate(), basket, customer);
+    public static CreateBasket issue(final CustomerId customer) {
+        return new CreateBasket(CommandId.generate(), BasketId.generate(), customer);
     }
 }

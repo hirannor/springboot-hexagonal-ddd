@@ -1,9 +1,9 @@
 package hu.hirannor.hexagonal.domain.order;
 
-import hu.hirannor.hexagonal.application.service.payment.PaymentReceipt;
+import hu.hirannor.hexagonal.application.port.payment.PaymentReceipt;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.Money;
-import hu.hirannor.hexagonal.domain.order.command.MakeOrder;
+import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
 import hu.hirannor.hexagonal.domain.order.events.*;
 import hu.hirannor.hexagonal.infrastructure.aggregate.AggregateRoot;
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
@@ -45,7 +45,7 @@ public class Order extends AggregateRoot {
         return new OrderBuilder();
     }
 
-    public static Order create(final MakeOrder command) {
+    public static Order create(final CreateOrder command) {
         Objects.requireNonNull(command, "MakeOrder command cannot be null");
 
         if (command.products().isEmpty()) throw new IllegalArgumentException("Order must have at least one product");

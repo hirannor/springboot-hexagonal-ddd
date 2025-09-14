@@ -1,12 +1,14 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.order;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.order.mapping.OrderModelToDomainMapper;
+import hu.hirannor.hexagonal.adapter.persistence.jpa.order.mapping.OrderModeller;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.order.mapping.OrderToModelMapper;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.OrderRepository;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
+import hu.hirannor.hexagonal.infrastructure.event.EventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Isolation;
@@ -54,12 +56,15 @@ class OrderJpaRepository implements OrderRepository {
     }
 
     @Override
+    @EventPublisher
     public void save(final Order order) {
         if (order == null) throw new IllegalArgumentException("order cannot be null");
 
-        orders.save(
-            mapDomainToModel.apply(order)
-        );
+        final OrderModel toPersist = orders.findByOrderId(order.id().asText())
+                .orElseGet(OrderModel::new);
+
+        OrderModeller.applyChangesFrom(order).to(toPersist);
+        orders.save(toPersist);
 
     }
 

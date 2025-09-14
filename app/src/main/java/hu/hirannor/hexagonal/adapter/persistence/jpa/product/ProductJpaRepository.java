@@ -6,6 +6,7 @@ import hu.hirannor.hexagonal.domain.product.Product;
 import hu.hirannor.hexagonal.domain.product.ProductId;
 import hu.hirannor.hexagonal.domain.product.ProductRepository;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
+import hu.hirannor.hexagonal.infrastructure.event.EventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Isolation;
@@ -50,6 +51,7 @@ class ProductJpaRepository implements ProductRepository {
     }
 
     @Override
+    @EventPublisher
     public Product save(final Product product) {
         if(product == null) throw new IllegalArgumentException("Product cannot be null");
 

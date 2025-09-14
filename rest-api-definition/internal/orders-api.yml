@@ -46,7 +46,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       responses:
         '200':
           description: The order
@@ -66,7 +65,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       requestBody:
         required: true
         content:
@@ -94,7 +92,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       requestBody:
         required: true
         content:
@@ -118,7 +115,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       requestBody:
         required: true
         content:
@@ -164,7 +160,6 @@ components:
       properties:
         productId:
           type: string
-          format: uuid
         quantity:
           type: integer
           minimum: 1
@@ -177,7 +172,6 @@ components:
       properties:
         customerId:
           type: string
-          format: uuid
         products:
           type: array
           items:
@@ -189,7 +183,6 @@ components:
       properties:
         orderId:
           type: string
-          format: uuid
       required: [orderId]
 
     PayOrderResponse:
@@ -206,7 +199,6 @@ components:
           description: "Redirect URL to the Checkout page or payment gateway page"
         orderId:
           type: string
-          format: uuid
         amount:
           $ref: '#/components/schemas/Money'
         currency:
@@ -218,7 +210,6 @@ components:
       properties:
         orderId:
           type: string
-          format: uuid
       required: [ orderId ]
 
     ChangeOrderStatus:
@@ -233,7 +224,6 @@ components:
       properties:
         id:
           type: string
-          format: uuid
         status:
             $ref: '#/components/schemas/OrderStatus'
         orderedProducts:
@@ -242,7 +232,6 @@ components:
             $ref: '#/components/schemas/OrderedProduct'
         customerId:
           type: string
-          format: uuid
         createdAt:
           type: string
           format: date-time
@@ -253,7 +242,11 @@ components:
       type: string
       enum:
         - CREATED
-        - PAID
+        - WAITING_FOR_PAYMENT
+        - PAID_SUCCESSFULLY
+        - PAYMENT_FAILED
+        - PAYMENT_PENDING
+        - PAYMENT_CANCELED
         - PROCESSING
         - SHIPPED
         - DELIVERED

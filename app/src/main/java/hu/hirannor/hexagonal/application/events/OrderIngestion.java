@@ -8,7 +8,7 @@ import hu.hirannor.hexagonal.domain.basket.BasketItem;
 import hu.hirannor.hexagonal.domain.basket.events.BasketCheckedOut;
 import hu.hirannor.hexagonal.domain.order.OrderStatus;
 import hu.hirannor.hexagonal.domain.order.OrderedProduct;
-import hu.hirannor.hexagonal.domain.order.command.MakeOrder;
+import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
 import hu.hirannor.hexagonal.domain.order.events.OrderCreated;
 import hu.hirannor.hexagonal.domain.order.events.OrderPaid;
 import org.apache.logging.log4j.LogManager;
@@ -70,7 +70,7 @@ public class OrderIngestion {
                 .collect(Collectors.toSet());
 
         orderCreation.create(
-            MakeOrder.issue(
+            CreateOrder.issue(
                 evt.customerId(),
                 orderedItems
             )

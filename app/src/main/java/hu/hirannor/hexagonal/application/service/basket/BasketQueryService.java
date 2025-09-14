@@ -3,6 +3,7 @@ package hu.hirannor.hexagonal.application.service.basket;
 import hu.hirannor.hexagonal.application.usecase.basket.BasketDisplaying;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.basket.Basket;
+import hu.hirannor.hexagonal.domain.basket.BasketId;
 import hu.hirannor.hexagonal.domain.basket.BasketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,11 @@ public class BasketQueryService implements BasketDisplaying {
     @Override
     public Optional<Basket> displayBy(final CustomerId customer) {
         return baskets.findBy(customer);
+    }
+
+    @Override
+    public Optional<Basket> displayBy(final BasketId basket) {
+        return baskets.findBy(basket);
     }
 
     @Override

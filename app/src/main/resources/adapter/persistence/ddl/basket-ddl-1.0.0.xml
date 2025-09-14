@@ -16,7 +16,7 @@
             <column name="BASKET_ID" type="VARCHAR(255)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="CUSTOMER_ID" type="UUID">
+            <column name="CUSTOMER_ID" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
         </createTable>

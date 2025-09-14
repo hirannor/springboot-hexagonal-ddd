@@ -88,4 +88,5 @@ public class OrderedProductModel {
     public void setPriceCurrency(CurrencyModel priceCurrency) {
         this.priceCurrency = priceCurrency;
     }
+
 }

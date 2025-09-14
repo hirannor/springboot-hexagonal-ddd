@@ -33,13 +33,13 @@ public class CustomerModeller implements Modeller<CustomerModel> {
      * @param domain {@link Customer} from which the changes should be applied
      * @return an instance of {@link CustomerModeller}
      */
-    public static CustomerModeller applyChangesFrom(Customer domain) {
+    public static CustomerModeller applyChangesFrom(final Customer domain) {
         return new CustomerModeller(domain);
     }
 
     @Override
     public CustomerModel to(final CustomerModel model) {
-        if (model == null) throw new IllegalArgumentException("Model cannot be null");
+        if (model == null) return null;
 
         model.setCustomerId(domain.customerId().asText());
 

@@ -23,8 +23,9 @@ public class OrderedProductToModelMapper implements Function<OrderedProduct, Ord
         final OrderedProductModel model = new OrderedProductModel();
         model.setProductId(domain.productId().asText());
         model.setQuantity(domain.quantity());
-        model.setPriceAmount(model.getPriceAmount());
+        model.setPriceAmount(domain.price().amount());
         model.setPriceCurrency(mapCurrencyToModel.apply(domain.price().currency()));
+
         return model;
     }
 }

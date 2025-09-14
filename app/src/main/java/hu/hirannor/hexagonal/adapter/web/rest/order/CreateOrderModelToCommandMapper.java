@@ -1,17 +1,35 @@
 package hu.hirannor.hexagonal.adapter.web.rest.order;
 
 import hu.hirannor.hexagonal.adapter.web.rest.orders.model.CreateOrderModel;
-import hu.hirannor.hexagonal.domain.order.command.MakeOrder;
-import hu.hirannor.hexagonal.domain.product.CreateProduct;
+import hu.hirannor.hexagonal.adapter.web.rest.orders.model.OrderedProductModel;
+import hu.hirannor.hexagonal.domain.CustomerId;
+import hu.hirannor.hexagonal.domain.order.OrderedProduct;
+import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
 
+import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
-class CreateOrderModelToCommandMapper implements Function<CreateOrderModel, MakeOrder> {
+class CreateOrderModelToCommandMapper implements Function<CreateOrderModel, CreateOrder> {
 
-    CreateOrderModelToCommandMapper() {}
+    private final Function<OrderedProductModel, OrderedProduct> mapModelToDomain;
+
+    CreateOrderModelToCommandMapper() {
+        this.mapModelToDomain = new OrderedProductModelToDomainMapper();
+    }
 
     @Override
-    public MakeOrder apply(CreateOrderModel model) {
-        return null;
+    public CreateOrder apply(final CreateOrderModel model) {
+        if (model == null) return null;
+
+        final Set<OrderedProduct> products = model.getProducts()
+                .stream()
+                .map(mapModelToDomain)
+                .collect(Collectors.toSet());
+
+        return CreateOrder.issue(
+                CustomerId.from(model.getCustomerId()),
+                products
+        );
     }
 }

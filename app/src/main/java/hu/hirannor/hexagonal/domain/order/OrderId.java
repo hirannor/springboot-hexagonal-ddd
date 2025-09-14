@@ -19,6 +19,10 @@ public record OrderId(String value) {
         return new OrderId(value);
     }
 
+    public static OrderId unknown() {
+        return new OrderId("Unknown");
+    }
+
     public static OrderId generate() {
         return new OrderId(UUID.randomUUID().toString());
     }

@@ -31,6 +31,7 @@
         </spring-boot-maven-plugin.mainClass>
         <snakeyaml.version>2.2</snakeyaml.version>
         <jakarta.validation-api.version>3.1.0-M2</jakarta.validation-api.version>
+        <stripe-java.version>29.5.0</stripe-java.version>
     </properties>
 
     <dependencies>
@@ -58,6 +59,11 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>${springdoc-openapi-starter-webmvc-ui.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>${stripe-java.version}</version>
         </dependency>
         <dependency>
             <groupId>jakarta.validation</groupId>

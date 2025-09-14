@@ -37,17 +37,35 @@ paths:
                 items:
                   $ref: '#/components/schemas/Basket'
 
+  /baskets/{customerId}:
+    get:
+      summary: Get a basket by customer
+      operationId: displayBy
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The basket
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Basket'
+        '404':
+          description: Basket not found
   /baskets/{basketId}:
     get:
-      summary: Get a basket by ID
-      operationId: displayBy
+      summary: Get a basket by basketId
+      operationId: displayByBasketId
       parameters:
         - name: basketId
           in: path
           required: true
           schema:
             type: string
-            format: uuid
       responses:
         '200':
           description: The basket
@@ -68,7 +86,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       requestBody:
         required: true
         content:
@@ -78,10 +95,6 @@ paths:
       responses:
         '200':
           description: Item added
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Basket'
         '404':
           description: Basket not found
 
@@ -94,7 +107,6 @@ paths:
           required: true
           schema:
             type: string
-            format: uuid
       requestBody:
         required: true
         content:
@@ -104,24 +116,19 @@ paths:
       responses:
         '200':
           description: Item removed
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Basket'
         '404':
           description: Basket not found
 
-  /baskets/{basketId}/checkout:
+  /baskets/{customerId}/checkout:
     post:
       summary: Checkout basket
       operationId: checkout
       parameters:
-        - name: basketId
+        - name: customerId
           in: path
           required: true
           schema:
             type: string
-            format: uuid
       responses:
         '200':
           description: Basket checked out
@@ -164,7 +171,6 @@ components:
       properties:
         productId:
           type: string
-          format: uuid
         quantity:
           type: integer
           minimum: 1
@@ -180,7 +186,6 @@ components:
       properties:
         customerId:
           type: string
-          format: uuid
       required:
         - customerId
 
@@ -189,10 +194,8 @@ components:
       properties:
         id:
           type: string
-          format: uuid
         customerId:
           type: string
-          format: uuid
         items:
           type: array
           items:

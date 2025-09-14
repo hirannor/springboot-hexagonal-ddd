@@ -34,6 +34,7 @@ public class OrderToModelMapper implements Function<Order, OrderModel> {
         final OrderStatusModel status = mapStatusToModel.apply(domain.status());
 
         final OrderModel model = new OrderModel();
+        model.setCustomerId(domain.customer().asText());
         model.setOrderId(domain.id().asText());
         model.setStatus(status);
         model.setCustomerId(model.getCustomerId());
@@ -46,8 +47,9 @@ public class OrderToModelMapper implements Function<Order, OrderModel> {
                 .map(mapOrderedProductToModel)
                 .collect(Collectors.toSet());
 
-        model.setProducts(orderedProducts);
-
+        for (final OrderedProductModel productModel : orderedProducts) {
+            model.addProduct(productModel);
+        }
         return model;
     }
 }
