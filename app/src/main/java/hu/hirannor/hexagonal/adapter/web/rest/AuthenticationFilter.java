@@ -1,7 +1,6 @@
 package hu.hirannor.hexagonal.adapter.web.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hu.hirannor.hexagonal.adapter.web.rest.customer.model.ProblemDetailsModel;
 import hu.hirannor.hexagonal.application.port.authentication.Authenticator;
 import hu.hirannor.hexagonal.domain.authentication.AuthUser;
 import hu.hirannor.hexagonal.domain.authentication.Role;
@@ -9,10 +8,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +19,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.time.Instant;
 import java.util.Arrays;
 import java.util.function.Function;
 
@@ -110,17 +107,15 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                            final HttpServletResponse response,
                            final String detail) throws IOException {
 
-        final ProblemDetailsModel details = new ProblemDetailsModel()
-                .status(HttpStatus.UNAUTHORIZED.value())
-                .instance(request.getRequestURI())
-                .title("Unauthorized")
-                .timestamp(Instant.now())
-                .detail(detail);
+        final ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
+        problem.setTitle("Forbidden");
+        problem.setDetail(detail);
+        problem.setInstance(URI.create(request.getRequestURI()));
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding(StandardCharsets.UTF_8.displayName());
-        mapper.writeValue(response.getWriter(), details);
+        mapper.writeValue(response.getWriter(), problem);
     }
 
     private static SimpleGrantedAuthority addRolePrefix(final PermissionRoleModel role) {

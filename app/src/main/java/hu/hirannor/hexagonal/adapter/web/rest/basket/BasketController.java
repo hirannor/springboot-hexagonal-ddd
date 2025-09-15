@@ -22,7 +22,6 @@ import hu.hirannor.hexagonal.domain.basket.command.RemoveBasketItem;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -80,7 +79,6 @@ class BasketController implements BasketsApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<BasketModel> checkout(final String customerId) {
         final Basket basket = this.basket.checkout(
             CheckoutBasket.issue(CustomerId.from(customerId))
@@ -90,7 +88,6 @@ class BasketController implements BasketsApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<BasketModel> createBasket(final CreateBasketModel createBasketModel) {
         final CreateBasket command = mapCreateBasketModelToCommand.apply(createBasketModel);
 
@@ -107,7 +104,6 @@ class BasketController implements BasketsApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<BasketModel>> displayAll() {
         final List<BasketModel> baskets = this.baskets.displayAll()
                 .stream()
@@ -118,7 +114,6 @@ class BasketController implements BasketsApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<BasketModel> displayBy(final String customerId) {
         return baskets.displayBy(CustomerId.from(customerId))
                 .map(mapBasketToModel)
@@ -127,16 +122,6 @@ class BasketController implements BasketsApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('Customer')")
-    public ResponseEntity<BasketModel> displayByBasketId(final String basketId) {
-        return baskets.displayBy(BasketId.from(basketId))
-                .map(mapBasketToModel)
-                .map(ResponseEntity::ok)
-                .orElseGet(ResponseEntity.notFound()::build);
-    }
-
-    @Override
-    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<Void> addItem(final String basketId, final BasketItemModel basketItemModel) {
         final BasketItem item = mapBasketItemToModel.apply(basketItemModel);
         final AddBasketItem command = AddBasketItem.issue(
@@ -148,7 +133,6 @@ class BasketController implements BasketsApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<Void> removeItem(final String basketId, final BasketItemModel basketItemModel) {
         final BasketItem item = mapBasketItemToModel.apply(basketItemModel);
         final RemoveBasketItem command = RemoveBasketItem.issue(

@@ -75,7 +75,6 @@ class OrderController implements OrdersApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<OrderModel> createOrder(final CreateOrderModel model) {
         final CreateOrder command = mapCreateOrderModelToCommand.apply(model);
         final Order order = orderCreator.create(command);
@@ -91,7 +90,6 @@ class OrderController implements OrdersApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<PayOrderResponseModel> pay(final String orderId, final PayOrderModel model) {
         final InitializePayment command = mapPayOrderModelToCommand.apply(model);
 
@@ -105,7 +103,6 @@ class OrderController implements OrdersApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('Customer')")
     public ResponseEntity<OrderModel> displayBy(final String orderId) {
         return orders.displayBy(OrderId.from(orderId))
                 .map(mapOrderToModel.andThen(ResponseEntity::ok))
@@ -113,7 +110,6 @@ class OrderController implements OrdersApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<List<OrderModel>> displayAll() {
         final List<OrderModel> list = orders.displayAll()
                 .stream()
@@ -123,7 +119,6 @@ class OrderController implements OrdersApi {
     }
 
     @Override
-    @PreAuthorize("hasRole('Admin')")
     public ResponseEntity<Void> change(final String orderId, final ChangeOrderStatusModel changeOrderStatusModel) {
         final ChangeOrderStatus command = mapChangeOrderStatusModelToCommand.apply(changeOrderStatusModel);
 

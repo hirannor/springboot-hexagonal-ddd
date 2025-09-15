@@ -1,0 +1,718 @@
+{
+	"info": {
+		"_postman_id": "39b2d275-e4bd-4b8e-a652-f358332f8a4e",
+		"name": "Order Management System (OMS) API",
+		"description": "Postman collection for Authentication, Customers, Products, Basket, and Orders APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5091423"
+	},
+	"item": [
+		{
+			"name": "Authentication API",
+			"item": [
+				{
+					"name": "Register a user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"emailAddress\": \"test@example.com\",\n  \"password\": \"V7fR9pQ2\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authenticate as CUSTOMER",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();\r",
+									"\r",
+									"// Check if token exists in response\r",
+									"if (jsonData.token) {\r",
+									"    pm.environment.set(\"bearerToken\", jsonData.token);\r",
+									"    console.log(\"Saved bearer token:\", jsonData.token);\r",
+									"} else {\r",
+									"    console.error(\"No token found in response:\", jsonData);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"emailAddress\": \"test@example.com\",\n  \"password\": \"V7fR9pQ2\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authenticate as ADMIN",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();\r",
+									"\r",
+									"// Check if token exists in response\r",
+									"if (jsonData.token) {\r",
+									"    pm.environment.set(\"bearerToken\", jsonData.token);\r",
+									"    console.log(\"Saved bearer token:\", jsonData.token);\r",
+									"} else {\r",
+									"    console.error(\"No token found in response:\", jsonData);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"emailAddress\": \"admin@example.com\",\n  \"password\": \"V7fR9pQ2\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Customers API",
+			"item": [
+				{
+					"name": "Get logged-in customer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();\r",
+									"\r",
+									"if (jsonData.customerId) {\r",
+									"    pm.environment.set(\"customerId\", jsonData.customerId);\r",
+									"    console.log(\"Saved customerId:\", jsonData.customerId);\r",
+									"} else {\r",
+									"    console.error(\"No customerId found in response:\", jsonData);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bearerToken}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/customers/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"customers",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all customers (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bearerToken}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/customers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"customers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get customer by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bearerToken}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/customers/{{customerId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"customers",
+								"{{customerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update customer by ID",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bearerToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Johnny\",\n  \"lastName\": \"Doe\",\n  \"birthDate\": \"1990-01-01\",\n  \"address\": {\n    \"country\": \"HUNGARY\",\n    \"city\": \"Budapest\",\n    \"postalCode\": 1007,\n    \"streetAddress\": \"Wolf street 15\"\n  },\n  \"gender\": \"MALE\",\n  \"emailAddress\": \"test@example.com\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/customers/{{customerId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"customers",
+								"{{customerId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete customer by ID (Admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bearerToken}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/customers/{{customerId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"customers",
+								"{{customerId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products API",
+			"item": [
+				{
+					"name": "Get all products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bearerToken}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a product (Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bearerToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Gaming Laptop\",\n  \"description\": \"High performance laptop with NVIDIA RTX graphics and 16GB RAM\",\n  \"price\": {\n    \"amount\": \"599999.00\",\n    \"currency\": \"HUF\"\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Basket API",
+			"item": [
+				{
+					"name": "Create basket",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();\r",
+									"\r",
+									"if (jsonData.id) {\r",
+									"    pm.environment.set(\"basketId\", jsonData.id);\r",
+									"    console.log(\"Saved basketId:\", jsonData.id);\r",
+									"} else {\r",
+									"    console.error(\"No basket id found:\", jsonData);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bearerToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customerId\": \"{{customerId}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/baskets",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"baskets"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add item to basket",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bearerToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"productId\": \"550e8400-e29b-41d4-a716-446655440001\",\n  \"quantity\": 1,\n  \"price\": {\n    \"amount\": \"24.99\",\n    \"currency\": \"EUR\"\n  }\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/baskets/{{basketId}}/items",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"baskets",
+								"{{basketId}}",
+								"items"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Checkout basket",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();\r",
+									"\r",
+									"if (jsonData.items) {\r",
+									"    pm.environment.set(\"checkoutItems\", JSON.stringify(jsonData.items));\r",
+									"    console.log(\"Saved checkoutItems:\", jsonData.items);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bearerToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/baskets/{{customerId}}/checkout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"baskets",
+								"{{customerId}}",
+								"checkout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get basket by Customer Id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bearerToken}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/baskets/{{customerId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"baskets",
+								"{{customerId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Orders API",
+			"item": [
+				{
+					"name": "Create order",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();\r",
+									"\r",
+									"if (jsonData.id) {\r",
+									"    pm.environment.set(\"orderId\", jsonData.id);\r",
+									"    console.log(\"Saved orderId:\", jsonData.id);\r",
+									"} else {\r",
+									"    console.error(\"No orderId found in response:\", jsonData);\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bearerToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"customerId\": \"{{customerId}}\",\n  \"products\": {{checkoutItems}}\n  \n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get order by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bearerToken}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/orders/{{orderId}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"{{orderId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Pay for order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bearerToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"orderId\": \"{{orderId}}\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/orders/{{orderId}}/pay",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"{{orderId}}",
+								"pay"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change order status (Admin)",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bearerToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"orderId\": \"{{orderId}}\",\n  \"newStatus\": \"SHIPPED\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/orders/{{orderId}}/status",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"{{orderId}}",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel order",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bearerToken}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/orders/{{orderId}}/cancel",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders",
+								"{{orderId}}",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -56,26 +56,6 @@ paths:
                 $ref: '#/components/schemas/Basket'
         '404':
           description: Basket not found
-  /baskets/{basketId}:
-    get:
-      summary: Get a basket by basketId
-      operationId: displayByBasketId
-      parameters:
-        - name: basketId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: The basket
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Basket'
-        '404':
-          description: Basket not found
-
   /baskets/{basketId}/items:
     post:
       summary: Add item to basket
