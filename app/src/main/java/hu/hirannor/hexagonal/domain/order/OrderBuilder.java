@@ -43,6 +43,6 @@ public class OrderBuilder {
     }
 
     public Order assemble() {
-        return new Order(id, orderedProducts, status, customer, payments);
+        return new Order(id, orderedProducts, status, customer, new ArrayList<>());
     }
 }
