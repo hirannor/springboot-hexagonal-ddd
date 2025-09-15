@@ -3,7 +3,9 @@ package hu.hirannor.hexagonal.adapter.payment.stripe;
 import com.stripe.StripeClient;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
+import com.stripe.model.Charge;
 import com.stripe.model.Event;
+import com.stripe.model.PaymentIntent;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 import com.stripe.param.checkout.SessionCreateParams;
@@ -76,7 +78,12 @@ class StripePaymentGateway implements PaymentGateway {
                     .setSuccessUrl(config.getSuccessUrl() + payment.orderId().value())
                     .setCancelUrl(config.getFailureUrl() + payment.orderId().value())
                     .addPaymentMethodType(methodType)
-                    .putMetadata("orderId", payment.orderId().value());
+                    .putMetadata("orderId", payment.orderId().value())
+                    .setPaymentIntentData(
+                            SessionCreateParams.PaymentIntentData.builder()
+                                    .putMetadata("orderId", payment.orderId().value())
+                                    .build()
+                    );
 
             for (final PaymentItem item : payment.items()) {
                 final CurrencyModel currency = mapCurrencyToModel.apply(item.price().currency());
@@ -115,43 +122,17 @@ class StripePaymentGateway implements PaymentGateway {
     public PaymentReceipt processCallback(final String payload, final String signatureHeader) {
         try {
             final Event event = Webhook.constructEvent(payload, signatureHeader, config.getWebHookSecret());
+            final String type = event.getType();
 
-            try {
-                final CheckOutSessionModel checkoutSession = CheckOutSessionModel.from(event.getType());
-
-                final Session session = (Session) event.getDataObjectDeserializer()
-                        .getObject()
-                        .orElseThrow(() -> new IllegalStateException("Invalid session data"));
-
-                final String orderId = session.getMetadata().get("orderId");
-
-                final Currency currency = mapCurrencyModelToDomain.apply(
-                        CurrencyModel.from(session.getCurrency().toUpperCase())
-                );
-                final PaymentMethodModel paymentMethod = PaymentMethodModel.from(session.getPaymentMethodTypes().getFirst());
-                final String transactionId = session.getPaymentIntent();
-
-                final Money amount = Money.of(
-                        session.getAmountTotal() / 100.0,
-                        currency
-                );
-
-                final PaymentStatus status = mapToPaymentStatus(checkoutSession);
-
-                return PaymentReceipt.create(
-                        transactionId,
-                        mapPaymentMethodModelToDomain.apply(paymentMethod),
-                        OrderId.from(orderId),
-                        status,
-                        session.getId(),
-                        amount
-                );
-
-            } catch (IllegalArgumentException ignored) {
-                // NOOP, we don't care about other events
-            }
+            if (type.startsWith("checkout.session."))
+                return handleCheckoutEvent(CheckOutSessionEvent.from(type), event);
+            if (type.startsWith("payment_intent."))
+                return handlePaymentIntentEvent(PaymentIntentEvent.from(type), event);
+            if (type.startsWith("charge."))
+                return handleChargeEvent(ChargeEvent.from(type), event);
 
             return PaymentReceipt.create(
+                    "UNKNOWN",
                     "UNKNOWN",
                     PaymentMethod.CARD,
                     OrderId.unknown(),
@@ -165,11 +146,98 @@ class StripePaymentGateway implements PaymentGateway {
         }
     }
 
-    private PaymentStatus mapToPaymentStatus(final CheckOutSessionModel checkoutSession) {
-        return switch (checkoutSession) {
-            case COMPLETED -> PaymentStatus.SUCCESS;
-            case EXPIRED -> PaymentStatus.CANCELLED;
+    private PaymentReceipt handleCheckoutEvent(final CheckOutSessionEvent sessionEvent, final Event event) {
+        final Session session = (Session) event.getDataObjectDeserializer()
+                .getObject()
+                .orElseThrow(() -> new IllegalStateException("Invalid checkout session data"));
+
+        final String orderId = session.getMetadata().get("orderId");
+        final Currency currency = mapCurrencyModelToDomain.apply(CurrencyModel.from(session.getCurrency().toUpperCase()));
+        final Money amount = Money.of(session.getAmountTotal() / 100.0, currency);
+
+        final PaymentMethodModel methodModel = PaymentMethodModel.from(session.getPaymentMethodTypes().getFirst());
+        final PaymentMethod method = mapPaymentMethodModelToDomain.apply(methodModel);
+
+        return PaymentReceipt.create(
+                session.getId(),
+                session.getPaymentIntent(),
+                method,
+                OrderId.from(orderId),
+                mapToPaymentStatus(sessionEvent),
+                session.getId(),
+                amount
+        );
+    }
+
+    private PaymentReceipt handleChargeEvent(final ChargeEvent chargeEvent, final Event event) {
+        final Charge charge = (Charge) event.getDataObjectDeserializer()
+                .getObject()
+                .orElseThrow(() -> new IllegalStateException("Invalid charge data"));
+
+        final String orderId = charge.getMetadata().get("orderId");
+        final Currency currency = mapCurrencyModelToDomain.apply(CurrencyModel.from(charge.getCurrency().toUpperCase()));
+        final Money amount = Money.of(charge.getAmount() / 100.0, currency);
+
+        return PaymentReceipt.create(
+                charge.getId(),
+                charge.getPaymentIntent(),
+                PaymentMethod.CARD,
+                OrderId.from(orderId),
+                mapToPaymentStatus(chargeEvent),
+                event.getId(),
+                amount
+        );
+    }
+
+    private PaymentReceipt handlePaymentIntentEvent(final PaymentIntentEvent intentEvent, final Event event) {
+        final PaymentIntent intent = (PaymentIntent) event.getDataObjectDeserializer()
+                .getObject()
+                .orElseThrow(() -> new IllegalStateException("Invalid payment intent data"));
+
+        final String orderId = intent.getMetadata().get("orderId");
+        final Currency currency = mapCurrencyModelToDomain.apply(CurrencyModel.from(intent.getCurrency().toUpperCase()));
+        final Money amount = Money.of(intent.getAmount() / 100.0, currency);
+
+        final PaymentMethodModel methodModel = PaymentMethodModel.from(intent.getPaymentMethodTypes().getFirst());
+        final PaymentMethod method = mapPaymentMethodModelToDomain.apply(methodModel);
+
+        final String transactionId = intent.getLatestCharge() != null
+                ? intent.getLatestCharge()
+                : intent.getId();
+
+        return PaymentReceipt.create(
+                transactionId,
+                intent.getId(),
+                method,
+                OrderId.from(orderId),
+                mapToPaymentStatus(intentEvent),
+                event.getId(),
+                amount
+        );
+    }
+
+    private PaymentStatus mapToPaymentStatus(final ChargeEvent event) {
+        return switch (event) {
+            case SUCCEEDED, DISPUTE_CLOSED -> PaymentStatus.SUCCESS;
             case FAILED -> PaymentStatus.FAILURE;
+            case REFUNDED -> PaymentStatus.CANCELLED;
+            case DISPUTE_CREATED -> PaymentStatus.PENDING;
+        };
+    }
+
+    private PaymentStatus mapToPaymentStatus(final PaymentIntentEvent event) {
+        return switch (event) {
+            case PAYMENT_SUCCEEDED -> PaymentStatus.SUCCESS;
+            case PAYMENT_FAILED -> PaymentStatus.FAILURE;
+            case PAYMENT_CANCELED -> PaymentStatus.CANCELLED;
+        };
+    }
+
+    private PaymentStatus mapToPaymentStatus(final CheckOutSessionEvent checkoutSession) {
+        return switch (checkoutSession) {
+            case COMPLETED, ASYNC_SUCCESS -> PaymentStatus.SUCCESS;
+            case EXPIRED -> PaymentStatus.CANCELLED;
+            case ASYNC_FAILED -> PaymentStatus.FAILURE;
         };
     }
 }

@@ -20,6 +20,9 @@ public class PaymentTransactionModel {
     @Column(name = "TRANSACTION_ID", nullable = false, unique = true)
     private String transactionId;
 
+    @Column(name = "PROVIDER_PAYMENT_ID", nullable = false, unique = true)
+    private String providerPaymentId;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "STATUS", nullable = false)
     private PaymentStatusModel status;
@@ -38,8 +41,8 @@ public class PaymentTransactionModel {
     @Column(name = "CREATED_AT", nullable = false)
     private Instant createdAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ORDER_ID_FK", nullable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ORDER_ID_FK", nullable = false, unique = true)
     private OrderModel order;
 
     public PaymentTransactionModel() {}
@@ -58,6 +61,14 @@ public class PaymentTransactionModel {
 
     public void setTransactionId(final String transactionId) {
         this.transactionId = transactionId;
+    }
+
+    public String getProviderPaymentId() {
+        return providerPaymentId;
+    }
+
+    public void setProviderPaymentId(final String providerPaymentId) {
+        this.providerPaymentId = providerPaymentId;
     }
 
     public PaymentStatusModel getStatus() {

@@ -9,27 +9,34 @@ import hu.hirannor.hexagonal.domain.Currency;
 import hu.hirannor.hexagonal.domain.order.payment.PaymentMethod;
 import hu.hirannor.hexagonal.domain.order.payment.PaymentStatus;
 import hu.hirannor.hexagonal.domain.order.payment.PaymentTransaction;
+import hu.hirannor.hexagonal.infrastructure.modelling.Modeller;
 
 import java.util.function.Function;
 
-public class PaymentTransactionToModelMapper implements Function<PaymentTransaction, PaymentTransactionModel> {
+public class PaymentTransactionModeller implements Modeller<PaymentTransactionModel> {
 
     private final Function<PaymentStatus, PaymentStatusModel> mapPaymentStatusToModel;
     private final Function<Currency, CurrencyModel> mapCurrencyToModel;
     private final Function<PaymentMethod, PaymentMethodModel> mapPaymentMethodToModel;
 
-    public PaymentTransactionToModelMapper() {
+    private final PaymentTransaction domain;
+
+    public PaymentTransactionModeller(final PaymentTransaction domain) {
+        this.domain = domain;
         this.mapPaymentStatusToModel = new PaymentStatusToModelMapper();
         this.mapCurrencyToModel = new CurrencyToModelMapper();
         this.mapPaymentMethodToModel = new PaymentMethodToModelMapper();
     }
 
-    @Override
-    public PaymentTransactionModel apply(final PaymentTransaction domain) {
-        if (domain == null) return null;
+    public static PaymentTransactionModeller applyChangesFrom(final PaymentTransaction domain) {
+        return new PaymentTransactionModeller(domain);
+    }
 
-        final PaymentTransactionModel model = new PaymentTransactionModel();
+    public PaymentTransactionModel to(final PaymentTransactionModel from) {
+        final PaymentTransactionModel model = (from != null) ? from : new PaymentTransactionModel();
+
         model.setTransactionId(domain.transactionId());
+        model.setProviderPaymentId(domain.providerPaymentId());
         model.setPaymentMethod(mapPaymentMethodToModel.apply(domain.paymentMethod()));
         model.setCreatedAt(domain.createdAt());
         model.setAmount(domain.amount().amount());

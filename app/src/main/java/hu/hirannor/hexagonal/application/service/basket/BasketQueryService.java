@@ -29,6 +29,7 @@ public class BasketQueryService implements BasketDisplaying {
 
     @Override
     public Optional<Basket> displayBy(final BasketId basket) {
+        if (basket == null) throw new IllegalArgumentException("basket is null");
         return baskets.findBy(basket);
     }
 

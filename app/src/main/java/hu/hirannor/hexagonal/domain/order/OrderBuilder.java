@@ -3,8 +3,6 @@ package hu.hirannor.hexagonal.domain.order;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.order.payment.PaymentTransaction;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 public class OrderBuilder {
@@ -12,7 +10,7 @@ public class OrderBuilder {
     private Set<OrderedProduct> orderedProducts;
     private OrderStatus status;
     private CustomerId customer;
-    private List<PaymentTransaction> payments = new ArrayList<>();
+    private PaymentTransaction transaction;
 
     public OrderBuilder() {}
 
@@ -37,12 +35,12 @@ public class OrderBuilder {
     }
 
 
-    public OrderBuilder payments(final List<PaymentTransaction> payments) {
-        this.payments = payments;
+    public OrderBuilder transaction(final PaymentTransaction transaction) {
+        this.transaction = transaction;
         return this;
     }
 
     public Order assemble() {
-        return new Order(id, orderedProducts, status, customer, new ArrayList<>());
+        return new Order(id, orderedProducts, status, customer, transaction);
     }
 }

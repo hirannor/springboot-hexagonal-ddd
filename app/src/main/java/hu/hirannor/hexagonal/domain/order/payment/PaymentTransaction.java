@@ -8,6 +8,7 @@ import java.util.Objects;
 
 public record PaymentTransaction(
         String transactionId,
+        String providerPaymentId,
         PaymentMethod paymentMethod,
         OrderId orderId,
         PaymentStatus status,
@@ -27,6 +28,7 @@ public record PaymentTransaction(
     public static PaymentTransaction from(final PaymentReceipt receipt) {
         return new PaymentTransaction(
                 receipt.transactionId(),
+                receipt.providerPaymentId(),
                 receipt.paymentMethod(),
                 receipt.orderId(),
                 receipt.status(),
@@ -37,12 +39,14 @@ public record PaymentTransaction(
 
     public static PaymentTransaction create(
             final String transactionId,
+            final String providerPaymentId,
             final PaymentMethod paymentMethod,
             final OrderId orderId,
             final PaymentStatus status,
             final Money amount) {
         return new PaymentTransaction(
                 transactionId,
+                providerPaymentId,
                 paymentMethod,
                 orderId,
                 status,

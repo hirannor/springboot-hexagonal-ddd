@@ -47,8 +47,8 @@ public class OrderModel {
     @Column(name = "CREATED_AT", nullable = false)
     private Instant createdAt;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<PaymentTransactionModel> transactions = new HashSet<>();
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private PaymentTransactionModel transaction;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<OrderedProductModel> products = new HashSet<>();
@@ -87,19 +87,22 @@ public class OrderModel {
 
     public Set<OrderedProductModel> getProducts() { return products; }
 
-    public void setProducts(final Set<OrderedProductModel> products) { this.products = products; }
-
-    public Set<PaymentTransactionModel> getTransactions() {
-        return transactions;
+    public void setProducts(final Set<OrderedProductModel> products) {
+        this.products.clear();
+        if (products != null) {
+            products.forEach(this::addProduct);
+        }
     }
 
-    public void setTransactions(final Set<PaymentTransactionModel> transactions) {
-        this.transactions = transactions;
+    public PaymentTransactionModel getTransaction() {
+        return transaction;
     }
 
-    public void addTransaction(final PaymentTransactionModel transaction) {
-        transaction.setOrder(this);
-        this.transactions.add(transaction);
+    public void setTransaction(final PaymentTransactionModel transaction) {
+        if (transaction != null) {
+            transaction.setOrder(this);
+        }
+        this.transaction = transaction;
     }
 
     public void addProduct(final OrderedProductModel product) {

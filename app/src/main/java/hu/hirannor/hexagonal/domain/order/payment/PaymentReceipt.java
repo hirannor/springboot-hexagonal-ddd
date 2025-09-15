@@ -7,6 +7,7 @@ import java.util.Objects;
 
 public record PaymentReceipt(
         String transactionId,
+        String providerPaymentId,
         PaymentMethod paymentMethod,
         OrderId orderId,
         PaymentStatus status,
@@ -15,6 +16,7 @@ public record PaymentReceipt(
 ) {
     public PaymentReceipt {
         Objects.requireNonNull(transactionId);
+        Objects.requireNonNull(providerPaymentId);
         Objects.requireNonNull(paymentMethod);
         Objects.requireNonNull(orderId);
         Objects.requireNonNull(status);
@@ -24,12 +26,13 @@ public record PaymentReceipt(
 
     public static PaymentReceipt create(
             final String transactionId,
+            final String providerPaymentId,
             final PaymentMethod paymentMethod,
             final OrderId orderId,
             final PaymentStatus status,
             final String providerReference,
             final Money amount
     ) {
-        return new PaymentReceipt(transactionId, paymentMethod, orderId, status, providerReference, amount);
+        return new PaymentReceipt(transactionId,providerPaymentId, paymentMethod, orderId, status, providerReference, amount);
     }
 }

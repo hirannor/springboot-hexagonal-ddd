@@ -13,14 +13,16 @@ import hu.hirannor.hexagonal.domain.order.OrderedProduct;
 import hu.hirannor.hexagonal.domain.order.payment.PaymentTransaction;
 import hu.hirannor.hexagonal.infrastructure.modelling.Modeller;
 
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class OrderModeller implements Modeller<OrderModel> {
 
     private final Function<Currency, CurrencyModel> mapCurrencyToModel;
     private final Function<OrderStatus, OrderStatusModel> mapStatusToModel;
     private final Function<OrderedProduct, OrderedProductModel> mapOrderedProductToModel;
-    private final Function<PaymentTransaction, PaymentTransactionModel> mapPaymentTransactionToModel;
 
     private final Order domain;
 
@@ -29,7 +31,6 @@ public class OrderModeller implements Modeller<OrderModel> {
         this.mapCurrencyToModel = new CurrencyToModelMapper();
         this.mapStatusToModel = new OrderStatusToModelMapper();
         this.mapOrderedProductToModel = new OrderedProductToModelMapper();
-        this.mapPaymentTransactionToModel = new PaymentTransactionToModelMapper();
     }
 
     public static OrderModeller applyChangesFrom(final Order domain) {
@@ -47,17 +48,29 @@ public class OrderModeller implements Modeller<OrderModel> {
         from.setTotalPriceCurrency(mapCurrencyToModel.apply(domain.totalPrice().currency()));
         from.setStatus(mapStatusToModel.apply(domain.status()));
 
-        from.getProducts().clear();
-        domain.products()
+        final Set<OrderedProductModel> products = domain.products()
                 .stream()
                 .map(mapOrderedProductToModel)
-                .forEach(from::addProduct);
+                .collect(Collectors.toSet());
 
-        domain.transactions()
-                .stream()
-                .map(mapPaymentTransactionToModel)
-                .forEach(from::addTransaction);
+        from.setProducts(products);
+
+        final PaymentTransactionModel model = Optional.ofNullable(domain.transaction())
+                .map(tx -> {
+                    PaymentTransactionModel mapped = getMapped(from, tx);
+                    mapped.setOrder(from);
+                    return mapped;
+                })
+                .orElse(null);
+
+        from.setTransaction(model);
 
         return from;
+    }
+
+    private static PaymentTransactionModel getMapped(OrderModel from, PaymentTransaction tx) {
+        return PaymentTransactionModeller
+                .applyChangesFrom(tx)
+                .to(from.getTransaction());
     }
 }

@@ -32,6 +32,7 @@ public class PaymentTransactionModelToDomainMapper implements Function<PaymentTr
 
         return PaymentTransaction.create(
                 model.getTransactionId(),
+                model.getProviderPaymentId(),
                 mapPaymentMethodModelToDomain.apply(model.getPaymentMethod()),
                 OrderId.from(model.getOrder().getOrderId()),
                 mapPaymentStatusModelToDomain.apply(model.getStatus()),

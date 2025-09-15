@@ -84,6 +84,10 @@
             <column name="TRANSACTION_ID" type="VARCHAR(255)">
                 <constraints nullable="false" unique="true"/>
             </column>
+            <column name="PROVIDER_PAYMENT_ID" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+
             <column name="STATUS" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
@@ -100,7 +104,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="ORDER_ID_FK" type="BIGINT">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
         </createTable>
 

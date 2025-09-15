@@ -38,10 +38,6 @@ public class OrderModelToDomainMapper implements Function<OrderModel, Order> {
                 .map(mapOrderedProductModelToDomain)
                 .collect(Collectors.toSet());
 
-        final List<PaymentTransaction> transactions = model.getTransactions()
-                .stream()
-                .map(mapPaymentTransactionModelToDomain)
-                .toList();
 
         return Order
                 .empty()
@@ -49,7 +45,7 @@ public class OrderModelToDomainMapper implements Function<OrderModel, Order> {
                 .customer(CustomerId.from(model.getCustomerId()))
                 .status(status)
                 .orderedProducts(orderedProducts)
-                .payments(transactions)
+                .transaction(mapPaymentTransactionModelToDomain.apply(model.getTransaction()))
                 .assemble();
 
     }

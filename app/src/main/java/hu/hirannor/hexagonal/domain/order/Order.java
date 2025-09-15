@@ -20,7 +20,7 @@ public class Order extends AggregateRoot {
     private final Set<OrderedProduct> orderedProducts;
     private final CustomerId customer;
     private final Instant createdAt;
-    private final List<PaymentTransaction> transactions;
+    private PaymentTransaction transaction;
     private final List<OrderStatusChange> history;
     private final List<DomainEvent> events;
 
@@ -28,7 +28,7 @@ public class Order extends AggregateRoot {
           final Set<OrderedProduct> orderedProducts,
           final OrderStatus status,
           final CustomerId customer,
-          final List<PaymentTransaction> transactions) {
+          final PaymentTransaction transaction) {
         Objects.requireNonNull(id, "OrderId cannot be null");
         Objects.requireNonNull(orderedProducts, "Ordered products cannot be null");
         Objects.requireNonNull(status, "OrderStatus cannot be null");
@@ -38,7 +38,7 @@ public class Order extends AggregateRoot {
         this.status = status;
         this.createdAt = Instant.now();
         this.customer = customer;
-        this.transactions = transactions;
+        this.transaction = transaction;
         this.history = new ArrayList<>();
         this.events = new ArrayList<>();
     }
@@ -85,8 +85,7 @@ public class Order extends AggregateRoot {
     }
 
     public void handlePaymentResult(final PaymentReceipt receipt) {
-        final PaymentTransaction transaction = PaymentTransaction.from(receipt);
-        transactions.add(transaction);
+        this.transaction = PaymentTransaction.from(receipt);
 
         switch (receipt.status()) {
             case SUCCESS -> markPaymentAsPaid();
@@ -192,9 +191,12 @@ public class Order extends AggregateRoot {
                 .orElseThrow(failBecauseOrderDoesntContainProduct());
     }
 
-    public List<PaymentTransaction> transactions() { return Collections.unmodifiableList(transactions); }
 
     public List<OrderStatusChange> history() { return Collections.unmodifiableList(history); }
+
+    public PaymentTransaction transaction() {
+        return transaction;
+    }
 
     @Override
     public void clearEvents() {
@@ -231,4 +233,7 @@ public class Order extends AggregateRoot {
         this.events.add(OrderPaymentFailed.record(customer, id));
     }
 
+    public void setTransaction(PaymentTransaction transaction) {
+        this.transaction = transaction;
+    }
 }
