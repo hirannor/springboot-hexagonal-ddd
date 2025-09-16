@@ -61,7 +61,8 @@ class CustomerToModelMapperComponentTest {
     private Customer constructInput(final CustomerId id) {
         return Customer.from(
                 id,
-                FullName.from("John", "Doe"),
+                FirstName.from("John"),
+                LastName.from("Doe"),
                 LocalDate.of(1992, 2, 10),
                 Gender.MALE,
                 Address.from(
