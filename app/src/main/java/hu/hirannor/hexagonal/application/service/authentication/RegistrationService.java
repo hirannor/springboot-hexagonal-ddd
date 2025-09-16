@@ -41,7 +41,7 @@ class RegistrationService implements Registrating {
     public void register(final Register command) {
         if (command == null) throw new IllegalArgumentException("Register command cannot be null!");
 
-        LOGGER.info("Registrating customer with email: {}", command.emailAddress());
+        LOGGER.info("Registering customer with email: {}", command.emailAddress().asText());
 
         customers.findByEmailAddress(command.emailAddress())
                 .ifPresent(customer -> failBecauseCustomerAlreadyExistBy(customer.emailAddress()));
@@ -50,12 +50,12 @@ class RegistrationService implements Registrating {
         customers.save(newlyRegistered);
         authenticator.register(AuthUser.of(command.emailAddress(), command.password(), Set.of(Role.CUSTOMER)));
 
-        LOGGER.info("Customer with id: {} is successfully registered!", newlyRegistered.customerId());
+        LOGGER.info("Customer with id: {} is successfully registered!", newlyRegistered.id().asText());
     }
 
     private void failBecauseCustomerAlreadyExistBy(final EmailAddress email) {
         throw new CustomerAlreadyExistWithEmailAddress(
-                String.format("Customer already exist with the given e-mail emailAddress: %s", email.value())
+                String.format("Customer already exist with the given e-mail emailAddress: %s", email.asText())
         );
     }
 }

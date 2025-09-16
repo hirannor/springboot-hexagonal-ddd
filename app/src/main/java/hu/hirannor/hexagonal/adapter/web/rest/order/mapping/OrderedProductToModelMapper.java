@@ -3,11 +3,11 @@ package hu.hirannor.hexagonal.adapter.web.rest.order.mapping;
 import hu.hirannor.hexagonal.adapter.web.rest.orders.model.MoneyModel;
 import hu.hirannor.hexagonal.adapter.web.rest.orders.model.OrderedProductModel;
 import hu.hirannor.hexagonal.domain.Money;
-import hu.hirannor.hexagonal.domain.order.OrderedProduct;
+import hu.hirannor.hexagonal.domain.order.OrderItem;
 
 import java.util.function.Function;
 
-public class OrderedProductToModelMapper implements Function<OrderedProduct, OrderedProductModel> {
+public class OrderedProductToModelMapper implements Function<OrderItem, OrderedProductModel> {
 
     private final Function<Money, MoneyModel> mapMoneyToModel;
 
@@ -16,7 +16,7 @@ public class OrderedProductToModelMapper implements Function<OrderedProduct, Ord
     }
 
     @Override
-    public OrderedProductModel apply(final OrderedProduct domain) {
+    public OrderedProductModel apply(final OrderItem domain) {
         if (domain == null) return null;
 
         return new OrderedProductModel()

@@ -1,16 +1,16 @@
 package hu.hirannor.hexagonal.application.service.order;
 
 import hu.hirannor.hexagonal.application.port.payment.PaymentItem;
-import hu.hirannor.hexagonal.domain.order.OrderedProduct;
+import hu.hirannor.hexagonal.domain.order.OrderItem;
 
 import java.util.function.Function;
 
-public class OrderedProductToPaymentItemMapper implements Function<OrderedProduct, PaymentItem> {
+public class OrderedProductToPaymentItemMapper implements Function<OrderItem, PaymentItem> {
 
     public OrderedProductToPaymentItemMapper() {}
 
     @Override
-    public PaymentItem apply(final OrderedProduct product) {
+    public PaymentItem apply(final OrderItem product) {
         if (product == null) return null;
 
         return PaymentItem.create(

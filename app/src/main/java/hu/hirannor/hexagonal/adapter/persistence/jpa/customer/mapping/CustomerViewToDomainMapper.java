@@ -46,12 +46,13 @@ class CustomerViewToDomainMapper implements Function<CustomerView, Customer> {
                 .map(mapGenderModelToDomain)
                 .ifPresent(builder::gender);
 
-        final FullName name = FullName.from(
-            Optional.ofNullable(view.getFirstName()).orElse(""),
-            Optional.ofNullable(view.getLastName()).orElse("")
-        );
+        Optional.ofNullable(view.getFirstName())
+                .map(FirstName::from)
+                .ifPresent(builder::firstName);
 
-        builder.fullName(name);
+        Optional.ofNullable(view.getLastName())
+            .map(LastName::from)
+            .ifPresent(builder::lastName);
 
         final Address address = Address.from(
                 Optional.ofNullable(view.getCountry()).map(mapCountryModelToDomain).orElse(Country.HUNGARY),

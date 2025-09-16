@@ -46,4 +46,8 @@ public record EmailAddress(String value) {
     private boolean isValidEmailAddress(final String value) {
         return EMAIL_PATTERN.matcher(value).matches();
     }
+
+    public String asText() {
+        return value;
+    }
 }

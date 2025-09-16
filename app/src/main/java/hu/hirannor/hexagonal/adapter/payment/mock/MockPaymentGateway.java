@@ -5,6 +5,7 @@ import hu.hirannor.hexagonal.application.port.payment.PaymentRequest;
 import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
 import hu.hirannor.hexagonal.domain.order.payment.PaymentReceipt;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
+import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,7 +17,7 @@ class MockPaymentGateway implements PaymentGateway {
     }
 
     @Override
-    public PaymentReceipt processCallback(final String payload, final String signatureHeader) {
-        return null;
+    public Optional<PaymentReceipt> processCallback(final String payload, final String signatureHeader) {
+        return Optional.empty();
     }
 }

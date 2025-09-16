@@ -24,14 +24,16 @@ public class Customer extends AggregateRoot {
 
     private final List<DomainEvent> events;
     private final CustomerId customerId;
-    private FullName fullName;
+    private FirstName firstName;
+    private LastName lastName;
     private LocalDate birthDate;
     private Gender gender;
     private Address address;
     private EmailAddress emailAddress;
 
     Customer(final CustomerId customerId,
-             final FullName fullName,
+             final FirstName firstName,
+             final LastName lastName,
              final LocalDate birthDate,
              final Gender gender,
              final Address address,
@@ -42,7 +44,8 @@ public class Customer extends AggregateRoot {
 
         this.events = new ArrayList<>(0);
         this.customerId = customerId;
-        this.fullName = fullName;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.birthDate = birthDate;
         this.gender = gender;
         this.address = address;
@@ -51,7 +54,8 @@ public class Customer extends AggregateRoot {
 
     public static Customer from(
             final CustomerId customerId,
-            final FullName fullName,
+            final FirstName firstName,
+            final LastName lastName,
             final LocalDate birthDate,
             final Gender gender,
             final Address address,
@@ -59,7 +63,8 @@ public class Customer extends AggregateRoot {
 
         return CustomerBuilder.empty()
                 .customerId(customerId)
-                .fullName(fullName)
+                .firstName(firstName)
+                .lastName(lastName)
                 .birthDate(birthDate)
                 .gender(gender)
                 .address(address)
@@ -95,7 +100,8 @@ public class Customer extends AggregateRoot {
      * @return a modified instance of {@link Customer}
      */
     public Customer changePersonalDetailsBy(final ChangePersonalDetails cmd) {
-        this.fullName = cmd.fullName();
+        this.firstName = cmd.firstName();
+        this.lastName = cmd.lastName();
         this.birthDate = cmd.birthDate();
         this.address = cmd.address();
         this.gender = cmd.gender();
@@ -106,12 +112,16 @@ public class Customer extends AggregateRoot {
         return this;
     }
 
-    public CustomerId customerId() {
+    public CustomerId id() {
         return customerId;
     }
 
-    public FullName fullName() {
-        return fullName;
+    public FirstName firstName() {
+        return firstName;
+    }
+
+    public LastName lastName() {
+        return lastName;
     }
 
     public LocalDate birthDate() {
@@ -128,6 +138,10 @@ public class Customer extends AggregateRoot {
 
     public EmailAddress emailAddress() {
         return emailAddress;
+    }
+
+    public String fullName() {
+        return this.firstName.asText() + " " + this.lastName.asText();
     }
 
     @Override

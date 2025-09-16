@@ -8,7 +8,7 @@ import hu.hirannor.hexagonal.domain.order.OrderId;
 public record NotificationData(
         SystemNotificationType type,
         OrderId orderId,
-        FullName customerName,
+        String customerName,
         EmailAddress email,
         Address address
 ) {}

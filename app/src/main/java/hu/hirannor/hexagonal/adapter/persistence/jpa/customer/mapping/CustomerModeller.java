@@ -43,13 +43,13 @@ public class CustomerModeller implements Modeller<CustomerModel> {
     public CustomerModel to(final CustomerModel model) {
         if (model == null) return null;
 
-        model.setCustomerId(domain.customerId().asText());
+        model.setCustomerId(domain.id().asText());
 
-        Optional.ofNullable(domain.fullName())
-                .map(FullName::firstName)
+        Optional.ofNullable(domain.firstName())
+                .map(FirstName::value)
                 .ifPresent(model::setFirstName);
-        Optional.ofNullable(domain.fullName())
-                .map(FullName::lastName)
+        Optional.ofNullable(domain.lastName())
+                .map(LastName::value)
                 .ifPresent(model::setLastName);
 
         Optional.ofNullable(domain.gender())

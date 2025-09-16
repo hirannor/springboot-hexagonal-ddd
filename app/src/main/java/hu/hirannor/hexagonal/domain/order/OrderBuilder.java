@@ -3,11 +3,11 @@ package hu.hirannor.hexagonal.domain.order;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.order.payment.PaymentTransaction;
 
-import java.util.Set;
+import java.util.List;
 
 public class OrderBuilder {
     private OrderId id;
-    private Set<OrderedProduct> orderedProducts;
+    private List<OrderItem> orderItems;
     private OrderStatus status;
     private CustomerId customer;
     private PaymentTransaction transaction;
@@ -19,8 +19,8 @@ public class OrderBuilder {
         return this;
     }
 
-    public OrderBuilder orderedProducts(final Set<OrderedProduct> orderedProducts) {
-        this.orderedProducts = orderedProducts;
+    public OrderBuilder orderItems(final List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
         return this;
     }
 
@@ -41,6 +41,6 @@ public class OrderBuilder {
     }
 
     public Order assemble() {
-        return new Order(id, orderedProducts, status, customer, transaction);
+        return new Order(id, orderItems, status, customer, transaction);
     }
 }

@@ -10,11 +10,13 @@ import hu.hirannor.hexagonal.application.usecase.order.OrderStatusChanging;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.OrderRepository;
-import hu.hirannor.hexagonal.domain.order.OrderedProduct;
+import hu.hirannor.hexagonal.domain.order.OrderItem;
 import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
 import hu.hirannor.hexagonal.domain.order.command.InitializePayment;
 import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
 import hu.hirannor.hexagonal.domain.order.payment.PaymentMethod;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -36,7 +38,11 @@ class OrderCommandService implements
         OrderPaymentInitialization,
         OrderStatusChanging {
 
-    private final Function<OrderedProduct, PaymentItem> mapOrderedProductToPaymentItem;
+    private static final Logger LOGGER = LogManager.getLogger(
+        OrderCommandService.class
+    );
+
+    private final Function<OrderItem, PaymentItem> mapOrderedProductToPaymentItem;
 
     private final OrderRepository orders;
     private final PaymentGateway payment;
@@ -48,7 +54,7 @@ class OrderCommandService implements
 
     OrderCommandService(final OrderRepository orders,
                         final PaymentGateway payment,
-                        final Function<OrderedProduct, PaymentItem> mapOrderedProductToPaymentItem) {
+                        final Function<OrderItem, PaymentItem> mapOrderedProductToPaymentItem) {
         this.orders = orders;
         this.payment = payment;
         this.mapOrderedProductToPaymentItem = mapOrderedProductToPaymentItem;
@@ -56,21 +62,33 @@ class OrderCommandService implements
 
     @Override
     public Order create(final CreateOrder create) {
-        if (create == null) throw new IllegalArgumentException("create is null");
+        if (create == null) throw new IllegalArgumentException("CreateOrder is null");
+
+        LOGGER.info("Start creating order with id :{} for customer id: {}",
+            create.orderId().asText(),
+            create.customer().asText());
 
         final Order order = Order.create(create);
         orders.save(order);
+
+        LOGGER.info("Order with id: {} was successfully created for customer: {}",
+            order.id().asText(),
+            order.id().asText());
 
         return order;
     }
 
     public PaymentInstruction initialize(final InitializePayment command) {
-        if (command == null) throw new IllegalArgumentException("command is null");
+        if (command == null) throw new IllegalArgumentException("InitializePayment is null");
+
+        LOGGER.info("Start initialization of payment for order id: {}",
+            command.orderId().asText()
+        );
 
         final Order order = orders.findBy(command.orderId())
                 .orElseThrow(failBecauseOrderWasNotFoundBy(command.orderId()));
 
-        final List<PaymentItem> items = order.products()
+        final List<PaymentItem> items = order.orderItems()
                 .stream()
                 .map(mapOrderedProductToPaymentItem)
                 .toList();
@@ -85,18 +103,31 @@ class OrderCommandService implements
         order.initializePayment();
         orders.save(order);
 
+        LOGGER.info("Payment initialization for order id: {} was successful",
+            command.orderId().asText()
+        );
+
         return instruction;
     }
 
     @Override
-    public void change(final ChangeOrderStatus change) {
-        if (change == null) throw new IllegalArgumentException("change is null");
+    public void change(final ChangeOrderStatus changeStatus) {
+        if (changeStatus == null) throw new IllegalArgumentException("ChangeOrderStatus is null");
 
-        final Order order = orders.findBy(change.orderId())
-                .orElseThrow(failBecauseOrderWasNotFoundBy(change.orderId()));
+        LOGGER.info("Changing order status to: {} for order id: {}",
+            changeStatus.status(),
+            changeStatus.orderId().asText()
+        );
 
-        order.changeStatus(change.status());
+        final Order order = orders.findBy(changeStatus.orderId())
+                .orElseThrow(failBecauseOrderWasNotFoundBy(changeStatus.orderId()));
+
+        order.changeStatus(changeStatus.status());
         orders.save(order);
+
+        LOGGER.info("Order status is successfully changed for order id: {}",
+            changeStatus.orderId().asText()
+        );
     }
 
     private Supplier<IllegalStateException> failBecauseOrderWasNotFoundBy(OrderId order) {

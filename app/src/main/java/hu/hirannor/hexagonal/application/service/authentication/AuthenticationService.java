@@ -44,11 +44,11 @@ class AuthenticationService implements Authenticating {
     public AuthenticationResult authenticate(final DoAuthenticate cmd) {
         if (cmd == null) throw new IllegalArgumentException("DoAuthenticate cannot be null");
 
-        LOGGER.info("Attempting to authenticate: {}", cmd.emailAddress());
+        LOGGER.info("Attempting to authenticate: {}", cmd.emailAddress().asText());
         final AuthUser authUser = mapCommandToUser.apply(cmd);
 
         final AuthenticationResult result = authenticator.authenticate(authUser);
-        LOGGER.info("Authentication was successful for: {} ", cmd.emailAddress());
+        LOGGER.info("Authentication was successful for: {} ", cmd.emailAddress().asText());
 
         return result;
     }

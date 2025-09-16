@@ -73,6 +73,11 @@ class OrderJpaRepository implements OrderRepository {
     }
 
     @Override
+    public boolean orderExist(final OrderId id) {
+        return false;
+    }
+
+    @Override
     public List<Order> findBy(final CustomerId id) {
         if (id == null) throw new IllegalArgumentException("id cannot be null");
 

@@ -16,7 +16,7 @@ public class Basket extends AggregateRoot {
 
     private final BasketId id;
     private final CustomerId customer;
-    private final Set<BasketItem> items;
+    private final List<BasketItem> items;
     private final List<DomainEvent> events;
 
     Basket(final BasketId id, final CustomerId customer) {
@@ -25,11 +25,11 @@ public class Basket extends AggregateRoot {
 
         this.id = id;
         this.customer = customer;
-        this.items = new HashSet<>();
+        this.items = new ArrayList<>();
         this.events = new ArrayList<>();
     }
 
-    Basket(final BasketId id, final CustomerId customer,  final Set<BasketItem> items) {
+    Basket(final BasketId id, final CustomerId customer,  final List<BasketItem> items) {
         Objects.requireNonNull(id);
         Objects.requireNonNull(customer);
 
@@ -39,8 +39,8 @@ public class Basket extends AggregateRoot {
         this.events = new ArrayList<>();
     }
 
-    public static Basket from(final BasketId id, final CustomerId customer, final Set<BasketItem> items) {
-        return new Basket(id, customer, items);
+    public static Basket from(final BasketId id, final CustomerId customer, final List<BasketItem> items) {
+        return new Basket(id, customer, new ArrayList<>(items));
     }
 
     public static Basket create(final CreateBasket create) {
@@ -61,8 +61,8 @@ public class Basket extends AggregateRoot {
         return customer;
     }
 
-    public Set<BasketItem> items() {
-        return Collections.unmodifiableSet(items);
+    public List<BasketItem> items() {
+        return Collections.unmodifiableList(items);
     }
 
     public void addProduct(final BasketItem item) {

@@ -5,9 +5,9 @@ import hu.hirannor.hexagonal.domain.product.ProductId;
 
 import java.util.Objects;
 
-public record OrderedProduct(ProductId productId, int quantity, Money price) {
+public record OrderItem(ProductId productId, int quantity, Money price) {
 
-    public OrderedProduct {
+    public OrderItem {
         Objects.requireNonNull(productId);
         Objects.requireNonNull(price);
 
@@ -15,8 +15,8 @@ public record OrderedProduct(ProductId productId, int quantity, Money price) {
         if (price.amount().signum() <= 0) throw new IllegalArgumentException("Price must be positive");
     }
 
-    public static OrderedProduct create(final ProductId productId, final int quantity, final Money price) {
-        return new OrderedProduct(productId, quantity, price);
+    public static OrderItem create(final ProductId productId, final int quantity, final Money price) {
+        return new OrderItem(productId, quantity, price);
     }
 
     public Money lineTotal() {

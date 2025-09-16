@@ -40,11 +40,11 @@ class CustomerToModelMapper implements Function<Customer, CustomerModel> {
 
         final CustomerModel model = new CustomerModel();
 
-        model.setCustomerId(domain.customerId().asText());
+        model.setCustomerId(domain.id().asText());
         model.setGender(mapGenderToModel.apply(domain.gender()));
         model.setBirthDate(domain.birthDate());
-        model.setFirstName(domain.fullName().firstName());
-        model.setLastName(domain.fullName().lastName());
+        model.setFirstName(domain.firstName().value());
+        model.setLastName(domain.lastName().value());
         model.setCountry(mapCountryToModel.apply(domain.address().country()));
         model.setCity(domain.address().city());
         model.setPostalCode(domain.address().postalCode().value());

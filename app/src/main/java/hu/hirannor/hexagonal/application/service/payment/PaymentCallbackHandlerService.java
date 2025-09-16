@@ -3,10 +3,9 @@ package hu.hirannor.hexagonal.application.service.payment;
 import hu.hirannor.hexagonal.application.port.payment.PaymentGateway;
 import hu.hirannor.hexagonal.application.usecase.payment.HandlePaymentCallback;
 import hu.hirannor.hexagonal.application.usecase.payment.PaymentCallbackHandling;
-import hu.hirannor.hexagonal.domain.order.Order;
-import hu.hirannor.hexagonal.domain.order.OrderId;
-import hu.hirannor.hexagonal.domain.order.OrderRepository;
-import hu.hirannor.hexagonal.domain.order.payment.PaymentReceipt;
+import hu.hirannor.hexagonal.domain.order.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -21,6 +20,11 @@ import java.util.function.Supplier;
     isolation = Isolation.REPEATABLE_READ
 )
 class PaymentCallbackHandlerService implements PaymentCallbackHandling {
+
+    private static final Logger LOGGER = LogManager.getLogger(
+        PaymentCallbackHandlerService.class
+    );
+
     private final OrderRepository orders;
     private final PaymentGateway payment;
 
@@ -34,13 +38,26 @@ class PaymentCallbackHandlerService implements PaymentCallbackHandling {
     public void handle(final HandlePaymentCallback command) {
         if (command == null) throw new IllegalArgumentException("command is null");
 
-        final PaymentReceipt receipt = payment.processCallback(command.payload(), command.signatureHeader());
+        LOGGER.info("Start processing payment callback...");
 
-        final Order order = orders.findBy(receipt.orderId())
-                .orElseThrow(failBecauseOrderWasNotFoundBy(receipt.orderId()));
+        payment.processCallback(command.payload(), command.signatureHeader())
+            .ifPresentOrElse(paymentReceipt -> {
+                LOGGER.info("Payment was: {} for order id: {}",
+                    paymentReceipt.status(),
+                    paymentReceipt.orderId().asText()
+                );
 
-        order.handlePaymentResult(receipt);
-        orders.save(order);
+                final Order toPersist = orders.findBy(paymentReceipt.orderId())
+                    .orElseThrow(failBecauseOrderWasNotFoundBy(paymentReceipt.orderId()))
+                    .handlePaymentResult(paymentReceipt);
+
+                orders.save(toPersist);
+            },
+                () -> LOGGER.warn("Skipping payment callback handling")
+            );
+
+        LOGGER.info("Processing payment callback was successful...");
+
     }
 
     private static Supplier<IllegalStateException> failBecauseOrderWasNotFoundBy(final OrderId order) {

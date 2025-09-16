@@ -45,12 +45,13 @@ class CustomerModelToDomainMapper implements Function<CustomerModel, Customer> {
                 .map(mapGenderModelToDomain)
                 .ifPresent(builder::gender);
 
-        final FullName name = FullName.from(
-                Optional.ofNullable(model.getFirstName()).orElse(""),
-                Optional.ofNullable(model.getLastName()).orElse("")
-        );
+        Optional.ofNullable(model.getFirstName())
+            .map(FirstName::from)
+            .ifPresent(builder::firstName);
 
-        builder.fullName(name);
+        Optional.ofNullable(model.getLastName())
+            .map(LastName::from)
+            .ifPresent(builder::lastName);
 
         final Address address = Address.from(
                 Optional.ofNullable(model.getCountry()).map(mapCountryModelToDomain).orElse(Country.HUNGARY),

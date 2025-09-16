@@ -119,7 +119,7 @@ class CustomerJpaRepository implements CustomerRepository {
 
         LOGGER.debug("Saving customer....");
 
-        final CustomerModel toPersist = customers.findByCustomerId(domain.customerId().asText())
+        final CustomerModel toPersist = customers.findByCustomerId(domain.id().asText())
             .orElseGet(CustomerModel::new);
 
         CustomerModeller.applyChangesFrom(domain).to(toPersist);

@@ -56,7 +56,7 @@ public class OrderIngestion {
                 evt.orderId(),
                 SystemNotificationType.ORDER_CREATED
         );
-        notifications.sentBySystem(cmd);
+        notifications.sendBySystem(cmd);
     }
 
     @TransactionalEventListener
@@ -69,7 +69,7 @@ public class OrderIngestion {
                 evt.orderId(),
                 SystemNotificationType.ORDER_SHIPPED
         );
-        notifications.sentBySystem(cmd);
+        notifications.sendBySystem(cmd);
     }
 
     @TransactionalEventListener
@@ -89,7 +89,7 @@ public class OrderIngestion {
                 evt.orderId(),
                 SystemNotificationType.ORDER_PAID
         );
-        notifications.sentBySystem(cmd);
+        notifications.sendBySystem(cmd);
     }
 
 }

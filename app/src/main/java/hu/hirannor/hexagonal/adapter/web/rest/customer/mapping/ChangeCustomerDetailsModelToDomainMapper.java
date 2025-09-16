@@ -5,9 +5,7 @@ import hu.hirannor.hexagonal.adapter.web.rest.customer.model.ChangePersonalDetai
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.GenderModel;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.EmailAddress;
-import hu.hirannor.hexagonal.domain.customer.Address;
-import hu.hirannor.hexagonal.domain.customer.FullName;
-import hu.hirannor.hexagonal.domain.customer.Gender;
+import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
 
 import java.util.function.Function;
@@ -47,7 +45,8 @@ class ChangeCustomerDetailsModelToDomainMapper implements Function<ChangePersona
 
         return new ChangePersonalDetails.Builder()
                 .customerId(CustomerId.from(customerId))
-                .fullName(FullName.from(model.getFirstName(), model.getLastName()))
+                .firstName(FirstName.from(model.getFirstName()))
+                .lastName(LastName.from(model.getLastName()))
                 .gender(mapGenderModelToDomain.apply(model.getGender()))
                 .birthDate(model.getBirthDate())
                 .address(mapAddressModelToDomain.apply(model.getAddress()))

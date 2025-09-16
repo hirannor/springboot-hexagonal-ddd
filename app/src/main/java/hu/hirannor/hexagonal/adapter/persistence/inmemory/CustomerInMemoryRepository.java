@@ -65,7 +65,7 @@ class CustomerInMemoryRepository implements CustomerRepository {
 
     @Override
     public void save(final Customer customer) {
-        customerStore.put(customer.customerId(), customer);
+        customerStore.put(customer.id(), customer);
         emailIndex.put(customer.emailAddress(), customer);
     }
 

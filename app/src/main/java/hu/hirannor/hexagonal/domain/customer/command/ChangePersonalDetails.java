@@ -2,9 +2,7 @@ package hu.hirannor.hexagonal.domain.customer.command;
 
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.EmailAddress;
-import hu.hirannor.hexagonal.domain.customer.Address;
-import hu.hirannor.hexagonal.domain.customer.FullName;
-import hu.hirannor.hexagonal.domain.customer.Gender;
+import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.infrastructure.command.Command;
 import hu.hirannor.hexagonal.infrastructure.command.CommandId;
 
@@ -17,7 +15,8 @@ import java.time.LocalDate;
  * @param id           {@link CommandId} unique identifier of command operation
  * @param registeredAt {@link Instant} registration time of command
  * @param customerId   {@link CustomerId} unique identifier of a customer
- * @param fullName     {@link FullName} full name of customer
+ * @param firstName    {@link FirstName} first name of customer
+ * @param lastName     {@link LastName} last name of customer
  * @param birthDate    {@link LocalDate} birth date of customer
  * @param gender       {@link Gender} gender of customer
  * @param address      {@link Address} emailAddress of customer
@@ -28,7 +27,8 @@ public record ChangePersonalDetails(
         CommandId id,
         Instant registeredAt,
         CustomerId customerId,
-        FullName fullName,
+        FirstName firstName,
+        LastName lastName,
         LocalDate birthDate,
         Gender gender,
         Address address,
@@ -36,7 +36,8 @@ public record ChangePersonalDetails(
 
     public static class Builder {
         private CustomerId customerId;
-        private FullName fullName;
+        private FirstName firstName;
+        private LastName lastName;
         private LocalDate birthDate;
         private Gender gender;
         private Address address;
@@ -47,8 +48,13 @@ public record ChangePersonalDetails(
             return this;
         }
 
-        public Builder fullName(final FullName fullName) {
-            this.fullName = fullName;
+        public Builder firstName(final FirstName firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder lastName(final LastName lastName) {
+            this.lastName = lastName;
             return this;
         }
 
@@ -78,7 +84,8 @@ public record ChangePersonalDetails(
                     CommandId.generate(),
                     Command.now(),
                     customerId,
-                    fullName,
+                    firstName,
+                    lastName,
                     birthDate,
                     gender,
                     address,

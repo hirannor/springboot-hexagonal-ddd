@@ -7,7 +7,7 @@ import hu.hirannor.hexagonal.adapter.web.rest.orders.model.OrderedProductModel;
 import hu.hirannor.hexagonal.domain.Money;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderStatus;
-import hu.hirannor.hexagonal.domain.order.OrderedProduct;
+import hu.hirannor.hexagonal.domain.order.OrderItem;
 
 import java.util.List;
 import java.util.function.Function;
@@ -15,7 +15,7 @@ import java.util.function.Function;
 public class OrderToModelMapper implements Function<Order, OrderModel> {
     private final Function<OrderStatus, OrderStatusModel> mapStatusToModel;
     private final Function<Money, MoneyModel> mapMoneyToModel;
-    private final Function<OrderedProduct, OrderedProductModel> mapOrderedProductToModel;
+    private final Function<OrderItem, OrderedProductModel> mapOrderedProductToModel;
 
     public OrderToModelMapper() {
         this.mapOrderedProductToModel = new OrderedProductToModelMapper();
@@ -27,7 +27,7 @@ public class OrderToModelMapper implements Function<Order, OrderModel> {
     public OrderModel apply(final Order domain) {
         if (domain == null) return null;
 
-        final List<OrderedProductModel> products = domain.products()
+        final List<OrderedProductModel> products = domain.orderItems()
                 .stream()
                 .map(mapOrderedProductToModel)
                 .toList();

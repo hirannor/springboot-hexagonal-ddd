@@ -15,26 +15,27 @@ import java.util.function.Supplier;
 
 public class Order extends AggregateRoot {
 
-    private final OrderId id;
     private OrderStatus status;
-    private final Set<OrderedProduct> orderedProducts;
+    private PaymentTransaction transaction;
+
+    private final OrderId id;
+    private final List<OrderItem> orderItems;
     private final CustomerId customer;
     private final Instant createdAt;
-    private PaymentTransaction transaction;
     private final List<OrderStatusChange> history;
     private final List<DomainEvent> events;
 
     Order(final OrderId id,
-          final Set<OrderedProduct> orderedProducts,
+          final List<OrderItem> orderItems,
           final OrderStatus status,
           final CustomerId customer,
           final PaymentTransaction transaction) {
         Objects.requireNonNull(id, "OrderId cannot be null");
-        Objects.requireNonNull(orderedProducts, "Ordered products cannot be null");
+        Objects.requireNonNull(orderItems, "Order items cannot be null");
         Objects.requireNonNull(status, "OrderStatus cannot be null");
 
         this.id = id;
-        this.orderedProducts = orderedProducts;
+        this.orderItems = orderItems;
         this.status = status;
         this.createdAt = Instant.now();
         this.customer = customer;
@@ -50,11 +51,11 @@ public class Order extends AggregateRoot {
     public static Order create(final CreateOrder command) {
         Objects.requireNonNull(command, "MakeOrder command cannot be null");
 
-        if (command.products().isEmpty()) throw new IllegalArgumentException("Order must have at least one product");
+        if (command.orderItems().isEmpty()) throw new IllegalArgumentException("Order must have at least one product");
 
         final Order createdOrder = empty()
-                .id(OrderId.generate())
-                .orderedProducts(command.products())
+                .id(command.orderId())
+                .orderItems(command.orderItems())
                 .status(OrderStatus.CREATED)
                 .customer(command.customer())
                 .assemble();
@@ -72,8 +73,8 @@ public class Order extends AggregateRoot {
         return status;
     }
 
-    public Set<OrderedProduct> products() {
-        return Collections.unmodifiableSet(orderedProducts);
+    public List<OrderItem> orderItems() {
+        return Collections.unmodifiableList(orderItems);
     }
 
     public Instant createdAt() {
@@ -84,7 +85,7 @@ public class Order extends AggregateRoot {
         return customer;
     }
 
-    public void handlePaymentResult(final PaymentReceipt receipt) {
+    public Order handlePaymentResult(final PaymentReceipt receipt) {
         this.transaction = PaymentTransaction.from(receipt);
 
         switch (receipt.status()) {
@@ -94,6 +95,7 @@ public class Order extends AggregateRoot {
             case FAILURE -> markPaymentAsFailed();
             default -> throw new IllegalStateException("Unknown payment status: " + receipt.status());
         }
+        return this;
     }
 
     public void changeStatus(final OrderStatus target) {
@@ -185,8 +187,8 @@ public class Order extends AggregateRoot {
     }
 
     public Money totalPrice() {
-        return orderedProducts.stream()
-                .map(OrderedProduct::lineTotal)
+        return orderItems.stream()
+                .map(OrderItem::lineTotal)
                 .reduce(Money::add)
                 .orElseThrow(failBecauseOrderDoesntContainProduct());
     }

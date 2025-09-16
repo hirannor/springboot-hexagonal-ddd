@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "EC_ORDERED_PRODUCTS")
-public class OrderedProductModel {
+public class OrderItemsModel {
 
     private static final int ALLOCATION_SIZE = 5;
 
@@ -39,7 +39,7 @@ public class OrderedProductModel {
     @Column(name = "PRICE_CURRENCY", nullable = false)
     private CurrencyModel priceCurrency;
 
-    public OrderedProductModel() {}
+    public OrderItemsModel() {}
 
     public Long getId() {
         return id;

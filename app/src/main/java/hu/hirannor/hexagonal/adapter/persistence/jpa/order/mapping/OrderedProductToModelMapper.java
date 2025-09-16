@@ -2,13 +2,13 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.order.mapping;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.CurrencyModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.CurrencyToModelMapper;
-import hu.hirannor.hexagonal.adapter.persistence.jpa.order.OrderedProductModel;
+import hu.hirannor.hexagonal.adapter.persistence.jpa.order.OrderItemsModel;
 import hu.hirannor.hexagonal.domain.Currency;
-import hu.hirannor.hexagonal.domain.order.OrderedProduct;
+import hu.hirannor.hexagonal.domain.order.OrderItem;
 
 import java.util.function.Function;
 
-public class OrderedProductToModelMapper implements Function<OrderedProduct, OrderedProductModel> {
+public class OrderedProductToModelMapper implements Function<OrderItem, OrderItemsModel> {
 
     private final Function<Currency, CurrencyModel> mapCurrencyToModel;
 
@@ -17,10 +17,10 @@ public class OrderedProductToModelMapper implements Function<OrderedProduct, Ord
     }
 
     @Override
-    public OrderedProductModel apply(final OrderedProduct domain) {
+    public OrderItemsModel apply(final OrderItem domain) {
         if (domain == null) return null;
 
-        final OrderedProductModel model = new OrderedProductModel();
+        final OrderItemsModel model = new OrderItemsModel();
         model.setProductId(domain.productId().asText());
         model.setQuantity(domain.quantity());
         model.setPriceAmount(domain.price().amount());

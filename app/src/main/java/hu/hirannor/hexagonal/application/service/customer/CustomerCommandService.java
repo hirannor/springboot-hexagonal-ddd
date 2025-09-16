@@ -56,7 +56,8 @@ class CustomerCommandService implements
         final Customer withModifiedPersonalDetails = foundCustomer.changePersonalDetailsBy(cmd);
         customers.save(withModifiedPersonalDetails);
 
-        LOGGER.info("Personal details for customer id: {} are updated successfully!", withModifiedPersonalDetails.customerId());
+        LOGGER.info("Personal details for customer id: {} are updated successfully!",
+            withModifiedPersonalDetails.id().asText());
 
         return withModifiedPersonalDetails;
     }

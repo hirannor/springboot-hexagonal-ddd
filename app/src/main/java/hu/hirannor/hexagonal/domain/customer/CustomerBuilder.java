@@ -7,7 +7,8 @@ import java.time.LocalDate;
 
 public final class CustomerBuilder {
     private CustomerId customerId;
-    private FullName fullName;
+    private FirstName firstName;
+    private LastName lastName;
     private LocalDate birthDate;
     private Gender gender;
     private Address address;
@@ -22,8 +23,13 @@ public final class CustomerBuilder {
         return this;
     }
 
-    public CustomerBuilder fullName(final FullName fullName) {
-        this.fullName = fullName;
+    public CustomerBuilder firstName(final FirstName firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public CustomerBuilder lastName(final LastName lastName) {
+        this.lastName = lastName;
         return this;
     }
 
@@ -48,6 +54,6 @@ public final class CustomerBuilder {
     }
 
     public Customer createCustomer() {
-        return new Customer(customerId, fullName, birthDate, gender, address, emailAddress);
+        return new Customer(customerId, firstName, lastName, birthDate, gender, address, emailAddress);
     }
 }

@@ -1,13 +1,11 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.order;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.CurrencyModel;
-import hu.hirannor.hexagonal.adapter.persistence.jpa.PaymentTransactionModel;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "EC_ORDERS")
@@ -47,11 +45,8 @@ public class OrderModel {
     @Column(name = "CREATED_AT", nullable = false)
     private Instant createdAt;
 
-    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private PaymentTransactionModel transaction;
-
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Set<OrderedProductModel> products = new HashSet<>();
+    private List<OrderItemsModel> orderItems = new ArrayList<>();
 
     public OrderModel() {}
 
@@ -85,28 +80,17 @@ public class OrderModel {
 
     public void setCreatedAt(final Instant createdAt) { this.createdAt = createdAt; }
 
-    public Set<OrderedProductModel> getProducts() { return products; }
+    public List<OrderItemsModel> getOrderItems() { return orderItems; }
 
-    public void setProducts(final Set<OrderedProductModel> products) {
-        this.products.clear();
-        if (products != null) {
-            products.forEach(this::addProduct);
+    public void setOrderItems(final List<OrderItemsModel> orderItems) {
+        this.orderItems.clear();
+        if (orderItems != null) {
+            orderItems.forEach(this::addProduct);
         }
     }
 
-    public PaymentTransactionModel getTransaction() {
-        return transaction;
-    }
-
-    public void setTransaction(final PaymentTransactionModel transaction) {
-        if (transaction != null) {
-            transaction.setOrder(this);
-        }
-        this.transaction = transaction;
-    }
-
-    public void addProduct(final OrderedProductModel product) {
-        product.setOrder(this);
-        this.products.add(product);
+    public void addProduct(final OrderItemsModel orderItem) {
+        orderItem.setOrder(this);
+        this.orderItems.add(orderItem);
     }
 }

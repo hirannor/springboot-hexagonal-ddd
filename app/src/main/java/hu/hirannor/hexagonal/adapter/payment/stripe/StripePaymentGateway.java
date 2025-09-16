@@ -25,6 +25,7 @@ import hu.hirannor.hexagonal.domain.order.payment.PaymentMethod;
 import hu.hirannor.hexagonal.domain.order.payment.PaymentReceipt;
 import hu.hirannor.hexagonal.domain.order.payment.PaymentStatus;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -119,27 +120,15 @@ class StripePaymentGateway implements PaymentGateway {
     }
 
     @Override
-    public PaymentReceipt processCallback(final String payload, final String signatureHeader) {
+    public Optional<PaymentReceipt> processCallback(final String payload, final String signatureHeader) {
         try {
             final Event event = Webhook.constructEvent(payload, signatureHeader, config.getWebHookSecret());
             final String type = event.getType();
 
-            if (type.startsWith("checkout.session."))
-                return handleCheckoutEvent(CheckOutSessionEvent.from(type), event);
-            if (type.startsWith("payment_intent."))
-                return handlePaymentIntentEvent(PaymentIntentEvent.from(type), event);
-            if (type.startsWith("charge."))
-                return handleChargeEvent(ChargeEvent.from(type), event);
+            if(!type.startsWith("payment_intent.")) return Optional.empty();
 
-            return PaymentReceipt.create(
-                    "UNKNOWN",
-                    "UNKNOWN",
-                    PaymentMethod.CARD,
-                    OrderId.unknown(),
-                    PaymentStatus.PENDING,
-                    event.getId(),
-                    Money.zero(Currency.EUR)
-            );
+            final PaymentReceipt receipt = handlePaymentIntentEvent(PaymentIntentEvent.from(type), event);
+            return Optional.of(receipt);
 
         } catch (SignatureVerificationException e) {
             throw new IllegalArgumentException("Invalid Stripe webhook signature", e);

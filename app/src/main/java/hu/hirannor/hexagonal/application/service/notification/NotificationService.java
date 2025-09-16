@@ -12,6 +12,8 @@ import hu.hirannor.hexagonal.domain.customer.CustomerRepository;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.OrderRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -26,6 +28,9 @@ import java.util.function.Supplier;
     isolation = Isolation.REPEATABLE_READ
 )
 class NotificationService implements NotificationSending {
+    private static final Logger LOGGER = LogManager.getLogger(
+        NotificationService.class
+    );
     private final OrderRepository orders;
     private final CustomerRepository customers;
     private final Notificator notifications;
@@ -43,7 +48,7 @@ class NotificationService implements NotificationSending {
     }
 
     @Override
-    public void sentBySystem(final SendSystemNotification command) {
+    public void sendBySystem(final SendSystemNotification command) {
         if (command == null) throw new IllegalArgumentException("command is null");
 
         final Order order = orders.findBy(command.order())
@@ -61,7 +66,17 @@ class NotificationService implements NotificationSending {
                         customer.address()
         ));
 
+        LOGGER.info("Start notification type: {} for customer: {}",
+            command.notificationType(),
+            customer.id().asText()
+        );
+
         notifications.send(msg);
+
+        LOGGER.info("Notification: {} for customer: {} successfully sent",
+            command.notificationType(),
+            customer.id().asText()
+        );
     }
 
     private Supplier<IllegalStateException> failBecauseCustomerWasNotFoundBy(final CustomerId customer) {

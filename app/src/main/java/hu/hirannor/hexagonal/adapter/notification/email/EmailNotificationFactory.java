@@ -38,8 +38,7 @@ class EmailNotificationFactory implements NotificationFactory {
                 "Your order has shipped!",
                 ORDER_SHIPPED_TEMPLATE,
                 Map.of(
-                        VAR_CUSTOMER_NAME, data.customerName()
-                                .concatFirstAndLastName(),
+                        VAR_CUSTOMER_NAME, data.customerName(),
                         VAR_ORDER_ID, data.orderId().value(),
                         VAR_COUNTRY, data.address().country().name(),
                         VAR_CITY, data.address().city(),
@@ -55,9 +54,7 @@ class EmailNotificationFactory implements NotificationFactory {
                 "Payment received",
                 ORDER_PAID_TEMPLATE,
                 Map.of(
-                        VAR_CUSTOMER_NAME, data
-                                .customerName()
-                                .concatFirstAndLastName(),
+                        VAR_CUSTOMER_NAME, data.customerName(),
                         VAR_ORDER_ID, data.orderId().value()
                 )
         );
@@ -69,9 +66,7 @@ class EmailNotificationFactory implements NotificationFactory {
                 "Your order confirmation",
                 ORDER_CREATED_TEMPLATE,
                 Map.of(
-                        VAR_CUSTOMER_NAME, data
-                                .customerName()
-                                .concatFirstAndLastName(),
+                        VAR_CUSTOMER_NAME, data.customerName(),
                         VAR_ORDER_ID, data.orderId().value()
                 )
         );
