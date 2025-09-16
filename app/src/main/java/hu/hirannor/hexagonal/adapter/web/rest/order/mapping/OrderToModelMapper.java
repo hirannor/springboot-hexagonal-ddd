@@ -6,8 +6,8 @@ import hu.hirannor.hexagonal.adapter.web.rest.orders.model.OrderStatusModel;
 import hu.hirannor.hexagonal.adapter.web.rest.orders.model.OrderedProductModel;
 import hu.hirannor.hexagonal.domain.Money;
 import hu.hirannor.hexagonal.domain.order.Order;
-import hu.hirannor.hexagonal.domain.order.OrderStatus;
 import hu.hirannor.hexagonal.domain.order.OrderItem;
+import hu.hirannor.hexagonal.domain.order.OrderStatus;
 
 import java.util.List;
 import java.util.function.Function;

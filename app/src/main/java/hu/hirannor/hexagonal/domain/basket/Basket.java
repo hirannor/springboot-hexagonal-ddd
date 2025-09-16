@@ -9,7 +9,10 @@ import hu.hirannor.hexagonal.domain.basket.events.BasketCreated;
 import hu.hirannor.hexagonal.infrastructure.aggregate.AggregateRoot;
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 
 public class Basket extends AggregateRoot {

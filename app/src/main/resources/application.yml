@@ -46,6 +46,5 @@ payment:
     success-url: http://google.com
     failure-url: http://google.com
 
-
 email:
   from: no-reply@yourapp.com

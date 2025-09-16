@@ -8,7 +8,6 @@ import hu.hirannor.hexagonal.application.usecase.order.ChangeOrderStatus;
 import hu.hirannor.hexagonal.application.usecase.order.OrderStatusChanging;
 import hu.hirannor.hexagonal.domain.order.OrderStatus;
 import hu.hirannor.hexagonal.domain.order.events.OrderCreated;
-import hu.hirannor.hexagonal.domain.order.events.OrderPaid;
 import hu.hirannor.hexagonal.domain.order.events.OrderShipped;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -68,26 +67,6 @@ public class OrderIngestion {
         final SendSystemNotification cmd = SendSystemNotification.issue(
                 evt.orderId(),
                 SystemNotificationType.ORDER_SHIPPED
-        );
-        notifications.sendBySystem(cmd);
-    }
-
-    @TransactionalEventListener
-    public void handle(final OrderPaid evt) {
-        if (evt == null) throw new IllegalArgumentException("OrderPaid event cannot be null!");
-
-        LOGGER.debug("OrderPaid event received: {}", evt);
-
-        status.change(
-                ChangeOrderStatus.issue(
-                        evt.orderId(),
-                        OrderStatus.PROCESSING
-                )
-        );
-
-        final SendSystemNotification cmd = SendSystemNotification.issue(
-                evt.orderId(),
-                SystemNotificationType.ORDER_PAID
         );
         notifications.sendBySystem(cmd);
     }

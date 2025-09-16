@@ -10,11 +10,11 @@ import hu.hirannor.hexagonal.domain.product.ProductId;
 
 import java.util.function.Function;
 
-public class OrderedProductModelToDomainMapper implements Function<OrderItemsModel, OrderItem> {
+public class OrderedItemModelToDomainMapper implements Function<OrderItemsModel, OrderItem> {
 
     private final Function<CurrencyModel, Currency> mapCurrencyModelToDomain;
 
-    public OrderedProductModelToDomainMapper() {
+    public OrderedItemModelToDomainMapper() {
         this.mapCurrencyModelToDomain = new CurrencyModelToDomainMapper();
     }
 

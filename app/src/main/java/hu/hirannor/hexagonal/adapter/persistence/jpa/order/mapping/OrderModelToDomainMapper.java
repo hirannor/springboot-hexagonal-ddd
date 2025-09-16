@@ -1,13 +1,13 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.order.mapping;
 
+import hu.hirannor.hexagonal.adapter.persistence.jpa.order.OrderItemsModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.order.OrderModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.order.OrderStatusModel;
-import hu.hirannor.hexagonal.adapter.persistence.jpa.order.OrderItemsModel;
 import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
-import hu.hirannor.hexagonal.domain.order.OrderStatus;
 import hu.hirannor.hexagonal.domain.order.OrderItem;
+import hu.hirannor.hexagonal.domain.order.OrderStatus;
 
 import java.util.List;
 import java.util.function.Function;
@@ -19,7 +19,7 @@ public class OrderModelToDomainMapper implements Function<OrderModel, Order> {
 
     public OrderModelToDomainMapper() {
         this.mapStatusModelToDomain = new OrderStatusModelToDomainMapper();
-        this.mapOrderedProductModelToDomain = new OrderedProductModelToDomainMapper();
+        this.mapOrderedProductModelToDomain = new OrderedItemModelToDomainMapper();
     }
 
     @Override

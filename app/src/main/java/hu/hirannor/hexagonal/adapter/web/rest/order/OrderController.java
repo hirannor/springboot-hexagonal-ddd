@@ -6,7 +6,11 @@ import hu.hirannor.hexagonal.adapter.web.rest.order.mapping.CreatePayOrderModelT
 import hu.hirannor.hexagonal.adapter.web.rest.order.mapping.OrderToModelMapper;
 import hu.hirannor.hexagonal.adapter.web.rest.orders.api.OrdersApi;
 import hu.hirannor.hexagonal.adapter.web.rest.orders.model.*;
-import hu.hirannor.hexagonal.application.usecase.order.*;
+import hu.hirannor.hexagonal.application.usecase.order.ChangeOrderStatus;
+import hu.hirannor.hexagonal.application.usecase.order.OrderCreation;
+import hu.hirannor.hexagonal.application.usecase.order.OrderDisplaying;
+import hu.hirannor.hexagonal.application.usecase.order.OrderStatusChanging;
+import hu.hirannor.hexagonal.application.usecase.payment.PaymentStarting;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
@@ -35,13 +39,13 @@ class OrderController implements OrdersApi {
     private final Function<ChangeOrderStatusModel, ChangeOrderStatus> mapChangeOrderStatusModelToCommand;
 
     private final OrderCreation orderCreator;
-    private final OrderPaymentInitialization payment;
+    private final PaymentStarting payment;
     private final OrderDisplaying orders;
     private final OrderStatusChanging status;
 
     @Autowired
     OrderController(final OrderCreation orderCreator,
-                    final OrderPaymentInitialization payment,
+                    final PaymentStarting payment,
                     final OrderDisplaying orders,
                     final OrderStatusChanging status) {
         this(
@@ -57,7 +61,7 @@ class OrderController implements OrdersApi {
     }
 
     OrderController(final OrderCreation orderCreator,
-                    final OrderPaymentInitialization payment,
+                    final PaymentStarting payment,
                     final OrderDisplaying orders,
                     final OrderStatusChanging status,
                     final Function<CreateOrderModel, CreateOrder> mapCreateOrderModelToCommand,

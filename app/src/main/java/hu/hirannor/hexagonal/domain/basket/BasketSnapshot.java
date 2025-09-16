@@ -2,7 +2,8 @@ package hu.hirannor.hexagonal.domain.basket;
 
 import hu.hirannor.hexagonal.domain.CustomerId;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 public record BasketSnapshot(
         CustomerId customer,

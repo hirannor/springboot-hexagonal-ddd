@@ -1,7 +1,7 @@
 package hu.hirannor.hexagonal.adapter.payment.stripe.mapping;
 
 import hu.hirannor.hexagonal.adapter.payment.stripe.PaymentMethodModel;
-import hu.hirannor.hexagonal.domain.order.payment.PaymentMethod;
+import hu.hirannor.hexagonal.domain.payment.PaymentMethod;
 
 import java.util.function.Function;
 

@@ -2,12 +2,13 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.order.mapping;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.CurrencyModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.CurrencyToModelMapper;
-import hu.hirannor.hexagonal.adapter.persistence.jpa.order.*;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.order.OrderItemsModel;
+import hu.hirannor.hexagonal.adapter.persistence.jpa.order.OrderModel;
+import hu.hirannor.hexagonal.adapter.persistence.jpa.order.OrderStatusModel;
 import hu.hirannor.hexagonal.domain.Currency;
 import hu.hirannor.hexagonal.domain.order.Order;
-import hu.hirannor.hexagonal.domain.order.OrderStatus;
 import hu.hirannor.hexagonal.domain.order.OrderItem;
+import hu.hirannor.hexagonal.domain.order.OrderStatus;
 import hu.hirannor.hexagonal.infrastructure.modelling.Modeller;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class OrderModeller implements Modeller<OrderModel> {
         this.domain = domain;
         this.mapCurrencyToModel = new CurrencyToModelMapper();
         this.mapStatusToModel = new OrderStatusToModelMapper();
-        this.mapOrderedProductToModel = new OrderedProductToModelMapper();
+        this.mapOrderedProductToModel = new OrderedItemToModelMapper();
     }
 
     public static OrderModeller applyChangesFrom(final Order domain) {

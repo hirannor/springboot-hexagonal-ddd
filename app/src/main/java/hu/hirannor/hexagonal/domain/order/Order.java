@@ -4,19 +4,19 @@ import hu.hirannor.hexagonal.domain.CustomerId;
 import hu.hirannor.hexagonal.domain.Money;
 import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
 import hu.hirannor.hexagonal.domain.order.events.*;
-import hu.hirannor.hexagonal.domain.order.payment.PaymentReceipt;
-import hu.hirannor.hexagonal.domain.order.payment.PaymentTransaction;
 import hu.hirannor.hexagonal.infrastructure.aggregate.AggregateRoot;
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class Order extends AggregateRoot {
 
     private OrderStatus status;
-    private PaymentTransaction transaction;
 
     private final OrderId id;
     private final List<OrderItem> orderItems;
@@ -28,8 +28,7 @@ public class Order extends AggregateRoot {
     Order(final OrderId id,
           final List<OrderItem> orderItems,
           final OrderStatus status,
-          final CustomerId customer,
-          final PaymentTransaction transaction) {
+          final CustomerId customer) {
         Objects.requireNonNull(id, "OrderId cannot be null");
         Objects.requireNonNull(orderItems, "Order items cannot be null");
         Objects.requireNonNull(status, "OrderStatus cannot be null");
@@ -39,7 +38,6 @@ public class Order extends AggregateRoot {
         this.status = status;
         this.createdAt = Instant.now();
         this.customer = customer;
-        this.transaction = transaction;
         this.history = new ArrayList<>();
         this.events = new ArrayList<>();
     }
@@ -85,19 +83,6 @@ public class Order extends AggregateRoot {
         return customer;
     }
 
-    public Order handlePaymentResult(final PaymentReceipt receipt) {
-        this.transaction = PaymentTransaction.from(receipt);
-
-        switch (receipt.status()) {
-            case SUCCESS -> markPaymentAsPaid();
-            case PENDING -> markPaymentAsPending();
-            case CANCELLED -> markPaymentAsCanceled();
-            case FAILURE -> markPaymentAsFailed();
-            default -> throw new IllegalStateException("Unknown payment status: " + receipt.status());
-        }
-        return this;
-    }
-
     public void changeStatus(final OrderStatus target) {
         if (!status.canTransitionTo(target)) {
             throw new IllegalStateException("Cannot change to " + target +  " status");
@@ -114,16 +99,6 @@ public class Order extends AggregateRoot {
             case PROCESSING -> startProcessing();
             default -> this.status = target;
         }
-    }
-
-    public void initializePayment() {
-        if (!status.canTransitionTo(OrderStatus.PAYMENT_PENDING)) {
-            throw new IllegalStateException("Cannot start processing from status " + status);
-        }
-        addHistory(status, OrderStatus.PAYMENT_PENDING);
-
-        this.status = OrderStatus.PAYMENT_PENDING;
-        events.add(OrderPaymentPending.record(id, customer));
     }
 
     public void startProcessing() {
@@ -196,10 +171,6 @@ public class Order extends AggregateRoot {
 
     public List<OrderStatusChange> history() { return Collections.unmodifiableList(history); }
 
-    public PaymentTransaction transaction() {
-        return transaction;
-    }
-
     @Override
     public void clearEvents() {
         events.clear();
@@ -218,24 +189,4 @@ public class Order extends AggregateRoot {
         return () -> new IllegalStateException("Order must contain at least one product");
     }
 
-    private void markPaymentAsPaid() {
-        changeStatus(OrderStatus.PAID_SUCCESSFULLY);
-        this.events.add(OrderPaid.record(customer, id));
-    }
-    private void markPaymentAsPending() {
-        changeStatus(OrderStatus.PAYMENT_PENDING);
-        this.events.add(OrderPaymentPending.record(id, customer));
-    }
-    private void markPaymentAsCanceled() {
-        changeStatus(OrderStatus.PAYMENT_CANCELED);
-        this.events.add(OrderPaymentCanceled.record(customer, id));
-    }
-    private void markPaymentAsFailed() {
-        changeStatus(OrderStatus.PAYMENT_FAILED);
-        this.events.add(OrderPaymentFailed.record(customer, id));
-    }
-
-    public void setTransaction(PaymentTransaction transaction) {
-        this.transaction = transaction;
-    }
 }

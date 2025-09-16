@@ -61,7 +61,6 @@ class OrderJpaRepository implements OrderRepository {
 
         OrderModeller.applyChangesFrom(order).to(toPersist);
         orders.save(toPersist);
-
     }
 
     @Override

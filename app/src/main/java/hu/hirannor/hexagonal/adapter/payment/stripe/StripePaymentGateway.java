@@ -3,7 +3,6 @@ package hu.hirannor.hexagonal.adapter.payment.stripe;
 import com.stripe.StripeClient;
 import com.stripe.exception.SignatureVerificationException;
 import com.stripe.exception.StripeException;
-import com.stripe.model.Charge;
 import com.stripe.model.Event;
 import com.stripe.model.PaymentIntent;
 import com.stripe.model.checkout.Session;
@@ -21,14 +20,14 @@ import hu.hirannor.hexagonal.domain.Currency;
 import hu.hirannor.hexagonal.domain.Money;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
-import hu.hirannor.hexagonal.domain.order.payment.PaymentMethod;
-import hu.hirannor.hexagonal.domain.order.payment.PaymentReceipt;
-import hu.hirannor.hexagonal.domain.order.payment.PaymentStatus;
+import hu.hirannor.hexagonal.domain.payment.PaymentMethod;
+import hu.hirannor.hexagonal.domain.payment.PaymentReceipt;
+import hu.hirannor.hexagonal.domain.payment.PaymentStatus;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
 import java.util.function.Function;
 
 @Component
@@ -112,6 +111,7 @@ class StripePaymentGateway implements PaymentGateway {
             return PaymentInstruction.create(
                     payment.orderId(),
                     payment.totalAmount(),
+                    session.getId(),
                     session.getUrl()
                 );
         } catch (final StripeException ignored) {
@@ -133,49 +133,6 @@ class StripePaymentGateway implements PaymentGateway {
         } catch (SignatureVerificationException e) {
             throw new IllegalArgumentException("Invalid Stripe webhook signature", e);
         }
-    }
-
-    private PaymentReceipt handleCheckoutEvent(final CheckOutSessionEvent sessionEvent, final Event event) {
-        final Session session = (Session) event.getDataObjectDeserializer()
-                .getObject()
-                .orElseThrow(() -> new IllegalStateException("Invalid checkout session data"));
-
-        final String orderId = session.getMetadata().get("orderId");
-        final Currency currency = mapCurrencyModelToDomain.apply(CurrencyModel.from(session.getCurrency().toUpperCase()));
-        final Money amount = Money.of(session.getAmountTotal() / 100.0, currency);
-
-        final PaymentMethodModel methodModel = PaymentMethodModel.from(session.getPaymentMethodTypes().getFirst());
-        final PaymentMethod method = mapPaymentMethodModelToDomain.apply(methodModel);
-
-        return PaymentReceipt.create(
-                session.getId(),
-                session.getPaymentIntent(),
-                method,
-                OrderId.from(orderId),
-                mapToPaymentStatus(sessionEvent),
-                session.getId(),
-                amount
-        );
-    }
-
-    private PaymentReceipt handleChargeEvent(final ChargeEvent chargeEvent, final Event event) {
-        final Charge charge = (Charge) event.getDataObjectDeserializer()
-                .getObject()
-                .orElseThrow(() -> new IllegalStateException("Invalid charge data"));
-
-        final String orderId = charge.getMetadata().get("orderId");
-        final Currency currency = mapCurrencyModelToDomain.apply(CurrencyModel.from(charge.getCurrency().toUpperCase()));
-        final Money amount = Money.of(charge.getAmount() / 100.0, currency);
-
-        return PaymentReceipt.create(
-                charge.getId(),
-                charge.getPaymentIntent(),
-                PaymentMethod.CARD,
-                OrderId.from(orderId),
-                mapToPaymentStatus(chargeEvent),
-                event.getId(),
-                amount
-        );
     }
 
     private PaymentReceipt handlePaymentIntentEvent(final PaymentIntentEvent intentEvent, final Event event) {
@@ -205,28 +162,12 @@ class StripePaymentGateway implements PaymentGateway {
         );
     }
 
-    private PaymentStatus mapToPaymentStatus(final ChargeEvent event) {
-        return switch (event) {
-            case SUCCEEDED, DISPUTE_CLOSED -> PaymentStatus.SUCCESS;
-            case FAILED -> PaymentStatus.FAILURE;
-            case REFUNDED -> PaymentStatus.CANCELLED;
-            case DISPUTE_CREATED -> PaymentStatus.PENDING;
-        };
-    }
 
     private PaymentStatus mapToPaymentStatus(final PaymentIntentEvent event) {
         return switch (event) {
-            case PAYMENT_SUCCEEDED -> PaymentStatus.SUCCESS;
-            case PAYMENT_FAILED -> PaymentStatus.FAILURE;
-            case PAYMENT_CANCELED -> PaymentStatus.CANCELLED;
-        };
-    }
-
-    private PaymentStatus mapToPaymentStatus(final CheckOutSessionEvent checkoutSession) {
-        return switch (checkoutSession) {
-            case COMPLETED, ASYNC_SUCCESS -> PaymentStatus.SUCCESS;
-            case EXPIRED -> PaymentStatus.CANCELLED;
-            case ASYNC_FAILED -> PaymentStatus.FAILURE;
+            case PAYMENT_SUCCEEDED -> PaymentStatus.SUCCEEDED;
+            case PAYMENT_FAILED -> PaymentStatus.FAILED;
+            case PAYMENT_CANCELED -> PaymentStatus.CANCELED;
         };
     }
 }

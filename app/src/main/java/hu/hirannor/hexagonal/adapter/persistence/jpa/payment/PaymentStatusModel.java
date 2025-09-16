@@ -1,13 +1,13 @@
-package hu.hirannor.hexagonal.adapter.persistence.jpa.order;
+package hu.hirannor.hexagonal.adapter.persistence.jpa.payment;
 
 import java.util.Objects;
 
 public enum PaymentStatusModel {
 
-    PENDING("PENDING"),
-    SUCCESS("SUCCESS"),
-    FAILURE("FAILURE"),
-    CANCELLED("CANCELLED");
+    INITIALIZED("INITIALIZED"),
+    SUCCEEDED("SUCCEEDED"),
+    FAILED("FAILED"),
+    CANCELED("CANCELED");
 
     private final String dbRepresentation;
 

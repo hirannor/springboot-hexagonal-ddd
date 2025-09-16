@@ -1,6 +1,6 @@
-package hu.hirannor.hexagonal.adapter.persistence.jpa.order.conversion;
+package hu.hirannor.hexagonal.adapter.persistence.jpa.payment.conversion;
 
-import hu.hirannor.hexagonal.adapter.persistence.jpa.order.PaymentStatusModel;
+import hu.hirannor.hexagonal.adapter.persistence.jpa.payment.PaymentStatusModel;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 

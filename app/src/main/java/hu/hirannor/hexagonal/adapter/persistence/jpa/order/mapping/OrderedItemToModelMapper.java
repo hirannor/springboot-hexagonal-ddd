@@ -8,11 +8,11 @@ import hu.hirannor.hexagonal.domain.order.OrderItem;
 
 import java.util.function.Function;
 
-public class OrderedProductToModelMapper implements Function<OrderItem, OrderItemsModel> {
+public class OrderedItemToModelMapper implements Function<OrderItem, OrderItemsModel> {
 
     private final Function<Currency, CurrencyModel> mapCurrencyToModel;
 
-    public OrderedProductToModelMapper() {
+    public OrderedItemToModelMapper() {
         this.mapCurrencyToModel = new CurrencyToModelMapper();
     }
 
