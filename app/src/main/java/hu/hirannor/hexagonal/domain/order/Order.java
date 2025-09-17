@@ -4,6 +4,7 @@ import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
 import hu.hirannor.hexagonal.domain.order.events.*;
+import hu.hirannor.hexagonal.domain.payment.PaymentReceipt;
 import hu.hirannor.hexagonal.infrastructure.aggregate.AggregateRoot;
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
 
@@ -99,6 +100,22 @@ public class Order extends AggregateRoot {
             case PROCESSING -> startProcessing();
             default -> this.status = target;
         }
+    }
+
+    public Order handlePaymentResult(final PaymentReceipt receipt) {
+        Objects.requireNonNull(receipt, "PaymentReceipt must not be null");
+
+        switch (receipt.status()) {
+            case SUCCEEDED -> {
+                changeStatus(OrderStatus.PAID_SUCCESSFULLY);
+                changeStatus(OrderStatus.PROCESSING);
+            }
+            case FAILED -> changeStatus(OrderStatus.PAYMENT_FAILED);
+            case CANCELED -> changeStatus(OrderStatus.PAYMENT_CANCELED);
+            case INITIALIZED -> changeStatus(OrderStatus.PAYMENT_PENDING);
+        }
+
+        return this;
     }
 
     public void startProcessing() {

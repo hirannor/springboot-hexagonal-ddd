@@ -4,9 +4,6 @@ import hu.hirannor.hexagonal.application.port.notification.SystemNotificationTyp
 import hu.hirannor.hexagonal.application.usecase.basket.BasketDeletion;
 import hu.hirannor.hexagonal.application.usecase.notification.NotificationSending;
 import hu.hirannor.hexagonal.application.usecase.notification.SendSystemNotification;
-import hu.hirannor.hexagonal.application.usecase.order.ChangeOrderStatus;
-import hu.hirannor.hexagonal.application.usecase.order.OrderStatusChanging;
-import hu.hirannor.hexagonal.domain.order.OrderStatus;
 import hu.hirannor.hexagonal.domain.order.events.OrderCreated;
 import hu.hirannor.hexagonal.domain.order.events.OrderShipped;
 import org.apache.logging.log4j.LogManager;
@@ -21,17 +18,11 @@ public class OrderIngestion {
         OrderIngestion.class
     );
 
-    private final OrderStatusChanging status;
-    private final BasketDeletion basketDeletion;
     private final NotificationSending notifications;
 
     @Autowired
     OrderIngestion(
-            final OrderStatusChanging status,
-            final BasketDeletion basketDeletion,
             final NotificationSending notifications) {
-        this.status = status;
-        this.basketDeletion = basketDeletion;
         this.notifications = notifications;
     }
 
@@ -41,15 +32,6 @@ public class OrderIngestion {
         if (evt == null) throw new IllegalArgumentException("OrderCreated event cannot be null!");
 
         LOGGER.debug("OrderCreated event received: {}", evt);
-
-        status.change(
-            ChangeOrderStatus.issue(
-                evt.orderId(),
-                OrderStatus.WAITING_FOR_PAYMENT
-            )
-        );
-
-        basketDeletion.deleteBy(evt.customerId());
 
         final SendSystemNotification cmd = SendSystemNotification.issue(
                 evt.orderId(),

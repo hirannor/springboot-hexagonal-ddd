@@ -3,9 +3,8 @@ package hu.hirannor.hexagonal.application.service.order;
 import hu.hirannor.hexagonal.application.usecase.order.ChangeOrderStatus;
 import hu.hirannor.hexagonal.application.usecase.order.OrderCreation;
 import hu.hirannor.hexagonal.application.usecase.order.OrderStatusChanging;
-import hu.hirannor.hexagonal.domain.order.Order;
-import hu.hirannor.hexagonal.domain.order.OrderId;
-import hu.hirannor.hexagonal.domain.order.OrderRepository;
+import hu.hirannor.hexagonal.domain.basket.BasketRepository;
+import hu.hirannor.hexagonal.domain.order.*;
 import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
 import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
 import org.apache.logging.log4j.LogManager;
@@ -24,11 +23,13 @@ class OrderCommandService implements
     );
 
     private final OrderRepository orders;
+    private final BasketRepository baskets;
 
 
     @Autowired
-    OrderCommandService(final OrderRepository orders) {
+    OrderCommandService(final OrderRepository orders, final BasketRepository baskets) {
         this.orders = orders;
+        this.baskets = baskets;
     }
 
     @Override
@@ -40,6 +41,11 @@ class OrderCommandService implements
             create.customer().asText());
 
         final Order order = Order.create(create);
+        orders.save(order);
+
+        baskets.deleteBy(order.customer());
+
+        order.changeStatus(OrderStatus.WAITING_FOR_PAYMENT);
         orders.save(order);
 
         LOGGER.info("Order with id: {} was successfully created for customer: {}",

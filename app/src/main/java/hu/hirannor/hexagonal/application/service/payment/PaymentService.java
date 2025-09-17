@@ -6,10 +6,7 @@ import hu.hirannor.hexagonal.application.port.payment.PaymentRequest;
 import hu.hirannor.hexagonal.application.usecase.payment.HandlePaymentCallback;
 import hu.hirannor.hexagonal.application.usecase.payment.PaymentCallbackHandling;
 import hu.hirannor.hexagonal.application.usecase.payment.PaymentInitialization;
-import hu.hirannor.hexagonal.domain.order.Order;
-import hu.hirannor.hexagonal.domain.order.OrderId;
-import hu.hirannor.hexagonal.domain.order.OrderItem;
-import hu.hirannor.hexagonal.domain.order.OrderRepository;
+import hu.hirannor.hexagonal.domain.order.*;
 import hu.hirannor.hexagonal.domain.order.command.InitializePayment;
 import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
 import hu.hirannor.hexagonal.domain.payment.Payment;
@@ -78,9 +75,13 @@ class PaymentService implements PaymentInitialization, PaymentCallbackHandling {
         final Payment payment = Payment.start(startPayment);
         payments.save(payment);
 
-        LOGGER.info("Finished payment initialization for orderId={}, paymentId={}",
+        order.changeStatus(OrderStatus.PAYMENT_PENDING);
+        orders.save(order);
+
+        LOGGER.info("Finished payment initialization for orderId={}, paymentId={}, newStatus={}",
                 order.id().asText(),
-                payment.id().asText()
+                payment.id().asText(),
+                order.status()
         );
 
         return instruction;
@@ -105,8 +106,15 @@ class PaymentService implements PaymentInitialization, PaymentCallbackHandling {
                     toPersist.applyReceipt(paymentReceipt);
                     payments.save(toPersist);
 
-                    LOGGER.info("Payment callback successfully processed for orderId={}",
-                            paymentReceipt.orderId().asText()
+                    final Order order = orders.findBy(paymentReceipt.orderId())
+                        .orElseThrow(failBecauseOrderWasNotFoundBy(paymentReceipt.orderId()));
+
+                    order.handlePaymentResult(paymentReceipt);
+                    orders.save(order);
+
+                    LOGGER.info("Payment callback successfully processed for orderId={}, newStatus={}",
+                        paymentReceipt.orderId().asText(),
+                        order.status()
                     );
                 },
                     () -> LOGGER.warn("Skipping payment callback handling")

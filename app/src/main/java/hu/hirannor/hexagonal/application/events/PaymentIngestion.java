@@ -3,9 +3,6 @@ package hu.hirannor.hexagonal.application.events;
 import hu.hirannor.hexagonal.application.port.notification.SystemNotificationType;
 import hu.hirannor.hexagonal.application.usecase.notification.NotificationSending;
 import hu.hirannor.hexagonal.application.usecase.notification.SendSystemNotification;
-import hu.hirannor.hexagonal.application.usecase.order.ChangeOrderStatus;
-import hu.hirannor.hexagonal.application.usecase.order.OrderStatusChanging;
-import hu.hirannor.hexagonal.domain.order.OrderStatus;
 import hu.hirannor.hexagonal.domain.payment.events.PaymentCanceled;
 import hu.hirannor.hexagonal.domain.payment.events.PaymentFailed;
 import hu.hirannor.hexagonal.domain.payment.events.PaymentInitialized;
@@ -20,13 +17,10 @@ import org.springframework.transaction.event.TransactionalEventListener;
 public class PaymentIngestion {
     private static final Logger LOGGER = LogManager.getLogger(PaymentIngestion.class);
 
-    private final OrderStatusChanging status;
     private final NotificationSending notifications;
 
     @Autowired
-    public PaymentIngestion(final OrderStatusChanging status,
-                            final NotificationSending notifications) {
-        this.status = status;
+    public PaymentIngestion(final NotificationSending notifications) {
         this.notifications = notifications;
     }
 
@@ -35,15 +29,6 @@ public class PaymentIngestion {
         if (evt == null) throw new IllegalArgumentException("PaymentSucceeded event cannot be null!");
 
         LOGGER.debug("PaymentSucceeded event received: {}", evt);
-
-        status.change(
-            ChangeOrderStatus.issue(
-                evt.orderId(),
-                OrderStatus.PAID_SUCCESSFULLY
-            )
-        );
-
-        status.change(ChangeOrderStatus.issue(evt.orderId(), OrderStatus.PROCESSING));
 
         final SendSystemNotification cmd = SendSystemNotification.issue(
                 evt.orderId(),
@@ -57,13 +42,6 @@ public class PaymentIngestion {
         if (evt == null) throw new IllegalArgumentException("PaymentInitialized event cannot be null!");
 
         LOGGER.debug("PaymentInitialized event received: {}", evt);
-
-        status.change(
-            ChangeOrderStatus.issue(
-                    evt.orderId(),
-                    OrderStatus.PAYMENT_PENDING
-            )
-        );
     }
 
     @TransactionalEventListener
@@ -71,13 +49,6 @@ public class PaymentIngestion {
         if (evt == null) throw new IllegalArgumentException("PaymentFailed event cannot be null!");
 
         LOGGER.debug("PaymentFailed event received: {}", evt);
-
-        status.change(
-                ChangeOrderStatus.issue(
-                        evt.orderId(),
-                        OrderStatus.PAYMENT_FAILED
-                )
-        );
     }
 
     @TransactionalEventListener
@@ -85,12 +56,5 @@ public class PaymentIngestion {
         if (evt == null) throw new IllegalArgumentException("PaymentCanceled event cannot be null!");
 
         LOGGER.debug("PaymentCanceled event received: {}", evt);
-
-        status.change(
-                ChangeOrderStatus.issue(
-                        evt.orderId(),
-                        OrderStatus.PAYMENT_CANCELED
-                )
-        );
     }
 }
