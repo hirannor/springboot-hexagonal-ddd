@@ -152,7 +152,7 @@ adapter:
 ### HTTP Requests
 All API requests for testing  can be found in the project under:
 ```
-/http-requests/order-management.http
+/http-requests/
 ```
 
 ## Docker Setup
@@ -203,8 +203,8 @@ payment:
   stripe:
     api-key: sk_test_xxxxxxxxxxxxxxxxxxxxx
     webhook-secret: whsec_xxxxxxxxxxxxxxxxxxxxx
-    success-url: http://localhost:8080/payment/success/
-    failure-url: http://localhost:8080/payment/failure/
+    success-url: # your success url
+    failure-url: # your failure url
 ```
 
 - api-key → Stripe test secret key from Dashboard.
