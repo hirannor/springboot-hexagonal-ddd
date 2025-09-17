@@ -1,10 +1,13 @@
 package hu.hirannor.hexagonal.application.service.order;
 
 import hu.hirannor.hexagonal.application.usecase.order.ChangeOrderStatus;
+import hu.hirannor.hexagonal.application.usecase.order.OrderCancellation;
 import hu.hirannor.hexagonal.application.usecase.order.OrderCreation;
 import hu.hirannor.hexagonal.application.usecase.order.OrderStatusChanging;
 import hu.hirannor.hexagonal.domain.basket.BasketRepository;
-import hu.hirannor.hexagonal.domain.order.*;
+import hu.hirannor.hexagonal.domain.order.Order;
+import hu.hirannor.hexagonal.domain.order.OrderId;
+import hu.hirannor.hexagonal.domain.order.OrderRepository;
 import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
 import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
 import org.apache.logging.log4j.LogManager;
@@ -16,6 +19,7 @@ import java.util.function.Supplier;
 @ApplicationService
 class OrderCommandService implements
         OrderCreation,
+        OrderCancellation,
         OrderStatusChanging {
 
     private static final Logger LOGGER = LogManager.getLogger(
@@ -45,14 +49,27 @@ class OrderCommandService implements
 
         baskets.deleteBy(order.customer());
 
-        order.changeStatus(OrderStatus.WAITING_FOR_PAYMENT);
-        orders.save(order);
-
         LOGGER.info("Order with id: {} was successfully created for customer: {}",
             order.id().asText(),
             order.id().asText());
 
         return order;
+    }
+
+    @Override
+    public void cancelBy(final OrderId id) {
+        if (id == null) throw new IllegalArgumentException("OrderId is null");
+
+        LOGGER.info("Start cancellation for id id: {}",
+            id.asText()
+        );
+        final Order order = orders.findBy(id)
+                .orElseThrow(failBecauseOrderWasNotFoundBy(id));
+
+        order.cancel();
+        orders.save(order);
+
+        LOGGER.info("Order with id: {} is successfully cancelled", id.asText());
     }
 
     @Override

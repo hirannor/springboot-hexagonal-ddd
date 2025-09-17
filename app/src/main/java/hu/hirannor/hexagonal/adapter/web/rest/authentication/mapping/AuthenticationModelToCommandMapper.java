@@ -1,9 +1,9 @@
 package hu.hirannor.hexagonal.adapter.web.rest.authentication.mapping;
 
 import hu.hirannor.hexagonal.adapter.web.rest.authentication.model.AuthenticateModel;
-import hu.hirannor.hexagonal.domain.core.valueobject.EmailAddress;
 import hu.hirannor.hexagonal.domain.authentication.DoAuthenticate;
 import hu.hirannor.hexagonal.domain.authentication.Password;
+import hu.hirannor.hexagonal.domain.core.valueobject.EmailAddress;
 
 import java.util.function.Function;
 

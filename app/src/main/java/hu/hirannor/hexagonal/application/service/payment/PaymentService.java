@@ -6,7 +6,10 @@ import hu.hirannor.hexagonal.application.port.payment.PaymentRequest;
 import hu.hirannor.hexagonal.application.usecase.payment.HandlePaymentCallback;
 import hu.hirannor.hexagonal.application.usecase.payment.PaymentCallbackHandling;
 import hu.hirannor.hexagonal.application.usecase.payment.PaymentInitialization;
-import hu.hirannor.hexagonal.domain.order.*;
+import hu.hirannor.hexagonal.domain.order.Order;
+import hu.hirannor.hexagonal.domain.order.OrderId;
+import hu.hirannor.hexagonal.domain.order.OrderItem;
+import hu.hirannor.hexagonal.domain.order.OrderRepository;
 import hu.hirannor.hexagonal.domain.order.command.InitializePayment;
 import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
 import hu.hirannor.hexagonal.domain.payment.Payment;
@@ -74,9 +77,6 @@ class PaymentService implements PaymentInitialization, PaymentCallbackHandling {
 
         final Payment payment = Payment.start(startPayment);
         payments.save(payment);
-
-        order.changeStatus(OrderStatus.PAYMENT_PENDING);
-        orders.save(order);
 
         LOGGER.info("Finished payment initialization for orderId={}, paymentId={}, newStatus={}",
                 order.id().asText(),

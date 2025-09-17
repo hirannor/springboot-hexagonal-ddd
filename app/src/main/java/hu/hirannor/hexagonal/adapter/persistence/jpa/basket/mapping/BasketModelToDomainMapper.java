@@ -2,10 +2,10 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.basket.mapping;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.basket.BasketItemModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.basket.BasketModel;
-import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.basket.Basket;
 import hu.hirannor.hexagonal.domain.basket.BasketId;
 import hu.hirannor.hexagonal.domain.basket.BasketItem;
+import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 
 import java.util.List;
 import java.util.function.Function;

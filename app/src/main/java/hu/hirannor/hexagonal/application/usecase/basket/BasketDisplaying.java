@@ -1,8 +1,8 @@
 package hu.hirannor.hexagonal.application.usecase.basket;
 
-import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.basket.Basket;
 import hu.hirannor.hexagonal.domain.basket.BasketId;
+import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 
 import java.util.List;
 import java.util.Optional;

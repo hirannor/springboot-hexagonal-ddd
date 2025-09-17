@@ -1,10 +1,10 @@
 package hu.hirannor.hexagonal.application.events;
 
 import hu.hirannor.hexagonal.application.port.notification.SystemNotificationType;
-import hu.hirannor.hexagonal.application.usecase.basket.BasketDeletion;
 import hu.hirannor.hexagonal.application.usecase.notification.NotificationSending;
 import hu.hirannor.hexagonal.application.usecase.notification.SendSystemNotification;
 import hu.hirannor.hexagonal.domain.order.events.OrderCreated;
+import hu.hirannor.hexagonal.domain.order.events.OrderPaid;
 import hu.hirannor.hexagonal.domain.order.events.OrderShipped;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,6 +36,19 @@ public class OrderIngestion {
         final SendSystemNotification cmd = SendSystemNotification.issue(
                 evt.orderId(),
                 SystemNotificationType.ORDER_CREATED
+        );
+        notifications.sendBySystem(cmd);
+    }
+
+    @TransactionalEventListener
+    public void handle(final OrderPaid evt) {
+        if (evt == null) throw new IllegalArgumentException("OrderPaid event cannot be null!");
+
+        LOGGER.debug("OrderPaid event received: {}", evt);
+
+        final SendSystemNotification cmd = SendSystemNotification.issue(
+                evt.orderId(),
+                SystemNotificationType.ORDER_PAID
         );
         notifications.sendBySystem(cmd);
     }

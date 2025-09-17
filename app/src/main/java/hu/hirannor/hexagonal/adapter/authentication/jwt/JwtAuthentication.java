@@ -1,10 +1,10 @@
 package hu.hirannor.hexagonal.adapter.authentication.jwt;
 
 import hu.hirannor.hexagonal.application.port.authentication.Authenticator;
-import hu.hirannor.hexagonal.domain.core.valueobject.EmailAddress;
-import hu.hirannor.hexagonal.domain.authentication.*;
-import hu.hirannor.hexagonal.application.service.customer.error.CustomerNotFound;
 import hu.hirannor.hexagonal.application.service.authentication.error.InvalidPassword;
+import hu.hirannor.hexagonal.application.service.customer.error.CustomerNotFound;
+import hu.hirannor.hexagonal.domain.authentication.*;
+import hu.hirannor.hexagonal.domain.core.valueobject.EmailAddress;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

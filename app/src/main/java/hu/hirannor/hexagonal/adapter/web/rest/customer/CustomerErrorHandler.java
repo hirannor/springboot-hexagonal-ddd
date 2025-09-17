@@ -1,9 +1,9 @@
 package hu.hirannor.hexagonal.adapter.web.rest.customer;
 
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.ProblemDetailsModel;
+import hu.hirannor.hexagonal.application.service.authentication.error.InvalidPassword;
 import hu.hirannor.hexagonal.application.service.customer.error.CustomerAlreadyExistWithEmailAddress;
 import hu.hirannor.hexagonal.application.service.customer.error.CustomerNotFound;
-import hu.hirannor.hexagonal.application.service.authentication.error.InvalidPassword;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

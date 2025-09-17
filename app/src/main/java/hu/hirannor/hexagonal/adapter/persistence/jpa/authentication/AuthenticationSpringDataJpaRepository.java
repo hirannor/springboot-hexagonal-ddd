@@ -1,6 +1,7 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.authentication;
 
 import org.springframework.data.repository.Repository;
+
 import java.util.Optional;
 
 public interface AuthenticationSpringDataJpaRepository extends Repository<AuthUserModel, Long> {

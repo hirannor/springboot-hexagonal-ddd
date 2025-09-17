@@ -6,7 +6,7 @@ import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
 import hu.hirannor.hexagonal.infrastructure.event.EventId;
 
 public record OrderPaymentFailed(EventId id, CustomerId customer, OrderId orderId) implements DomainEvent {
-    public static OrderPaymentFailed record(final CustomerId customer, final OrderId orderId) {
+    public static OrderPaymentFailed record(final OrderId orderId, final CustomerId customer) {
         return new OrderPaymentFailed(EventId.generate(), customer, orderId);
     }
 }

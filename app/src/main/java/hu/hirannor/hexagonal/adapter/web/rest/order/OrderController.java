@@ -2,14 +2,13 @@ package hu.hirannor.hexagonal.adapter.web.rest.order;
 
 import hu.hirannor.hexagonal.adapter.web.rest.order.mapping.ChangeOrderStatusModelToCommandMapper;
 import hu.hirannor.hexagonal.adapter.web.rest.order.mapping.CreateOrderModelToCommandMapper;
-import hu.hirannor.hexagonal.adapter.web.rest.order.mapping.CreatePayOrderModelToCommandMapper;
 import hu.hirannor.hexagonal.adapter.web.rest.order.mapping.OrderToModelMapper;
 import hu.hirannor.hexagonal.adapter.web.rest.orders.api.OrdersApi;
-import hu.hirannor.hexagonal.adapter.web.rest.orders.model.*;
-import hu.hirannor.hexagonal.application.usecase.order.ChangeOrderStatus;
-import hu.hirannor.hexagonal.application.usecase.order.OrderCreation;
-import hu.hirannor.hexagonal.application.usecase.order.OrderDisplaying;
-import hu.hirannor.hexagonal.application.usecase.order.OrderStatusChanging;
+import hu.hirannor.hexagonal.adapter.web.rest.orders.model.ChangeOrderStatusModel;
+import hu.hirannor.hexagonal.adapter.web.rest.orders.model.CreateOrderModel;
+import hu.hirannor.hexagonal.adapter.web.rest.orders.model.OrderModel;
+import hu.hirannor.hexagonal.adapter.web.rest.orders.model.PayOrderResponseModel;
+import hu.hirannor.hexagonal.application.usecase.order.*;
 import hu.hirannor.hexagonal.application.usecase.payment.PaymentInitialization;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
@@ -19,7 +18,6 @@ import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -35,27 +33,28 @@ class OrderController implements OrdersApi {
 
     private final Function<CreateOrderModel, CreateOrder> mapCreateOrderModelToCommand;
     private final Function<Order, OrderModel> mapOrderToModel;
-    private final Function<PayOrderModel, InitializePayment> mapPayOrderModelToCommand;
     private final Function<ChangeOrderStatusModel, ChangeOrderStatus> mapChangeOrderStatusModelToCommand;
 
     private final OrderCreation orderCreator;
     private final PaymentInitialization payment;
     private final OrderDisplaying orders;
     private final OrderStatusChanging status;
+    private final OrderCancellation order;
 
     @Autowired
     OrderController(final OrderCreation orderCreator,
                     final PaymentInitialization payment,
                     final OrderDisplaying orders,
-                    final OrderStatusChanging status) {
+                    final OrderStatusChanging status,
+                    final OrderCancellation order) {
         this(
             orderCreator,
             payment,
             orders,
             status,
+            order,
             new CreateOrderModelToCommandMapper(),
             new OrderToModelMapper(),
-            new CreatePayOrderModelToCommandMapper(),
             new ChangeOrderStatusModelToCommandMapper()
         );
     }
@@ -64,17 +63,17 @@ class OrderController implements OrdersApi {
                     final PaymentInitialization payment,
                     final OrderDisplaying orders,
                     final OrderStatusChanging status,
+                    final OrderCancellation order,
                     final Function<CreateOrderModel, CreateOrder> mapCreateOrderModelToCommand,
                     final Function<Order, OrderModel> mapOrderToModel,
-                    final Function<PayOrderModel, InitializePayment> mapPayOrderModelToCommand,
                     final Function<ChangeOrderStatusModel, ChangeOrderStatus> mapChangeOrderStatusModelToCommand) {
         this.orderCreator = orderCreator;
         this.payment = payment;
         this.orders = orders;
         this.status = status;
+        this.order = order;
         this.mapCreateOrderModelToCommand = mapCreateOrderModelToCommand;
         this.mapOrderToModel = mapOrderToModel;
-        this.mapPayOrderModelToCommand = mapPayOrderModelToCommand;
         this.mapChangeOrderStatusModelToCommand = mapChangeOrderStatusModelToCommand;
     }
 
@@ -94,9 +93,8 @@ class OrderController implements OrdersApi {
     }
 
     @Override
-    public ResponseEntity<PayOrderResponseModel> pay(final String orderId, final PayOrderModel model) {
-        final InitializePayment command = mapPayOrderModelToCommand.apply(model);
-
+    public ResponseEntity<PayOrderResponseModel> pay(final String orderId) {
+        final InitializePayment command = InitializePayment.issue(OrderId.from(orderId));
         final PaymentInstruction instruction = payment.initialize(command);
 
         return ResponseEntity.ok().body(
@@ -132,8 +130,8 @@ class OrderController implements OrdersApi {
     }
 
     @Override
-    @PreAuthorize("hasAnyRole('Customer')")
     public ResponseEntity<Void> cancel(final String orderId) {
+        order.cancelBy(OrderId.from(orderId));
         return ResponseEntity.noContent().build();
     }
 

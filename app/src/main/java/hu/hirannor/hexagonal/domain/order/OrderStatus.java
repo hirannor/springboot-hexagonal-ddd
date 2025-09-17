@@ -9,7 +9,6 @@ public enum OrderStatus {
     PAID_SUCCESSFULLY,
     PAYMENT_CANCELED,
     PAYMENT_FAILED,
-    PAYMENT_PENDING,
     PROCESSING,
     SHIPPED,
     DELIVERED,
@@ -21,10 +20,8 @@ public enum OrderStatus {
         return switch (this) {
             case CREATED -> EnumSet.of(WAITING_FOR_PAYMENT, CANCELLED);
             case PAYMENT_FAILED, PAYMENT_CANCELED ->
-                    EnumSet.of(WAITING_FOR_PAYMENT, PAYMENT_PENDING, CANCELLED, PAID_SUCCESSFULLY);
+                    EnumSet.of(WAITING_FOR_PAYMENT, CANCELLED, PAID_SUCCESSFULLY);
             case WAITING_FOR_PAYMENT ->
-                    EnumSet.of(PAYMENT_PENDING, PAID_SUCCESSFULLY, PAYMENT_FAILED, PAYMENT_CANCELED, CANCELLED);
-            case PAYMENT_PENDING ->
                     EnumSet.of(PAID_SUCCESSFULLY, PAYMENT_FAILED, PAYMENT_CANCELED, CANCELLED);
             case PAID_SUCCESSFULLY ->
                     EnumSet.of(PROCESSING, CANCELLED, REFUNDED);

@@ -1,8 +1,8 @@
 package hu.hirannor.hexagonal.domain.basket.events;
 
 
-import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.basket.BasketId;
+import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
 import hu.hirannor.hexagonal.infrastructure.event.EventId;
 
