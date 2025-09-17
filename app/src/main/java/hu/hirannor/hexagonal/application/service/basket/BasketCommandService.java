@@ -4,7 +4,7 @@ import hu.hirannor.hexagonal.application.usecase.basket.BasketCheckout;
 import hu.hirannor.hexagonal.application.usecase.basket.BasketCreation;
 import hu.hirannor.hexagonal.application.usecase.basket.BasketDeletion;
 import hu.hirannor.hexagonal.application.usecase.basket.BasketProductHandling;
-import hu.hirannor.hexagonal.domain.CustomerId;
+import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.basket.Basket;
 import hu.hirannor.hexagonal.domain.basket.BasketId;
 import hu.hirannor.hexagonal.domain.basket.BasketRepository;
@@ -12,19 +12,12 @@ import hu.hirannor.hexagonal.domain.basket.command.AddBasketItem;
 import hu.hirannor.hexagonal.domain.basket.command.CheckoutBasket;
 import hu.hirannor.hexagonal.domain.basket.command.CreateBasket;
 import hu.hirannor.hexagonal.domain.basket.command.RemoveBasketItem;
+import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.function.Supplier;
 
-@Service
-@Transactional(
-    propagation = Propagation.REQUIRES_NEW,
-    isolation = Isolation.REPEATABLE_READ
-)
+@ApplicationService
 class BasketCommandService implements
         BasketCreation,
         BasketDeletion,

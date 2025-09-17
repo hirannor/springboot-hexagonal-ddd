@@ -1,6 +1,6 @@
 package hu.hirannor.hexagonal.domain.product;
 
-import hu.hirannor.hexagonal.domain.Money;
+import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 
 public class ProductBuilder {
     private ProductId id;

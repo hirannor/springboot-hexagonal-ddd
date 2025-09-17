@@ -1,6 +1,6 @@
 package hu.hirannor.hexagonal.domain.order.command;
 
-import hu.hirannor.hexagonal.domain.CustomerId;
+import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.OrderItem;
 import hu.hirannor.hexagonal.infrastructure.command.Command;

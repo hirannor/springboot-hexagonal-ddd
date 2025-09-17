@@ -1,8 +1,8 @@
 package hu.hirannor.hexagonal.domain.basket;
 
-import hu.hirannor.hexagonal.domain.Currency;
-import hu.hirannor.hexagonal.domain.CustomerId;
-import hu.hirannor.hexagonal.domain.Money;
+import hu.hirannor.hexagonal.domain.core.valueobject.Currency;
+import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
+import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.domain.basket.command.CreateBasket;
 import hu.hirannor.hexagonal.domain.basket.events.BasketCheckedOut;
 import hu.hirannor.hexagonal.domain.basket.events.BasketCreated;

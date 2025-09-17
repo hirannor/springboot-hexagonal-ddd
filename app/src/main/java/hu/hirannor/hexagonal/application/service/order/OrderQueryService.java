@@ -4,15 +4,13 @@ import hu.hirannor.hexagonal.application.usecase.order.OrderDisplaying;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.OrderRepository;
+import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
-@Transactional(readOnly = true)
+@ApplicationService
 class OrderQueryService implements OrderDisplaying {
 
     private final OrderRepository orders;

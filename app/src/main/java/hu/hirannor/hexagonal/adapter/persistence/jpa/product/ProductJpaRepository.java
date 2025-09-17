@@ -6,24 +6,17 @@ import hu.hirannor.hexagonal.domain.product.Product;
 import hu.hirannor.hexagonal.domain.product.ProductId;
 import hu.hirannor.hexagonal.domain.product.ProductRepository;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
+import hu.hirannor.hexagonal.infrastructure.adapter.PersistenceAdapter;
 import hu.hirannor.hexagonal.infrastructure.event.EventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Repository
-@Transactional(
-    propagation = Propagation.MANDATORY,
-    isolation = Isolation.REPEATABLE_READ
-)
 @DrivenAdapter
+@PersistenceAdapter
 class ProductJpaRepository implements ProductRepository {
     private final Function<ProductModel, Product> mapModelToDomain;
     private final Function<Product, ProductModel> mapDomainToModel;

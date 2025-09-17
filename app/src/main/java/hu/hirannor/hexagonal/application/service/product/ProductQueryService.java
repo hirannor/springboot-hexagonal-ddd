@@ -4,15 +4,13 @@ import hu.hirannor.hexagonal.application.usecase.product.ProductDisplaying;
 import hu.hirannor.hexagonal.domain.product.Product;
 import hu.hirannor.hexagonal.domain.product.ProductId;
 import hu.hirannor.hexagonal.domain.product.ProductRepository;
+import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
-@Transactional(readOnly = true)
+@ApplicationService
 class ProductQueryService implements ProductDisplaying {
     private final ProductRepository products;
 

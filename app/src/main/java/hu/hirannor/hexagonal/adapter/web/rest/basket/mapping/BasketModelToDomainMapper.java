@@ -2,7 +2,7 @@ package hu.hirannor.hexagonal.adapter.web.rest.basket.mapping;
 
 import hu.hirannor.hexagonal.adapter.web.rest.baskets.model.BasketItemModel;
 import hu.hirannor.hexagonal.adapter.web.rest.baskets.model.BasketModel;
-import hu.hirannor.hexagonal.domain.CustomerId;
+import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.basket.Basket;
 import hu.hirannor.hexagonal.domain.basket.BasketId;
 import hu.hirannor.hexagonal.domain.basket.BasketItem;

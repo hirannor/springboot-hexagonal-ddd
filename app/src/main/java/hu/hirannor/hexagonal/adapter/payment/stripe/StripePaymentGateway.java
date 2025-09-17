@@ -16,14 +16,16 @@ import hu.hirannor.hexagonal.application.port.payment.PaymentGateway;
 import hu.hirannor.hexagonal.application.port.payment.PaymentInitializationFailed;
 import hu.hirannor.hexagonal.application.port.payment.PaymentItem;
 import hu.hirannor.hexagonal.application.port.payment.PaymentRequest;
-import hu.hirannor.hexagonal.domain.Currency;
-import hu.hirannor.hexagonal.domain.Money;
+import hu.hirannor.hexagonal.domain.core.valueobject.Currency;
+import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
 import hu.hirannor.hexagonal.domain.payment.PaymentMethod;
 import hu.hirannor.hexagonal.domain.payment.PaymentReceipt;
 import hu.hirannor.hexagonal.domain.payment.PaymentStatus;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,6 +35,10 @@ import java.util.function.Function;
 @Component
 @DrivenAdapter
 class StripePaymentGateway implements PaymentGateway {
+
+    private static final Logger LOGGER = LogManager.getLogger(
+        StripePaymentGateway.class
+    );
 
     private final Function<PaymentMethod, SessionCreateParams.PaymentMethodType> mapPaymentMethodToType;
     private final Function<Currency, CurrencyModel> mapCurrencyToModel;
@@ -127,10 +133,15 @@ class StripePaymentGateway implements PaymentGateway {
 
             if(!type.startsWith("payment_intent.")) return Optional.empty();
 
-            final PaymentReceipt receipt = handlePaymentIntentEvent(PaymentIntentEvent.from(type), event);
-            return Optional.of(receipt);
+            try {
+                final PaymentReceipt receipt = handlePaymentIntentEvent(PaymentIntentEvent.from(type), event);
+                return Optional.of(receipt);
+            } catch (final IllegalArgumentException ex) {
+                LOGGER.debug("Skipping process, because of: {}", ex.getMessage());
+                return Optional.empty();
+            }
 
-        } catch (SignatureVerificationException e) {
+        } catch (final SignatureVerificationException e) {
             throw new IllegalArgumentException("Invalid Stripe webhook signature", e);
         }
     }

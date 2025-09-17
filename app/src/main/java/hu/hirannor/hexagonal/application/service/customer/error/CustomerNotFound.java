@@ -1,4 +1,4 @@
-package hu.hirannor.hexagonal.domain.error;
+package hu.hirannor.hexagonal.application.service.customer.error;
 
 /**
  * Error is throw when customer not found during an operation.

@@ -6,27 +6,20 @@ import hu.hirannor.hexagonal.application.port.notification.NotificationMessage;
 import hu.hirannor.hexagonal.application.port.notification.Notificator;
 import hu.hirannor.hexagonal.application.usecase.notification.NotificationSending;
 import hu.hirannor.hexagonal.application.usecase.notification.SendSystemNotification;
-import hu.hirannor.hexagonal.domain.CustomerId;
+import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.customer.Customer;
 import hu.hirannor.hexagonal.domain.customer.CustomerRepository;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.OrderRepository;
+import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.function.Supplier;
 
-@Service
-@Transactional(
-    propagation = Propagation.REQUIRES_NEW,
-    isolation = Isolation.REPEATABLE_READ
-)
+@ApplicationService
 class NotificationService implements NotificationSending {
     private static final Logger LOGGER = LogManager.getLogger(
         NotificationService.class

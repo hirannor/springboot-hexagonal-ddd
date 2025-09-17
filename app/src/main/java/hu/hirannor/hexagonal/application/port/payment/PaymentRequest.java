@@ -1,6 +1,6 @@
 package hu.hirannor.hexagonal.application.port.payment;
 
-import hu.hirannor.hexagonal.domain.Money;
+import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.payment.PaymentMethod;
 import hu.hirannor.hexagonal.infrastructure.command.CommandId;

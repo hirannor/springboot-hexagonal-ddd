@@ -1,7 +1,7 @@
 package hu.hirannor.hexagonal.domain.product;
 
 
-import hu.hirannor.hexagonal.domain.Money;
+import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
 import hu.hirannor.hexagonal.infrastructure.event.EventId;
 

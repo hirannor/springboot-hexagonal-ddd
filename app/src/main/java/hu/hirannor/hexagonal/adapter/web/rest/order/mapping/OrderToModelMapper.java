@@ -4,7 +4,7 @@ import hu.hirannor.hexagonal.adapter.web.rest.orders.model.MoneyModel;
 import hu.hirannor.hexagonal.adapter.web.rest.orders.model.OrderModel;
 import hu.hirannor.hexagonal.adapter.web.rest.orders.model.OrderStatusModel;
 import hu.hirannor.hexagonal.adapter.web.rest.orders.model.OrderedProductModel;
-import hu.hirannor.hexagonal.domain.Money;
+import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderItem;
 import hu.hirannor.hexagonal.domain.order.OrderStatus;

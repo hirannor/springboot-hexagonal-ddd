@@ -2,27 +2,20 @@ package hu.hirannor.hexagonal.application.service.authentication;
 
 import hu.hirannor.hexagonal.application.port.authentication.Authenticator;
 import hu.hirannor.hexagonal.application.usecase.customer.Registrating;
-import hu.hirannor.hexagonal.domain.EmailAddress;
+import hu.hirannor.hexagonal.domain.core.valueobject.EmailAddress;
 import hu.hirannor.hexagonal.domain.authentication.AuthUser;
 import hu.hirannor.hexagonal.domain.authentication.Register;
 import hu.hirannor.hexagonal.domain.authentication.Role;
 import hu.hirannor.hexagonal.domain.customer.Customer;
 import hu.hirannor.hexagonal.domain.customer.CustomerRepository;
-import hu.hirannor.hexagonal.domain.error.CustomerAlreadyExistWithEmailAddress;
+import hu.hirannor.hexagonal.application.service.customer.error.CustomerAlreadyExistWithEmailAddress;
+import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
-@Service
-@Transactional(
-    propagation = Propagation.REQUIRES_NEW,
-    isolation = Isolation.REPEATABLE_READ
-)
+@ApplicationService
 class RegistrationService implements Registrating {
 
     private static final Logger LOGGER = LogManager.getLogger(

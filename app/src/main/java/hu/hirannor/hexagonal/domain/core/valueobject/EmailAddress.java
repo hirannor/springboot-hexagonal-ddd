@@ -1,4 +1,4 @@
-package hu.hirannor.hexagonal.domain;
+package hu.hirannor.hexagonal.domain.core.valueobject;
 
 import java.util.regex.Pattern;
 

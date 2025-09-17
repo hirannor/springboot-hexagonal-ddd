@@ -1,6 +1,6 @@
 package hu.hirannor.hexagonal.domain.authentication;
 
-import hu.hirannor.hexagonal.domain.EmailAddress;
+import hu.hirannor.hexagonal.domain.core.valueobject.EmailAddress;
 import hu.hirannor.hexagonal.infrastructure.command.Command;
 import hu.hirannor.hexagonal.infrastructure.command.CommandId;
 

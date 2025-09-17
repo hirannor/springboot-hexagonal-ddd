@@ -1,7 +1,7 @@
 package hu.hirannor.hexagonal.domain.order;
 
-import hu.hirannor.hexagonal.domain.CustomerId;
-import hu.hirannor.hexagonal.domain.Money;
+import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
+import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
 import hu.hirannor.hexagonal.domain.order.events.*;
 import hu.hirannor.hexagonal.infrastructure.aggregate.AggregateRoot;

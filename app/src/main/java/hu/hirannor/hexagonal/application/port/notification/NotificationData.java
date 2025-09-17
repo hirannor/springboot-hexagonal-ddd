@@ -1,6 +1,6 @@
 package hu.hirannor.hexagonal.application.port.notification;
 
-import hu.hirannor.hexagonal.domain.EmailAddress;
+import hu.hirannor.hexagonal.domain.core.valueobject.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.Address;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 

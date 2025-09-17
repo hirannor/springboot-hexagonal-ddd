@@ -10,7 +10,7 @@ import hu.hirannor.hexagonal.application.usecase.order.ChangeOrderStatus;
 import hu.hirannor.hexagonal.application.usecase.order.OrderCreation;
 import hu.hirannor.hexagonal.application.usecase.order.OrderDisplaying;
 import hu.hirannor.hexagonal.application.usecase.order.OrderStatusChanging;
-import hu.hirannor.hexagonal.application.usecase.payment.PaymentStarting;
+import hu.hirannor.hexagonal.application.usecase.payment.PaymentInitialization;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
@@ -39,13 +39,13 @@ class OrderController implements OrdersApi {
     private final Function<ChangeOrderStatusModel, ChangeOrderStatus> mapChangeOrderStatusModelToCommand;
 
     private final OrderCreation orderCreator;
-    private final PaymentStarting payment;
+    private final PaymentInitialization payment;
     private final OrderDisplaying orders;
     private final OrderStatusChanging status;
 
     @Autowired
     OrderController(final OrderCreation orderCreator,
-                    final PaymentStarting payment,
+                    final PaymentInitialization payment,
                     final OrderDisplaying orders,
                     final OrderStatusChanging status) {
         this(
@@ -61,7 +61,7 @@ class OrderController implements OrdersApi {
     }
 
     OrderController(final OrderCreation orderCreator,
-                    final PaymentStarting payment,
+                    final PaymentInitialization payment,
                     final OrderDisplaying orders,
                     final OrderStatusChanging status,
                     final Function<CreateOrderModel, CreateOrder> mapCreateOrderModelToCommand,

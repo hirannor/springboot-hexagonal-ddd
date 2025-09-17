@@ -7,22 +7,14 @@ import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.OrderRepository;
 import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
+import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.function.Supplier;
 
-
-@Service
-@Transactional(
-    propagation = Propagation.REQUIRES_NEW,
-    isolation = Isolation.REPEATABLE_READ
-)
+@ApplicationService
 class OrderCommandService implements
         OrderCreation,
         OrderStatusChanging {

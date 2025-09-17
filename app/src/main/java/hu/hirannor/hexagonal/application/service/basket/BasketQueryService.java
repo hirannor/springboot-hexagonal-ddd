@@ -1,19 +1,22 @@
 package hu.hirannor.hexagonal.application.service.basket;
 
 import hu.hirannor.hexagonal.application.usecase.basket.BasketDisplaying;
-import hu.hirannor.hexagonal.domain.CustomerId;
+import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.basket.Basket;
 import hu.hirannor.hexagonal.domain.basket.BasketId;
 import hu.hirannor.hexagonal.domain.basket.BasketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional(
+    propagation = Propagation.REQUIRES_NEW,
+    isolation = Isolation.REPEATABLE_READ
+)
 public class BasketQueryService implements BasketDisplaying {
     private final BasketRepository baskets;
 

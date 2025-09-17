@@ -1,6 +1,6 @@
 package hu.hirannor.hexagonal.domain.product;
 
-import hu.hirannor.hexagonal.domain.Money;
+import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.infrastructure.command.Command;
 import hu.hirannor.hexagonal.infrastructure.command.CommandId;
 

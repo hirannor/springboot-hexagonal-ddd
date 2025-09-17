@@ -1,9 +1,9 @@
-package hu.hirannor.hexagonal.adapter.web.rest.customer.error;
+package hu.hirannor.hexagonal.adapter.web.rest.customer;
 
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.ProblemDetailsModel;
-import hu.hirannor.hexagonal.domain.error.CustomerAlreadyExistWithEmailAddress;
-import hu.hirannor.hexagonal.domain.error.CustomerNotFound;
-import hu.hirannor.hexagonal.domain.error.InvalidPassword;
+import hu.hirannor.hexagonal.application.service.customer.error.CustomerAlreadyExistWithEmailAddress;
+import hu.hirannor.hexagonal.application.service.customer.error.CustomerNotFound;
+import hu.hirannor.hexagonal.application.service.authentication.error.InvalidPassword;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +17,10 @@ import java.time.Instant;
  *
  * @author Mate Karolyi
  */
-@ControllerAdvice
-class ErrorHandler {
+@ControllerAdvice(basePackageClasses = CustomerController.class)
+class CustomerErrorHandler {
 
-    ErrorHandler() {
+    CustomerErrorHandler() {
     }
 
     @ExceptionHandler(CustomerNotFound.class)

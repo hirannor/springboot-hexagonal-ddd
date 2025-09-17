@@ -2,7 +2,7 @@ package hu.hirannor.hexagonal.adapter.web.rest.order.mapping;
 
 import hu.hirannor.hexagonal.adapter.web.rest.orders.model.CreateOrderModel;
 import hu.hirannor.hexagonal.adapter.web.rest.orders.model.OrderedProductModel;
-import hu.hirannor.hexagonal.domain.CustomerId;
+import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.order.OrderItem;
 import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
 

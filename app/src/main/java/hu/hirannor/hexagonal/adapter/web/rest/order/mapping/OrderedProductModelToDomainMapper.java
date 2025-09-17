@@ -2,7 +2,7 @@ package hu.hirannor.hexagonal.adapter.web.rest.order.mapping;
 
 import hu.hirannor.hexagonal.adapter.web.rest.orders.model.MoneyModel;
 import hu.hirannor.hexagonal.adapter.web.rest.orders.model.OrderedProductModel;
-import hu.hirannor.hexagonal.domain.Money;
+import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.domain.order.OrderItem;
 import hu.hirannor.hexagonal.domain.product.ProductId;
 

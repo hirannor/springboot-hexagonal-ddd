@@ -4,19 +4,12 @@ import hu.hirannor.hexagonal.application.usecase.product.ProductCreation;
 import hu.hirannor.hexagonal.domain.product.CreateProduct;
 import hu.hirannor.hexagonal.domain.product.Product;
 import hu.hirannor.hexagonal.domain.product.ProductRepository;
+import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@Transactional(
-    propagation = Propagation.REQUIRES_NEW,
-    isolation = Isolation.REPEATABLE_READ
-)
+@ApplicationService
 class ProductCommandService implements ProductCreation {
     private static final Logger LOGGER = LogManager.getLogger(
         ProductCommandService.class

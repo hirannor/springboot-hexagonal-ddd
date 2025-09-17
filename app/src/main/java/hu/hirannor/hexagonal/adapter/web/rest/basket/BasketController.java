@@ -11,7 +11,7 @@ import hu.hirannor.hexagonal.application.usecase.basket.BasketCheckout;
 import hu.hirannor.hexagonal.application.usecase.basket.BasketCreation;
 import hu.hirannor.hexagonal.application.usecase.basket.BasketDisplaying;
 import hu.hirannor.hexagonal.application.usecase.basket.BasketProductHandling;
-import hu.hirannor.hexagonal.domain.CustomerId;
+import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.basket.Basket;
 import hu.hirannor.hexagonal.domain.basket.BasketId;
 import hu.hirannor.hexagonal.domain.basket.BasketItem;

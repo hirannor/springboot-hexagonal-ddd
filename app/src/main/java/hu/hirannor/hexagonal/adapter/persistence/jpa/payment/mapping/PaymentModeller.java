@@ -4,7 +4,7 @@ import hu.hirannor.hexagonal.adapter.persistence.jpa.CurrencyModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.CurrencyToModelMapper;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.payment.PaymentModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.payment.PaymentStatusModel;
-import hu.hirannor.hexagonal.domain.Currency;
+import hu.hirannor.hexagonal.domain.core.valueobject.Currency;
 import hu.hirannor.hexagonal.domain.payment.Payment;
 import hu.hirannor.hexagonal.domain.payment.PaymentStatus;
 import hu.hirannor.hexagonal.infrastructure.modelling.Modeller;

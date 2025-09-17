@@ -3,7 +3,7 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.order.mapping;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.CurrencyModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.CurrencyToModelMapper;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.order.OrderItemsModel;
-import hu.hirannor.hexagonal.domain.Currency;
+import hu.hirannor.hexagonal.domain.core.valueobject.Currency;
 import hu.hirannor.hexagonal.domain.order.OrderItem;
 
 import java.util.function.Function;

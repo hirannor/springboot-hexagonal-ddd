@@ -1,6 +1,6 @@
 package hu.hirannor.hexagonal.domain.order.command;
 
-import hu.hirannor.hexagonal.domain.Money;
+import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 
 public record PaymentInstruction(OrderId orderId, Money amount, String providerReference, String paymentUrl) {

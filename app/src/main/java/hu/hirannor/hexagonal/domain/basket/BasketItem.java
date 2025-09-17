@@ -1,6 +1,6 @@
 package hu.hirannor.hexagonal.domain.basket;
 
-import hu.hirannor.hexagonal.domain.Money;
+import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.domain.product.ProductId;
 
 import java.util.Objects;

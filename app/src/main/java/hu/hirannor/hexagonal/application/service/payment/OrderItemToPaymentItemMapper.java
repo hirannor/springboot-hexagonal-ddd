@@ -5,9 +5,9 @@ import hu.hirannor.hexagonal.domain.order.OrderItem;
 
 import java.util.function.Function;
 
-public class OrderedItemToPaymentItemMapper implements Function<OrderItem, PaymentItem> {
+public class OrderItemToPaymentItemMapper implements Function<OrderItem, PaymentItem> {
 
-    public OrderedItemToPaymentItemMapper() {}
+    public OrderItemToPaymentItemMapper() {}
 
     @Override
     public PaymentItem apply(final OrderItem product) {

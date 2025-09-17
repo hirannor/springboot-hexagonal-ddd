@@ -7,22 +7,15 @@ import hu.hirannor.hexagonal.domain.payment.Payment;
 import hu.hirannor.hexagonal.domain.payment.PaymentId;
 import hu.hirannor.hexagonal.domain.payment.PaymentRepository;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
+import hu.hirannor.hexagonal.infrastructure.adapter.PersistenceAdapter;
 import hu.hirannor.hexagonal.infrastructure.event.EventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.function.Function;
 
-@Repository
-@Transactional(
-    propagation = Propagation.MANDATORY,
-    isolation = Isolation.REPEATABLE_READ
-)
 @DrivenAdapter
+@PersistenceAdapter
 class PaymentJpaRepository implements PaymentRepository {
     private final PaymentSpringDataJpaRepository payments;
     private final Function<PaymentModel, Payment> mapModelToDomain;

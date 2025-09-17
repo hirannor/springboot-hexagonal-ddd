@@ -5,7 +5,7 @@ import hu.hirannor.hexagonal.adapter.persistence.jpa.CurrencyToModelMapper;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.order.OrderItemsModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.order.OrderModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.order.OrderStatusModel;
-import hu.hirannor.hexagonal.domain.Currency;
+import hu.hirannor.hexagonal.domain.core.valueobject.Currency;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderItem;
 import hu.hirannor.hexagonal.domain.order.OrderStatus;

@@ -2,7 +2,7 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.customer;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel_;
-import hu.hirannor.hexagonal.domain.EmailAddress;
+import hu.hirannor.hexagonal.domain.core.valueobject.EmailAddress;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;

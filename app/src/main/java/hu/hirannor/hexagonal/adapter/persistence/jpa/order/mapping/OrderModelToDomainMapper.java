@@ -3,7 +3,7 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.order.mapping;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.order.OrderItemsModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.order.OrderModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.order.OrderStatusModel;
-import hu.hirannor.hexagonal.domain.CustomerId;
+import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.order.Order;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.OrderItem;

@@ -1,7 +1,7 @@
 package hu.hirannor.hexagonal.application.usecase.customer;
 
-import hu.hirannor.hexagonal.domain.CustomerId;
-import hu.hirannor.hexagonal.domain.EmailAddress;
+import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
+import hu.hirannor.hexagonal.domain.core.valueobject.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.Customer;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 

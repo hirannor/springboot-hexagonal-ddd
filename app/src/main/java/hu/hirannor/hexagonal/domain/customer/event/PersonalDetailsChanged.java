@@ -1,6 +1,6 @@
 package hu.hirannor.hexagonal.domain.customer.event;
 
-import hu.hirannor.hexagonal.domain.CustomerId;
+import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
 import hu.hirannor.hexagonal.infrastructure.event.Event;
 import hu.hirannor.hexagonal.infrastructure.event.EventId;

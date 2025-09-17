@@ -3,7 +3,7 @@ package hu.hirannor.hexagonal.adapter.web.rest.product.mapping;
 import hu.hirannor.hexagonal.adapter.web.rest.products.model.CurrencyModel;
 import hu.hirannor.hexagonal.adapter.web.rest.products.model.MoneyModel;
 import hu.hirannor.hexagonal.adapter.web.rest.products.model.ProductModel;
-import hu.hirannor.hexagonal.domain.Currency;
+import hu.hirannor.hexagonal.domain.core.valueobject.Currency;
 import hu.hirannor.hexagonal.domain.product.Product;
 
 import java.util.function.Function;

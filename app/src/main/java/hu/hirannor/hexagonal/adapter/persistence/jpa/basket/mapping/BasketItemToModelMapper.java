@@ -3,7 +3,7 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.basket.mapping;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.CurrencyModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.CurrencyToModelMapper;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.basket.BasketItemModel;
-import hu.hirannor.hexagonal.domain.Currency;
+import hu.hirannor.hexagonal.domain.core.valueobject.Currency;
 import hu.hirannor.hexagonal.domain.basket.BasketItem;
 
 import java.util.function.Function;
