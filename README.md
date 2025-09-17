@@ -22,9 +22,25 @@ For DDD modeling, the project uses an **Order Management System** as the core do
 * **Customer** – aggregate root representing a registered user of the system.  
   Customers can register, authenticate, and manage their own profile.  
   Admins use the same `Customer` API but with extended permissions (e.g., list all, delete).
-* **Order** – aggregate root handling the full order lifecycle: creation, status changes, payment, cancellation, shipping, etc.
+
+* **Order** – aggregate root handling the full order lifecycle:
+  - Creation
+  - Status changes (`CREATED → WAITING_FOR_PAYMENT → PAID_SUCCESSFULLY → PROCESSING → SHIPPED → DELIVERED → RETURNED/REFUNDED`)
+  - Cancellation and refund
+  - Emits domain events such as `OrderCreated`, `OrderPaid`, `OrderShipped`.
+
 * **Basket** – aggregate root representing a shopping basket where products can be added/removed before checkout.
-* **Product** – aggregate root representing catalog items that can be queried and added to baskets or orders.
+  - Customers can maintain one basket.
+  - On checkout, the basket is cleared and converted into an order.
+
+* **Product** – aggregate root representing catalog items.
+  - Contains immutable product information (id, name, price, currency).
+
+* **Payment** – aggregate root representing the lifecycle of a payment transaction for an order.
+  - Created when a payment is initialized.
+  - References its associated `OrderId` and carries details like `Money amount`, `PaymentStatus`, and `providerReference` (e.g., Stripe Checkout Session ID).
+  - Lifecycle: `INITIALIZED → SUCCEEDED / FAILED / CANCELED`.
+  - Emits domain events such as `PaymentInitialized`, `PaymentSucceeded`, `PaymentFailed`.
 
 Other concerns such as authentication and authorization are modeled separately via `AuthUser` (a value object), rather than as a dedicated aggregate root. Roles (`CUSTOMER`, `ADMIN`) control access to APIs instead of introducing extra domain entities.
 
