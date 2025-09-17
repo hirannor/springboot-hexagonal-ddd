@@ -225,4 +225,4 @@ Common test card:
 
 This project is licensed under the MIT License with the Commons Clause.  
 ⚠️ This means you may **not use this project for commercial purposes**.  
-See the [LICENSE](./LICENSE) file for full details.
+See the [LICENSE](./LICENSE.md) file for full details.
