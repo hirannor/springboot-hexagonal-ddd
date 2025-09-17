@@ -220,3 +220,9 @@ Stripe provides a list of test cards for simulating payments:
 Common test card:
 - Visa (Success): 4242 4242 4242 4242
   - Exp: any future date, CVC: any 3 digits.
+
+## License
+
+This project is licensed under the MIT License with the Commons Clause.  
+⚠️ This means you may **not use this project for commercial purposes**.  
+See the [LICENSE](./LICENSE) file for full details.
