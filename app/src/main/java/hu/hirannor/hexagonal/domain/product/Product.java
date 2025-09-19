@@ -17,6 +17,9 @@ public class Product extends AggregateRoot {
             final String description,
             final Money price) {
         Objects.requireNonNull(id);
+        Objects.requireNonNull(name);
+        Objects.requireNonNull(description);
+        Objects.requireNonNull(price);
 
         this.id = id;
         this.name = name;

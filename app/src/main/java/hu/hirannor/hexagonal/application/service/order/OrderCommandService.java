@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @ApplicationService
 class OrderCommandService implements
         OrderCreation,
+        OrderCancellation,
         OrderStatusChanging {
 
     private static final Logger LOGGER = LogManager.getLogger(
@@ -54,14 +55,27 @@ class OrderCommandService implements
 
         baskets.deleteBy(order.customer());
 
-        order.changeStatus(OrderStatus.WAITING_FOR_PAYMENT);
-        orders.save(order);
-
         LOGGER.info("Order with id: {} was successfully created for customer: {}",
             order.id().asText(),
             order.id().asText());
 
         return order;
+    }
+
+    @Override
+    public void cancelBy(final OrderId id) {
+        if (id == null) throw new IllegalArgumentException("OrderId is null");
+
+        LOGGER.info("Start cancellation for id id: {}",
+            id.asText()
+        );
+        final Order order = orders.findBy(id)
+                .orElseThrow(failBecauseOrderWasNotFoundBy(id));
+
+        order.cancel();
+        orders.save(order);
+
+        LOGGER.info("Order with id: {} is successfully cancelled", id.asText());
     }
 
     @Override

@@ -39,5 +39,12 @@
                         startValue="1"
                         incrementBy="5"/>
 
+        <addForeignKeyConstraint
+                baseTableName="EC_PAYMENTS"
+                baseColumnNames="ORDER_ID"
+                referencedTableName="EC_ORDERS"
+                referencedColumnNames="ORDER_ID"
+                constraintName="fk_payments_order"/>
+
     </changeSet>
 </databaseChangeLog>

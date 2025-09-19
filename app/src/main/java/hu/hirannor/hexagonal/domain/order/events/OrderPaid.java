@@ -5,8 +5,9 @@ import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
 import hu.hirannor.hexagonal.infrastructure.event.EventId;
 
-public record OrderPaymentCanceled(EventId id, OrderId orderId, CustomerId customer) implements DomainEvent {
-    public static OrderPaymentCanceled record(final OrderId orderId, final CustomerId customer) {
-        return new OrderPaymentCanceled(EventId.generate(), orderId, customer);
+public record OrderPaid(EventId id, OrderId orderId, CustomerId customerId) implements DomainEvent {
+
+    public static OrderPaid record(final OrderId orderId, final CustomerId customerId) {
+        return new OrderPaid(EventId.generate(), orderId, customerId);
     }
 }

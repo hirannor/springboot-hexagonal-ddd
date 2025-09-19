@@ -22,6 +22,13 @@
         </createTable>
 
         <createSequence sequenceName="basket_seq" startValue="1" incrementBy="5"/>
+
+        <addForeignKeyConstraint
+                baseTableName="EC_BASKETS"
+                baseColumnNames="CUSTOMER_ID"
+                constraintName="fk_basket_customer"
+                referencedTableName="EC_CUSTOMER"
+                referencedColumnNames="CUSTOMER_ID"/>
     </changeSet>
 
     <!-- ====================== -->

@@ -22,9 +22,25 @@ For DDD modeling, the project uses an **Order Management System** as the core do
 * **Customer** – aggregate root representing a registered user of the system.  
   Customers can register, authenticate, and manage their own profile.  
   Admins use the same `Customer` API but with extended permissions (e.g., list all, delete).
-* **Order** – aggregate root handling the full order lifecycle: creation, status changes, payment, cancellation, shipping, etc.
+
+* **Order** – aggregate root handling the full order lifecycle:
+  - Creation
+  - Status changes (`CREATED → WAITING_FOR_PAYMENT → PAID_SUCCESSFULLY → PROCESSING → SHIPPED → DELIVERED → RETURNED/REFUNDED`)
+  - Cancellation and refund
+  - Emits domain events such as `OrderCreated`, `OrderPaid`, `OrderShipped`.
+
 * **Basket** – aggregate root representing a shopping basket where products can be added/removed before checkout.
-* **Product** – aggregate root representing catalog items that can be queried and added to baskets or orders.
+  - Customers can maintain one basket.
+  - On checkout, the basket is cleared and converted into an order.
+
+* **Product** – aggregate root representing catalog items.
+  - Contains immutable product information (id, name, price, currency).
+
+* **Payment** – aggregate root representing the lifecycle of a payment transaction for an order.
+  - Created when a payment is initialized.
+  - References its associated `OrderId` and carries details like `Money amount`, `PaymentStatus`, and `providerReference` (e.g., Stripe Checkout Session ID).
+  - Lifecycle: `INITIALIZED → SUCCEEDED / FAILED / CANCELED`.
+  - Emits domain events such as `PaymentInitialized`, `PaymentSucceeded`, `PaymentFailed`.
 
 Other concerns such as authentication and authorization are modeled separately via `AuthUser` (a value object), rather than as a dedicated aggregate root. Roles (`CUSTOMER`, `ADMIN`) control access to APIs instead of introducing extra domain entities.
 
@@ -136,7 +152,7 @@ adapter:
 ### HTTP Requests
 All API requests for testing  can be found in the project under:
 ```
-/http-requests/order-management.http
+/http-requests/
 ```
 
 ## Docker Setup
@@ -187,8 +203,8 @@ payment:
   stripe:
     api-key: sk_test_xxxxxxxxxxxxxxxxxxxxx
     webhook-secret: whsec_xxxxxxxxxxxxxxxxxxxxx
-    success-url: http://localhost:8080/payment/success/
-    failure-url: http://localhost:8080/payment/failure/
+    success-url: # your success url
+    failure-url: # your failure url
 ```
 
 - api-key → Stripe test secret key from Dashboard.
@@ -204,3 +220,9 @@ Stripe provides a list of test cards for simulating payments:
 Common test card:
 - Visa (Success): 4242 4242 4242 4242
   - Exp: any future date, CVC: any 3 digits.
+
+## License
+
+This project is licensed under the MIT License with the Commons Clause.  
+⚠️ This means you may **not use this project for commercial purposes**.  
+See the [LICENSE](./LICENSE.md) file for full details.

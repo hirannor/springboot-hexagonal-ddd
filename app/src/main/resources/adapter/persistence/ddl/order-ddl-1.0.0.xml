@@ -73,6 +73,13 @@
                 referencedColumnNames="ID"
                 constraintName="fk_ordered_products_order"/>
 
+        <addForeignKeyConstraint
+                baseTableName="EC_ORDERS"
+                baseColumnNames="CUSTOMER_ID"
+                referencedTableName="EC_CUSTOMER"
+                referencedColumnNames="CUSTOMER_ID"
+                constraintName="fk_orders_customer"/>
+
     </changeSet>
 
 </databaseChangeLog>

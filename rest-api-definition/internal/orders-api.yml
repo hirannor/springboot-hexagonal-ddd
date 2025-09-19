@@ -65,12 +65,6 @@ paths:
           required: true
           schema:
             type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PayOrder'
       responses:
         '200':
           description: The order
@@ -241,7 +235,6 @@ components:
         - WAITING_FOR_PAYMENT
         - PAID_SUCCESSFULLY
         - PAYMENT_FAILED
-        - PAYMENT_PENDING
         - PAYMENT_CANCELED
         - PROCESSING
         - SHIPPED
@@ -252,6 +245,6 @@ components:
     PaymentStatus:
       type: string
       enum:
-        - PENDING
         - SUCCESS
         - FAILURE
+        - CANCELED

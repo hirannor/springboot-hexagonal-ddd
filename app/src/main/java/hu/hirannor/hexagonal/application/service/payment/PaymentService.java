@@ -82,9 +82,6 @@ class PaymentService implements PaymentInitialization, PaymentCallbackHandling {
         final Payment payment = Payment.start(startPayment);
         payments.save(payment);
 
-        order.changeStatus(OrderStatus.PAYMENT_PENDING);
-        orders.save(order);
-
         LOGGER.info("Finished payment initialization for orderId={}, paymentId={}, newStatus={}",
                 order.id().asText(),
                 payment.id().asText(),
