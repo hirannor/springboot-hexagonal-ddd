@@ -2,7 +2,8 @@
 
 |Build Status|License|
 |------------|-------|
-|[![Build Status](https://img.shields.io/github/actions/workflow/status/hirannor/springboot-hexagonal-ddd/.github/workflows/maven.yml)](https://github.com/hirannor/springboot-hexagonal-ddd/actions/workflows/maven.yml)|[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)|
+|[![Build Status](https://img.shields.io/github/actions/workflow/status/hirannor/springboot-hexagonal-ddd/.github/workflows/maven.yml)](https://github.com/hirannor/springboot-hexagonal-ddd/actions/workflows/maven.yml)|[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Commons Clause](https://img.shields.io/badge/Commons-Clause-red.svg)](https://commonsclause.com/)|
+
 
 
 ## Overview
