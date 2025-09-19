@@ -176,12 +176,6 @@ components:
     PayOrderResponse:
       type: object
       properties:
-        paymentStatus:
-          type: string
-          enum:
-            - PENDING
-            - SUCCESS
-            - FAILURE
         paymentUrl:
           type: string
           description: "Redirect URL to the Checkout page or payment gateway page"
@@ -189,8 +183,6 @@ components:
           type: string
         amount:
           $ref: '#/components/schemas/Money'
-        currency:
-          $ref: '#/components/schemas/Currency'
       required: [ paymentStatus, paymentUrl, orderId, amount, currency ]
 
     CancelOrder:
@@ -242,9 +234,3 @@ components:
         - CANCELLED
         - RETURNED
         - REFUNDED
-    PaymentStatus:
-      type: string
-      enum:
-        - SUCCESS
-        - FAILURE
-        - CANCELED

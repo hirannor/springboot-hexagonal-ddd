@@ -38,6 +38,7 @@ class RegistrationService implements Registrating {
 
         final Customer newlyRegistered = Customer.registerBy(command);
         customers.save(newlyRegistered);
+
         authenticator.register(AuthUser.of(command.emailAddress(), command.password(), Set.of(Role.CUSTOMER)));
 
         LOGGER.info("Customer with id: {} is successfully registered!", newlyRegistered.id().asText());

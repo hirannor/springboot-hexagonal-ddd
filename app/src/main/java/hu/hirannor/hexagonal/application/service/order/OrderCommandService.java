@@ -1,5 +1,8 @@
 package hu.hirannor.hexagonal.application.service.order;
 
+import hu.hirannor.hexagonal.application.service.customer.error.CustomerNotFound;
+import hu.hirannor.hexagonal.application.service.order.error.OrderCannotBeCreatedWithoutAddress;
+import hu.hirannor.hexagonal.application.service.order.error.OrderNotFound;
 import hu.hirannor.hexagonal.application.usecase.order.*;
 import hu.hirannor.hexagonal.domain.basket.BasketRepository;
 import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
@@ -47,7 +50,7 @@ class OrderCommandService implements
         final Customer customer = customers.findBy(create.customer())
             .orElseThrow(failBecauseCustomerWasNotFoundBy(create.customer()));
 
-        if (customer.address() == null)
+        if (!customer.address().isComplete())
             failBecauseMissingAddressDetails(customer.id());
 
         final Order order = Order.create(create);
@@ -100,15 +103,15 @@ class OrderCommandService implements
 
 
     private void failBecauseMissingAddressDetails(final CustomerId customer) {
-        throw new IllegalStateException("Cannot create order for customer: " + customer.asText() + "without address details");
+        throw new OrderCannotBeCreatedWithoutAddress("An order cannot be created if the customer: " + customer.asText() + " does not have address details.");
     }
 
-    private Supplier<IllegalStateException> failBecauseOrderWasNotFoundBy(OrderId order) {
-        return () -> new IllegalStateException("Order not found with id " + order);
+    private Supplier<OrderNotFound> failBecauseOrderWasNotFoundBy(OrderId order) {
+        return () -> new OrderNotFound("Order not found with id " + order);
     }
 
-    private Supplier<IllegalStateException> failBecauseCustomerWasNotFoundBy(final CustomerId customer) {
-        return () -> new IllegalStateException("Customer not found with id " + customer);
+    private Supplier<CustomerNotFound> failBecauseCustomerWasNotFoundBy(final CustomerId customer) {
+        return () -> new CustomerNotFound("Customer not found with id " + customer);
     }
 
 }

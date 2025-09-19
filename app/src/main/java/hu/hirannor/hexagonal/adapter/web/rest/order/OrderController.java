@@ -26,6 +26,7 @@ class OrderController implements OrdersApi {
     private final Function<CreateOrderModel, CreateOrder> mapCreateOrderModelToCommand;
     private final Function<Order, OrderModel> mapOrderToModel;
     private final Function<ChangeOrderStatusModel, ChangeOrderStatus> mapChangeOrderStatusModelToCommand;
+    private final Function<PaymentInstruction, PayOrderResponseModel> mapPaymentInstructionToModel;
 
     private final OrderCreation orderCreator;
     private final PaymentInitialization payment;
@@ -47,7 +48,8 @@ class OrderController implements OrdersApi {
             order,
             new CreateOrderModelToCommandMapper(),
             new OrderToModelMapper(),
-            new ChangeOrderStatusModelToCommandMapper()
+            new ChangeOrderStatusModelToCommandMapper(),
+            new PaymentInstructionToPayOrderResponseModelMapper()
         );
     }
 
@@ -58,7 +60,8 @@ class OrderController implements OrdersApi {
                     final OrderCancellation order,
                     final Function<CreateOrderModel, CreateOrder> mapCreateOrderModelToCommand,
                     final Function<Order, OrderModel> mapOrderToModel,
-                    final Function<ChangeOrderStatusModel, ChangeOrderStatus> mapChangeOrderStatusModelToCommand) {
+                    final Function<ChangeOrderStatusModel, ChangeOrderStatus> mapChangeOrderStatusModelToCommand,
+                    final Function<PaymentInstruction, PayOrderResponseModel> mapPaymentInstructionToModel) {
         this.orderCreator = orderCreator;
         this.payment = payment;
         this.orders = orders;
@@ -67,6 +70,7 @@ class OrderController implements OrdersApi {
         this.mapCreateOrderModelToCommand = mapCreateOrderModelToCommand;
         this.mapOrderToModel = mapOrderToModel;
         this.mapChangeOrderStatusModelToCommand = mapChangeOrderStatusModelToCommand;
+        this.mapPaymentInstructionToModel = mapPaymentInstructionToModel;
     }
 
     @Override
@@ -89,11 +93,7 @@ class OrderController implements OrdersApi {
         final InitializePayment command = InitializePayment.issue(OrderId.from(orderId));
         final PaymentInstruction instruction = payment.initialize(command);
 
-        return ResponseEntity.ok().body(
-                new PayOrderResponseModel()
-                        .paymentUrl(instruction.paymentUrl())
-                        .orderId(instruction.orderId().asText())
-        );
+        return ResponseEntity.ok().body(mapPaymentInstructionToModel.apply(instruction));
     }
 
     @Override

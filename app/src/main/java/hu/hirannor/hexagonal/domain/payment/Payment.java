@@ -30,7 +30,7 @@ public class Payment extends AggregateRoot {
 
         this.id = Objects.requireNonNull(id, "id cannot be null");
         this.orderId = Objects.requireNonNull(orderId, "orderId cannot be null");
-        this.amount = Objects.requireNonNull(amount, "amount cannot be null");
+        this.amount = Objects.requireNonNull(amount, "price cannot be null");
         this.status = Objects.requireNonNull(status, "status cannot be null");
         this.providerReference = Objects.requireNonNull(providerReference, "providerReference cannot be null");
 

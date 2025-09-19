@@ -1,6 +1,8 @@
 package hu.hirannor.hexagonal.adapter.authentication.jwt;
 
 import hu.hirannor.hexagonal.application.port.authentication.Authenticator;
+import hu.hirannor.hexagonal.application.service.authentication.error.AuthUserNotFound;
+import hu.hirannor.hexagonal.application.service.authentication.error.InvalidJwtToken;
 import hu.hirannor.hexagonal.application.service.authentication.error.InvalidPassword;
 import hu.hirannor.hexagonal.application.service.customer.error.CustomerNotFound;
 import hu.hirannor.hexagonal.domain.authentication.*;
@@ -90,7 +92,7 @@ class JwtAuthentication implements Authenticator {
 
             return AuthUser.of(EmailAddress.from(email), null, roles);
         } catch (final Exception ex) {
-            throw new AuthenticationServiceException("Invalid JWT token", ex);
+            throw new InvalidJwtToken("Invalid JWT token");
         }
     }
 
@@ -107,8 +109,8 @@ class JwtAuthentication implements Authenticator {
         authentications.save(hashedUser);
     }
 
-    private Supplier<CustomerNotFound> failBecauseEmailAddressWasNotFound(final EmailAddress emailAddress) {
-        return () -> new CustomerNotFound("Customer was not found by: " + emailAddress.value());
+    private Supplier<AuthUserNotFound> failBecauseEmailAddressWasNotFound(final EmailAddress emailAddress) {
+        return () -> new AuthUserNotFound("User was not found by: " + emailAddress.value());
     }
 
     private String generateTokenFrom(final AuthUser user) {

@@ -1,5 +1,6 @@
 package hu.hirannor.hexagonal.application.service.basket;
 
+import hu.hirannor.hexagonal.application.service.basket.error.BasketNotFound;
 import hu.hirannor.hexagonal.application.usecase.basket.*;
 import hu.hirannor.hexagonal.domain.basket.*;
 import hu.hirannor.hexagonal.domain.basket.command.*;
@@ -82,20 +83,12 @@ class BasketCommandService implements
         baskets.save(basket);
     }
 
-    private Supplier<Basket> createBasketBy(final CreateBasket creation) {
-        return () -> {
-            final Basket basket = Basket.create(creation);
-            baskets.save(basket);
-            return basket;
-        };
+    private static Supplier<BasketNotFound> failBecauseBasketWasNotFoundBy(final CustomerId customerId) {
+        return () -> new BasketNotFound("Basket with customer id " + customerId + " not found");
     }
 
-    private static Supplier<IllegalStateException> failBecauseBasketWasNotFoundBy(final CustomerId customerId) {
-        return () -> new IllegalStateException("Basket with customer id " + customerId + " not found");
-    }
-
-    private static Supplier<IllegalStateException> failBecauseBasketWasNotFoundBy(final BasketId basketId) {
-        return () -> new IllegalStateException("Basket with id " + basketId + " not found");
+    private static Supplier<BasketNotFound> failBecauseBasketWasNotFoundBy(final BasketId basketId) {
+        return () -> new BasketNotFound("Basket with id " + basketId + " not found");
     }
 
     private BasketView mapToView(final Basket basket) {

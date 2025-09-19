@@ -1,6 +1,8 @@
 package hu.hirannor.hexagonal.application.service.notification;
 
 import hu.hirannor.hexagonal.application.port.notification.*;
+import hu.hirannor.hexagonal.application.service.customer.error.CustomerNotFound;
+import hu.hirannor.hexagonal.application.service.order.error.OrderNotFound;
 import hu.hirannor.hexagonal.application.usecase.notification.NotificationSending;
 import hu.hirannor.hexagonal.application.usecase.notification.SendSystemNotification;
 import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
@@ -66,11 +68,11 @@ class NotificationService implements NotificationSending {
         );
     }
 
-    private Supplier<IllegalStateException> failBecauseCustomerWasNotFoundBy(final CustomerId customer) {
-        return () -> new IllegalStateException("Customer not found by " + customer.asText());
+    private Supplier<CustomerNotFound> failBecauseCustomerWasNotFoundBy(final CustomerId customer) {
+        return () -> new CustomerNotFound("Customer not found by " + customer.asText());
     }
 
-    private Supplier<IllegalStateException> failBecauseOrderWasNotFoundBy(final OrderId order) {
-        return () -> new IllegalStateException("Order not found by " + order.asText());
+    private Supplier<OrderNotFound> failBecauseOrderWasNotFoundBy(final OrderId order) {
+        return () -> new OrderNotFound("Order not found by " + order.asText());
     }
 }
