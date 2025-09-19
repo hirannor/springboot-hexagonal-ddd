@@ -1,12 +1,8 @@
 package hu.hirannor.hexagonal.adapter.notification.email;
 
-import hu.hirannor.hexagonal.application.port.notification.EmailNotificationMessage;
-import hu.hirannor.hexagonal.application.port.notification.NotificationData;
-import hu.hirannor.hexagonal.application.port.notification.NotificationFactory;
-import hu.hirannor.hexagonal.application.port.notification.NotificationMessage;
-import org.springframework.stereotype.Component;
-
+import hu.hirannor.hexagonal.application.port.notification.*;
 import java.util.Map;
+import org.springframework.stereotype.Component;
 
 @Component
 class EmailNotificationFactory implements NotificationFactory {

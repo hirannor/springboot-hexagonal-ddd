@@ -8,29 +8,20 @@ import com.stripe.model.PaymentIntent;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 import com.stripe.param.checkout.SessionCreateParams;
-import hu.hirannor.hexagonal.adapter.payment.stripe.mapping.CurrencyModelToDomainMapper;
-import hu.hirannor.hexagonal.adapter.payment.stripe.mapping.CurrencyToModelMapper;
-import hu.hirannor.hexagonal.adapter.payment.stripe.mapping.PaymentMethodModelToDomainMapper;
-import hu.hirannor.hexagonal.adapter.payment.stripe.mapping.PaymentMethodToTypeMapper;
-import hu.hirannor.hexagonal.application.port.payment.PaymentGateway;
-import hu.hirannor.hexagonal.application.port.payment.PaymentInitializationFailed;
-import hu.hirannor.hexagonal.application.port.payment.PaymentItem;
-import hu.hirannor.hexagonal.application.port.payment.PaymentRequest;
+import hu.hirannor.hexagonal.adapter.payment.stripe.mapping.*;
+import hu.hirannor.hexagonal.application.port.payment.*;
 import hu.hirannor.hexagonal.domain.core.valueobject.Currency;
 import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
-import hu.hirannor.hexagonal.domain.payment.PaymentMethod;
-import hu.hirannor.hexagonal.domain.payment.PaymentReceipt;
-import hu.hirannor.hexagonal.domain.payment.PaymentStatus;
+import hu.hirannor.hexagonal.domain.payment.*;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
+import java.util.Optional;
+import java.util.function.Function;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
-import java.util.function.Function;
 
 @Component
 @DrivenAdapter
@@ -102,7 +93,7 @@ class StripePaymentGateway implements PaymentGateway {
                                                 .setUnitAmount(item.price().amount().movePointRight(2).longValueExact())
                                                 .setProductData(
                                                         SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                                                .setName("Product Id: " + item.productId().value())
+                                                                .setName(item.productName())
                                                                 .build()
                                                 )
                                                 .build()

@@ -1,17 +1,17 @@
 package hu.hirannor.hexagonal.application.service.order;
 
-import hu.hirannor.hexagonal.application.usecase.order.ChangeOrderStatus;
-import hu.hirannor.hexagonal.application.usecase.order.OrderCreation;
-import hu.hirannor.hexagonal.application.usecase.order.OrderStatusChanging;
+import hu.hirannor.hexagonal.application.usecase.order.*;
 import hu.hirannor.hexagonal.domain.basket.BasketRepository;
+import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
+import hu.hirannor.hexagonal.domain.customer.Customer;
+import hu.hirannor.hexagonal.domain.customer.CustomerRepository;
 import hu.hirannor.hexagonal.domain.order.*;
 import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
 import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
+import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.function.Supplier;
 
 @ApplicationService
 class OrderCommandService implements
@@ -24,12 +24,15 @@ class OrderCommandService implements
 
     private final OrderRepository orders;
     private final BasketRepository baskets;
-
+    private final CustomerRepository customers;
 
     @Autowired
-    OrderCommandService(final OrderRepository orders, final BasketRepository baskets) {
+    OrderCommandService(final OrderRepository orders,
+                        final BasketRepository baskets,
+                        final CustomerRepository customers) {
         this.orders = orders;
         this.baskets = baskets;
+        this.customers = customers;
     }
 
     @Override
@@ -39,6 +42,12 @@ class OrderCommandService implements
         LOGGER.info("Start creating order with id :{} for customer id: {}",
             create.orderId().asText(),
             create.customer().asText());
+
+        final Customer customer = customers.findBy(create.customer())
+            .orElseThrow(failBecauseCustomerWasNotFoundBy(create.customer()));
+
+        if (customer.address() == null)
+            failBecauseMissingAddressDetails(customer.id());
 
         final Order order = Order.create(create);
         orders.save(order);
@@ -75,8 +84,17 @@ class OrderCommandService implements
         );
     }
 
+
+    private void failBecauseMissingAddressDetails(final CustomerId customer) {
+        throw new IllegalStateException("Cannot create order for customer: " + customer.asText() + "without address details");
+    }
+
     private Supplier<IllegalStateException> failBecauseOrderWasNotFoundBy(OrderId order) {
         return () -> new IllegalStateException("Order not found with id " + order);
+    }
+
+    private Supplier<IllegalStateException> failBecauseCustomerWasNotFoundBy(final CustomerId customer) {
+        return () -> new IllegalStateException("Customer not found with id " + customer);
     }
 
 }

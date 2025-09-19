@@ -1,9 +1,7 @@
 package hu.hirannor.hexagonal.application.service.product;
 
 import hu.hirannor.hexagonal.application.usecase.product.ProductCreation;
-import hu.hirannor.hexagonal.domain.product.CreateProduct;
-import hu.hirannor.hexagonal.domain.product.Product;
-import hu.hirannor.hexagonal.domain.product.ProductRepository;
+import hu.hirannor.hexagonal.domain.product.*;
 import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

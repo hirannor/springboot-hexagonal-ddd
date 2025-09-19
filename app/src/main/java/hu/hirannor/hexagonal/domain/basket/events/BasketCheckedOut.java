@@ -1,10 +1,9 @@
 package hu.hirannor.hexagonal.domain.basket.events;
 
-import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.basket.BasketItem;
+import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
 import hu.hirannor.hexagonal.infrastructure.event.EventId;
-
 import java.time.Instant;
 import java.util.List;
 

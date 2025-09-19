@@ -5,7 +5,6 @@ import hu.hirannor.hexagonal.adapter.web.rest.orders.model.OrderedProductModel;
 import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.domain.order.OrderItem;
 import hu.hirannor.hexagonal.domain.product.ProductId;
-
 import java.util.function.Function;
 
 public class OrderedProductModelToDomainMapper implements Function<OrderedProductModel, OrderItem> {

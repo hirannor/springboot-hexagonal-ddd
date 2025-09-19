@@ -1,22 +1,15 @@
 package hu.hirannor.hexagonal.domain.payment;
 
+import static hu.hirannor.hexagonal.domain.payment.PaymentStatus.*;
+
 import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.payment.command.StartPayment;
-import hu.hirannor.hexagonal.domain.payment.events.PaymentCanceled;
-import hu.hirannor.hexagonal.domain.payment.events.PaymentFailed;
-import hu.hirannor.hexagonal.domain.payment.events.PaymentInitialized;
-import hu.hirannor.hexagonal.domain.payment.events.PaymentSucceeded;
+import hu.hirannor.hexagonal.domain.payment.events.*;
 import hu.hirannor.hexagonal.infrastructure.aggregate.AggregateRoot;
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
-
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-
-import static hu.hirannor.hexagonal.domain.payment.PaymentStatus.*;
+import java.util.*;
 
 public class Payment extends AggregateRoot {
 

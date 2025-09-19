@@ -1,7 +1,6 @@
 package hu.hirannor.hexagonal.domain.basket;
 
 import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
-
 import java.util.Collections;
 import java.util.List;
 

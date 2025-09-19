@@ -7,19 +7,16 @@ import hu.hirannor.hexagonal.adapter.web.rest.products.model.CreateProductModel;
 import hu.hirannor.hexagonal.adapter.web.rest.products.model.ProductModel;
 import hu.hirannor.hexagonal.application.usecase.product.ProductCreation;
 import hu.hirannor.hexagonal.application.usecase.product.ProductDisplaying;
-import hu.hirannor.hexagonal.domain.product.CreateProduct;
-import hu.hirannor.hexagonal.domain.product.Product;
-import hu.hirannor.hexagonal.domain.product.ProductId;
+import hu.hirannor.hexagonal.domain.product.*;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
+import java.net.URI;
+import java.util.List;
+import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.net.URI;
-import java.util.List;
-import java.util.function.Function;
 
 @RestController
 @RequestMapping("/api")

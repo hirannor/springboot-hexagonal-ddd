@@ -1,45 +1,61 @@
 package hu.hirannor.hexagonal.application.service.basket;
 
 import hu.hirannor.hexagonal.application.usecase.basket.BasketDisplaying;
+import hu.hirannor.hexagonal.domain.basket.*;
 import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
-import hu.hirannor.hexagonal.domain.basket.Basket;
-import hu.hirannor.hexagonal.domain.basket.BasketId;
-import hu.hirannor.hexagonal.domain.basket.BasketRepository;
+import hu.hirannor.hexagonal.domain.product.*;
+import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
+import java.util.*;
+import java.util.function.BiFunction;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
-
-@Service
-@Transactional(
-    propagation = Propagation.REQUIRES_NEW,
-    isolation = Isolation.REPEATABLE_READ
-)
+@ApplicationService
 public class BasketQueryService implements BasketDisplaying {
+
     private final BasketRepository baskets;
+    private final ProductRepository products;
+    private final BiFunction<Basket, Map<ProductId, Product>, BasketView> mapBasketToView;
 
     @Autowired
-    BasketQueryService(final BasketRepository baskets) {
+    BasketQueryService(final BasketRepository baskets, final ProductRepository products) {
         this.baskets = baskets;
+        this.products = products;
+        this.mapBasketToView = new BasketToViewMapper();
     }
 
     @Override
-    public Optional<Basket> displayBy(final CustomerId customer) {
+    public Optional<BasketView> displayBy(final CustomerId customer) {
         if (customer == null) throw new IllegalArgumentException("CustomerId is null");
 
-        return baskets.findBy(customer);
+        return baskets.findBy(customer)
+            .map(this::mapToView);
     }
 
     @Override
-    public Optional<Basket> displayBy(final BasketId basket) {
-        if (basket == null) throw new IllegalArgumentException("basket is null");
-        return baskets.findBy(basket);
+    public Optional<BasketView> displayBy(final BasketId basketId) {
+        if (basketId == null) throw new IllegalArgumentException("basket is null");
+
+        return baskets.findBy(basketId)
+            .map(this::mapToView);
     }
 
     @Override
-    public List<Basket> displayAll() {
-        return baskets.findAll();
+    public List<BasketView> displayAll() {
+        return baskets.findAll().stream()
+            .map(this::mapToView)
+            .toList();
+    }
+
+    private BasketView mapToView(final Basket basket) {
+        final List<ProductId> productIds = basket.items().stream()
+            .map(BasketItem::productId)
+            .toList();
+
+        final Map<ProductId, Product> productMap = products.findAllBy(productIds)
+            .stream()
+            .collect(Collectors.toMap(Product::id, p -> p));
+
+        return mapBasketToView.apply(basket, productMap);
     }
 }

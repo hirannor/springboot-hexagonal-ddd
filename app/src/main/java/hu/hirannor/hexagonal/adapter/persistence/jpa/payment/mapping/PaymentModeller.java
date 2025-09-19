@@ -8,7 +8,6 @@ import hu.hirannor.hexagonal.domain.core.valueobject.Currency;
 import hu.hirannor.hexagonal.domain.payment.Payment;
 import hu.hirannor.hexagonal.domain.payment.PaymentStatus;
 import hu.hirannor.hexagonal.infrastructure.modelling.Modeller;
-
 import java.util.function.Function;
 
 public class PaymentModeller implements Modeller<PaymentModel> {

@@ -5,7 +5,6 @@ import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.order.OrderItem;
 import hu.hirannor.hexagonal.infrastructure.command.Command;
 import hu.hirannor.hexagonal.infrastructure.command.CommandId;
-
 import java.util.List;
 
 public record CreateOrder(CommandId id, OrderId orderId, CustomerId customer, List<OrderItem> orderItems) implements Command {

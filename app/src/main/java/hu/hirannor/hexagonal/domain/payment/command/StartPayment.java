@@ -5,7 +5,6 @@ import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.payment.PaymentId;
 import hu.hirannor.hexagonal.infrastructure.command.Command;
 import hu.hirannor.hexagonal.infrastructure.command.CommandId;
-
 import java.util.Objects;
 
 public record StartPayment(

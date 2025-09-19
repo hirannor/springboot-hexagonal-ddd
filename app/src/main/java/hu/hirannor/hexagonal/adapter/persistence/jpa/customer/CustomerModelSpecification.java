@@ -3,10 +3,9 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.customer;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
 import hu.hirannor.hexagonal.domain.core.valueobject.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.Gender;
-import org.springframework.data.jpa.domain.Specification;
-
 import java.time.LocalDate;
 import java.util.Optional;
+import org.springframework.data.jpa.domain.Specification;
 
 /**
  * Specification aggregator for customer specification operations.

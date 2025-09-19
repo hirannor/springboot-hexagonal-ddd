@@ -5,7 +5,6 @@ import hu.hirannor.hexagonal.adapter.web.rest.customer.model.AddressModel;
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.CountryModel;
 import hu.hirannor.hexagonal.domain.customer.Address;
 import hu.hirannor.hexagonal.domain.customer.Country;
-
 import java.util.function.Function;
 
 /**

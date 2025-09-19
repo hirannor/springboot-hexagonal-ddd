@@ -151,6 +151,10 @@ components:
       properties:
         productId:
           type: string
+        name:
+          type: string
+        description:
+          type: string
         quantity:
           type: integer
           minimum: 1

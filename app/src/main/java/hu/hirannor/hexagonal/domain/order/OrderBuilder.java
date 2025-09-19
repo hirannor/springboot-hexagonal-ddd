@@ -1,7 +1,6 @@
 package hu.hirannor.hexagonal.domain.order;
 
 import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
-
 import java.util.List;
 
 public class OrderBuilder {

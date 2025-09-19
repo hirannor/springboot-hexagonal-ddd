@@ -1,14 +1,11 @@
 package hu.hirannor.hexagonal.application.service.product;
 
 import hu.hirannor.hexagonal.application.usecase.product.ProductDisplaying;
-import hu.hirannor.hexagonal.domain.product.Product;
-import hu.hirannor.hexagonal.domain.product.ProductId;
-import hu.hirannor.hexagonal.domain.product.ProductRepository;
+import hu.hirannor.hexagonal.domain.product.*;
 import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @ApplicationService
 class ProductQueryService implements ProductDisplaying {

@@ -2,12 +2,11 @@ package hu.hirannor.hexagonal.infrastructure.event;
 
 import hu.hirannor.hexagonal.infrastructure.aggregate.Evented;
 import hu.hirannor.hexagonal.infrastructure.messaging.MessagePublisher;
+import java.util.Collection;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
-
-import java.util.Collection;
 
 /**
  * An annotation processor for processing events, such as publishing and clearing them from domain

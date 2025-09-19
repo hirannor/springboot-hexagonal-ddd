@@ -1,7 +1,6 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 
 /**

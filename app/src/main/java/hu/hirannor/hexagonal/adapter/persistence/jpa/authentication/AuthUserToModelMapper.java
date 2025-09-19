@@ -1,7 +1,6 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.authentication;
 
 import hu.hirannor.hexagonal.domain.authentication.AuthUser;
-
 import java.util.function.Function;
 
 class AuthUserToModelMapper implements Function<AuthUser, AuthUserModel> {

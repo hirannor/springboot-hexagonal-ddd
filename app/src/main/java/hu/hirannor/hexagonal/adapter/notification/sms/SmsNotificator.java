@@ -1,8 +1,6 @@
 package hu.hirannor.hexagonal.adapter.notification.sms;
 
-import hu.hirannor.hexagonal.application.port.notification.NotificationMessage;
-import hu.hirannor.hexagonal.application.port.notification.Notificator;
-import hu.hirannor.hexagonal.application.port.notification.SmsNotificationMessage;
+import hu.hirannor.hexagonal.application.port.notification.*;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

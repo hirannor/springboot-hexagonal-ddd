@@ -1,7 +1,6 @@
 package hu.hirannor.hexagonal.adapter.authentication.jwt;
 
 import hu.hirannor.hexagonal.domain.authentication.Role;
-
 import java.util.function.Function;
 
 class RoleModelToRoleMapper implements Function<RoleModel, Role> {

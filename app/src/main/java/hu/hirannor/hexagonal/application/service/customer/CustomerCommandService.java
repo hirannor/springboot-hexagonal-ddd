@@ -1,18 +1,17 @@
 package hu.hirannor.hexagonal.application.service.customer;
 
+import hu.hirannor.hexagonal.application.service.customer.error.CustomerNotFound;
 import hu.hirannor.hexagonal.application.usecase.authentication.CustomerDeletion;
 import hu.hirannor.hexagonal.application.usecase.customer.CustomerModification;
 import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.customer.Customer;
 import hu.hirannor.hexagonal.domain.customer.CustomerRepository;
 import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
-import hu.hirannor.hexagonal.application.service.customer.error.CustomerNotFound;
 import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
+import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.function.Supplier;
 
 /**
  * A service implementation of command related operations for customer management

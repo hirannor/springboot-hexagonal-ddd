@@ -2,7 +2,6 @@ package hu.hirannor.hexagonal.adapter.web.rest.order.mapping;
 
 import hu.hirannor.hexagonal.adapter.web.rest.orders.model.OrderStatusModel;
 import hu.hirannor.hexagonal.domain.order.OrderStatus;
-
 import java.util.function.Function;
 
 public class OrderStatusToModelMapper implements Function<OrderStatus, OrderStatusModel> {

@@ -2,13 +2,9 @@ package hu.hirannor.hexagonal.domain.customer.command;
 
 import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.core.valueobject.EmailAddress;
-import hu.hirannor.hexagonal.domain.customer.Address;
-import hu.hirannor.hexagonal.domain.customer.FirstName;
-import hu.hirannor.hexagonal.domain.customer.Gender;
-import hu.hirannor.hexagonal.domain.customer.LastName;
+import hu.hirannor.hexagonal.domain.customer.*;
 import hu.hirannor.hexagonal.infrastructure.command.Command;
 import hu.hirannor.hexagonal.infrastructure.command.CommandId;
-
 import java.time.Instant;
 import java.time.LocalDate;
 

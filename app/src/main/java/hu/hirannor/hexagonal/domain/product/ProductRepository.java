@@ -8,4 +8,5 @@ public interface ProductRepository {
     Product save(Product product);
     Optional<Product> findById(ProductId id);
     List<Product> findAll();
+    List<Product> findAllBy(List<ProductId> products);
 }

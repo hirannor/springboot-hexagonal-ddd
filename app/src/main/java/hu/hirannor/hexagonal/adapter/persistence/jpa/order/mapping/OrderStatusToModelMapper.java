@@ -2,7 +2,6 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.order.mapping;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.order.OrderStatusModel;
 import hu.hirannor.hexagonal.domain.order.OrderStatus;
-
 import java.util.function.Function;
 
 public class OrderStatusToModelMapper implements Function<OrderStatus, OrderStatusModel> {

@@ -3,7 +3,6 @@ package hu.hirannor.hexagonal.domain.product;
 import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.infrastructure.command.Command;
 import hu.hirannor.hexagonal.infrastructure.command.CommandId;
-
 import java.math.BigDecimal;
 import java.util.Objects;
 

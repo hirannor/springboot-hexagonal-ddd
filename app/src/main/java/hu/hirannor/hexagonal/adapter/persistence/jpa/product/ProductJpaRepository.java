@@ -2,18 +2,15 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.product;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.product.mapping.ProductModelToDomainMapper;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.product.mapping.ProductToModelMapper;
-import hu.hirannor.hexagonal.domain.product.Product;
-import hu.hirannor.hexagonal.domain.product.ProductId;
-import hu.hirannor.hexagonal.domain.product.ProductRepository;
+import hu.hirannor.hexagonal.domain.product.*;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
 import hu.hirannor.hexagonal.infrastructure.adapter.PersistenceAdapter;
 import hu.hirannor.hexagonal.infrastructure.event.EventPublisher;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @DrivenAdapter
 @PersistenceAdapter
@@ -66,5 +63,17 @@ class ProductJpaRepository implements ProductRepository {
                 .stream()
                 .map(mapModelToDomain)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Product> findAllBy(final List<ProductId> productIds) {
+        final List<String> rawIds = productIds.stream()
+            .map(ProductId::value)
+            .toList();
+
+        return products.findAllByProductIdIn(rawIds)
+            .stream()
+            .map(mapModelToDomain)
+            .toList();
     }
 }

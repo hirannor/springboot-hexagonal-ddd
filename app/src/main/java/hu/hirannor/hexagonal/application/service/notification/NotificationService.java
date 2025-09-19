@@ -1,23 +1,17 @@
 package hu.hirannor.hexagonal.application.service.notification;
 
-import hu.hirannor.hexagonal.application.port.notification.NotificationData;
-import hu.hirannor.hexagonal.application.port.notification.NotificationFactory;
-import hu.hirannor.hexagonal.application.port.notification.NotificationMessage;
-import hu.hirannor.hexagonal.application.port.notification.Notificator;
+import hu.hirannor.hexagonal.application.port.notification.*;
 import hu.hirannor.hexagonal.application.usecase.notification.NotificationSending;
 import hu.hirannor.hexagonal.application.usecase.notification.SendSystemNotification;
 import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.customer.Customer;
 import hu.hirannor.hexagonal.domain.customer.CustomerRepository;
-import hu.hirannor.hexagonal.domain.order.Order;
-import hu.hirannor.hexagonal.domain.order.OrderId;
-import hu.hirannor.hexagonal.domain.order.OrderRepository;
+import hu.hirannor.hexagonal.domain.order.*;
 import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
+import java.util.function.Supplier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.function.Supplier;
 
 @ApplicationService
 class NotificationService implements NotificationSending {

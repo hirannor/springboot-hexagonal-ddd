@@ -3,13 +3,9 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.customer;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel_;
 import hu.hirannor.hexagonal.domain.core.valueobject.EmailAddress;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-import org.springframework.data.jpa.domain.Specification;
-
+import jakarta.persistence.criteria.*;
 import java.io.Serial;
+import org.springframework.data.jpa.domain.Specification;
 
 /**
  * Specification implementation for matching a given email emailAddress.

@@ -5,9 +5,8 @@ import hu.hirannor.hexagonal.application.port.payment.PaymentRequest;
 import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
 import hu.hirannor.hexagonal.domain.payment.PaymentReceipt;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
-import org.springframework.stereotype.Component;
-
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 
 @Component
 @DrivenAdapter

@@ -2,7 +2,6 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.basket;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.CurrencyModel;
 import jakarta.persistence.*;
-
 import java.math.BigDecimal;
 
 @Entity

@@ -1,14 +1,11 @@
 package hu.hirannor.hexagonal.application.service.order;
 
 import hu.hirannor.hexagonal.application.usecase.order.OrderDisplaying;
-import hu.hirannor.hexagonal.domain.order.Order;
-import hu.hirannor.hexagonal.domain.order.OrderId;
-import hu.hirannor.hexagonal.domain.order.OrderRepository;
+import hu.hirannor.hexagonal.domain.order.*;
 import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @ApplicationService
 class OrderQueryService implements OrderDisplaying {

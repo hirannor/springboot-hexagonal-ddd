@@ -3,7 +3,6 @@ package hu.hirannor.hexagonal.domain.customer.query;
 import hu.hirannor.hexagonal.domain.core.valueobject.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.Gender;
 import hu.hirannor.hexagonal.infrastructure.query.Query;
-
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;

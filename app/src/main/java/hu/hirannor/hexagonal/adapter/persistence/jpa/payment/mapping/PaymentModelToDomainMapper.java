@@ -7,11 +7,7 @@ import hu.hirannor.hexagonal.adapter.persistence.jpa.payment.PaymentStatusModel;
 import hu.hirannor.hexagonal.domain.core.valueobject.Currency;
 import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.domain.order.OrderId;
-import hu.hirannor.hexagonal.domain.payment.Payment;
-import hu.hirannor.hexagonal.domain.payment.PaymentBuilder;
-import hu.hirannor.hexagonal.domain.payment.PaymentId;
-import hu.hirannor.hexagonal.domain.payment.PaymentStatus;
-
+import hu.hirannor.hexagonal.domain.payment.*;
 import java.util.function.Function;
 
 public class PaymentModelToDomainMapper implements Function<PaymentModel, Payment> {

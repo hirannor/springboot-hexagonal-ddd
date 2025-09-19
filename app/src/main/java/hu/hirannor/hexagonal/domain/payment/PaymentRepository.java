@@ -1,7 +1,6 @@
 package hu.hirannor.hexagonal.domain.payment;
 
 import hu.hirannor.hexagonal.domain.order.OrderId;
-
 import java.util.Optional;
 
 public interface PaymentRepository {

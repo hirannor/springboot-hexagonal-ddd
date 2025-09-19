@@ -1,9 +1,8 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.order;
 
-import org.springframework.data.repository.Repository;
-
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.repository.Repository;
 
 interface OrderSpringDataJpaRepository extends Repository<OrderModel, Long> {
     OrderModel save(OrderModel order);

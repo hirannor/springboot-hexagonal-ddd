@@ -4,7 +4,6 @@ import hu.hirannor.hexagonal.adapter.web.rest.orders.model.CurrencyModel;
 import hu.hirannor.hexagonal.adapter.web.rest.orders.model.MoneyModel;
 import hu.hirannor.hexagonal.domain.core.valueobject.Currency;
 import hu.hirannor.hexagonal.domain.core.valueobject.Money;
-
 import java.util.function.Function;
 
 public class MoneyToModelMapper implements Function<Money, MoneyModel> {

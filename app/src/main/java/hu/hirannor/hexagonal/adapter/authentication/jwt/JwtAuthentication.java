@@ -1,30 +1,25 @@
 package hu.hirannor.hexagonal.adapter.authentication.jwt;
 
 import hu.hirannor.hexagonal.application.port.authentication.Authenticator;
-import hu.hirannor.hexagonal.domain.core.valueobject.EmailAddress;
-import hu.hirannor.hexagonal.domain.authentication.*;
-import hu.hirannor.hexagonal.application.service.customer.error.CustomerNotFound;
 import hu.hirannor.hexagonal.application.service.authentication.error.InvalidPassword;
+import hu.hirannor.hexagonal.application.service.customer.error.CustomerNotFound;
+import hu.hirannor.hexagonal.domain.authentication.*;
+import hu.hirannor.hexagonal.domain.core.valueobject.EmailAddress;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import java.security.Key;
+import java.time.Instant;
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.security.Key;
-import java.time.Instant;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * Naive implementation of {@link Authenticator}

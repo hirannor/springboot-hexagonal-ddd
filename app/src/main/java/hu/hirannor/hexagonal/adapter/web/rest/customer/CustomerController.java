@@ -2,9 +2,7 @@ package hu.hirannor.hexagonal.adapter.web.rest.customer;
 
 import hu.hirannor.hexagonal.adapter.web.rest.customer.api.CustomersApi;
 import hu.hirannor.hexagonal.adapter.web.rest.customer.mapping.CustomerMappingFactory;
-import hu.hirannor.hexagonal.adapter.web.rest.customer.model.ChangePersonalDetailsModel;
-import hu.hirannor.hexagonal.adapter.web.rest.customer.model.CustomerModel;
-import hu.hirannor.hexagonal.adapter.web.rest.customer.model.GenderModel;
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
 import hu.hirannor.hexagonal.application.usecase.authentication.CustomerDeletion;
 import hu.hirannor.hexagonal.application.usecase.customer.CustomerDisplaying;
 import hu.hirannor.hexagonal.application.usecase.customer.CustomerModification;
@@ -15,17 +13,16 @@ import hu.hirannor.hexagonal.domain.customer.Gender;
 import hu.hirannor.hexagonal.domain.customer.command.ChangePersonalDetails;
 import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import hu.hirannor.hexagonal.infrastructure.adapter.DriverAdapter;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
 
 /**
  * Rest controller implementation of {@link CustomersApi}

@@ -2,7 +2,6 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.conversion;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-
 import java.sql.Timestamp;
 import java.time.Instant;
 

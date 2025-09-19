@@ -1,19 +1,15 @@
 package hu.hirannor.hexagonal.adapter.web.rest.customer.mapping;
 
-import hu.hirannor.hexagonal.adapter.web.rest.customer.model.AddressModel;
-import hu.hirannor.hexagonal.adapter.web.rest.customer.model.CountryModel;
-import hu.hirannor.hexagonal.adapter.web.rest.customer.model.CustomerModel;
-import hu.hirannor.hexagonal.adapter.web.rest.customer.model.GenderModel;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import hu.hirannor.hexagonal.adapter.web.rest.customer.model.*;
 import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.core.valueobject.EmailAddress;
 import hu.hirannor.hexagonal.domain.customer.*;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import java.time.LocalDate;
 import java.util.function.Function;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 @DisplayName("CustomerToModelMapper")
 class CustomerToModelMapperComponentTest {

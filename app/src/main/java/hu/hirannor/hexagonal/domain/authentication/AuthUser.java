@@ -1,7 +1,6 @@
 package hu.hirannor.hexagonal.domain.authentication;
 
 import hu.hirannor.hexagonal.domain.core.valueobject.EmailAddress;
-
 import java.util.Set;
 
 public record AuthUser(EmailAddress emailAddress, Password password, Set<Role> roles) {

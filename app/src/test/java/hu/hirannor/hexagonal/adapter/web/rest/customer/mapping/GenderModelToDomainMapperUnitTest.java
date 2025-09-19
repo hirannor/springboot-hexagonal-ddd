@@ -1,17 +1,16 @@
 package hu.hirannor.hexagonal.adapter.web.rest.customer.mapping;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import hu.hirannor.hexagonal.adapter.web.rest.customer.model.GenderModel;
 import hu.hirannor.hexagonal.domain.customer.Gender;
+import java.util.function.Function;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import java.util.function.Function;
-import java.util.stream.Stream;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("GenderModelToDomainMapper")
 class GenderModelToDomainMapperUnitTest {

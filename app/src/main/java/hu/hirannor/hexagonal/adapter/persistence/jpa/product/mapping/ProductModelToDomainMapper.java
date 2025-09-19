@@ -7,7 +7,6 @@ import hu.hirannor.hexagonal.domain.core.valueobject.Currency;
 import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.domain.product.Product;
 import hu.hirannor.hexagonal.domain.product.ProductId;
-
 import java.util.function.Function;
 
 public class ProductModelToDomainMapper implements Function<ProductModel, Product> {

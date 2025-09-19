@@ -1,26 +1,21 @@
 package hu.hirannor.hexagonal.application.service.payment;
 
-import hu.hirannor.hexagonal.application.port.payment.PaymentGateway;
-import hu.hirannor.hexagonal.application.port.payment.PaymentItem;
-import hu.hirannor.hexagonal.application.port.payment.PaymentRequest;
-import hu.hirannor.hexagonal.application.usecase.payment.HandlePaymentCallback;
-import hu.hirannor.hexagonal.application.usecase.payment.PaymentCallbackHandling;
-import hu.hirannor.hexagonal.application.usecase.payment.PaymentInitialization;
+import hu.hirannor.hexagonal.application.port.payment.*;
+import hu.hirannor.hexagonal.application.usecase.payment.*;
 import hu.hirannor.hexagonal.domain.order.*;
 import hu.hirannor.hexagonal.domain.order.command.InitializePayment;
 import hu.hirannor.hexagonal.domain.order.command.PaymentInstruction;
-import hu.hirannor.hexagonal.domain.payment.Payment;
-import hu.hirannor.hexagonal.domain.payment.PaymentMethod;
-import hu.hirannor.hexagonal.domain.payment.PaymentRepository;
+import hu.hirannor.hexagonal.domain.payment.*;
 import hu.hirannor.hexagonal.domain.payment.command.StartPayment;
+import hu.hirannor.hexagonal.domain.product.*;
 import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
+import java.util.List;
+import java.util.Map;
+import java.util.function.*;
+import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 @ApplicationService
 class PaymentService implements PaymentInitialization, PaymentCallbackHandling {
@@ -30,16 +25,19 @@ class PaymentService implements PaymentInitialization, PaymentCallbackHandling {
     private final PaymentRepository payments;
     private final OrderRepository orders;
     private final PaymentGateway payment;
+    private final ProductRepository products;
 
-    private final Function<OrderItem, PaymentItem> mapOrderItemToPaymentItem;
+    private final BiFunction<OrderItem, Map<ProductId, Product>, PaymentItem> mapOrderItemToPaymentItem;
 
     @Autowired
     PaymentService(final PaymentRepository payments,
                    final OrderRepository orders,
-                   final PaymentGateway payment) {
+                   final PaymentGateway payment,
+                   final ProductRepository products) {
         this.payments = payments;
         this.orders = orders;
         this.payment = payment;
+        this.products = products;
         this.mapOrderItemToPaymentItem = new OrderItemToPaymentItemMapper();
     }
 
@@ -52,9 +50,18 @@ class PaymentService implements PaymentInitialization, PaymentCallbackHandling {
         final Order order = orders.findBy(command.orderId())
                 .orElseThrow(failBecauseOrderWasNotFoundBy(command.orderId()));
 
+        final List<ProductId> productIds = order.orderItems()
+            .stream()
+            .map(OrderItem::productId)
+            .toList();
+
+        final Map<ProductId, Product> indexedProducts = products.findAllBy(productIds)
+            .stream()
+            .collect(Collectors.toMap(Product::id, p -> p));
+
         final List<PaymentItem> paymentItems = order.orderItems()
                 .stream()
-                .map(mapOrderItemToPaymentItem)
+                .map(mapOrderItemToPaymentItem(indexedProducts))
                 .toList();
 
         final PaymentInstruction instruction = payment.initialize(
@@ -87,7 +94,6 @@ class PaymentService implements PaymentInitialization, PaymentCallbackHandling {
         return instruction;
     }
 
-
     @Override
     public void handle(final HandlePaymentCallback command) {
         if (command == null) throw new IllegalArgumentException("HandlePaymentCallback is null");
@@ -119,6 +125,10 @@ class PaymentService implements PaymentInitialization, PaymentCallbackHandling {
                 },
                     () -> LOGGER.warn("Skipping payment callback handling")
                 );
+    }
+
+    private Function<OrderItem, PaymentItem> mapOrderItemToPaymentItem(final Map<ProductId, Product> productMap) {
+        return item -> mapOrderItemToPaymentItem.apply(item, productMap);
     }
 
     private Supplier<IllegalArgumentException> failBecauseOrderWasNotFoundBy(final OrderId order) {

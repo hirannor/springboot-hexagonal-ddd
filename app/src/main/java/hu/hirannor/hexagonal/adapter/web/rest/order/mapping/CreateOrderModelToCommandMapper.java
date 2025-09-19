@@ -5,7 +5,6 @@ import hu.hirannor.hexagonal.adapter.web.rest.orders.model.OrderedProductModel;
 import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
 import hu.hirannor.hexagonal.domain.order.OrderItem;
 import hu.hirannor.hexagonal.domain.order.command.CreateOrder;
-
 import java.util.List;
 import java.util.function.Function;
 

@@ -2,12 +2,11 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.customer;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerView;
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.Repository;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * A spring data repository for {@link CustomerModel} model notificationType.

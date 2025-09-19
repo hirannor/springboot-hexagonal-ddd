@@ -1,18 +1,17 @@
 package hu.hirannor.hexagonal.architecture;
 
 
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
+
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.library.GeneralCodingRules;
-import org.junit.jupiter.api.DisplayName;
-import org.springframework.stereotype.Service;
-
 import java.util.function.BiFunction;
 import java.util.function.Function;
-
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
+import org.junit.jupiter.api.DisplayName;
+import org.springframework.stereotype.Service;
 
 @AnalyzeClasses(packages = "hu.hirannor.hexagonal")
 @DisplayName("GeneralRulesArch")

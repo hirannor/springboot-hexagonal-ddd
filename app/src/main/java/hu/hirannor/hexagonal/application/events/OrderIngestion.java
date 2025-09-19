@@ -1,7 +1,6 @@
 package hu.hirannor.hexagonal.application.events;
 
 import hu.hirannor.hexagonal.application.port.notification.SystemNotificationType;
-import hu.hirannor.hexagonal.application.usecase.basket.BasketDeletion;
 import hu.hirannor.hexagonal.application.usecase.notification.NotificationSending;
 import hu.hirannor.hexagonal.application.usecase.notification.SendSystemNotification;
 import hu.hirannor.hexagonal.domain.order.events.OrderCreated;

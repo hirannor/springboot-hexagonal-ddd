@@ -1,5 +1,7 @@
 package hu.hirannor.hexagonal.architecture;
 
+import static hu.hirannor.hexagonal.architecture.reference.Ring.*;
+
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ImportOption;
@@ -7,8 +9,6 @@ import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.library.Architectures;
 import org.junit.jupiter.api.DisplayName;
-
-import static hu.hirannor.hexagonal.architecture.reference.Ring.*;
 
 @AnalyzeClasses(
         packages = "hu.hirannor.hexagonal",

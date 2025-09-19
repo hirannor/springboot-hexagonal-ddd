@@ -2,7 +2,6 @@ package hu.hirannor.hexagonal.adapter.payment.stripe.mapping;
 
 import com.stripe.param.checkout.SessionCreateParams;
 import hu.hirannor.hexagonal.domain.payment.PaymentMethod;
-
 import java.util.function.Function;
 
 public class PaymentMethodToTypeMapper implements Function<PaymentMethod, SessionCreateParams.PaymentMethodType> {

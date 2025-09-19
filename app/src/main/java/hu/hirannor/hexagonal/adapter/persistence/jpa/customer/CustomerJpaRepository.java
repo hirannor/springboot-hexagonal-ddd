@@ -1,5 +1,8 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.customer;
 
+import static hu.hirannor.hexagonal.adapter.persistence.jpa.customer.CustomerModelSpecification.*;
+import static org.springframework.data.jpa.domain.Specification.where;
+
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping.CustomerMappingFactory;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.mapping.CustomerModeller;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
@@ -12,16 +15,12 @@ import hu.hirannor.hexagonal.domain.customer.query.FilterCriteria;
 import hu.hirannor.hexagonal.infrastructure.adapter.DrivenAdapter;
 import hu.hirannor.hexagonal.infrastructure.adapter.PersistenceAdapter;
 import hu.hirannor.hexagonal.infrastructure.event.EventPublisher;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-
-import static hu.hirannor.hexagonal.adapter.persistence.jpa.customer.CustomerModelSpecification.*;
-import static org.springframework.data.jpa.domain.Specification.where;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Spring JPA implementation of {@link CustomerRepository} repository.

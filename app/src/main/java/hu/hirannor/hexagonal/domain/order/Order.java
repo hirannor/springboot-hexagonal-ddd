@@ -7,12 +7,8 @@ import hu.hirannor.hexagonal.domain.order.events.*;
 import hu.hirannor.hexagonal.domain.payment.PaymentReceipt;
 import hu.hirannor.hexagonal.infrastructure.aggregate.AggregateRoot;
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
-
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Supplier;
 
 public class Order extends AggregateRoot {

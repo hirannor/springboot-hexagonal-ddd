@@ -1,21 +1,17 @@
 package hu.hirannor.hexagonal.application.service.basket;
 
-import hu.hirannor.hexagonal.application.usecase.basket.BasketCheckout;
-import hu.hirannor.hexagonal.application.usecase.basket.BasketCreation;
-import hu.hirannor.hexagonal.application.usecase.basket.BasketDeletion;
-import hu.hirannor.hexagonal.application.usecase.basket.BasketProductHandling;
+import hu.hirannor.hexagonal.application.usecase.basket.*;
+import hu.hirannor.hexagonal.domain.basket.*;
+import hu.hirannor.hexagonal.domain.basket.command.*;
 import hu.hirannor.hexagonal.domain.core.valueobject.CustomerId;
-import hu.hirannor.hexagonal.domain.basket.Basket;
-import hu.hirannor.hexagonal.domain.basket.BasketId;
-import hu.hirannor.hexagonal.domain.basket.BasketRepository;
-import hu.hirannor.hexagonal.domain.basket.command.AddBasketItem;
-import hu.hirannor.hexagonal.domain.basket.command.CheckoutBasket;
-import hu.hirannor.hexagonal.domain.basket.command.CreateBasket;
-import hu.hirannor.hexagonal.domain.basket.command.RemoveBasketItem;
+import hu.hirannor.hexagonal.domain.product.*;
 import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
-import org.springframework.beans.factory.annotation.Autowired;
-
+import java.util.List;
+import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @ApplicationService
 class BasketCommandService implements
@@ -25,18 +21,25 @@ class BasketCommandService implements
         BasketProductHandling {
 
     private final BasketRepository baskets;
+    private final ProductRepository products;
+    private final BiFunction<Basket, Map<ProductId, Product>, BasketView> mapBasketToView;
+
 
     @Autowired
-    BasketCommandService(final BasketRepository baskets) {
+    BasketCommandService(final BasketRepository baskets, final ProductRepository products) {
         this.baskets = baskets;
+        this.products = products;
+        this.mapBasketToView = new BasketToViewMapper();
     }
 
     @Override
     public Basket create(final CreateBasket creation) {
         if (creation == null) throw new IllegalArgumentException("CreateBasket is null");
 
-        return baskets.findBy(creation.customerId())
-            .orElseGet(createBasketBy(creation));
+        final Basket basket = Basket.create(creation);
+        baskets.save(basket);
+
+        return basket;
     }
 
     @Override
@@ -47,7 +50,7 @@ class BasketCommandService implements
     }
 
     @Override
-    public Basket checkout(final CheckoutBasket command) {
+    public BasketView checkout(final CheckoutBasket command) {
         if (command == null) throw new IllegalArgumentException("CheckoutBasket is null");
 
         final Basket basket = baskets.findBy(command.customerId())
@@ -56,7 +59,7 @@ class BasketCommandService implements
         basket.checkout();
         baskets.save(basket);
 
-        return basket;
+        return mapToView(basket);
     }
 
     @Override
@@ -93,5 +96,17 @@ class BasketCommandService implements
 
     private static Supplier<IllegalStateException> failBecauseBasketWasNotFoundBy(final BasketId basketId) {
         return () -> new IllegalStateException("Basket with id " + basketId + " not found");
+    }
+
+    private BasketView mapToView(final Basket basket) {
+        final List<ProductId> productIds = basket.items().stream()
+            .map(BasketItem::productId)
+            .toList();
+
+        final Map<ProductId, Product> productMap = products.findAllBy(productIds)
+            .stream()
+            .collect(Collectors.toMap(Product::id, p -> p));
+
+        return mapBasketToView.apply(basket, productMap);
     }
 }

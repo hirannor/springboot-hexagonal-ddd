@@ -11,9 +11,7 @@ import hu.hirannor.hexagonal.adapter.persistence.jpa.JpaPersistenceConfiguration
 import hu.hirannor.hexagonal.adapter.web.rest.RestApiConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.*;
 
 /**
  * Main entry point of application.

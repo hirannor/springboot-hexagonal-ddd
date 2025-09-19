@@ -1,10 +1,7 @@
 package hu.hirannor.hexagonal.infrastructure.aggregate;
 
 import hu.hirannor.hexagonal.infrastructure.event.DomainEvent;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Abstraction of aggregate root

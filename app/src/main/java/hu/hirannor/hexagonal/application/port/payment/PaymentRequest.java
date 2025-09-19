@@ -4,7 +4,6 @@ import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.domain.order.OrderId;
 import hu.hirannor.hexagonal.domain.payment.PaymentMethod;
 import hu.hirannor.hexagonal.infrastructure.command.CommandId;
-
 import java.util.List;
 import java.util.Objects;
 

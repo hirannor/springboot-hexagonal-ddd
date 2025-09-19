@@ -4,7 +4,6 @@ import hu.hirannor.hexagonal.adapter.persistence.jpa.basket.BasketItemModel;
 import hu.hirannor.hexagonal.adapter.persistence.jpa.basket.BasketModel;
 import hu.hirannor.hexagonal.domain.basket.Basket;
 import hu.hirannor.hexagonal.domain.basket.BasketItem;
-
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;

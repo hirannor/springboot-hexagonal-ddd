@@ -1,7 +1,6 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa;
 
 import hu.hirannor.hexagonal.domain.core.valueobject.Currency;
-
 import java.util.function.Function;
 
 public class CurrencyModelToDomainMapper implements Function<CurrencyModel, Currency> {

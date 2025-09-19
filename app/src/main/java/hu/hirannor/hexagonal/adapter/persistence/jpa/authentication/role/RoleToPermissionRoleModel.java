@@ -1,7 +1,6 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.authentication.role;
 
 import hu.hirannor.hexagonal.domain.authentication.Role;
-
 import java.util.function.Function;
 
 class RoleToPermissionRoleModel implements Function<Role, PermissionRoleModel> {

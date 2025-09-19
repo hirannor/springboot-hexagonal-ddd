@@ -1,7 +1,6 @@
 package hu.hirannor.hexagonal.adapter.web.rest;
 
 import hu.hirannor.hexagonal.domain.authentication.Role;
-
 import java.util.function.Function;
 
 

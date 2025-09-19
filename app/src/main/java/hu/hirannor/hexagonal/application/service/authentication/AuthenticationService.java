@@ -2,15 +2,12 @@ package hu.hirannor.hexagonal.application.service.authentication;
 
 import hu.hirannor.hexagonal.application.port.authentication.Authenticator;
 import hu.hirannor.hexagonal.application.usecase.customer.Authenticating;
-import hu.hirannor.hexagonal.domain.authentication.AuthUser;
-import hu.hirannor.hexagonal.domain.authentication.AuthenticationResult;
-import hu.hirannor.hexagonal.domain.authentication.DoAuthenticate;
+import hu.hirannor.hexagonal.domain.authentication.*;
 import hu.hirannor.hexagonal.infrastructure.application.ApplicationService;
+import java.util.function.Function;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.function.Function;
 
 @ApplicationService
 class AuthenticationService implements Authenticating {

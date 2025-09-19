@@ -2,7 +2,6 @@ package hu.hirannor.hexagonal.domain.order;
 
 import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.domain.product.ProductId;
-
 import java.util.Objects;
 
 public record OrderItem(ProductId productId, int quantity, Money price) {

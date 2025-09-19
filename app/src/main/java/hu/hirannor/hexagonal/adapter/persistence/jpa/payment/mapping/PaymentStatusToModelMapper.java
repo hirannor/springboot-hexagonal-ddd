@@ -3,7 +3,6 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.payment.mapping;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.payment.PaymentStatusModel;
 import hu.hirannor.hexagonal.domain.payment.PaymentStatus;
-
 import java.util.function.Function;
 
 public class PaymentStatusToModelMapper implements Function<PaymentStatus, PaymentStatusModel> {

@@ -5,7 +5,6 @@ import hu.hirannor.hexagonal.adapter.persistence.jpa.basket.BasketModel;
 import hu.hirannor.hexagonal.domain.basket.Basket;
 import hu.hirannor.hexagonal.domain.basket.BasketItem;
 import hu.hirannor.hexagonal.infrastructure.modelling.Modeller;
-
 import java.util.function.Function;
 
 public class BasketModeller implements Modeller<BasketModel> {

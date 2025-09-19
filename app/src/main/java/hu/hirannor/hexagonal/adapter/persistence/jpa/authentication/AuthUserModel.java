@@ -2,7 +2,6 @@ package hu.hirannor.hexagonal.adapter.persistence.jpa.authentication;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.authentication.role.RoleModel;
 import jakarta.persistence.*;
-
 import java.util.HashSet;
 import java.util.Set;
 

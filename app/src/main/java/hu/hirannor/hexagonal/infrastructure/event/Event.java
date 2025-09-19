@@ -1,7 +1,6 @@
 package hu.hirannor.hexagonal.infrastructure.event;
 
 import hu.hirannor.hexagonal.infrastructure.messaging.Message;
-
 import java.time.Instant;
 
 /**

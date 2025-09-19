@@ -1,13 +1,9 @@
 package hu.hirannor.hexagonal.adapter.persistence.jpa.customer;
 
 import hu.hirannor.hexagonal.adapter.persistence.jpa.customer.model.CustomerModel;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-import org.springframework.data.jpa.domain.Specification;
-
+import jakarta.persistence.criteria.*;
 import java.io.Serial;
+import org.springframework.data.jpa.domain.Specification;
 
 /**
  * Always true specification for ignoring query result.

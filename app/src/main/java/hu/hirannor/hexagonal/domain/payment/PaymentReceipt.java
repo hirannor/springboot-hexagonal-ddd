@@ -2,7 +2,6 @@ package hu.hirannor.hexagonal.domain.payment;
 
 import hu.hirannor.hexagonal.domain.core.valueobject.Money;
 import hu.hirannor.hexagonal.domain.order.OrderId;
-
 import java.util.Objects;
 
 public record PaymentReceipt(
