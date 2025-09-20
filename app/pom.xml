@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>hu.hirannor.hexagonal</groupId>
+    <groupId>io.github.hirannor.oms</groupId>
     <artifactId>app</artifactId>
     <name>Application</name>
     <description>Application</description>
@@ -27,7 +27,7 @@
         <postgresql.version>42.7.8</postgresql.version>
         <springdoc-openapi-starter-webmvc-ui.version>2.8.13</springdoc-openapi-starter-webmvc-ui.version>
         <junit-jupiter.version>1.21.3</junit-jupiter.version>
-        <spring-boot-maven-plugin.mainClass>hu.hirannor.hexagonal.HexagonalApplication
+        <spring-boot-maven-plugin.mainClass>io.github.hirannor.oms.OrderManagementSystemApplication
         </spring-boot-maven-plugin.mainClass>
         <snakeyaml.version>2.2</snakeyaml.version>
         <jakarta.validation-api.version>3.1.0-M2</jakarta.validation-api.version>
@@ -46,9 +46,9 @@
             <version>${spring-boot.version}</version>
         </dependency>
         <dependency>
-            <groupId>hu.hirannor.hexagonal</groupId>
+            <groupId>io.github.hirannor.oms</groupId>
             <artifactId>rest-api-spring-server</artifactId>
-            <version>${rest-api-spring-server.version}</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

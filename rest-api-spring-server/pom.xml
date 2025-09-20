@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>hu.hirannor.hexagonal</groupId>
+    <groupId>io.github.hirannor.oms</groupId>
     <artifactId>rest-api-spring-server</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
@@ -19,25 +19,25 @@
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <rest-api-definition.version>1.0.0-SNAPSHOT</rest-api-definition.version>
-        <openapi-generator-maven-plugin.customers.apiPackage>hu.hirannor.hexagonal.adapter.web.rest.customer.api
+        <openapi-generator-maven-plugin.customers.apiPackage>io.github.hirannor.oms.adapter.web.rest.customer.api
         </openapi-generator-maven-plugin.customers.apiPackage>
-        <openapi-generator-maven-plugin.customers.modelPackage>hu.hirannor.hexagonal.adapter.web.rest.customer.model
+        <openapi-generator-maven-plugin.customers.modelPackage>io.github.hirannor.oms.adapter.web.rest.customer.model
         </openapi-generator-maven-plugin.customers.modelPackage>
-        <openapi-generator-maven-plugin.authentication.apiPackage>hu.hirannor.hexagonal.adapter.web.rest.authentication.api
+        <openapi-generator-maven-plugin.authentication.apiPackage>io.github.hirannor.oms.adapter.web.rest.authentication.api
         </openapi-generator-maven-plugin.authentication.apiPackage>
-        <openapi-generator-maven-plugin.authentication.modelPackage>hu.hirannor.hexagonal.adapter.web.rest.authentication.model
+        <openapi-generator-maven-plugin.authentication.modelPackage>io.github.hirannor.oms.adapter.web.rest.authentication.model
         </openapi-generator-maven-plugin.authentication.modelPackage>
-        <openapi-generator-maven-plugin.products.apiPackage>hu.hirannor.hexagonal.adapter.web.rest.products.api
+        <openapi-generator-maven-plugin.products.apiPackage>io.github.hirannor.oms.adapter.web.rest.products.api
         </openapi-generator-maven-plugin.products.apiPackage>
-        <openapi-generator-maven-plugin.products.modelPackage>hu.hirannor.hexagonal.adapter.web.rest.products.model
+        <openapi-generator-maven-plugin.products.modelPackage>io.github.hirannor.oms.adapter.web.rest.products.model
         </openapi-generator-maven-plugin.products.modelPackage>
-        <openapi-generator-maven-plugin.orders.apiPackage>hu.hirannor.hexagonal.adapter.web.rest.orders.api
+        <openapi-generator-maven-plugin.orders.apiPackage>io.github.hirannor.oms.adapter.web.rest.orders.api
         </openapi-generator-maven-plugin.orders.apiPackage>
-        <openapi-generator-maven-plugin.orders.modelPackage>hu.hirannor.hexagonal.adapter.web.rest.orders.model
+        <openapi-generator-maven-plugin.orders.modelPackage>io.github.hirannor.oms.adapter.web.rest.orders.model
         </openapi-generator-maven-plugin.orders.modelPackage>
-        <openapi-generator-maven-plugin.baskets.apiPackage>hu.hirannor.hexagonal.adapter.web.rest.baskets.api
+        <openapi-generator-maven-plugin.baskets.apiPackage>io.github.hirannor.oms.adapter.web.rest.baskets.api
         </openapi-generator-maven-plugin.baskets.apiPackage>
-        <openapi-generator-maven-plugin.baskets.modelPackage>hu.hirannor.hexagonal.adapter.web.rest.baskets.model
+        <openapi-generator-maven-plugin.baskets.modelPackage>io.github.hirannor.oms.adapter.web.rest.baskets.model
         </openapi-generator-maven-plugin.baskets.modelPackage>
         <jjwt-api.version>0.11.5</jjwt-api.version>
         <jjwt-impl.version>0.11.5</jjwt-impl.version>
@@ -46,7 +46,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>hu.hirannor.hexagonal</groupId>
+            <groupId>io.github.hirannor.oms</groupId>
             <artifactId>rest-api-definition</artifactId>
             <version>${rest-api-definition.version}</version>
         </dependency>
@@ -113,7 +113,7 @@
                         <configuration>
                             <artifactItems>
                                 <artifactItem>
-                                    <groupId>hu.hirannor.hexagonal</groupId>
+                                    <groupId>io.github.hirannor.oms</groupId>
                                     <artifactId>rest-api-definition</artifactId>
                                     <version>${rest-api-definition.version}</version>
                                     <outputDirectory>${project.build.directory}</outputDirectory>
