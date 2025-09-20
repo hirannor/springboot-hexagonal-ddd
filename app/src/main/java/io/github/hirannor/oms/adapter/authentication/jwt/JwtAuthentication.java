@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
@@ -42,21 +43,24 @@ class JwtAuthentication implements Authenticator {
     private final Function<RoleModel, Role> mapRoleModelToRole;
 
     private final AuthenticationRepository authentications;
-    private final Key jwtKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final SecretKey key;
     private final BCryptPasswordEncoder encoder;
 
     @Autowired
     JwtAuthentication(final AuthenticationRepository authentications,
-                      final BCryptPasswordEncoder encoder) {
-       this(authentications, encoder, new RoleModelToRoleMapper());
+                      final BCryptPasswordEncoder encoder,
+                      final SecretKey key) {
+       this(authentications, encoder, new RoleModelToRoleMapper(), key);
     }
 
     JwtAuthentication(final AuthenticationRepository authentications,
                       final BCryptPasswordEncoder encoder,
-                      final Function<RoleModel, Role> mapRoleModelToRole) {
+                      final Function<RoleModel, Role> mapRoleModelToRole,
+                      final SecretKey key) {
         this.authentications = authentications;
         this.encoder = encoder;
         this.mapRoleModelToRole = mapRoleModelToRole;
+        this.key = key;
     }
 
     @Override
@@ -80,11 +84,11 @@ class JwtAuthentication implements Authenticator {
     @Override
     public AuthUser validateToken(final String token) {
         try {
-            final Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(jwtKey)
+            final Claims claims = Jwts.parser()
+                    .verifyWith(key)
                     .build()
-                    .parseClaimsJws(token)
-                    .getBody();
+                    .parseSignedClaims(token)
+                    .getPayload();
 
             final String email = claims.getSubject();
             final Set<Role> roles = ((List<String>) claims.get("roles"))
@@ -125,11 +129,11 @@ class JwtAuthentication implements Authenticator {
                 .toList();
 
         return Jwts.builder()
-                .setSubject(user.emailAddress().value())
+                .subject(user.emailAddress().value())
                 .claim("roles", roles)
-                .setIssuedAt(Date.from(now))
-                .setExpiration(Date.from(now.plusSeconds(3600)))
-                .signWith(jwtKey)
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(now.plusSeconds(3600)))
+                .signWith(key)
                 .compact();
     }
 

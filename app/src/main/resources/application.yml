@@ -43,3 +43,7 @@ payment:
 
 email:
   from: no-reply@yourapp.com
+
+security:
+  jwt:
+    secret: Xq8y7u4y6j7s9aVn7xDk0JZ4k1vHz3oZlwjrXbVZpCk=

@@ -15,9 +15,8 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot.version>3.5.6</spring-boot.version>
-        <liquibase-core.version>4.20.0</liquibase-core.version>
-        <h2.version>2.1.214</h2.version>
-        <jackson-annotations.version>2.15.1</jackson-annotations.version>
+        <liquibase-core.version>4.33.0</liquibase-core.version>
+        <jackson-annotations.version>2.20</jackson-annotations.version>
         <rest-api-spring-server.version>1.0.0-SNAPSHOT</rest-api-spring-server.version>
         <hibernate-jpamodelgen.version>6.1.7.Final</hibernate-jpamodelgen.version>
         <maven-failsafe-plugin.version>3.0.0-M7</maven-failsafe-plugin.version>
@@ -30,7 +29,7 @@
         <spring-boot-maven-plugin.mainClass>io.github.hirannor.oms.OrderManagementSystemApplication
         </spring-boot-maven-plugin.mainClass>
         <snakeyaml.version>2.2</snakeyaml.version>
-        <jakarta.validation-api.version>3.1.0-M2</jakarta.validation-api.version>
+        <jakarta.validation-api.version>3.1.1</jakarta.validation-api.version>
         <stripe-java.version>29.5.0</stripe-java.version>
     </properties>
 
@@ -84,12 +83,6 @@
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase-core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
-            <version>${h2.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

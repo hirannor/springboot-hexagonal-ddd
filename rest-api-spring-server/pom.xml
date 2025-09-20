@@ -12,8 +12,8 @@
     <properties>
         <spring-boot.version>3.5.6</spring-boot.version>
         <open-api-generator.version>6.0.1</open-api-generator.version>
-        <openapitools-jackson-databind-nullable.version>0.2.6</openapitools-jackson-databind-nullable.version>
-        <swagger-parser.version>2.1.22</swagger-parser.version>
+        <openapitools-jackson-databind-nullable.version>0.2.7</openapitools-jackson-databind-nullable.version>
+        <swagger-parser.version>2.1.34</swagger-parser.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>21</maven.compiler.source>
@@ -39,9 +39,9 @@
         </openapi-generator-maven-plugin.baskets.apiPackage>
         <openapi-generator-maven-plugin.baskets.modelPackage>io.github.hirannor.oms.adapter.web.rest.baskets.model
         </openapi-generator-maven-plugin.baskets.modelPackage>
-        <jjwt-api.version>0.11.5</jjwt-api.version>
-        <jjwt-impl.version>0.11.5</jjwt-impl.version>
-        <jjwt-jackson.version>0.11.5</jjwt-jackson.version>
+        <jjwt-api.version>0.13.0</jjwt-api.version>
+        <jjwt-impl.version>0.13.0</jjwt-impl.version>
+        <jjwt-jackson.version>0.13.0</jjwt-jackson.version>
     </properties>
 
     <dependencies>
