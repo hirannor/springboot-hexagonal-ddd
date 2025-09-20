@@ -22,7 +22,7 @@ class OrderErrorHandler {
         final ProblemDetailsModel message = new ProblemDetailsModel()
                 .timestamp(Instant.now())
                 .status(HttpStatus.NOT_FOUND.value())
-                .title("Customer not found")
+                .title("Order not found")
                 .instance(request.getRequestURI())
                 .detail(ex.getMessage());
 

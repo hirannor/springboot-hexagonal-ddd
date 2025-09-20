@@ -1,6 +1,7 @@
 package io.github.hirannor.oms.application.service.basket;
 
 import io.github.hirannor.oms.application.service.basket.error.BasketNotFound;
+import io.github.hirannor.oms.application.service.customer.error.CustomerNotFound;
 import io.github.hirannor.oms.application.usecase.basket.BasketCheckout;
 import io.github.hirannor.oms.application.usecase.basket.BasketCreation;
 import io.github.hirannor.oms.application.usecase.basket.BasketDeletion;
@@ -14,6 +15,7 @@ import io.github.hirannor.oms.domain.basket.command.CheckoutBasket;
 import io.github.hirannor.oms.domain.basket.command.CreateBasket;
 import io.github.hirannor.oms.domain.basket.command.RemoveBasketItem;
 import io.github.hirannor.oms.domain.core.valueobject.CustomerId;
+import io.github.hirannor.oms.domain.customer.CustomerRepository;
 import io.github.hirannor.oms.domain.product.Product;
 import io.github.hirannor.oms.domain.product.ProductId;
 import io.github.hirannor.oms.domain.product.ProductRepository;
@@ -34,13 +36,16 @@ class BasketCommandService implements
         BasketProductHandling {
 
     private final BasketRepository baskets;
+    private final CustomerRepository customers;
     private final ProductRepository products;
     private final BiFunction<Basket, Map<ProductId, Product>, BasketView> mapBasketToView;
 
 
     @Autowired
-    BasketCommandService(final BasketRepository baskets, final ProductRepository products) {
+    BasketCommandService(final BasketRepository baskets, CustomerRepository customers,
+                         final ProductRepository products) {
         this.baskets = baskets;
+        this.customers = customers;
         this.products = products;
         this.mapBasketToView = new BasketToViewMapper();
     }
@@ -48,6 +53,9 @@ class BasketCommandService implements
     @Override
     public Basket create(final CreateBasket creation) {
         if (creation == null) throw new IllegalArgumentException("CreateBasket is null");
+
+        customers.findBy(creation.customerId())
+                .orElseThrow(failBecauseCustomerWasNotFoundBy(creation.customerId()));
 
         final Basket basket = Basket.create(creation);
         baskets.save(basket);
@@ -93,6 +101,10 @@ class BasketCommandService implements
 
         basket.removeProduct(command.item());
         baskets.save(basket);
+    }
+
+    private Supplier<CustomerNotFound> failBecauseCustomerWasNotFoundBy(final CustomerId id) {
+        return () -> new CustomerNotFound("Customer not found with id:" + id.asText());
     }
 
     private static Supplier<BasketNotFound> failBecauseBasketWasNotFoundBy(final CustomerId customerId) {
