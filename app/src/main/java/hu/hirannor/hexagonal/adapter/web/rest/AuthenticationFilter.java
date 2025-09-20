@@ -107,7 +107,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
                            final String detail) throws IOException {
 
         final ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
-        problem.setTitle("Forbidden");
+        problem.setTitle("UNAUTHORIZED");
         problem.setDetail(detail);
         problem.setInstance(URI.create(request.getRequestURI()));
 

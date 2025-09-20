@@ -26,7 +26,7 @@ class AuthenticationErrorHandler {
                 .instance(request.getRequestURI())
                 .detail(ex.getMessage());
 
-        return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(InvalidJwtToken.class)
@@ -38,7 +38,7 @@ class AuthenticationErrorHandler {
                 .instance(request.getRequestURI())
                 .detail(ex.getMessage());
 
-        return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(AuthUserNotFound.class)
@@ -50,6 +50,6 @@ class AuthenticationErrorHandler {
                 .instance(request.getRequestURI())
                 .detail(ex.getMessage());
 
-        return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(message, HttpStatus.UNAUTHORIZED);
     }
 }

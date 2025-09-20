@@ -36,6 +36,6 @@ class GlobalErrorHandler {
                 .instance(request.getRequestURI())
                 .detail(ex.getMessage());
 
-        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(message, HttpStatus.CONFLICT);
     }
 }
