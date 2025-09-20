@@ -54,14 +54,15 @@ class CustomerViewToDomainMapper implements Function<CustomerView, Customer> {
             .map(LastName::from)
             .ifPresent(builder::lastName);
 
-        final Address address = Address.from(
-                Optional.ofNullable(view.getCountry()).map(mapCountryModelToDomain).orElse(Country.HUNGARY),
-                Optional.ofNullable(view.getCity()).orElse(""),
-                Optional.ofNullable(view.getPostalCode()).map(PostalCode::from).orElse(PostalCode.empty()),
-                Optional.ofNullable(view.getStreetAddress()).orElse("")
-        );
-
-        builder.address(address);
+        if (isCompleteAddress(view)) {
+            Address address = Address.from(
+                    mapCountryModelToDomain.apply(view.getCountry()),
+                    view.getCity(),
+                    PostalCode.from(view.getPostalCode()),
+                    view.getStreetAddress()
+            );
+            builder.address(address);
+        }
 
         Optional.ofNullable(view.getBirthDate())
                 .ifPresent(builder::birthDate);
@@ -70,5 +71,11 @@ class CustomerViewToDomainMapper implements Function<CustomerView, Customer> {
 
     }
 
+    private boolean isCompleteAddress(CustomerView view) {
+        return view.getCountry() != null
+                && view.getPostalCode() != null
+                && view.getCity() != null && !view.getCity().isBlank()
+                && view.getStreetAddress() != null && !view.getStreetAddress().isBlank();
+    }
 }
 

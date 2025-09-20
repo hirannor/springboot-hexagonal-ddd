@@ -5,6 +5,7 @@ info:
   description: API for managing Orders
 security:
   - bearerAuth: []
+
 paths:
   /orders:
     post:
@@ -23,6 +24,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Order'
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
     get:
       summary: List all orders
       operationId: displayAll
@@ -35,6 +49,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Order'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
 
   /orders/{orderId}:
     get:
@@ -55,6 +75,11 @@ paths:
                 $ref: '#/components/schemas/Order'
         '404':
           description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
   /orders/{orderId}/pay:
     post:
       summary: Mark order as paid
@@ -67,15 +92,24 @@ paths:
             type: string
       responses:
         '200':
-          description: The order
+          description: Payment initiated
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PayOrderResponse'
         '400':
           description: Invalid order status or customer mismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
         '404':
           description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
   /orders/{orderId}/cancel:
     post:
       summary: Mark order as canceled
@@ -91,8 +125,17 @@ paths:
           description: Order marked as canceled
         '400':
           description: Invalid order status or customer mismatch
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
         '404':
           description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
   /orders/{orderId}/status:
     patch:
       summary: Change the status of an order
@@ -114,8 +157,17 @@ paths:
           description: Order status updated
         '400':
           description: Invalid status transition
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
         '404':
           description: Order not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
 components:
   securitySchemes:
     bearerAuth:
@@ -125,12 +177,11 @@ components:
     basicAuth:
       type: http
       scheme: basic
+
   schemas:
     Currency:
       type: string
-      enum:
-        - HUF
-        - EUR
+      enum: [HUF, EUR]
 
     Money:
       type: object
@@ -166,31 +217,17 @@ components:
             $ref: '#/components/schemas/OrderedProduct'
       required: [customerId, products]
 
-    PayOrder:
-      type: object
-      properties:
-        orderId:
-          type: string
-      required: [orderId]
-
     PayOrderResponse:
       type: object
       properties:
         paymentUrl:
           type: string
-          description: "Redirect URL to the Checkout page or payment gateway page"
+          description: Redirect URL to the Checkout page or payment gateway page
         orderId:
           type: string
         amount:
           $ref: '#/components/schemas/Money'
-      required: [ paymentStatus, paymentUrl, orderId, amount, currency ]
-
-    CancelOrder:
-      type: object
-      properties:
-        orderId:
-          type: string
-      required: [ orderId ]
+      required: [paymentUrl, orderId, amount]
 
     ChangeOrderStatus:
       type: object
@@ -207,7 +244,7 @@ components:
         id:
           type: string
         status:
-            $ref: '#/components/schemas/OrderStatus'
+          $ref: '#/components/schemas/OrderStatus'
         orderedProducts:
           type: array
           items:
@@ -220,6 +257,7 @@ components:
         totalPrice:
           $ref: '#/components/schemas/Money'
       required: [id, status, orderedProducts, customerId, createdAt, totalPrice]
+
     OrderStatus:
       type: string
       enum:
@@ -234,3 +272,23 @@ components:
         - CANCELLED
         - RETURNED
         - REFUNDED
+
+    ProblemDetails:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type: string
+        fields:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of fieldName -> validation error message

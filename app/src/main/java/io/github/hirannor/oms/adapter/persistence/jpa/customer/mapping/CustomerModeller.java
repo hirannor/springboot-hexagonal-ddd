@@ -7,6 +7,7 @@ import io.github.hirannor.oms.domain.customer.*;
 import io.github.hirannor.oms.infrastructure.modelling.Modeller;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -60,33 +61,20 @@ public class CustomerModeller implements Modeller<CustomerModel> {
                 .ifPresent(model::setBirthDate);
 
         Optional.ofNullable(domain.address())
-                .map(mapToCountryModel())
-                .ifPresent(model::setCountry);
-
-        Optional.ofNullable(domain.address())
-                .map(mapToPostalCode())
-                .ifPresent(model::setPostalCode);
-
-        Optional.ofNullable(domain.address())
-                .map(Address::city)
-                .ifPresent(model::setCity);
-
-        Optional.ofNullable(domain.address())
-                .map(Address::streetAddress)
-                .ifPresent(model::setStreetAddress);
+                .filter(Address::isComplete)
+                .ifPresent(updateAddressOn(model));
 
         model.setEmailAddress(domain.emailAddress().value());
 
         return model;
     }
 
-    private Function<Address, CountryModel> mapToCountryModel() {
-        final Function<Address, Country> extractCountry = Address::country;
-        return extractCountry.andThen(mapCountryToModel);
-    }
-
-    private Function<Address, Integer> mapToPostalCode() {
-        Function<Address, PostalCode> extractPostalCode = Address::postalCode;
-        return extractPostalCode.andThen(PostalCode::value);
+    private Consumer<Address> updateAddressOn(CustomerModel model) {
+        return addr -> {
+            model.setCountry(mapCountryToModel.apply(addr.country()));
+            model.setPostalCode(addr.postalCode().value());
+            model.setCity(addr.city());
+            model.setStreetAddress(addr.streetAddress());
+        };
     }
 }

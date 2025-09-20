@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Domain specific customer object.
@@ -100,12 +101,11 @@ public class Customer extends AggregateRoot {
      * @return a modified instance of {@link Customer}
      */
     public Customer changePersonalDetailsBy(final ChangePersonalDetails cmd) {
-        this.firstName = cmd.firstName();
-        this.lastName = cmd.lastName();
-        this.birthDate = cmd.birthDate();
-        this.address = cmd.address();
-        this.gender = cmd.gender();
-        this.emailAddress = cmd.email();
+        Optional.ofNullable(cmd.firstName()).ifPresent(this::changeFirstName);
+        Optional.ofNullable(cmd.lastName()).ifPresent(this::changeLastName);
+        Optional.ofNullable(cmd.birthDate()).ifPresent(this::changeBirthDate);
+        Optional.ofNullable(cmd.gender()).ifPresent(this::changeGender);
+        Optional.ofNullable(cmd.address()).ifPresent(this::updateAddress);
 
         this.events.add(PersonalDetailsChanged.issue(customerId));
 
@@ -153,4 +153,15 @@ public class Customer extends AggregateRoot {
     public List<DomainEvent> events() {
         return List.copyOf(events);
     }
+
+    private void changeFirstName(final FirstName firstName) { this.firstName = firstName; }
+
+    private void changeLastName(final LastName lastName) { this.lastName = lastName; }
+
+    private void changeGender(final Gender gender) { this.gender = gender; }
+
+    private void changeBirthDate(final LocalDate birthDate) { this.birthDate = birthDate; }
+
+    private void updateAddress(final Address address) { this.address = address; }
+
 }

@@ -24,6 +24,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Basket'
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '409':
+          description: Basket already exists for customer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
     get:
       summary: List all baskets (admin)
       operationId: displayAll
@@ -36,6 +48,12 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Basket'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
 
   /baskets/{customerId}:
     get:
@@ -56,6 +74,11 @@ paths:
                 $ref: '#/components/schemas/Basket'
         '404':
           description: Basket not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
   /baskets/{basketId}/items:
     post:
       summary: Add item to basket
@@ -75,8 +98,18 @@ paths:
       responses:
         '200':
           description: Item added
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
         '404':
           description: Basket not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
 
     delete:
       summary: Remove item from basket
@@ -96,8 +129,18 @@ paths:
       responses:
         '200':
           description: Item removed
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
         '404':
           description: Basket not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
 
   /baskets/{customerId}/checkout:
     post:
@@ -116,8 +159,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Basket'
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
         '404':
           description: Basket not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
 
 components:
   securitySchemes:
@@ -191,3 +244,23 @@ components:
         - customerId
         - items
         - totalPrice
+
+    ProblemDetails:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type: string
+        fields:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of fieldName -> validation error message

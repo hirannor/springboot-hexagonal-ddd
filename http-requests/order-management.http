@@ -51,8 +51,8 @@ Authorization: Bearer {{bearerToken}}
 GET http://localhost:8080/api/customers/{{customerId}}
 Authorization: Bearer {{bearerToken}}
 
-### Update a customer by ID (PUT /api/customers/{customerId})
-PUT http://localhost:8080/api/customers/{{customerId}}
+### Update a customer by ID (PATCH /api/customers/{customerId})
+PATCH http://localhost:8080/api/customers/{{customerId}}
 Content-Type: application/json
 Authorization: Bearer {{bearerToken}}
 
@@ -66,8 +66,7 @@ Authorization: Bearer {{bearerToken}}
     "postalCode": 1007,
     "streetAddress": "Wolf street 15"
   },
-  "gender": "MALE",
-  "emailAddress": "test@example.com"
+  "gender": "MALE"
 }
 
 ### Get all customers with query parameters (GET /api/customers)

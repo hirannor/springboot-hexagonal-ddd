@@ -1,6 +1,6 @@
 package io.github.hirannor.oms.adapter.web.rest.order;
 
-import io.github.hirannor.oms.adapter.web.rest.customer.model.ProblemDetailsModel;
+import io.github.hirannor.oms.adapter.web.rest.orders.model.ProblemDetailsModel;
 import io.github.hirannor.oms.application.service.order.error.OrderCannotBeCreatedWithoutAddress;
 import io.github.hirannor.oms.application.service.order.error.OrderNotFound;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +18,7 @@ class OrderErrorHandler {
     }
 
     @ExceptionHandler(OrderNotFound.class)
-    ResponseEntity<?> orderNotFound(final OrderNotFound ex, final HttpServletRequest request) {
+    ResponseEntity<ProblemDetailsModel> orderNotFound(final OrderNotFound ex, final HttpServletRequest request) {
         final ProblemDetailsModel message = new ProblemDetailsModel()
                 .timestamp(Instant.now())
                 .status(HttpStatus.NOT_FOUND.value())
@@ -30,7 +30,7 @@ class OrderErrorHandler {
     }
 
     @ExceptionHandler(OrderCannotBeCreatedWithoutAddress.class)
-    ResponseEntity<?> missingAddressDetails(final OrderCannotBeCreatedWithoutAddress ex, final HttpServletRequest request) {
+    ResponseEntity<ProblemDetailsModel> missingAddressDetails(final OrderCannotBeCreatedWithoutAddress ex, final HttpServletRequest request) {
         final ProblemDetailsModel message = new ProblemDetailsModel()
                 .timestamp(Instant.now())
                 .status(HttpStatus.BAD_REQUEST.value())

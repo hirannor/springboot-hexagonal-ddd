@@ -11,6 +11,7 @@ paths:
       operationId: register
       requestBody:
         description: registration details
+        required: true
         content:
           application/json:
             schema:
@@ -18,6 +19,18 @@ paths:
       responses:
         '201':
           description: Successful operation
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '409':
+          description: Email already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
   /auth:
     post:
       summary: authenticates an user
@@ -25,6 +38,7 @@ paths:
       operationId: authenticate
       requestBody:
         description: Authentication details
+        required: true
         content:
           application/json:
             schema:
@@ -36,6 +50,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AuthenticationResult'
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized (invalid password, invalid token, or user not found)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
 components:
   schemas:
     Register:
@@ -69,3 +95,22 @@ components:
           type: string
         token:
           type: string
+    ProblemDetails:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type: string
+        fields:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of fieldName -> validation error message

@@ -136,7 +136,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-    put:
+    patch:
       summary: Change customer personal details
       security:
         - bearerAuth: [ ]
@@ -200,9 +200,6 @@ components:
           $ref: '#/components/schemas/Address'
         gender:
           $ref: '#/components/schemas/Gender'
-        emailAddress:
-          type: string
-          example: test@test.com
     Customer:
       type: object
       properties:
@@ -228,6 +225,11 @@ components:
           example: test@test.com
     Address:
       type: object
+      required:
+        - country
+        - postalCode
+        - city
+        - streetAddress
       properties:
         country:
           $ref: '#/components/schemas/Country'
@@ -254,6 +256,11 @@ components:
           type: string
         instance:
           type: string
+        fields:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of fieldName -> validation error message
     Country:
       type: string
       enum:

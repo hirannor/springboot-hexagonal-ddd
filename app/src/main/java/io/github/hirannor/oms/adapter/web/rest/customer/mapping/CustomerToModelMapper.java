@@ -36,22 +36,30 @@ class CustomerToModelMapper implements Function<Customer, CustomerModel> {
     public CustomerModel apply(final Customer customer) {
         if (customer == null) return null;
 
-        final CustomerModel model = new CustomerModel();
+        final CustomerModel model = new CustomerModel()
+                .customerId(customer.id().value())
+                .emailAddress(customer.emailAddress().value());
 
         Optional.ofNullable(customer.firstName())
-            .map(FirstName::value)
-            .ifPresent(model::setFirstName);
+                .map(FirstName::value)
+                .ifPresent(model::setFirstName);
 
         Optional.ofNullable(customer.lastName())
-            .map(LastName::value)
-            .ifPresent(model::setLastName);
+                .map(LastName::value)
+                .ifPresent(model::setLastName);
 
-        return model
-                .customerId(customer.id().value())
-                .birthDate(customer.birthDate())
-                .gender(mapGenderToModel.apply(customer.gender()))
-                .address(mapAddressToModel.apply(customer.address()))
-                .emailAddress(customer.emailAddress().value());
+        Optional.ofNullable(customer.birthDate())
+                .ifPresent(model::setBirthDate);
+
+        Optional.ofNullable(customer.gender())
+                .map(mapGenderToModel)
+                .ifPresent(model::setGender);
+
+        Optional.ofNullable(customer.address())
+                .map(mapAddressToModel)
+                .ifPresent(model::setAddress);
+
+        return model;
     }
 
 }

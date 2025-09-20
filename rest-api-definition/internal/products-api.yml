@@ -5,6 +5,7 @@ info:
   version: 1.0.0
 security:
   - bearerAuth: []
+
 paths:
   /products:
     get:
@@ -19,6 +20,13 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Product'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
     post:
       summary: Create a new product
       operationId: create
@@ -37,7 +45,18 @@ paths:
                 type: string
                 description: URI of the created product
         '400':
-          description: bad request
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '409':
+          description: Product with same name already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
   /products/{id}:
     get:
       summary: Get product by ID
@@ -57,6 +76,17 @@ paths:
                 $ref: '#/components/schemas/Product'
         '404':
           description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+
 components:
   securitySchemes:
     bearerAuth:
@@ -66,10 +96,11 @@ components:
     basicAuth:
       type: http
       scheme: basic
+
   schemas:
     CreateProduct:
       type: object
-      required: [name, description, price, currency]
+      required: [name, description, price]
       properties:
         name:
           type: string
@@ -77,6 +108,7 @@ components:
           type: string
         price:
           $ref: '#/components/schemas/Money'
+
     Product:
       type: object
       properties:
@@ -88,6 +120,7 @@ components:
           type: string
         price:
           $ref: '#/components/schemas/Money'
+
     Money:
       type: object
       properties:
@@ -97,9 +130,30 @@ components:
           example: "99.99"
         currency:
           $ref: '#/components/schemas/Currency'
-      required: [ amount, currency ]
+      required: [amount, currency]
+
     Currency:
       type: string
       enum:
         - HUF
         - EUR
+
+    ProblemDetails:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        title:
+          type: string
+        status:
+          type: integer
+        detail:
+          type: string
+        instance:
+          type: string
+        fields:
+          type: object
+          additionalProperties:
+            type: string
+          description: A map of fieldName -> validation error message

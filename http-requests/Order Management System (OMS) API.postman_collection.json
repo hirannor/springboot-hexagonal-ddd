@@ -241,7 +241,7 @@
 				{
 					"name": "Update customer by ID",
 					"request": {
-						"method": "PUT",
+						"method": "PATCH",
 						"header": [
 							{
 								"key": "Content-Type",
@@ -254,7 +254,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"firstName\": \"Johnny\",\n  \"lastName\": \"Doe\",\n  \"birthDate\": \"1990-01-01\",\n  \"address\": {\n    \"country\": \"HUNGARY\",\n    \"city\": \"Budapest\",\n    \"postalCode\": 1007,\n    \"streetAddress\": \"Wolf street 15\"\n  },\n  \"gender\": \"MALE\",\n  \"emailAddress\": \"test@example.com\"\n}"
+							"raw": "{\n  \"firstName\": \"Johnny\",\n  \"lastName\": \"Doe\",\n  \"birthDate\": \"1990-01-01\",\n  \"address\": {\n    \"country\": \"HUNGARY\",\n    \"city\": \"Budapest\",\n    \"postalCode\": 1007,\n    \"streetAddress\": \"Wolf street 15\"\n  },\n  \"gender\": \"MALE\"\n}"
 						},
 						"url": {
 							"raw": "http://localhost:8080/api/customers/{{customerId}}",
@@ -606,6 +606,31 @@
 								"api",
 								"orders",
 								"{{orderId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{bearerToken}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/orders",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"orders"
 							]
 						}
 					},

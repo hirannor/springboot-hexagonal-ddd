@@ -53,19 +53,27 @@ class CustomerModelToDomainMapper implements Function<CustomerModel, Customer> {
             .map(LastName::from)
             .ifPresent(builder::lastName);
 
-        final Address address = Address.from(
-                Optional.ofNullable(model.getCountry()).map(mapCountryModelToDomain).orElse(Country.HUNGARY),
-                Optional.ofNullable(model.getCity()).orElse(""),
-                Optional.ofNullable(model.getPostalCode()).map(PostalCode::from).orElse(PostalCode.empty()),
-                Optional.ofNullable(model.getStreetAddress()).orElse("")
-        );
-
-        builder.address(address);
+        if (isCompleteAddress(model)) {
+            final Address address = Address.from(
+                    mapCountryModelToDomain.apply(model.getCountry()),
+                    model.getCity(),
+                    PostalCode.from(model.getPostalCode()),
+                    model.getStreetAddress()
+            );
+            builder.address(address);
+        }
 
         Optional.ofNullable(model.getBirthDate())
                 .ifPresent(builder::birthDate);
 
         return builder.createCustomer();
+    }
+
+    private boolean isCompleteAddress(CustomerModel model) {
+        return model.getCountry() != null
+                && model.getCity() != null && !model.getCity().isBlank()
+                && model.getPostalCode() != null
+                && model.getStreetAddress() != null && !model.getStreetAddress().isBlank();
     }
 
 }
