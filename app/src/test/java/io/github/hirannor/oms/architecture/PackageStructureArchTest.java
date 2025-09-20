@@ -21,7 +21,7 @@ import static io.github.hirannor.oms.architecture.reference.Ring.*;
 class PackageStructureArchTest {
 
     private static final String SPRING_BOOT_APPLICATION_CLASS_NAME =
-            "HexagonalApplication";
+            "OrderManagementSystemApplication";
     private static final String HEXAGONAL_APP = "hexagonal application";
 
     PackageStructureArchTest() {
