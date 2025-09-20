@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static io.github.hirannor.oms.adapter.persistence.jpa.customer.CustomerModelSpecification.*;
-import static org.springframework.data.jpa.domain.Specification.where;
 
 /**
  * Spring JPA implementation of {@link CustomerRepository} repository.
@@ -73,8 +72,7 @@ class CustomerJpaRepository implements CustomerRepository {
     public List<Customer> findAllBy(final FilterCriteria criteria) {
         if (criteria == null) throw new IllegalArgumentException("FilterCriteria object cannot be null!");
 
-        return customers.findAll(
-                        where(emailAddressMatches(criteria.email())
+        return customers.findAll((emailAddressMatches(criteria.email())
                                 .and(genderMatches(criteria.gender()))
                                 .and(birthAfter(criteria.birthDateFrom()))
                                 .and(birthBefore(criteria.birthDateToToExclusive()))
