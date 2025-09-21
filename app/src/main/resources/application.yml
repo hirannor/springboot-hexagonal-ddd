@@ -49,7 +49,7 @@ security:
     # Secret key used for signing and verifying JWTs.
     # Must be a Base64-encoded random string, at least 256 bits (32 bytes) long for HS256.
     # Example: generate with `openssl rand -base64 32`
-    secret: "3q2+7w==..."
+    secret: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbb==
     algorithm: HS256
     access-expiration: 30m
     refresh-expiration: 30d
