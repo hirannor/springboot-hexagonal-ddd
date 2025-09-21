@@ -1,7 +1,5 @@
 package io.github.hirannor.oms.adapter.web.rest.error;
 
-import io.github.hirannor.oms.application.service.customer.error.CustomerAlreadyExistWithEmailAddress;
-import io.github.hirannor.oms.application.service.customer.error.CustomerNotFound;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,59 +18,40 @@ class GlobalErrorHandler {
 
     GlobalErrorHandler() {}
 
-    @ExceptionHandler(IllegalArgumentException.class)
+    @ExceptionHandler(Exception.class)
     ResponseEntity<ProblemDetailsModel> internalServerError(
-            final IllegalArgumentException ex,
+            final Exception ex,
             final HttpServletRequest request
     ) {
-        final ProblemDetailsModel message = new ProblemDetailsModel(
-                Instant.now(),
-                HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                ex.getMessage(),
-                request.getRequestURI(),
-                null
-        );
+        final ProblemDetailsModel message = ProblemDetailsModel.builder()
+                .timestamp(Instant.now())
+                .title(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .detail("An unexpected error occurred. Please contact support.")
+                .instance(request.getRequestURI())
+                .build();
 
         return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(CustomerAlreadyExistWithEmailAddress.class)
-    ResponseEntity<ProblemDetailsModel> customerAlreadyExist(
-            final CustomerAlreadyExistWithEmailAddress ex,
+    @ExceptionHandler(IllegalArgumentException.class)
+    ResponseEntity<ProblemDetailsModel> badRequest(
+            final IllegalArgumentException ex,
             final HttpServletRequest request
     ) {
-        final ProblemDetailsModel message = new ProblemDetailsModel(
-                Instant.now(),
-                HttpStatus.CONFLICT.getReasonPhrase(),
-                HttpStatus.CONFLICT.value(),
-                ex.getMessage(),
-                request.getRequestURI(),
-                null
-        );
+        final ProblemDetailsModel message = ProblemDetailsModel.builder()
+                .timestamp(Instant.now())
+                .title(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .detail(ex.getMessage())
+                .instance(request.getRequestURI())
+                .build();
 
-        return new ResponseEntity<>(message, HttpStatus.CONFLICT);
-    }
-
-    @ExceptionHandler(CustomerNotFound.class)
-    ResponseEntity<ProblemDetailsModel> customerNotFound(
-            final CustomerNotFound ex,
-            final HttpServletRequest request
-    ) {
-        final ProblemDetailsModel message = new ProblemDetailsModel(
-                Instant.now(),
-                "Customer not found",
-                HttpStatus.NOT_FOUND.value(),
-                ex.getMessage(),
-                request.getRequestURI(),
-                null
-        );
-
-        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ProblemDetailsModel> handleValidation(
+    public ResponseEntity<ProblemDetailsModel> validationError(
             final MethodArgumentNotValidException ex,
             final HttpServletRequest request
     ) {
@@ -83,14 +62,14 @@ class GlobalErrorHandler {
             errors.put(error.getField(), error.getDefaultMessage());
         }
 
-        final ProblemDetailsModel problem = new ProblemDetailsModel(
-                Instant.now(),
-                "Validation failed",
-                HttpStatus.BAD_REQUEST.value(),
-                "One or more fields are invalid",
-                request.getRequestURI(),
-                errors
-        );
+        final ProblemDetailsModel problem = ProblemDetailsModel.builder()
+                .timestamp(Instant.now())
+                .title("Validation failed")
+                .status(HttpStatus.BAD_REQUEST.value())
+                .detail("One or more fields are invalid")
+                .instance(request.getRequestURI())
+                .fields(errors)
+                .build();
 
         return ResponseEntity.badRequest().body(problem);
     }

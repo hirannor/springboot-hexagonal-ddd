@@ -62,6 +62,37 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
+  /auth/refresh:
+    post:
+      summary: refreshes an access token
+      description: exchanges a refresh token for a new access token and refresh token
+      operationId: refreshToken
+      requestBody:
+        description: Refresh token details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshRequest'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResult'
+        '400':
+          description: Validation failed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: Unauthorized (invalid or expired refresh token)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
 components:
   schemas:
     Register:
@@ -88,12 +119,22 @@ components:
         emailAddress:
           type: string
           example: test@test.com
+    RefreshRequest:
+      type: object
+      required:
+        - refreshToken
+      properties:
+        refreshToken:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
     AuthenticationResult:
       type: object
       properties:
         emailAddress:
           type: string
-        token:
+        accessToken:
+          type: string
+        refreshToken:
           type: string
     ProblemDetails:
       type: object

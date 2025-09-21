@@ -35,6 +35,8 @@ public class JwtAuthenticationConfiguration {
 
     @Bean
     SecretKey createJwtSecretKey() {
-        return Keys.hmacShaKeyFor(Base64.getDecoder().decode(properties.getSecret()));
+        return switch (properties.getAlgorithm()) {
+            case HS256, HS384, HS512 -> Keys.hmacShaKeyFor(Base64.getDecoder().decode(properties.getSecret()));
+        };
     }
 }

@@ -1,32 +1,42 @@
 package io.github.hirannor.oms.adapter.web.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.hirannor.oms.adapter.web.rest.error.ProblemDetailsModel;
 import io.github.hirannor.oms.application.port.authentication.Authenticator;
+import io.github.hirannor.oms.application.service.authentication.error.InvalidJwtToken;
 import io.github.hirannor.oms.domain.authentication.AuthUser;
 import io.github.hirannor.oms.domain.authentication.Role;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ProblemDetail;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.function.Function;
 
 @Component
-public class AuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    private static final Logger LOGGER = LogManager.getLogger(
+        JwtAuthenticationFilter.class
+    );
+
+    private static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
+
     private static final String[] WHITELISTED_PATHS = {
             "/swagger-ui",
             "/swagger-ui.html",
@@ -37,6 +47,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
             "/webjars/**",
             "/api/register",
             "/api/auth",
+            "/api/auth/refresh",
             "/api/payments/stripe/webhook"
     };
 
@@ -48,24 +59,24 @@ public class AuthenticationFilter extends OncePerRequestFilter {
     private final ObjectMapper mapper;
 
     @Autowired
-    AuthenticationFilter(final Authenticator authenticator,
-                         final ObjectMapper mapper) {
+    JwtAuthenticationFilter(final Authenticator authenticator,
+                            final ObjectMapper mapper) {
       this(authenticator, mapper, new RoleToPermissionRoleModelMapper());
     }
 
-    AuthenticationFilter(final Authenticator authenticator,
-                         final ObjectMapper mapper,
-                         final Function<Role, PermissionRoleModel> mapRoleToModel) {
+    JwtAuthenticationFilter(final Authenticator authenticator,
+                            final ObjectMapper mapper,
+                            final Function<Role, PermissionRoleModel> mapRoleToModel) {
         this.authenticator = authenticator;
         this.mapper = mapper;
         this.mapRoleToModel = mapRoleToModel;
     }
 
     @Override
-    protected boolean shouldNotFilter(final HttpServletRequest request) throws ServletException {
+    protected boolean shouldNotFilter(final HttpServletRequest request) {
         final String path = request.getRequestURI();
         return Arrays.stream(WHITELISTED_PATHS)
-                .anyMatch(path::startsWith);
+                .anyMatch(pattern -> PATH_MATCHER.match(pattern, path));
     }
 
     @Override
@@ -75,45 +86,45 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (authHeader == null || authHeader.isBlank()) {
-            sendError(request, response, "Authorization header is missing");
+        if (authHeader == null || !authHeader.startsWith(BEARER)) {
+            sendError(request, response, "Missing or invalid Authorization header");
             return;
         }
 
-        try {
-            if (authHeader.startsWith(BEARER)) {
-                final String token = authHeader.substring(BEARER.length()).trim();
-                final AuthUser auth = authenticator.validateToken(token);
+        final String token = authHeader.substring(BEARER.length()).trim();
 
-                final UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        auth.emailAddress().value(),
-                        null,
-                        auth.roles()
-                            .stream()
-                            .map(mapRoleToModel
-                                    .andThen(AuthenticationFilter::addRolePrefix))
-                            .toList()
-                );
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-            } else {
-                sendError(request, response, "Unsupported authentication notificationType");
-                return;
-            }
-        } catch (Exception ex) {
+        try {
+            final AuthUser auth = authenticator.validateAccessToken(token);
+
+            final UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    auth.emailAddress().value(),
+                    null,
+                    auth.roles()
+                        .stream()
+                        .map(mapRoleToModel
+                                .andThen(JwtAuthenticationFilter::addRolePrefix))
+                        .toList()
+            );
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+            filterChain.doFilter(request, response);
+        } catch (final InvalidJwtToken ex) {
             sendError(request, response, ex.getMessage());
         }
-
-        filterChain.doFilter(request, response);
     }
 
     private void sendError(final HttpServletRequest request,
                            final HttpServletResponse response,
                            final String detail) throws IOException {
 
-        final ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.UNAUTHORIZED);
-        problem.setTitle("UNAUTHORIZED");
-        problem.setDetail(detail);
-        problem.setInstance(URI.create(request.getRequestURI()));
+        LOGGER.warn("Unauthorized access to {}: {}", request.getRequestURI(), detail);
+
+        final ProblemDetailsModel problem = ProblemDetailsModel.builder()
+                .timestamp(Instant.now())
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .title(HttpStatus.UNAUTHORIZED.getReasonPhrase())
+                .detail(detail)
+                .instance(request.getRequestURI())
+                .build();
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);

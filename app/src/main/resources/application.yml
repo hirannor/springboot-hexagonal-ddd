@@ -46,4 +46,12 @@ email:
 
 security:
   jwt:
-    secret: Xq8y7u4y6j7s9aVn7xDk0JZ4k1vHz3oZlwjrXbVZpCk=
+    # Secret key used for signing and verifying JWTs.
+    # Must be a Base64-encoded random string, at least 256 bits (32 bytes) long for HS256.
+    # Example: generate with `openssl rand -base64 32`
+    secret: "3q2+7w==..."
+    algorithm: HS256
+    access-expiration: 30m
+    refresh-expiration: 30d
+    issuer: oms-backend
+    audience: oms-clients

@@ -11,10 +11,11 @@ public class AuthenticationResultToModelMapper implements Function<Authenticatio
 
     @Override
     public AuthenticationResultModel apply(final AuthenticationResult result) {
-        if (result == null) throw new IllegalArgumentException("result is null");
+        if (result == null) return null;
 
         return new AuthenticationResultModel()
                 .emailAddress(result.emailAddress().value())
-                .token(result.token());
+                .accessToken(result.accessToken())
+                .refreshToken(result.refreshToken());
     }
 }

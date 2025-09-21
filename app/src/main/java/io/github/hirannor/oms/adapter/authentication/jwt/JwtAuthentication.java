@@ -7,10 +7,7 @@ import io.github.hirannor.oms.application.service.authentication.error.InvalidPa
 import io.github.hirannor.oms.domain.authentication.*;
 import io.github.hirannor.oms.domain.core.valueobject.EmailAddress;
 import io.github.hirannor.oms.infrastructure.adapter.DriverAdapter;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
@@ -40,27 +36,33 @@ class JwtAuthentication implements Authenticator {
         JwtAuthentication.class
     );
 
+    private static final String OMS_REFRESH_AUDIENCE = "oms-refresh";
+
     private final Function<RoleModel, Role> mapRoleModelToRole;
 
     private final AuthenticationRepository authentications;
     private final SecretKey key;
     private final BCryptPasswordEncoder encoder;
+    private final JwtAuthenticationConfigurationProperties properties;
 
     @Autowired
     JwtAuthentication(final AuthenticationRepository authentications,
                       final BCryptPasswordEncoder encoder,
-                      final SecretKey key) {
-       this(authentications, encoder, new RoleModelToRoleMapper(), key);
+                      final SecretKey key,
+                      final JwtAuthenticationConfigurationProperties properties) {
+       this(authentications, encoder, new RoleModelToRoleMapper(), key, properties);
     }
 
     JwtAuthentication(final AuthenticationRepository authentications,
                       final BCryptPasswordEncoder encoder,
                       final Function<RoleModel, Role> mapRoleModelToRole,
-                      final SecretKey key) {
+                      final SecretKey key,
+                      final JwtAuthenticationConfigurationProperties properties) {
         this.authentications = authentications;
         this.encoder = encoder;
         this.mapRoleModelToRole = mapRoleModelToRole;
         this.key = key;
+        this.properties = properties;
     }
 
     @Override
@@ -70,25 +72,64 @@ class JwtAuthentication implements Authenticator {
         final AuthUser storedUser = authentications.findByEmail(user.emailAddress())
                 .orElseThrow(failBecauseEmailAddressWasNotFound(user.emailAddress()));
 
-        if (!encoder.matches(user.password().value(), storedUser.password().value()))
-            throw new InvalidPassword("Invalid password");
+        final String providedPassword = user.password().value();
+        final String storedPassword = storedUser.password().value();
 
-        final String token = generateTokenFrom(storedUser);
+        validatePassword(providedPassword, storedPassword);
+
+        final String accessToken = generateAccessToken(storedUser);
+        final String refreshToken = generateRefreshToken(storedUser);
 
         return AuthenticationResult.from(
                 user.emailAddress(),
-                token
+                accessToken,
+                refreshToken
         );
     }
 
     @Override
-    public AuthUser validateToken(final String token) {
+    public AuthenticationResult refresh(final RefreshToken cmd) {
+        try {
+            final Claims claims = Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(cmd.refreshToken())
+                    .getPayload();
+
+            if (!claims.getAudience().contains(OMS_REFRESH_AUDIENCE))
+                throw new InvalidJwtToken("Not a refresh token");
+
+            final String email = claims.getSubject();
+            final Set<Role> roles = ((List<String>) claims.get("roles"))
+                    .stream()
+                    .map(mapToRoleModel().andThen(mapRoleModelToRole))
+                    .collect(Collectors.toSet());
+
+            final AuthUser user = AuthUser.of(EmailAddress.from(email), null, roles);
+
+            return AuthenticationResult.from(
+                    user.emailAddress(),
+                    generateAccessToken(user),
+                    generateRefreshToken(user)
+            );
+        } catch (ExpiredJwtException ex) {
+            throw new InvalidJwtToken("Refresh token expired");
+        } catch (JwtException ex) {
+            throw new InvalidJwtToken("Invalid refresh token");
+        }
+    }
+
+    @Override
+    public AuthUser validateAccessToken(final String token) {
         try {
             final Claims claims = Jwts.parser()
                     .verifyWith(key)
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
+
+            if (!claims.getAudience().contains(properties.getAudience()))
+                throw new InvalidJwtToken("Not an access token");
 
             final String email = claims.getSubject();
             final Set<Role> roles = ((List<String>) claims.get("roles"))
@@ -98,8 +139,10 @@ class JwtAuthentication implements Authenticator {
                     .collect(Collectors.toSet());
 
             return AuthUser.of(EmailAddress.from(email), null, roles);
-        } catch (final Exception ex) {
-            throw new InvalidJwtToken("Invalid JWT token");
+        } catch (final ExpiredJwtException ex) {
+            throw new InvalidJwtToken("Token expired");
+        } catch (final JwtException ex) {
+            throw new InvalidJwtToken("Invalid JWT accessToken");
         }
     }
 
@@ -120,7 +163,7 @@ class JwtAuthentication implements Authenticator {
         return () -> new AuthUserNotFound("User was not found by: " + emailAddress.value());
     }
 
-    private String generateTokenFrom(final AuthUser user) {
+    private String generateAccessToken(final AuthUser user) {
         final Instant now = Instant.now();
 
         final List<String> roles = user.roles()
@@ -131,10 +174,31 @@ class JwtAuthentication implements Authenticator {
         return Jwts.builder()
                 .subject(user.emailAddress().value())
                 .claim("roles", roles)
+                .issuer(properties.getIssuer())
+                .audience().add(properties.getAudience()).and()
                 .issuedAt(Date.from(now))
-                .expiration(Date.from(now.plusSeconds(3600)))
+                .expiration(Date.from(now.plus(properties.getAccessExpiration())))
                 .signWith(key)
                 .compact();
+    }
+
+    private String generateRefreshToken(final AuthUser user) {
+        final Instant now = Instant.now();
+
+        return Jwts.builder()
+                .subject(user.emailAddress().value())
+                .claim("roles", user.roles().stream().map(Enum::name).toList())
+                .issuer(properties.getIssuer())
+                .audience().add("oms-refresh").and()
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(now.plus(properties.getRefreshExpiration())))
+                .signWith(key)
+                .compact();
+    }
+
+    private void validatePassword(final String providedPassword, final String storedPassword) {
+        if (!encoder.matches(providedPassword, storedPassword))
+            throw new InvalidPassword("Invalid password");
     }
 
     private Function<String, RoleModel> mapToRoleModel() {

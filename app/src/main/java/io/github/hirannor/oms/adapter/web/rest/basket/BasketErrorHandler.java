@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.Instant;
 
-@ControllerAdvice(basePackageClasses = BasketController.class)
+@ControllerAdvice
 class BasketErrorHandler {
 
     BasketErrorHandler() {

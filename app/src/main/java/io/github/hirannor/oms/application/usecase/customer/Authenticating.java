@@ -1,8 +1,8 @@
 package io.github.hirannor.oms.application.usecase.customer;
 
 import io.github.hirannor.oms.domain.authentication.AuthenticationResult;
-import io.github.hirannor.oms.domain.authentication.DoAuthenticate;
+import io.github.hirannor.oms.domain.authentication.AttemptAuthentication;
 
 public interface Authenticating {
-    AuthenticationResult authenticate(DoAuthenticate cmd);
+    AuthenticationResult authenticate(AttemptAuthentication cmd);
 }

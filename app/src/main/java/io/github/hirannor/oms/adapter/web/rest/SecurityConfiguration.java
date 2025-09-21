@@ -8,16 +8,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 
 @EnableWebSecurity
 @Configuration
 class SecurityConfiguration {
-    private final AuthenticationFilter authFilter;
+    private final JwtAuthenticationFilter authFilter;
     private final AccessDeniedHandler accessDenied;
 
-    SecurityConfiguration(final AuthenticationFilter authFilter,
+    SecurityConfiguration(final JwtAuthenticationFilter authFilter,
                           final AccessDeniedHandler accessDenied) {
         this.authFilter = authFilter;
         this.accessDenied = accessDenied;
@@ -76,7 +76,7 @@ class SecurityConfiguration {
                 // Everything else
                 .anyRequest().permitAll()
             )
-            .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(authFilter, BasicAuthenticationFilter.class)
             .exceptionHandling(ex -> ex
             .accessDeniedHandler(accessDenied)
         );

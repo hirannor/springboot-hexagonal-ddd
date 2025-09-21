@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.Instant;
 
-@ControllerAdvice(basePackageClasses = OrderController.class)
+@ControllerAdvice
 class OrderErrorHandler {
 
     OrderErrorHandler() {
