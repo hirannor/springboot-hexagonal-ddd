@@ -1,5 +1,6 @@
 package io.github.hirannor.oms.application.service.order;
 
+import io.github.hirannor.oms.application.port.outbox.Outbox;
 import io.github.hirannor.oms.application.service.customer.error.CustomerNotFound;
 import io.github.hirannor.oms.application.service.order.error.OrderCannotBeCreatedWithoutAddress;
 import io.github.hirannor.oms.application.service.order.error.OrderNotFound;
@@ -16,6 +17,7 @@ import io.github.hirannor.oms.domain.order.OrderId;
 import io.github.hirannor.oms.domain.order.OrderRepository;
 import io.github.hirannor.oms.domain.order.command.CreateOrder;
 import io.github.hirannor.oms.infrastructure.application.ApplicationService;
+import io.github.hirannor.oms.infrastructure.messaging.MessagePublisher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +37,17 @@ class OrderCommandService implements
     private final OrderRepository orders;
     private final BasketRepository baskets;
     private final CustomerRepository customers;
+    private final Outbox outboxes;
 
     @Autowired
     OrderCommandService(final OrderRepository orders,
                         final BasketRepository baskets,
-                        final CustomerRepository customers) {
+                        final CustomerRepository customers,
+                        final Outbox outboxes) {
         this.orders = orders;
         this.baskets = baskets;
         this.customers = customers;
+        this.outboxes = outboxes;
     }
 
     @Override
@@ -61,6 +66,9 @@ class OrderCommandService implements
 
         final Order order = Order.create(create);
         orders.save(order);
+
+        order.events().forEach(outboxes::save);
+        order.clearEvents();
 
         baskets.deleteBy(order.customer());
 
@@ -84,6 +92,9 @@ class OrderCommandService implements
         order.cancel();
         orders.save(order);
 
+        order.events().forEach(outboxes::save);
+        order.clearEvents();
+
         LOGGER.info("Order with id: {} is successfully cancelled", id.asText());
     }
 
@@ -101,6 +112,9 @@ class OrderCommandService implements
 
         order.changeStatus(changeStatus.status());
         orders.save(order);
+
+        order.events().forEach(outboxes::save);
+        order.clearEvents();
 
         LOGGER.info("Order status is successfully changed for order id: {}",
             changeStatus.orderId().asText()

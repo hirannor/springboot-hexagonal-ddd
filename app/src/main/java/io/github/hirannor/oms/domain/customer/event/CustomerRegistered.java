@@ -4,6 +4,8 @@ import io.github.hirannor.oms.domain.core.valueobject.CustomerId;
 import io.github.hirannor.oms.infrastructure.event.DomainEvent;
 import io.github.hirannor.oms.infrastructure.event.Event;
 import io.github.hirannor.oms.infrastructure.event.EventId;
+import io.github.hirannor.oms.infrastructure.messaging.Message;
+import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 
 import java.time.Instant;
 
@@ -15,7 +17,7 @@ import java.time.Instant;
  * @param userId       {@link CustomerId} unique identifier of customer
  * @author Mate Karolyi
  */
-public record CustomerRegistered(EventId id, Instant registeredAt, CustomerId userId) implements DomainEvent {
+public record CustomerRegistered(MessageId id, Instant registeredAt, CustomerId userId) implements DomainEvent {
 
     /**
      * Issues a {@link CustomerRegistered} domain event.
@@ -24,7 +26,7 @@ public record CustomerRegistered(EventId id, Instant registeredAt, CustomerId us
      * @return an instance of {@link CustomerRegistered} domain event
      */
     public static CustomerRegistered issue(final CustomerId userId) {
-        return new CustomerRegistered(EventId.generate(), Event.now(), userId);
+        return new CustomerRegistered(Message.generateId(), Instant.now(), userId);
     }
 
 }

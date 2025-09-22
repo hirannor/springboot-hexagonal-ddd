@@ -167,11 +167,18 @@ All API requests for testing  can be found in the project under:
 * **File:** `docker-compose.yml`
 * **Environment variables:** stored in `.env`
 
-Start the database & smtp server:
+Start the database, smtp server, rabbitmq message broker:
 
 ```bash
 docker-compose up -d
 ```
+
+### RabbitMQ Management
+* Accessible locally at: [http://localhost:15672/](http://localhost:15672/)
+
+### MailHOG SMTP Server
+* Accessible locally at: [http://localhost:8025/](http://localhost:8025/)
+
 
 ## 🧪 Testing Payment with Stripe Payment Adapter 
 

@@ -59,8 +59,6 @@ public class Order extends AggregateRoot {
 
         createdOrder.events.add(OrderCreated.record(createdOrder.id, command.customer()));
 
-        createdOrder.markAsWaitingForPayment();
-
         return createdOrder;
     }
 
@@ -91,22 +89,17 @@ public class Order extends AggregateRoot {
         this.history.add(OrderStatusChange.from(status, target, Instant.now()));
 
         switch (target) {
+            case WAITING_FOR_PAYMENT -> markAsWaitingForPayment();
+            case PAID_SUCCESSFULLY -> markAsPaidSuccessfully();
+            case PAYMENT_FAILED -> markAsPaymentFailed();
+            case PAYMENT_CANCELED -> markAsPaymentCanceled();
+            case PROCESSING -> startProcessing();
             case SHIPPED -> ship();
             case DELIVERED -> deliver();
             case CANCELLED -> cancel();
             case RETURNED -> returnOrder();
             case REFUNDED -> refund();
-        }
-    }
-
-    public void handlePaymentResult(final PaymentReceipt receipt) {
-        Objects.requireNonNull(receipt, "Receipt cannot be null");
-
-        switch (receipt.status()) {
-            case SUCCEEDED -> markAsPaidSuccessfully();
-            case FAILED -> markAsPaymentFailed();
-            case CANCELED -> markAsPaymentCanceled();
-            case INITIALIZED -> {} // NOOP
+            case CREATED -> {}
         }
     }
 
@@ -204,8 +197,6 @@ public class Order extends AggregateRoot {
         addHistory(status, OrderStatus.PAID_SUCCESSFULLY);
         this.status = OrderStatus.PAID_SUCCESSFULLY;
         events.add(OrderPaid.record(id, customer));
-
-        startProcessing();
     }
 
     private void markAsPaymentFailed() {

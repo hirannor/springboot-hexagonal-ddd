@@ -1,6 +1,7 @@
 package io.github.hirannor.oms.application.service.authentication;
 
 import io.github.hirannor.oms.application.port.authentication.Authenticator;
+import io.github.hirannor.oms.application.port.outbox.Outbox;
 import io.github.hirannor.oms.application.service.customer.error.CustomerAlreadyExistWithEmailAddress;
 import io.github.hirannor.oms.application.usecase.customer.Registrating;
 import io.github.hirannor.oms.domain.authentication.AuthUser;
@@ -24,10 +25,14 @@ class RegistrationService implements Registrating {
 
     private final Authenticator authenticator;
     private final CustomerRepository customers;
+    private final Outbox outboxes;
 
-    RegistrationService(final Authenticator authenticator, final CustomerRepository customers) {
+    RegistrationService(final Authenticator authenticator,
+                        final CustomerRepository customers,
+                        final Outbox outboxes) {
         this.authenticator = authenticator;
         this.customers = customers;
+        this.outboxes = outboxes;
     }
 
     @Override
@@ -41,6 +46,11 @@ class RegistrationService implements Registrating {
 
         final Customer newlyRegistered = Customer.registerBy(command);
         customers.save(newlyRegistered);
+
+        newlyRegistered.events()
+                .forEach(outboxes::save);
+
+        newlyRegistered.clearEvents();
 
         authenticator.register(AuthUser.of(command.emailAddress(), command.password(), Set.of(Role.CUSTOMER)));
 

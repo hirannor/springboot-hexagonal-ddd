@@ -1,5 +1,6 @@
 package io.github.hirannor.oms.application.service.customer;
 
+import io.github.hirannor.oms.application.port.outbox.Outbox;
 import io.github.hirannor.oms.application.service.customer.error.CustomerNotFound;
 import io.github.hirannor.oms.application.usecase.authentication.CustomerDeletion;
 import io.github.hirannor.oms.application.usecase.customer.CustomerModification;
@@ -31,10 +32,12 @@ class CustomerCommandService implements
     private static final String ERR_CUSTOMER_NOT_FOUND = "Customer not found with value: %s";
 
     private final CustomerRepository customers;
+    private final Outbox outboxes;
 
     @Autowired
-    CustomerCommandService(final CustomerRepository customers) {
+    CustomerCommandService(final CustomerRepository customers, final Outbox outboxes) {
         this.customers = customers;
+        this.outboxes = outboxes;
     }
 
     @Override
@@ -48,6 +51,10 @@ class CustomerCommandService implements
 
         final Customer withModifiedPersonalDetails = foundCustomer.changePersonalDetailsBy(cmd);
         customers.save(withModifiedPersonalDetails);
+
+        withModifiedPersonalDetails.events()
+                .forEach(outboxes::save);
+        withModifiedPersonalDetails.clearEvents();
 
         LOGGER.info("Personal details for customer id: {} are updated successfully!",
             withModifiedPersonalDetails.id().asText());

@@ -1,5 +1,6 @@
 package io.github.hirannor.oms.application.service.product;
 
+import io.github.hirannor.oms.application.port.outbox.Outbox;
 import io.github.hirannor.oms.application.usecase.product.ProductCreation;
 import io.github.hirannor.oms.domain.product.CreateProduct;
 import io.github.hirannor.oms.domain.product.Product;
@@ -16,10 +17,12 @@ class ProductCommandService implements ProductCreation {
     );
 
     private final ProductRepository products;
+    private final Outbox outboxes;
 
     @Autowired
-    ProductCommandService(final ProductRepository products) {
+    ProductCommandService(final ProductRepository products, final Outbox outboxes) {
         this.products = products;
+        this.outboxes = outboxes;
     }
 
     @Override
@@ -32,6 +35,10 @@ class ProductCommandService implements ProductCreation {
 
         final Product toPersist = Product.create(cmd);
         products.save(toPersist);
+
+        toPersist.events()
+                .forEach(outboxes::save);
+        toPersist.clearEvents();
 
         LOGGER.info("Product with id: {} was created successfully",
             cmd.productId().asText());

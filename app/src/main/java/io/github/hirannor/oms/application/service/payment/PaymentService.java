@@ -1,5 +1,6 @@
 package io.github.hirannor.oms.application.service.payment;
 
+import io.github.hirannor.oms.application.port.outbox.Outbox;
 import io.github.hirannor.oms.application.port.payment.PaymentGateway;
 import io.github.hirannor.oms.application.port.payment.PaymentItem;
 import io.github.hirannor.oms.application.port.payment.PaymentRequest;
@@ -40,6 +41,7 @@ class PaymentService implements PaymentInitialization, PaymentCallbackHandling {
     private final OrderRepository orders;
     private final PaymentGateway payment;
     private final ProductRepository products;
+    private final Outbox outboxes;
 
     private final BiFunction<OrderItem, Map<ProductId, Product>, PaymentItem> mapOrderItemToPaymentItem;
 
@@ -47,11 +49,13 @@ class PaymentService implements PaymentInitialization, PaymentCallbackHandling {
     PaymentService(final PaymentRepository payments,
                    final OrderRepository orders,
                    final PaymentGateway payment,
-                   final ProductRepository products) {
+                   final ProductRepository products,
+                   final Outbox outboxes) {
         this.payments = payments;
         this.orders = orders;
         this.payment = payment;
         this.products = products;
+        this.outboxes = outboxes;
         this.mapOrderItemToPaymentItem = new OrderItemToPaymentItemMapper();
     }
 
@@ -96,6 +100,9 @@ class PaymentService implements PaymentInitialization, PaymentCallbackHandling {
         final Payment payment = Payment.start(startPayment);
         payments.save(payment);
 
+        payment.events().forEach(outboxes::save);
+        payment.clearEvents();
+
         LOGGER.info("Finished payment initialization for orderId={}, paymentId={}, newStatus={}",
                 order.id().asText(),
                 payment.id().asText(),
@@ -123,15 +130,11 @@ class PaymentService implements PaymentInitialization, PaymentCallbackHandling {
                     toPersist.applyReceipt(paymentReceipt);
                     payments.save(toPersist);
 
-                    final Order order = orders.findBy(paymentReceipt.orderId())
-                        .orElseThrow(failBecauseOrderWasNotFoundBy(paymentReceipt.orderId()));
+                    toPersist.events().forEach(outboxes::save);
+                    toPersist.clearEvents();
 
-                    order.handlePaymentResult(paymentReceipt);
-                    orders.save(order);
-
-                    LOGGER.info("Payment callback successfully processed for orderId={}, newStatus={}",
-                        paymentReceipt.orderId().asText(),
-                        order.status()
+                    LOGGER.info("Payment callback successfully processed for orderId={}",
+                        paymentReceipt.orderId().asText()
                     );
                 },
                     () -> LOGGER.warn("Skipping payment callback handling")

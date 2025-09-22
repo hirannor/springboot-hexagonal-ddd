@@ -5,6 +5,11 @@ logging:
     path: logs
 
 spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
   mail:
     host: localhost
     port: 1025
@@ -31,7 +36,7 @@ adapter:
   persistence: spring-data-jpa
   payment: stripe
   notification: email
-  messaging: spring-event-bus
+  messaging: rabbitmq
   web: rest
 
 payment:

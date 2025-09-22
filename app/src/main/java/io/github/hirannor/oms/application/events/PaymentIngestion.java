@@ -1,48 +1,57 @@
 package io.github.hirannor.oms.application.events;
 
+import io.github.hirannor.oms.application.usecase.order.ChangeOrderStatus;
+import io.github.hirannor.oms.application.usecase.order.OrderStatusChanging;
+import io.github.hirannor.oms.domain.order.OrderStatus;
 import io.github.hirannor.oms.domain.payment.events.PaymentCanceled;
 import io.github.hirannor.oms.domain.payment.events.PaymentFailed;
 import io.github.hirannor.oms.domain.payment.events.PaymentInitialized;
 import io.github.hirannor.oms.domain.payment.events.PaymentSucceeded;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 public class PaymentIngestion {
     private static final Logger LOGGER = LogManager.getLogger(PaymentIngestion.class);
 
+    private final OrderStatusChanging status;
 
-    public PaymentIngestion() {
+    @Autowired
+    public PaymentIngestion(final OrderStatusChanging status) {
+        this.status = status;
     }
 
-    @TransactionalEventListener
+    @EventListener
     public void handle(final PaymentSucceeded evt) {
         if (evt == null) throw new IllegalArgumentException("PaymentSucceeded event cannot be null!");
 
         LOGGER.debug("PaymentSucceeded event received: {}", evt);
 
+        status.change(ChangeOrderStatus.issue(evt.orderId(), OrderStatus.PAID_SUCCESSFULLY));
+
     }
 
-    @TransactionalEventListener
-    public void handle(final PaymentInitialized evt) {
-        if (evt == null) throw new IllegalArgumentException("PaymentInitialized event cannot be null!");
-
-        LOGGER.debug("PaymentInitialized event received: {}", evt);
-    }
-
-    @TransactionalEventListener
+    @EventListener
     public void handle(final PaymentFailed evt) {
         if (evt == null) throw new IllegalArgumentException("PaymentFailed event cannot be null!");
 
         LOGGER.debug("PaymentFailed event received: {}", evt);
+
+        status.change(ChangeOrderStatus.issue(evt.orderId(), OrderStatus.PAYMENT_FAILED));
+
     }
 
-    @TransactionalEventListener
+    @EventListener
     public void handle(final PaymentCanceled evt) {
         if (evt == null) throw new IllegalArgumentException("PaymentCanceled event cannot be null!");
 
         LOGGER.debug("PaymentCanceled event received: {}", evt);
+        status.change(ChangeOrderStatus.issue(evt.orderId(), OrderStatus.PAYMENT_CANCELED));
+
     }
 }

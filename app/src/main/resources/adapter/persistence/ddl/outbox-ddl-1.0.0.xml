@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="
+        http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.19.xsd">
+
+    <changeSet id="create_tables::outbox:ddl:1.0.0" author="hirannor">
+        <createSequence
+                sequenceName="outbox_seq"
+                incrementBy="5"
+                startValue="1"/>
+
+        <createTable tableName="EC_OUTBOX_EVENT">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="event_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="EVENT_TYPE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="processed" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="payload" type="CLOB">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex indexName="idx_outbox_processed" tableName="EC_OUTBOX_EVENT">
+            <column name="processed"/>
+        </createIndex>
+
+        <createIndex indexName="idx_outbox_created_at" tableName="EC_OUTBOX_EVENT">
+            <column name="created_at"/>
+        </createIndex>
+
+        <addUniqueConstraint
+                tableName="EC_OUTBOX_EVENT"
+                columnNames="event_id"
+                constraintName="uk_outbox_event_id"/>
+    </changeSet>
+</databaseChangeLog>

@@ -44,7 +44,6 @@ class OrderJpaRepository implements OrderRepository {
     }
 
     @Override
-    @EventPublisher
     public void save(final Order order) {
         if (order == null) throw new IllegalArgumentException("order cannot be null");
 

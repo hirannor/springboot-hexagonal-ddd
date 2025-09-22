@@ -4,6 +4,7 @@ import io.github.hirannor.oms.domain.customer.event.CustomerRegistered;
 import io.github.hirannor.oms.domain.customer.event.PersonalDetailsChanged;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionalEventListener;
 
@@ -20,14 +21,14 @@ class CustomerIngestion {
      *
      * @param evt {@link CustomerRegistered} to be handled
      */
-    @TransactionalEventListener
+    @EventListener
     public void handle(final CustomerRegistered evt) {
         if (evt == null) throw new IllegalArgumentException("Customer registered event cannot be null!");
 
         LOGGER.debug("CustomerRegistered event received: {}", evt);
     }
 
-    @TransactionalEventListener
+    @EventListener
     public void handle(final PersonalDetailsChanged evt) {
         if (evt == null) throw new IllegalArgumentException("Customer details changed event cannot be null!");
 

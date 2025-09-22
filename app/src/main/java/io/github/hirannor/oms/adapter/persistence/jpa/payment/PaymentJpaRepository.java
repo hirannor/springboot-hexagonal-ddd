@@ -32,7 +32,6 @@ class PaymentJpaRepository implements PaymentRepository {
     }
 
     @Override
-    @EventPublisher
     public void save(final Payment payment) {
         if (payment == null) throw new IllegalArgumentException("payment cannot be null");
 

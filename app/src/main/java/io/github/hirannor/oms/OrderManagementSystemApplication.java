@@ -1,7 +1,7 @@
 package io.github.hirannor.oms;
 
 import io.github.hirannor.oms.adapter.authentication.jwt.JwtAuthenticationConfiguration;
-import io.github.hirannor.oms.adapter.messaging.eventbus.SpringEventBusMessagingConfiguration;
+import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.RabbitConfig;
 import io.github.hirannor.oms.adapter.notification.email.EmailNotificationConfiguration;
 import io.github.hirannor.oms.adapter.notification.sms.SmsNotificationConfiguration;
 import io.github.hirannor.oms.adapter.payment.mock.MockPaymentConfiguration;
@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Import;
         InMemoryPersistenceConfiguration.class,
         RestApiConfiguration.class,
         JwtAuthenticationConfiguration.class,
-        SpringEventBusMessagingConfiguration.class,
+        RabbitConfig.class,
         EmailNotificationConfiguration.class,
         SmsNotificationConfiguration.class,
         StripePaymentConfiguration.class,

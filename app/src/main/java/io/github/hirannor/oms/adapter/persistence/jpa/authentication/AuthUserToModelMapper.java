@@ -8,7 +8,7 @@ class AuthUserToModelMapper implements Function<AuthUser, AuthUserModel> {
 
     AuthUserToModelMapper() {
     }
-    
+
     @Override
     public AuthUserModel apply(final AuthUser valueObject) {
         if (valueObject == null) return null;

@@ -44,7 +44,6 @@ class ProductJpaRepository implements ProductRepository {
     }
 
     @Override
-    @EventPublisher
     public Product save(final Product product) {
         if(product == null) throw new IllegalArgumentException("Product cannot be null");
 

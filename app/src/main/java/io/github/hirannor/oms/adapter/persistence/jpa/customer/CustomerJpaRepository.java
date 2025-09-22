@@ -104,7 +104,6 @@ class CustomerJpaRepository implements CustomerRepository {
     }
 
     @Override
-    @EventPublisher
     public void save(final Customer domain) {
         if (domain == null) throw new IllegalArgumentException(ERR_CUSTOMER_IS_NULL);
 

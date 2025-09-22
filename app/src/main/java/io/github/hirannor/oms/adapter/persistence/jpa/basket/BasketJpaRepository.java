@@ -58,7 +58,6 @@ class BasketJpaRepository implements BasketRepository {
     }
 
     @Override
-    @EventPublisher
     public void save(final Basket basket) {
         if (basket == null) throw new IllegalArgumentException("basket cannot be null");
 
