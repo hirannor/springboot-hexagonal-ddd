@@ -6,7 +6,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class EmailNotificationConfigurationProperties {
     private String from;
 
-    public EmailNotificationConfigurationProperties() {}
+    public EmailNotificationConfigurationProperties() {
+    }
 
     public String getFrom() {
         return from;

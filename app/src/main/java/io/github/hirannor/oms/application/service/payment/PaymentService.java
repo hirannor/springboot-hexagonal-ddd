@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 @ApplicationService
 class PaymentService implements PaymentInitialization, PaymentCallbackHandling {
     private static final Logger LOGGER = LogManager.getLogger(
-        PaymentService.class
+            PaymentService.class
     );
     private final PaymentRepository payments;
     private final OrderRepository orders;
@@ -69,13 +69,13 @@ class PaymentService implements PaymentInitialization, PaymentCallbackHandling {
                 .orElseThrow(failBecauseOrderWasNotFoundBy(command.orderId()));
 
         final List<ProductId> productIds = order.orderItems()
-            .stream()
-            .map(OrderItem::productId)
-            .toList();
+                .stream()
+                .map(OrderItem::productId)
+                .toList();
 
         final Map<ProductId, Product> indexedProducts = products.findAllBy(productIds)
-            .stream()
-            .collect(Collectors.toMap(Product::id, p -> p));
+                .stream()
+                .collect(Collectors.toMap(Product::id, p -> p));
 
         final List<PaymentItem> paymentItems = order.orderItems()
                 .stream()
@@ -119,25 +119,25 @@ class PaymentService implements PaymentInitialization, PaymentCallbackHandling {
 
         payment.processCallback(command.payload(), command.signatureHeader())
                 .ifPresentOrElse(paymentReceipt -> {
-                    LOGGER.info("Received payment callback: status={} orderId={}",
-                            paymentReceipt.status(),
-                            paymentReceipt.orderId().asText()
-                    );
+                            LOGGER.info("Received payment callback: status={} orderId={}",
+                                    paymentReceipt.status(),
+                                    paymentReceipt.orderId().asText()
+                            );
 
-                    final Payment toPersist = payments.findBy(paymentReceipt.orderId())
-                            .orElseThrow(failBecausePaymentWasNotFoundBy(paymentReceipt.orderId()));
+                            final Payment toPersist = payments.findBy(paymentReceipt.orderId())
+                                    .orElseThrow(failBecausePaymentWasNotFoundBy(paymentReceipt.orderId()));
 
-                    toPersist.applyReceipt(paymentReceipt);
-                    payments.save(toPersist);
+                            toPersist.applyReceipt(paymentReceipt);
+                            payments.save(toPersist);
 
-                    toPersist.events().forEach(outboxes::save);
-                    toPersist.clearEvents();
+                            toPersist.events().forEach(outboxes::save);
+                            toPersist.clearEvents();
 
-                    LOGGER.info("Payment callback successfully processed for orderId={}",
-                        paymentReceipt.orderId().asText()
-                    );
-                },
-                    () -> LOGGER.warn("Skipping payment callback handling")
+                            LOGGER.info("Payment callback successfully processed for orderId={}",
+                                    paymentReceipt.orderId().asText()
+                            );
+                        },
+                        () -> LOGGER.warn("Skipping payment callback handling")
                 );
     }
 

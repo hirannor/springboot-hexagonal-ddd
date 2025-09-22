@@ -154,14 +154,24 @@ public class Customer extends AggregateRoot {
         return List.copyOf(events);
     }
 
-    private void changeFirstName(final FirstName firstName) { this.firstName = firstName; }
+    private void changeFirstName(final FirstName firstName) {
+        this.firstName = firstName;
+    }
 
-    private void changeLastName(final LastName lastName) { this.lastName = lastName; }
+    private void changeLastName(final LastName lastName) {
+        this.lastName = lastName;
+    }
 
-    private void changeGender(final Gender gender) { this.gender = gender; }
+    private void changeGender(final Gender gender) {
+        this.gender = gender;
+    }
 
-    private void changeBirthDate(final LocalDate birthDate) { this.birthDate = birthDate; }
+    private void changeBirthDate(final LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
 
-    private void updateAddress(final Address address) { this.address = address; }
+    private void updateAddress(final Address address) {
+        this.address = address;
+    }
 
 }

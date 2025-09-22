@@ -6,15 +6,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 class CustomerIngestion {
     private static final Logger LOGGER = LogManager.getLogger(
-        CustomerIngestion.class
+            CustomerIngestion.class
     );
 
-    CustomerIngestion() {}
+    CustomerIngestion() {
+    }
 
     /**
      * Handles incoming {@link CustomerRegistered} event.

@@ -9,7 +9,8 @@ import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 import java.util.function.Function;
 
 public class OrderCreatedModelToDomainMapper implements Function<OrderCreatedModel, OrderCreated> {
-    public OrderCreatedModelToDomainMapper() {}
+    public OrderCreatedModelToDomainMapper() {
+    }
 
     @Override
     public OrderCreated apply(final OrderCreatedModel model) {

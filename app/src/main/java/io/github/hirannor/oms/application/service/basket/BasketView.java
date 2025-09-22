@@ -7,8 +7,9 @@ import io.github.hirannor.oms.domain.core.valueobject.Money;
 import java.util.List;
 
 public record BasketView(
-    BasketId basketId,
-    CustomerId customerId,
-    List<BasketItemView> items,
-    Money totalPrice
-) {}
+        BasketId basketId,
+        CustomerId customerId,
+        List<BasketItemView> items,
+        Money totalPrice
+) {
+}

@@ -32,7 +32,7 @@ import java.util.function.Function;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final Logger LOGGER = LogManager.getLogger(
-        JwtAuthenticationFilter.class
+            JwtAuthenticationFilter.class
     );
 
     private static final AntPathMatcher PATH_MATCHER = new AntPathMatcher();
@@ -61,7 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     JwtAuthenticationFilter(final Authenticator authenticator,
                             final ObjectMapper mapper) {
-      this(authenticator, mapper, new RoleToPermissionRoleModelMapper());
+        this(authenticator, mapper, new RoleToPermissionRoleModelMapper());
     }
 
     JwtAuthenticationFilter(final Authenticator authenticator,
@@ -100,10 +100,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     auth.emailAddress().value(),
                     null,
                     auth.roles()
-                        .stream()
-                        .map(mapRoleToModel
-                                .andThen(JwtAuthenticationFilter::addRolePrefix))
-                        .toList()
+                            .stream()
+                            .map(mapRoleToModel
+                                    .andThen(JwtAuthenticationFilter::addRolePrefix))
+                            .toList()
             );
             SecurityContextHolder.getContext().setAuthentication(authToken);
             filterChain.doFilter(request, response);

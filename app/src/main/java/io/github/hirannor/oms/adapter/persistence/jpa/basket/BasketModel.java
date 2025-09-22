@@ -13,13 +13,13 @@ public class BasketModel {
 
     @Id
     @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "basket_seq"
+            strategy = GenerationType.SEQUENCE,
+            generator = "basket_seq"
     )
     @SequenceGenerator(
-        name = "basket_seq",
-        sequenceName = "basket_seq",
-        allocationSize = ALLOCATION_SIZE
+            name = "basket_seq",
+            sequenceName = "basket_seq",
+            allocationSize = ALLOCATION_SIZE
     )
     private Long id;
 

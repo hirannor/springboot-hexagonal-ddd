@@ -15,8 +15,8 @@ import java.util.Base64;
 @Configuration
 @ComponentScan
 @ConditionalOnProperty(
-    value = "adapter.authentication",
-    havingValue = "jwt"
+        value = "adapter.authentication",
+        havingValue = "jwt"
 )
 @EnableConfigurationProperties(JwtAuthenticationConfigurationProperties.class)
 public class JwtAuthenticationConfiguration {

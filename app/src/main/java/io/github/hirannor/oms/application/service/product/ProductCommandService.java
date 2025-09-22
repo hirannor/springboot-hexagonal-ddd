@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @ApplicationService
 class ProductCommandService implements ProductCreation {
     private static final Logger LOGGER = LogManager.getLogger(
-        ProductCommandService.class
+            ProductCommandService.class
     );
 
     private final ProductRepository products;
@@ -30,8 +30,8 @@ class ProductCommandService implements ProductCreation {
         if (cmd == null) throw new IllegalArgumentException("AddProduct cannot be null");
 
         LOGGER.info("Creating new product with id: {}, name: {}",
-            cmd.productId().asText(),
-            cmd.name());
+                cmd.productId().asText(),
+                cmd.name());
 
         final Product toPersist = Product.create(cmd);
         products.save(toPersist);
@@ -41,7 +41,7 @@ class ProductCommandService implements ProductCreation {
         toPersist.clearEvents();
 
         LOGGER.info("Product with id: {} was created successfully",
-            cmd.productId().asText());
+                cmd.productId().asText());
 
         return toPersist;
     }

@@ -24,7 +24,8 @@ public record EmailAddress(String value) {
     public EmailAddress {
         if (value == null || value.isEmpty()) throw new IllegalArgumentException("EmailAddress cannot be null!");
 
-        if (!isValidEmailAddress(value)) throw new IllegalArgumentException("Format of email-emailAddress is not valid!");
+        if (!isValidEmailAddress(value))
+            throw new IllegalArgumentException("Format of email-emailAddress is not valid!");
     }
 
     /**

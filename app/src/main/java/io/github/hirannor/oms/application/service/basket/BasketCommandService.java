@@ -117,12 +117,12 @@ class BasketCommandService implements
 
     private BasketView mapToView(final Basket basket) {
         final List<ProductId> productIds = basket.items().stream()
-            .map(BasketItem::productId)
-            .toList();
+                .map(BasketItem::productId)
+                .toList();
 
         final Map<ProductId, Product> productMap = products.findAllBy(productIds)
-            .stream()
-            .collect(Collectors.toMap(Product::id, p -> p));
+                .stream()
+                .collect(Collectors.toMap(Product::id, p -> p));
 
         return mapBasketToView.apply(basket, productMap);
     }

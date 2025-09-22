@@ -6,4 +6,5 @@ public record PaymentFailedModel(
         String eventId,
         String paymentId,
         String orderId
-) implements DomainEventModel {}
+) implements DomainEventModel {
+}

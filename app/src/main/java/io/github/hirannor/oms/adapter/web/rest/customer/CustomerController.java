@@ -73,7 +73,7 @@ class CustomerController implements CustomersApi {
 
     @Override
     public ResponseEntity<CustomerModel> changePersonalDetails(final String customerId,
-                                                       final ChangePersonalDetailsModel model) {
+                                                               final ChangePersonalDetailsModel model) {
         final ChangePersonalDetails cmd = CustomerMappingFactory
                 .createChangePersonalDetailsModelToDomainMapper(customerId)
                 .apply(model);

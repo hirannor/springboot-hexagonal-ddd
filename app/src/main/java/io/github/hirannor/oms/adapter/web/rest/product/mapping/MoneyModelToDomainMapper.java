@@ -9,7 +9,7 @@ import java.util.function.Function;
 
 public class MoneyModelToDomainMapper implements Function<MoneyModel, Money> {
 
-    private final  Function<CurrencyModel, Currency> mapModelToDomain;
+    private final Function<CurrencyModel, Currency> mapModelToDomain;
 
     public MoneyModelToDomainMapper() {
         this.mapModelToDomain = new CurrencyModelToDomainMapper();

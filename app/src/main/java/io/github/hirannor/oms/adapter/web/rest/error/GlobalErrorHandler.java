@@ -16,7 +16,8 @@ import java.util.Map;
 @ControllerAdvice
 class GlobalErrorHandler {
 
-    GlobalErrorHandler() {}
+    GlobalErrorHandler() {
+    }
 
     @ExceptionHandler(Exception.class)
     ResponseEntity<ProblemDetailsModel> internalServerError(

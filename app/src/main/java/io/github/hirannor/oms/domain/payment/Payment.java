@@ -45,12 +45,29 @@ public class Payment extends AggregateRoot {
         this.events = new ArrayList<>();
     }
 
-    public PaymentId id() { return id; }
-    public OrderId orderId() { return orderId; }
-    public Money amount() { return amount; }
-    public PaymentStatus status() { return status; }
-    public String providerReference() { return providerReference; }
-    public Instant createdAt() { return createdAt; }
+    public PaymentId id() {
+        return id;
+    }
+
+    public OrderId orderId() {
+        return orderId;
+    }
+
+    public Money amount() {
+        return amount;
+    }
+
+    public PaymentStatus status() {
+        return status;
+    }
+
+    public String providerReference() {
+        return providerReference;
+    }
+
+    public Instant createdAt() {
+        return createdAt;
+    }
 
     public static Payment start(final StartPayment start) {
         Objects.requireNonNull(start, "start command cannot be null");

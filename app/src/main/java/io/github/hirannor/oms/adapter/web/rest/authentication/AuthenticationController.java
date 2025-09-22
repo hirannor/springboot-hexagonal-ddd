@@ -8,8 +8,8 @@ import io.github.hirannor.oms.adapter.web.rest.authentication.model.Authenticati
 import io.github.hirannor.oms.adapter.web.rest.authentication.model.RefreshRequestModel;
 import io.github.hirannor.oms.application.usecase.customer.Authenticating;
 import io.github.hirannor.oms.application.usecase.customer.RefreshAuthentication;
-import io.github.hirannor.oms.domain.authentication.AuthenticationResult;
 import io.github.hirannor.oms.domain.authentication.AttemptAuthentication;
+import io.github.hirannor.oms.domain.authentication.AuthenticationResult;
 import io.github.hirannor.oms.domain.authentication.RefreshToken;
 import io.github.hirannor.oms.infrastructure.adapter.DriverAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +32,11 @@ class AuthenticationController implements AuthApi {
 
     @Autowired
     AuthenticationController(final Authenticating user, RefreshAuthentication token) {
-      this(
-          user,
-          new AuthenticationModelToCommandMapper(),
-          new AuthenticationResultToModelMapper(), token
-      );
+        this(
+                user,
+                new AuthenticationModelToCommandMapper(),
+                new AuthenticationResultToModelMapper(), token
+        );
     }
 
 

@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan
 @ConditionalOnProperty(
-    value = "adapter.payment",
-    havingValue = "mock"
+        value = "adapter.payment",
+        havingValue = "mock"
 )
 public class MockPaymentConfiguration {
 }

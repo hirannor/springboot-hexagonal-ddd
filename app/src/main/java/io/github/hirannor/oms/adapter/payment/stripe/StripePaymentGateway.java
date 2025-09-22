@@ -37,7 +37,7 @@ import java.util.function.Function;
 class StripePaymentGateway implements PaymentGateway {
 
     private static final Logger LOGGER = LogManager.getLogger(
-        StripePaymentGateway.class
+            StripePaymentGateway.class
     );
 
     private final Function<PaymentMethod, SessionCreateParams.PaymentMethodType> mapPaymentMethodToType;
@@ -50,14 +50,14 @@ class StripePaymentGateway implements PaymentGateway {
 
     @Autowired
     StripePaymentGateway(final StripeClient client, final StripeConfigurationProperties config) {
-       this(
-           client,
-           config,
-           new PaymentMethodToTypeMapper(),
-           new CurrencyToModelMapper(),
-           new CurrencyModelToDomainMapper(),
-           new PaymentMethodModelToDomainMapper()
-       );
+        this(
+                client,
+                config,
+                new PaymentMethodToTypeMapper(),
+                new CurrencyToModelMapper(),
+                new CurrencyModelToDomainMapper(),
+                new PaymentMethodModelToDomainMapper()
+        );
     }
 
     StripePaymentGateway(final StripeClient client,
@@ -119,7 +119,7 @@ class StripePaymentGateway implements PaymentGateway {
                     payment.totalAmount(),
                     session.getId(),
                     session.getUrl()
-                );
+            );
         } catch (final StripeException ignored) {
             throw new PaymentInitializationFailed("Stripe initialization failed");
         }
@@ -131,7 +131,7 @@ class StripePaymentGateway implements PaymentGateway {
             final Event event = Webhook.constructEvent(payload, signatureHeader, config.getWebHookSecret());
             final String type = event.getType();
 
-            if(!type.startsWith("payment_intent.")) return Optional.empty();
+            if (!type.startsWith("payment_intent.")) return Optional.empty();
 
             try {
                 final PaymentReceipt receipt = handlePaymentIntentEvent(PaymentIntentEvent.from(type), event);

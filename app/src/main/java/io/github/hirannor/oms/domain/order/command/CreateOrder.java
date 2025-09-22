@@ -8,7 +8,8 @@ import io.github.hirannor.oms.infrastructure.command.CommandId;
 
 import java.util.List;
 
-public record CreateOrder(CommandId id, OrderId orderId, CustomerId customer, List<OrderItem> orderItems) implements Command {
+public record CreateOrder(CommandId id, OrderId orderId, CustomerId customer,
+                          List<OrderItem> orderItems) implements Command {
 
     public static CreateOrder issue(final CustomerId customer, final List<OrderItem> orderItems) {
         return new CreateOrder(CommandId.generate(), OrderId.generate(), customer, orderItems);

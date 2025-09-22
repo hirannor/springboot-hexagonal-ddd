@@ -5,15 +5,16 @@ import io.github.hirannor.oms.domain.core.valueobject.Currency;
 import java.util.function.Function;
 
 public class CurrencyModelToDomainMapper implements Function<CurrencyModel, Currency> {
-    public CurrencyModelToDomainMapper() {}
+    public CurrencyModelToDomainMapper() {
+    }
 
     @Override
     public Currency apply(final CurrencyModel model) {
-       if (model == null) return null;
+        if (model == null) return null;
 
-       return switch (model) {
-           case EUR -> Currency.EUR;
-           case HUF -> Currency.HUF;
-       };
+        return switch (model) {
+            case EUR -> Currency.EUR;
+            case HUF -> Currency.HUF;
+        };
     }
 }

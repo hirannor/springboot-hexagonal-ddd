@@ -8,5 +8,6 @@ import java.util.Optional;
 
 public interface ProductDisplaying {
     List<Product> displayAll();
+
     Optional<Product> displayBy(ProductId id);
 }

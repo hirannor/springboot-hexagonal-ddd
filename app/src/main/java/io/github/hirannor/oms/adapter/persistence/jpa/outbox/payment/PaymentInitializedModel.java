@@ -10,4 +10,5 @@ public record PaymentInitializedModel(
         String orderId,
         BigDecimal amount,
         String currency
-) implements DomainEventModel {}
+) implements DomainEventModel {
+}

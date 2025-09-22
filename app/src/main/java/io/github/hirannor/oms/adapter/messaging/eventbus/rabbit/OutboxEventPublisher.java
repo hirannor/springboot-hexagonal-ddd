@@ -55,7 +55,7 @@ public class OutboxEventPublisher {
 
                 final EventEnvelope envelope = new EventEnvelope(eventModel.getClass().getName(), mapper.writeValueAsString(eventModel));
 
-                rabbitTemplate.convertAndSend("oms.exchange",eventModel.getClass().getSimpleName(), mapper.writeValueAsString(envelope));
+                rabbitTemplate.convertAndSend("oms.exchange", eventModel.getClass().getSimpleName(), mapper.writeValueAsString(envelope));
                 repository.markAsProcessed(evt.id());
 
                 LOGGER.debug("Published event {} with id {}", evt.getClass().getSimpleName(), evt.id().asText());

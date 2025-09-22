@@ -22,8 +22,8 @@ class CustomerModelToDomainMapper implements Function<CustomerModel, Customer> {
 
     CustomerModelToDomainMapper() {
         this(
-            new CountryModelToDomainMapper(),
-            new GenderModelToDomainMapper()
+                new CountryModelToDomainMapper(),
+                new GenderModelToDomainMapper()
         );
     }
 
@@ -46,12 +46,12 @@ class CustomerModelToDomainMapper implements Function<CustomerModel, Customer> {
                 .ifPresent(builder::gender);
 
         Optional.ofNullable(model.getFirstName())
-            .map(FirstName::from)
-            .ifPresent(builder::firstName);
+                .map(FirstName::from)
+                .ifPresent(builder::firstName);
 
         Optional.ofNullable(model.getLastName())
-            .map(LastName::from)
-            .ifPresent(builder::lastName);
+                .map(LastName::from)
+                .ifPresent(builder::lastName);
 
         if (isCompleteAddress(model)) {
             final Address address = Address.from(

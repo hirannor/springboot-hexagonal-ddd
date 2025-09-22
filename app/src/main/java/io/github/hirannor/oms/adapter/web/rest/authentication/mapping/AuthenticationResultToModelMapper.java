@@ -7,7 +7,8 @@ import java.util.function.Function;
 
 public class AuthenticationResultToModelMapper implements Function<AuthenticationResult, AuthenticationResultModel> {
 
-    public AuthenticationResultToModelMapper() {}
+    public AuthenticationResultToModelMapper() {
+    }
 
     @Override
     public AuthenticationResultModel apply(final AuthenticationResult result) {

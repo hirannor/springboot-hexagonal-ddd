@@ -29,10 +29,10 @@ public class ProductModelToDomainMapper implements Function<ProductModel, Produc
                 .name(model.getName())
                 .description(model.getDescription())
                 .price(
-                    Money.of(
-                        model.getPriceAmount(),
-                        currency
-                    )
+                        Money.of(
+                                model.getPriceAmount(),
+                                currency
+                        )
                 )
                 .assemble();
     }

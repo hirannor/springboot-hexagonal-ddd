@@ -18,7 +18,7 @@ import org.thymeleaf.context.Context;
 class EmailNotificator implements Notificator {
 
     private static final Logger LOGGER = LogManager.getLogger(
-        EmailNotificator.class
+            EmailNotificator.class
     );
 
     private final EmailNotificationConfigurationProperties config;

@@ -6,5 +6,6 @@ import java.util.Optional;
 
 public interface AuthenticationRepository {
     void save(AuthUser auth);
+
     Optional<AuthUser> findByEmail(EmailAddress email);
 }

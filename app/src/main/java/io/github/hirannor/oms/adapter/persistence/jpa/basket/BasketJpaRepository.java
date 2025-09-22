@@ -8,7 +8,6 @@ import io.github.hirannor.oms.domain.basket.BasketRepository;
 import io.github.hirannor.oms.domain.core.valueobject.CustomerId;
 import io.github.hirannor.oms.infrastructure.adapter.DrivenAdapter;
 import io.github.hirannor.oms.infrastructure.adapter.PersistenceAdapter;
-import io.github.hirannor.oms.infrastructure.event.EventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

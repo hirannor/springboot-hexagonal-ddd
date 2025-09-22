@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderIngestion {
     private static final Logger LOGGER = LogManager.getLogger(
-        OrderIngestion.class
+            OrderIngestion.class
     );
 
     private final OrderStatusChanging status;

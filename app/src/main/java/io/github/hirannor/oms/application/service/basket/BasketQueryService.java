@@ -37,7 +37,7 @@ public class BasketQueryService implements BasketDisplaying {
         if (customer == null) throw new IllegalArgumentException("CustomerId is null");
 
         return baskets.findBy(customer)
-            .map(this::mapToView);
+                .map(this::mapToView);
     }
 
     @Override
@@ -45,24 +45,24 @@ public class BasketQueryService implements BasketDisplaying {
         if (basketId == null) throw new IllegalArgumentException("basket is null");
 
         return baskets.findBy(basketId)
-            .map(this::mapToView);
+                .map(this::mapToView);
     }
 
     @Override
     public List<BasketView> displayAll() {
         return baskets.findAll().stream()
-            .map(this::mapToView)
-            .toList();
+                .map(this::mapToView)
+                .toList();
     }
 
     private BasketView mapToView(final Basket basket) {
         final List<ProductId> productIds = basket.items().stream()
-            .map(BasketItem::productId)
-            .toList();
+                .map(BasketItem::productId)
+                .toList();
 
         final Map<ProductId, Product> productMap = products.findAllBy(productIds)
-            .stream()
-            .collect(Collectors.toMap(Product::id, p -> p));
+                .stream()
+                .collect(Collectors.toMap(Product::id, p -> p));
 
         return mapBasketToView.apply(basket, productMap);
     }

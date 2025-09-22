@@ -7,7 +7,6 @@ import io.github.hirannor.oms.domain.product.ProductId;
 import io.github.hirannor.oms.domain.product.ProductRepository;
 import io.github.hirannor.oms.infrastructure.adapter.DrivenAdapter;
 import io.github.hirannor.oms.infrastructure.adapter.PersistenceAdapter;
-import io.github.hirannor.oms.infrastructure.event.EventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -45,7 +44,7 @@ class ProductJpaRepository implements ProductRepository {
 
     @Override
     public Product save(final Product product) {
-        if(product == null) throw new IllegalArgumentException("Product cannot be null");
+        if (product == null) throw new IllegalArgumentException("Product cannot be null");
 
         products.save(mapDomainToModel.apply(product));
         return product;
@@ -70,12 +69,12 @@ class ProductJpaRepository implements ProductRepository {
     @Override
     public List<Product> findAllBy(final List<ProductId> productIds) {
         final List<String> rawIds = productIds.stream()
-            .map(ProductId::value)
-            .toList();
+                .map(ProductId::value)
+                .toList();
 
         return products.findAllByProductIdIn(rawIds)
-            .stream()
-            .map(mapModelToDomain)
-            .toList();
+                .stream()
+                .map(mapModelToDomain)
+                .toList();
     }
 }

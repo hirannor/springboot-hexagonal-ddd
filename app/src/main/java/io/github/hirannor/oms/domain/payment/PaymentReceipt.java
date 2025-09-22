@@ -33,6 +33,6 @@ public record PaymentReceipt(
             final String providerReference,
             final Money amount
     ) {
-        return new PaymentReceipt(transactionId,providerPaymentId, paymentMethod, orderId, status, providerReference, amount);
+        return new PaymentReceipt(transactionId, providerPaymentId, paymentMethod, orderId, status, providerReference, amount);
     }
 }

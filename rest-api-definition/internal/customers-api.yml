@@ -4,7 +4,7 @@ info:
   description: Customers API
   version: 1.0.0
 security:
-  - bearerAuth: []
+  - bearerAuth: [ ]
 paths:
   /customers/me:
     get:

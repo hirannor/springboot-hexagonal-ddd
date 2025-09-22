@@ -11,7 +11,6 @@ import io.github.hirannor.oms.domain.customer.CustomerRepository;
 import io.github.hirannor.oms.domain.customer.query.FilterCriteria;
 import io.github.hirannor.oms.infrastructure.adapter.DrivenAdapter;
 import io.github.hirannor.oms.infrastructure.adapter.PersistenceAdapter;
-import io.github.hirannor.oms.infrastructure.event.EventPublisher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,7 +109,7 @@ class CustomerJpaRepository implements CustomerRepository {
         LOGGER.debug("Saving customer....");
 
         final CustomerModel toPersist = customers.findByCustomerId(domain.id().asText())
-            .orElseGet(CustomerModel::new);
+                .orElseGet(CustomerModel::new);
 
         CustomerModeller.applyChangesFrom(domain).to(toPersist);
         customers.save(toPersist);

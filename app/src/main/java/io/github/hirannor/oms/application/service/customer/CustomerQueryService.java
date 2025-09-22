@@ -24,7 +24,7 @@ import java.util.Optional;
 class CustomerQueryService implements CustomerDisplaying {
 
     private static final Logger LOGGER = LogManager.getLogger(
-        CustomerQueryService.class
+            CustomerQueryService.class
     );
     private static final String ERR_CUSTOMER_ID_IS_NULL = "CustomerId cannot be null!";
 

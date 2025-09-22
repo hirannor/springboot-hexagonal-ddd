@@ -8,7 +8,7 @@ import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 
 public record PaymentFailed(MessageId id, PaymentId paymentId, OrderId orderId) implements DomainEvent {
     public static PaymentFailed record(final PaymentId paymentId, final OrderId orderId) {
-        return new PaymentFailed(Message.generateId(),  paymentId, orderId);
+        return new PaymentFailed(Message.generateId(), paymentId, orderId);
     }
 
     public static PaymentFailed recreate(final MessageId id, final PaymentId paymentId, final OrderId orderId) {

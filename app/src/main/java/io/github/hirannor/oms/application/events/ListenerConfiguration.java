@@ -16,7 +16,8 @@ public class ListenerConfiguration implements AsyncConfigurer {
 
     private static final Logger LOGGER = LogManager.getLogger(ListenerConfiguration.class);
 
-    ListenerConfiguration() {}
+    ListenerConfiguration() {
+    }
 
     @Override
     public Executor getAsyncExecutor() {

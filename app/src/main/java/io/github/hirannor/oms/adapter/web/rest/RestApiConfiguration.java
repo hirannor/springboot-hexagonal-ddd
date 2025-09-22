@@ -16,9 +16,9 @@ import java.util.Locale;
 @Configuration
 @ComponentScan
 @ConditionalOnProperty(
-    value = "adapter.web",
-    havingValue = "rest",
-    matchIfMissing = true
+        value = "adapter.web",
+        havingValue = "rest",
+        matchIfMissing = true
 )
 public class RestApiConfiguration {
 

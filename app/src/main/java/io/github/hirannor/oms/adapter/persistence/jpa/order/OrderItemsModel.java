@@ -13,13 +13,13 @@ public class OrderItemsModel {
 
     @Id
     @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "ordered_product_seq"
+            strategy = GenerationType.SEQUENCE,
+            generator = "ordered_product_seq"
     )
     @SequenceGenerator(
-        name = "ordered_product_seq",
-        sequenceName = "ordered_product_seq",
-        allocationSize = ALLOCATION_SIZE
+            name = "ordered_product_seq",
+            sequenceName = "ordered_product_seq",
+            allocationSize = ALLOCATION_SIZE
     )
     private Long id;
 
@@ -39,7 +39,8 @@ public class OrderItemsModel {
     @Column(name = "PRICE_CURRENCY", nullable = false)
     private CurrencyModel priceCurrency;
 
-    public OrderItemsModel() {}
+    public OrderItemsModel() {
+    }
 
     public Long getId() {
         return id;

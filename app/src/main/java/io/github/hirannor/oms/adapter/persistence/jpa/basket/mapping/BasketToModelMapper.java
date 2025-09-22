@@ -19,19 +19,19 @@ public class BasketToModelMapper implements Function<Basket, BasketModel> {
 
     @Override
     public BasketModel apply(final Basket domain) {
-       if (domain == null) return null;
+        if (domain == null) return null;
 
-       final BasketModel model = new BasketModel();
-       model.setBasketId(domain.id().asText());
-       model.setCustomerId(domain.customer().asText());
+        final BasketModel model = new BasketModel();
+        model.setBasketId(domain.id().asText());
+        model.setCustomerId(domain.customer().asText());
 
-       final Set<BasketItemModel> basketItems = domain.items()
-            .stream()
-            .map(mapDomainToModel)
-            .collect(Collectors.toSet());
+        final Set<BasketItemModel> basketItems = domain.items()
+                .stream()
+                .map(mapDomainToModel)
+                .collect(Collectors.toSet());
 
-       model.setItems(basketItems);
+        model.setItems(basketItems);
 
-       return model;
+        return model;
     }
 }

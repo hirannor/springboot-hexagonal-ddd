@@ -24,7 +24,8 @@ public record ProblemDetailsModel(
         private String instance;
         private Map<String, String> fields;
 
-        private Builder() {}
+        private Builder() {
+        }
 
         public Builder timestamp(final Instant timestamp) {
             this.timestamp = timestamp;

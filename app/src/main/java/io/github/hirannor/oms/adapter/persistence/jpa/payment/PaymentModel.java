@@ -47,29 +47,70 @@ public class PaymentModel {
     @Column(name = "CREATED_AT", nullable = false)
     private Instant createdAt;
 
-    public PaymentModel() {}
+    public PaymentModel() {
+    }
 
-    public Long getId() { return id; }
-    public void setId(final Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getPaymentId() { return paymentId; }
-    public void setPaymentId(final String paymentId) { this.paymentId = paymentId; }
+    public void setId(final Long id) {
+        this.id = id;
+    }
 
-    public String getOrderId() { return orderId; }
-    public void setOrderId(final String orderId) { this.orderId = orderId; }
+    public String getPaymentId() {
+        return paymentId;
+    }
 
-    public BigDecimal getAmount() { return amount; }
-    public void setAmount(final BigDecimal amount) { this.amount = amount; }
+    public void setPaymentId(final String paymentId) {
+        this.paymentId = paymentId;
+    }
 
-    public CurrencyModel getCurrency() { return currency; }
-    public void setCurrency(final CurrencyModel currency) { this.currency = currency; }
+    public String getOrderId() {
+        return orderId;
+    }
 
-    public PaymentStatusModel getStatus() { return status; }
-    public void setStatus(final PaymentStatusModel status) { this.status = status; }
+    public void setOrderId(final String orderId) {
+        this.orderId = orderId;
+    }
 
-    public String getProviderReference() { return providerReference; }
-    public void setProviderReference(final String providerReference) { this.providerReference = providerReference; }
+    public BigDecimal getAmount() {
+        return amount;
+    }
 
-    public Instant getCreatedAt() { return createdAt; }
-    public void setCreatedAt(final Instant createdAt) { this.createdAt = createdAt; }
+    public void setAmount(final BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    public CurrencyModel getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(final CurrencyModel currency) {
+        this.currency = currency;
+    }
+
+    public PaymentStatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(final PaymentStatusModel status) {
+        this.status = status;
+    }
+
+    public String getProviderReference() {
+        return providerReference;
+    }
+
+    public void setProviderReference(final String providerReference) {
+        this.providerReference = providerReference;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(final Instant createdAt) {
+        this.createdAt = createdAt;
+    }
 }

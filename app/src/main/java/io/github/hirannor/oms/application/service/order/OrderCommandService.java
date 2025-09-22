@@ -17,7 +17,6 @@ import io.github.hirannor.oms.domain.order.OrderId;
 import io.github.hirannor.oms.domain.order.OrderRepository;
 import io.github.hirannor.oms.domain.order.command.CreateOrder;
 import io.github.hirannor.oms.infrastructure.application.ApplicationService;
-import io.github.hirannor.oms.infrastructure.messaging.MessagePublisher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,7 @@ class OrderCommandService implements
         OrderStatusChanging {
 
     private static final Logger LOGGER = LogManager.getLogger(
-        OrderCommandService.class
+            OrderCommandService.class
     );
 
     private final OrderRepository orders;
@@ -55,11 +54,11 @@ class OrderCommandService implements
         if (create == null) throw new IllegalArgumentException("CreateOrder is null");
 
         LOGGER.info("Start creating order with id :{} for customer id: {}",
-            create.orderId().asText(),
-            create.customer().asText());
+                create.orderId().asText(),
+                create.customer().asText());
 
         final Customer customer = customers.findBy(create.customer())
-            .orElseThrow(failBecauseCustomerWasNotFoundBy(create.customer()));
+                .orElseThrow(failBecauseCustomerWasNotFoundBy(create.customer()));
 
         if (!customer.address().isComplete())
             failBecauseMissingAddressDetails(customer.id());
@@ -73,8 +72,8 @@ class OrderCommandService implements
         baskets.deleteBy(order.customer());
 
         LOGGER.info("Order with id: {} was successfully created for customer: {}",
-            order.id().asText(),
-            order.id().asText());
+                order.id().asText(),
+                order.id().asText());
 
         return order;
     }
@@ -84,7 +83,7 @@ class OrderCommandService implements
         if (id == null) throw new IllegalArgumentException("OrderId is null");
 
         LOGGER.info("Start cancellation for id id: {}",
-            id.asText()
+                id.asText()
         );
         final Order order = orders.findBy(id)
                 .orElseThrow(failBecauseOrderWasNotFoundBy(id));
@@ -103,8 +102,8 @@ class OrderCommandService implements
         if (changeStatus == null) throw new IllegalArgumentException("ChangeOrderStatus is null");
 
         LOGGER.info("Changing order status to: {} for order id: {}",
-            changeStatus.status(),
-            changeStatus.orderId().asText()
+                changeStatus.status(),
+                changeStatus.orderId().asText()
         );
 
         final Order order = orders.findBy(changeStatus.orderId())
@@ -117,7 +116,7 @@ class OrderCommandService implements
         order.clearEvents();
 
         LOGGER.info("Order status is successfully changed for order id: {}",
-            changeStatus.orderId().asText()
+                changeStatus.orderId().asText()
         );
     }
 

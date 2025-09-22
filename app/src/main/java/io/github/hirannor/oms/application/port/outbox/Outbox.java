@@ -8,7 +8,10 @@ import java.util.List;
 
 public interface Outbox {
     void save(DomainEvent evt);
+
     List<DomainEvent> findUnprocessed();
+
     void markAsProcessed(MessageId id);
+
     void deleteProcessedOlderThan(Instant time);
 }

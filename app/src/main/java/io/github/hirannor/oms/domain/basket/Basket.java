@@ -32,7 +32,7 @@ public class Basket extends AggregateRoot {
         this.events = new ArrayList<>();
     }
 
-    Basket(final BasketId id, final CustomerId customer,  final List<BasketItem> items) {
+    Basket(final BasketId id, final CustomerId customer, final List<BasketItem> items) {
         Objects.requireNonNull(id);
         Objects.requireNonNull(customer);
 

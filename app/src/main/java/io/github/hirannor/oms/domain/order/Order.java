@@ -4,7 +4,6 @@ import io.github.hirannor.oms.domain.core.valueobject.CustomerId;
 import io.github.hirannor.oms.domain.core.valueobject.Money;
 import io.github.hirannor.oms.domain.order.command.CreateOrder;
 import io.github.hirannor.oms.domain.order.events.*;
-import io.github.hirannor.oms.domain.payment.PaymentReceipt;
 import io.github.hirannor.oms.infrastructure.aggregate.AggregateRoot;
 import io.github.hirannor.oms.infrastructure.event.DomainEvent;
 
@@ -84,7 +83,7 @@ public class Order extends AggregateRoot {
 
     public void changeStatus(final OrderStatus target) {
         if (!status.canTransitionTo(target))
-            throw new IllegalStateException("Cannot change to " + target +  " status");
+            throw new IllegalStateException("Cannot change to " + target + " status");
 
         this.history.add(OrderStatusChange.from(status, target, Instant.now()));
 
@@ -99,7 +98,8 @@ public class Order extends AggregateRoot {
             case CANCELLED -> cancel();
             case RETURNED -> returnOrder();
             case REFUNDED -> refund();
-            case CREATED -> {}
+            case CREATED -> {
+            }
         }
     }
 
@@ -160,7 +160,9 @@ public class Order extends AggregateRoot {
                 .orElseThrow(failBecauseOrderDoesntContainProduct());
     }
 
-    public List<OrderStatusChange> history() { return Collections.unmodifiableList(history); }
+    public List<OrderStatusChange> history() {
+        return Collections.unmodifiableList(history);
+    }
 
     @Override
     public void clearEvents() {

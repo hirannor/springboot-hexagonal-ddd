@@ -7,7 +7,8 @@ import io.github.hirannor.oms.domain.core.valueobject.CustomerId;
 import java.util.function.Function;
 
 public class CreateBasketModelToCommandMapper implements Function<CreateBasketModel, CreateBasket> {
-    public CreateBasketModelToCommandMapper() {}
+    public CreateBasketModelToCommandMapper() {
+    }
 
     @Override
     public CreateBasket apply(final CreateBasketModel model) {

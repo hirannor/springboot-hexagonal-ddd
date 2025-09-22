@@ -10,7 +10,8 @@ public class OrderBuilder {
     private OrderStatus status;
     private CustomerId customer;
 
-    public OrderBuilder() {}
+    public OrderBuilder() {
+    }
 
     public OrderBuilder id(final OrderId id) {
         this.id = id;

@@ -7,7 +7,8 @@ import io.github.hirannor.oms.domain.payment.PaymentStatus;
 import java.util.function.Function;
 
 public class PaymentStatusToModelMapper implements Function<PaymentStatus, PaymentStatusModel> {
-    public PaymentStatusToModelMapper() {}
+    public PaymentStatusToModelMapper() {
+    }
 
     @Override
     public PaymentStatusModel apply(final PaymentStatus domain) {

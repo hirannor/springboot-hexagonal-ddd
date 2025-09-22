@@ -1,14 +1,13 @@
 # Spring-Boot - Ports-And-Adapters / Hexagonal Architecture with DDD
 
-|Build Status|License|
-|------------|-------|
-|[![Build Status](https://img.shields.io/github/actions/workflow/status/hirannor/springboot-hexagonal-ddd/.github/workflows/maven.yml)](https://github.com/hirannor/springboot-hexagonal-ddd/actions/workflows/maven.yml)|[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Commons Clause](https://img.shields.io/badge/Commons-Clause-red.svg)](https://commonsclause.com/)|
-
-
+| Build Status                                                                                                                                                                                                             | License                                                                                                                                                                                                          |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [![Build Status](https://img.shields.io/github/actions/workflow/status/hirannor/springboot-hexagonal-ddd/.github/workflows/maven.yml)](https://github.com/hirannor/springboot-hexagonal-ddd/actions/workflows/maven.yml) | [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Commons Clause](https://img.shields.io/badge/Commons-Clause-red.svg)](https://commonsclause.com/) |
 
 ## Overview
 
-This project is a **Spring Boot** example implementing **Ports & Adapters / Hexagonal Architecture** with **Domain-Driven Design (DDD)** principles.
+This project is a **Spring Boot** example implementing **Ports & Adapters / Hexagonal Architecture** with *
+*Domain-Driven Design (DDD)** principles.
 
 The architecture enforces separation of concerns:
 
@@ -16,35 +15,40 @@ The architecture enforces separation of concerns:
 * **Application Layer:** Orchestrates use cases and mediates between domain and adapters.
 * **Adapters / Infrastructure Layer:** Implements technical concerns such as messaging, persistence, and external APIs.
 
-Architectural rules are validated using **[ArchUnit](https://www.archunit.org/)** to maintain a clean and consistent project structure.
+Architectural rules are validated using **[ArchUnit](https://www.archunit.org/)** to maintain a clean and consistent
+project structure.
 
-For DDD modeling, the project uses an **Order Management System** as the core domain, since it naturally covers a wide variety of concepts:
+For DDD modeling, the project uses an **Order Management System** as the core domain, since it naturally covers a wide
+variety of concepts:
 
 * **Customer** – aggregate root representing a registered user of the system.  
   Customers can register, authenticate, and manage their own profile.  
   Admins use the same `Customer` API but with extended permissions (e.g., list all, delete).
 
 * **Order** – aggregate root handling the full order lifecycle:
-  - Creation
-  - Status changes (`CREATED → WAITING_FOR_PAYMENT → PAID_SUCCESSFULLY → PROCESSING → SHIPPED → DELIVERED → RETURNED/REFUNDED`)
-  - Cancellation and refund
-  - Emits domain events such as `OrderCreated`, `OrderPaid`, `OrderShipped`.
+    - Creation
+    - Status changes (
+      `CREATED → WAITING_FOR_PAYMENT → PAID_SUCCESSFULLY → PROCESSING → SHIPPED → DELIVERED → RETURNED/REFUNDED`)
+    - Cancellation and refund
+    - Emits domain events such as `OrderCreated`, `OrderPaid`, `OrderShipped`.
 
 * **Basket** – aggregate root representing a shopping basket where products can be added/removed before checkout.
-  - Customers can maintain one basket.
-  - On checkout, the basket is cleared and converted into an order.
+    - Customers can maintain one basket.
+    - On checkout, the basket is cleared and converted into an order.
 
 * **Product** – aggregate root representing catalog items.
-  - Contains immutable product information (id, name, price, currency).
+    - Contains immutable product information (id, name, price, currency).
 
 * **Payment** – aggregate root representing the lifecycle of a payment transaction for an order.
-  - Created when a payment is initialized.
-  - References its associated `OrderId` and carries details like `Money amount`, `PaymentStatus`, and `providerReference` (e.g., Stripe Checkout Session ID).
-  - Lifecycle: `INITIALIZED → SUCCEEDED / FAILED / CANCELED`.
-  - Emits domain events such as `PaymentInitialized`, `PaymentSucceeded`, `PaymentFailed`.
+    - Created when a payment is initialized.
+    - References its associated `OrderId` and carries details like `Money amount`, `PaymentStatus`, and
+      `providerReference` (e.g., Stripe Checkout Session ID).
+    - Lifecycle: `INITIALIZED → SUCCEEDED / FAILED / CANCELED`.
+    - Emits domain events such as `PaymentInitialized`, `PaymentSucceeded`, `PaymentFailed`.
 
-Other concerns such as authentication and authorization are modeled separately via `AuthUser` (a value object), rather than as a dedicated aggregate root. Roles (`CUSTOMER`, `ADMIN`) control access to APIs instead of introducing extra domain entities.
-
+Other concerns such as authentication and authorization are modeled separately via `AuthUser` (a value object), rather
+than as a dedicated aggregate root. Roles (`CUSTOMER`, `ADMIN`) control access to APIs instead of introducing extra
+domain entities.
 
 ## 🛠 Tech Stack
 
@@ -59,7 +63,6 @@ Other concerns such as authentication and authorization are modeled separately v
 ![OpenAPI](https://img.shields.io/badge/OpenAPI-6BA539?style=flat&logo=openapiinitiative&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
 
-
 ## Architecture Overview
 
 ![Architecture](img/architecture.svg)
@@ -71,7 +74,6 @@ Key principles enforced via ArchUnit tests:
 * Compliance with naming conventions and package structure.
 
 Running these tests ensures **architectural integrity** as the project evolves.
-
 
 ## Getting Started
 
@@ -105,10 +107,10 @@ mvn clean verify
 
 ***Note:*** Some tests use **Testcontainers**, so Docker must be running.
 
-
 ## Implementing a New Adapter
 
-Adapters are **explicitly configured**—the application excludes scanning the entire adapter package to avoid loading unnecessary beans.
+Adapters are **explicitly configured**—the application excludes scanning the entire adapter package to avoid loading
+unnecessary beans.
 
 * Each adapter defines its own Spring configuration class.
 * Classes are imported via **@Import** on the main application class.
@@ -117,6 +119,7 @@ Adapters are **explicitly configured**—the application excludes scanning the e
 ### Example: JWT Auth Adapter
 
 ```java
+
 @Configuration
 @ComponentScan
 @ConditionalOnProperty(
@@ -143,21 +146,21 @@ adapter:
 
 ### Test Catalog and Maven Lifecycle
 
-|     Test Type    | Maven Lifecycle |
-| :--------------: | :-------------: |
-|     Unit test    |       test      |
-|  Component test  |       test      |
-|   ArchUnit test  |       test      |
-| Integration test |      verify     |
-
+|    Test Type     | Maven Lifecycle |
+|:----------------:|:---------------:|
+|    Unit test     |      test       |
+|  Component test  |      test       |
+|  ArchUnit test   |      test       |
+| Integration test |     verify      |
 
 ## API Documentation
 
 * Accessible locally at: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
-
 ### HTTP Requests
-All API requests for testing  can be found in the project under:
+
+All API requests for testing can be found in the project under:
+
 ```
 /http-requests/
 ```
@@ -174,28 +177,32 @@ docker-compose up -d
 ```
 
 ### RabbitMQ Management
+
 * Accessible locally at: [http://localhost:15672/](http://localhost:15672/)
 
 ### MailHOG SMTP Server
+
 * Accessible locally at: [http://localhost:8025/](http://localhost:8025/)
 
-
-## 🧪 Testing Payment with Stripe Payment Adapter 
+## 🧪 Testing Payment with Stripe Payment Adapter
 
 This project integrates with **Stripe Checkout** for payments.  
 Follow these steps to test payments locally.
 
 ### 1. Create a Stripe Account
+
 1. Go to [https://dashboard.stripe.com/register](https://dashboard.stripe.com/register).
 2. Sign up for a free account (no credit card required).
 3. Switch to **Test Mode** in the Dashboard.
 
 ### 2. Get API Keys
+
 * Navigate to **Developers → API Keys** in the Stripe Dashboard.
 * Copy the **Secret Key** (e.g., `sk_test_...`).
 * This will be used as `payment.stripe.api-key` in `application.yml`.
 
 ### 3. Install Stripe CLI
+
 Install the Stripe CLI from [https://stripe.com/docs/stripe-cli](https://stripe.com/docs/stripe-cli).
 
 Verify installation:
@@ -205,11 +212,13 @@ stripe --version
 ```
 
 ### 4. Forward Webhooks to Your Local App
+
 ```bash
 stripe listen --forward-to localhost:8080/api/payments/stripe/webhook
 ```
 
 ### 5. Update application.yml
+
 Add your Stripe configuration
 
 ```yaml
@@ -232,8 +241,9 @@ Stripe provides a list of test cards for simulating payments:
 👉 [https://docs.stripe.com/testing](https://docs.stripe.com/testing)
 
 Common test card:
+
 - Visa (Success): 4242 4242 4242 4242
-  - Exp: any future date, CVC: any 3 digits.
+    - Exp: any future date, CVC: any 3 digits.
 
 ## License
 

@@ -19,7 +19,7 @@ import java.util.function.Function;
 @PersistenceAdapter
 public class OutboxJpaRepository implements Outbox {
     private static final Logger LOGGER = LogManager.getLogger(
-        OutboxJpaRepository.class
+            OutboxJpaRepository.class
     );
 
     private final Function<DomainEventModel, DomainEvent> mapDomainEventModelToEvent;

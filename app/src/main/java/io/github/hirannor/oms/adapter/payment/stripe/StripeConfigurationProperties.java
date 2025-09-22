@@ -9,7 +9,8 @@ public class StripeConfigurationProperties {
     private String successUrl;
     private String failureUrl;
 
-    public StripeConfigurationProperties() {}
+    public StripeConfigurationProperties() {
+    }
 
     public String getApiKey() {
         return apiKey;

@@ -24,7 +24,7 @@ public enum PaymentIntentEvent {
         }
 
         throw new IllegalArgumentException(
-            String.format("Unexpected payment event value: %s", text)
+                String.format("Unexpected payment event value: %s", text)
         );
     }
 

@@ -7,7 +7,8 @@ import java.util.function.Function;
 
 public class OrderStatusToModelMapper implements Function<OrderStatus, OrderStatusModel> {
 
-    public OrderStatusToModelMapper() {}
+    public OrderStatusToModelMapper() {
+    }
 
     @Override
     public OrderStatusModel apply(final OrderStatus domain) {

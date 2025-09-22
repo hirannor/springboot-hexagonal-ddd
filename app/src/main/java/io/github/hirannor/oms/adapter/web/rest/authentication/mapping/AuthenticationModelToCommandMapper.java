@@ -9,14 +9,15 @@ import java.util.function.Function;
 
 public class AuthenticationModelToCommandMapper implements Function<AuthenticateModel, AttemptAuthentication> {
 
-    public AuthenticationModelToCommandMapper() {}
+    public AuthenticationModelToCommandMapper() {
+    }
 
     @Override
     public AttemptAuthentication apply(final AuthenticateModel model) {
         if (model == null) return null;
         return AttemptAuthentication.issue(
-            EmailAddress.from(model.getEmailAddress()),
-            Password.from(model.getPassword())
+                EmailAddress.from(model.getEmailAddress()),
+                Password.from(model.getPassword())
         );
     }
 }

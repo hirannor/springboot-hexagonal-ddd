@@ -18,13 +18,13 @@ public class BasketItemViewToModelMapper implements Function<BasketItemView, Bas
 
     @Override
     public BasketItemModel apply(final BasketItemView view) {
-    if (view == null) return null;
+        if (view == null) return null;
 
-    return new BasketItemModel()
-          .price(mapDomainToModel.apply(view.price()))
-          .name(view.name())
-          .description(view.description())
-          .productId(view.productId().asText())
-          .quantity(view.quantity());
+        return new BasketItemModel()
+                .price(mapDomainToModel.apply(view.price()))
+                .name(view.name())
+                .description(view.description())
+                .productId(view.productId().asText())
+                .quantity(view.quantity());
     }
 }

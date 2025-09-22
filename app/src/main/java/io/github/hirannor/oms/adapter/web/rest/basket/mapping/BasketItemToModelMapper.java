@@ -1,4 +1,3 @@
-
 package io.github.hirannor.oms.adapter.web.rest.basket.mapping;
 
 
@@ -19,10 +18,10 @@ public class BasketItemToModelMapper implements Function<BasketItem, BasketItemM
 
     @Override
     public BasketItemModel apply(final BasketItem domain) {
-    if (domain == null) return null;
-      return new BasketItemModel()
-              .price(mapDomainToModel.apply(domain.price()))
-              .productId(domain.productId().asText())
-              .quantity(domain.quantity());
+        if (domain == null) return null;
+        return new BasketItemModel()
+                .price(mapDomainToModel.apply(domain.price()))
+                .productId(domain.productId().asText())
+                .quantity(domain.quantity());
     }
 }

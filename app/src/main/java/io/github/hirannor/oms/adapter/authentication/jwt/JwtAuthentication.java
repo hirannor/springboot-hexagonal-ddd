@@ -7,7 +7,10 @@ import io.github.hirannor.oms.application.service.authentication.error.InvalidPa
 import io.github.hirannor.oms.domain.authentication.*;
 import io.github.hirannor.oms.domain.core.valueobject.EmailAddress;
 import io.github.hirannor.oms.infrastructure.adapter.DriverAdapter;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +36,7 @@ import java.util.stream.Collectors;
 class JwtAuthentication implements Authenticator {
 
     private static final Logger LOGGER = LogManager.getLogger(
-        JwtAuthentication.class
+            JwtAuthentication.class
     );
 
     private static final String OMS_REFRESH_AUDIENCE = "oms-refresh";
@@ -50,7 +53,7 @@ class JwtAuthentication implements Authenticator {
                       final BCryptPasswordEncoder encoder,
                       final SecretKey key,
                       final JwtAuthenticationConfigurationProperties properties) {
-       this(authentications, encoder, new RoleModelToRoleMapper(), key, properties);
+        this(authentications, encoder, new RoleModelToRoleMapper(), key, properties);
     }
 
     JwtAuthentication(final AuthenticationRepository authentications,

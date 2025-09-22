@@ -10,8 +10,8 @@ public class RoleModel {
 
     @Id
     @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "role_seq"
+            strategy = GenerationType.SEQUENCE,
+            generator = "role_seq"
     )
     @SequenceGenerator(
             name = "role_seq",
@@ -23,7 +23,8 @@ public class RoleModel {
     @Column(name = "NAME", nullable = false, unique = true)
     private String name;
 
-    public RoleModel() {}
+    public RoleModel() {
+    }
 
     public RoleModel(String name) {
         this.name = name;

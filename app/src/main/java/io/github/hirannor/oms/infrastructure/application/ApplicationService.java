@@ -12,8 +12,8 @@ import java.lang.annotation.*;
 @Documented
 @Service
 @Transactional(
-    propagation = Propagation.REQUIRES_NEW,
-    isolation = Isolation.REPEATABLE_READ
+        propagation = Propagation.REQUIRES_NEW,
+        isolation = Isolation.REPEATABLE_READ
 )
 public @interface ApplicationService {
 }

@@ -53,16 +53,16 @@ class BasketController implements BasketsApi {
             final BasketCreation basketCreator,
             final BasketDisplaying baskets,
             final BasketProductHandling basketHandler) {
-      this(
-          basket,
-          basketCreator,
-          baskets,
-          basketHandler,
-          new BasketViewToModelMapper(),
-          new CreateBasketModelToCommandMapper(),
-          new BasketItemModelToDomainMapper(),
-          new BasketToModelMapper()
-      );
+        this(
+                basket,
+                basketCreator,
+                baskets,
+                basketHandler,
+                new BasketViewToModelMapper(),
+                new CreateBasketModelToCommandMapper(),
+                new BasketItemModelToDomainMapper(),
+                new BasketToModelMapper()
+        );
     }
 
     BasketController(
@@ -87,7 +87,7 @@ class BasketController implements BasketsApi {
     @Override
     public ResponseEntity<BasketModel> checkout(final String customerId) {
         final BasketView view = this.basket.checkout(
-            CheckoutBasket.issue(CustomerId.from(customerId))
+                CheckoutBasket.issue(CustomerId.from(customerId))
         );
 
         return ResponseEntity.ok().body(mapBasketViewToModel.apply(view));
@@ -106,7 +106,7 @@ class BasketController implements BasketsApi {
                 .toUri();
 
         return ResponseEntity.created(location)
-            .body(mapBasketToModel.apply(basket));
+                .body(mapBasketToModel.apply(basket));
     }
 
     @Override
@@ -131,8 +131,8 @@ class BasketController implements BasketsApi {
     public ResponseEntity<Void> addItem(final String basketId, final BasketItemModel basketItemModel) {
         final BasketItem item = mapBasketItemModelToDomain.apply(basketItemModel);
         final AddBasketItem command = AddBasketItem.issue(
-            BasketId.from(basketId),
-            item
+                BasketId.from(basketId),
+                item
         );
         basketHandler.add(command);
         return ResponseEntity.noContent().build();
@@ -142,8 +142,8 @@ class BasketController implements BasketsApi {
     public ResponseEntity<Void> removeItem(final String basketId, final BasketItemModel basketItemModel) {
         final BasketItem item = mapBasketItemModelToDomain.apply(basketItemModel);
         final RemoveBasketItem command = RemoveBasketItem.issue(
-            BasketId.from(basketId),
-            item
+                BasketId.from(basketId),
+                item
         );
         basketHandler.remove(command);
         return ResponseEntity.noContent().build();

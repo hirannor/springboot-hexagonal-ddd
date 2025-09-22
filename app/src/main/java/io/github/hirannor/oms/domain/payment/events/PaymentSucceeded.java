@@ -9,7 +9,7 @@ import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 
 public record PaymentSucceeded(MessageId id, PaymentId paymentId, OrderId orderId, Money money) implements DomainEvent {
     public static PaymentSucceeded record(final PaymentId paymentId, final OrderId orderId, final Money amount) {
-        return new PaymentSucceeded(Message.generateId(),  paymentId, orderId, amount);
+        return new PaymentSucceeded(Message.generateId(), paymentId, orderId, amount);
     }
 
     public static PaymentSucceeded recreate(final MessageId id, final PaymentId paymentId, final OrderId orderId, final Money amount) {

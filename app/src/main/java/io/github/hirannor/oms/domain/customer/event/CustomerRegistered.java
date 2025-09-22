@@ -2,7 +2,6 @@ package io.github.hirannor.oms.domain.customer.event;
 
 import io.github.hirannor.oms.domain.core.valueobject.CustomerId;
 import io.github.hirannor.oms.infrastructure.event.DomainEvent;
-import io.github.hirannor.oms.infrastructure.event.Event;
 import io.github.hirannor.oms.infrastructure.event.EventId;
 import io.github.hirannor.oms.infrastructure.messaging.Message;
 import io.github.hirannor.oms.infrastructure.messaging.MessageId;

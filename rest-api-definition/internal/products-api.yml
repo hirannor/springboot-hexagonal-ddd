@@ -4,7 +4,7 @@ info:
   description: Products API
   version: 1.0.0
 security:
-  - bearerAuth: []
+  - bearerAuth: [ ]
 
 paths:
   /products:
@@ -100,7 +100,7 @@ components:
   schemas:
     CreateProduct:
       type: object
-      required: [name, description, price]
+      required: [ name, description, price ]
       properties:
         name:
           type: string
@@ -130,7 +130,7 @@ components:
           example: "99.99"
         currency:
           $ref: '#/components/schemas/Currency'
-      required: [amount, currency]
+      required: [ amount, currency ]
 
     Currency:
       type: string

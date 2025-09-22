@@ -9,6 +9,8 @@ import java.util.Optional;
 
 public interface BasketDisplaying {
     Optional<BasketView> displayBy(CustomerId customer);
+
     Optional<BasketView> displayBy(BasketId basket);
+
     List<BasketView> displayAll();
 }

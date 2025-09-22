@@ -10,4 +10,5 @@ public record PaymentSucceededModel(
         String orderId,
         BigDecimal amount,
         String currency
-) implements DomainEventModel {}
+) implements DomainEventModel {
+}

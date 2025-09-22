@@ -9,6 +9,7 @@ import java.util.Optional;
 
 public interface OutboxSpringDataJpaRepository extends JpaRepository<OutboxModel, String> {
     List<OutboxModel> findTop50ByProcessedFalseOrderByCreatedAtAsc();
+
     Optional<OutboxModel> findByEventId(String eventId);
 
     @Modifying

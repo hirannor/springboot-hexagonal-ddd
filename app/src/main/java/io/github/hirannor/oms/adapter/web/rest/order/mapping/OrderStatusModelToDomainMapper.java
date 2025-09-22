@@ -6,7 +6,8 @@ import io.github.hirannor.oms.domain.order.OrderStatus;
 import java.util.function.Function;
 
 public class OrderStatusModelToDomainMapper implements Function<OrderStatusModel, OrderStatus> {
-    public OrderStatusModelToDomainMapper() {}
+    public OrderStatusModelToDomainMapper() {
+    }
 
     @Override
     public OrderStatus apply(final OrderStatusModel model) {

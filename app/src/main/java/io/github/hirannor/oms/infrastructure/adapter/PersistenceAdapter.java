@@ -12,7 +12,8 @@ import java.lang.annotation.*;
 @Documented
 @Service
 @Transactional(
-    propagation = Propagation.MANDATORY,
-    isolation = Isolation.REPEATABLE_READ
+        propagation = Propagation.MANDATORY,
+        isolation = Isolation.REPEATABLE_READ
 )
-public @interface PersistenceAdapter { }
+public @interface PersistenceAdapter {
+}

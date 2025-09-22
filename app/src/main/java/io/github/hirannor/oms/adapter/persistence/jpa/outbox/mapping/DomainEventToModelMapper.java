@@ -1,8 +1,6 @@
 package io.github.hirannor.oms.adapter.persistence.jpa.outbox.mapping;
 
-import io.github.hirannor.oms.adapter.persistence.jpa.CurrencyModel;
-import io.github.hirannor.oms.adapter.persistence.jpa.CurrencyToModelMapper;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.*;
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.DomainEventModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.OrderCreatedModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.OrderPaidModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.OrderProcessingModel;
@@ -47,7 +45,6 @@ public class DomainEventToModelMapper implements Function<DomainEvent, DomainEve
         this.mapOrderProcessingToModel = new OrderProcessingToModelMapper();
         this.mapOrderShippedToModel = new OrderShippedToModelMapper();
     }
-
 
 
     @Override

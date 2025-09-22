@@ -7,7 +7,8 @@ import java.util.function.Function;
 
 public class CurrencyModelToDomainMapper implements Function<CurrencyModel, Currency> {
 
-    public CurrencyModelToDomainMapper() {}
+    public CurrencyModelToDomainMapper() {
+    }
 
     @Override
     public Currency apply(final CurrencyModel currency) {

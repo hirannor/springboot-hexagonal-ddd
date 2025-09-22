@@ -6,7 +6,8 @@ import io.github.hirannor.oms.domain.order.events.OrderPaid;
 import java.util.function.Function;
 
 public class OrderPaidToModelMapper implements Function<OrderPaid, OrderPaidModel> {
-    public OrderPaidToModelMapper() {}
+    public OrderPaidToModelMapper() {
+    }
 
     @Override
     public OrderPaidModel apply(final OrderPaid evt) {

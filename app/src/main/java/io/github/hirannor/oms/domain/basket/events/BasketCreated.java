@@ -4,7 +4,6 @@ package io.github.hirannor.oms.domain.basket.events;
 import io.github.hirannor.oms.domain.basket.BasketId;
 import io.github.hirannor.oms.domain.core.valueobject.CustomerId;
 import io.github.hirannor.oms.infrastructure.event.DomainEvent;
-import io.github.hirannor.oms.infrastructure.event.EventId;
 import io.github.hirannor.oms.infrastructure.messaging.Message;
 import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 

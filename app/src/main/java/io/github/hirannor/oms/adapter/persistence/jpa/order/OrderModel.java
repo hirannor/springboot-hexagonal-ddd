@@ -16,13 +16,13 @@ public class OrderModel {
 
     @Id
     @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "orders_seq"
+            strategy = GenerationType.SEQUENCE,
+            generator = "orders_seq"
     )
     @SequenceGenerator(
-        name = "orders_seq",
-        sequenceName = "orders_seq",
-        allocationSize = ALLOCATION_SIZE
+            name = "orders_seq",
+            sequenceName = "orders_seq",
+            allocationSize = ALLOCATION_SIZE
     )
     private Long id;
 
@@ -49,39 +49,68 @@ public class OrderModel {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItemsModel> orderItems = new ArrayList<>();
 
-    public OrderModel() {}
+    public OrderModel() {
+    }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(final Long id) { this.id = id; }
+    public void setId(final Long id) {
+        this.id = id;
+    }
 
-    public String getOrderId() { return orderId; }
+    public String getOrderId() {
+        return orderId;
+    }
 
-    public void setOrderId(final String orderId) { this.orderId = orderId; }
+    public void setOrderId(final String orderId) {
+        this.orderId = orderId;
+    }
 
-    public String getCustomerId() { return customerId; }
+    public String getCustomerId() {
+        return customerId;
+    }
 
-    public void setCustomerId(final String customerId) { this.customerId = customerId; }
+    public void setCustomerId(final String customerId) {
+        this.customerId = customerId;
+    }
 
-    public OrderStatusModel getStatus() { return status; }
+    public OrderStatusModel getStatus() {
+        return status;
+    }
 
-    public void setStatus(final OrderStatusModel status) { this.status = status; }
+    public void setStatus(final OrderStatusModel status) {
+        this.status = status;
+    }
 
-    public BigDecimal getTotalPriceAmount() { return totalPriceAmount; }
+    public BigDecimal getTotalPriceAmount() {
+        return totalPriceAmount;
+    }
 
-    public void setTotalPriceAmount(final BigDecimal totalPriceAmount) { this.totalPriceAmount = totalPriceAmount; }
+    public void setTotalPriceAmount(final BigDecimal totalPriceAmount) {
+        this.totalPriceAmount = totalPriceAmount;
+    }
 
-    public CurrencyModel getTotalPriceCurrency() { return totalPriceCurrency; }
+    public CurrencyModel getTotalPriceCurrency() {
+        return totalPriceCurrency;
+    }
 
-    public void setTotalPriceCurrency(final CurrencyModel totalPriceCurrency) { this.totalPriceCurrency = totalPriceCurrency; }
+    public void setTotalPriceCurrency(final CurrencyModel totalPriceCurrency) {
+        this.totalPriceCurrency = totalPriceCurrency;
+    }
 
-    public Instant getCreatedAt() { return createdAt; }
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
 
-    public void setCreatedAt(final Instant createdAt) { this.createdAt = createdAt; }
+    public void setCreatedAt(final Instant createdAt) {
+        this.createdAt = createdAt;
+    }
 
-    public List<OrderItemsModel> getOrderItems() { return orderItems; }
+    public List<OrderItemsModel> getOrderItems() {
+        return orderItems;
+    }
 
     public void setOrderItems(final List<OrderItemsModel> orderItems) {
         this.orderItems.clear();

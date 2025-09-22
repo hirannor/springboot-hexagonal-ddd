@@ -38,11 +38,11 @@ class AuthenticationJpaRepository implements AuthenticationRepository {
     AuthenticationJpaRepository(final AuthenticationSpringDataJpaRepository authentications,
                                 final RoleSpringDataJpaRepository roles) {
         this(
-            authentications,
-            roles,
-            new AuthUserToModelMapper(),
-            new AuthUserModelToValueObjectMapper(),
-            RoleMappingFactory.createRoleModelToRoleMapper());
+                authentications,
+                roles,
+                new AuthUserToModelMapper(),
+                new AuthUserModelToValueObjectMapper(),
+                RoleMappingFactory.createRoleModelToRoleMapper());
     }
 
     AuthenticationJpaRepository(final AuthenticationSpringDataJpaRepository authentications,

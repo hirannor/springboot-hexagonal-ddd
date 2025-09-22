@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan
 @ConditionalOnProperty(
-    value = "adapter.notification",
-    havingValue = "sms"
+        value = "adapter.notification",
+        havingValue = "sms"
 )
 public class SmsNotificationConfiguration {
 }

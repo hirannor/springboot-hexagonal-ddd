@@ -21,19 +21,19 @@ public class OutboxModel {
     )
     private Long id;
 
-    @Column(name= "EVENT_ID", nullable = false)
+    @Column(name = "EVENT_ID", nullable = false)
     private String eventId;
 
-    @Column(name= "PROCESSED", nullable = false)
+    @Column(name = "PROCESSED", nullable = false)
     private boolean processed;
 
     @Column(name = "EVENT_TYPE", nullable = false)
     private String eventType;
 
-    @Column(name= "CREATED_AT", nullable = false)
+    @Column(name = "CREATED_AT", nullable = false)
     private Instant createdAt;
 
-    @Column(name= "PAYLOAD", nullable = false)
+    @Column(name = "PAYLOAD", nullable = false)
     private String payload;
 
     public Long getId() {

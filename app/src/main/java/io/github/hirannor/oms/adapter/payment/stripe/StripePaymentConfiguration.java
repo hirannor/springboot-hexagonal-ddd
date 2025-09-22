@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan
 @ConditionalOnProperty(
-    value = "adapter.payment",
-    havingValue = "stripe"
+        value = "adapter.payment",
+        havingValue = "stripe"
 )
 @EnableConfigurationProperties(StripeConfigurationProperties.class)
 public class StripePaymentConfiguration {

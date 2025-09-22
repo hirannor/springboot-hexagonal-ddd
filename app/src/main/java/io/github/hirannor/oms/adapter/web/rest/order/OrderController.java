@@ -50,15 +50,15 @@ class OrderController implements OrdersApi {
                     final OrderStatusChanging status,
                     final OrderCancellation order) {
         this(
-            orderCreator,
-            payment,
-            orders,
-            status,
-            order,
-            new CreateOrderModelToCommandMapper(),
-            new OrderToModelMapper(),
-            new ChangeOrderStatusModelToCommandMapper(),
-            new PaymentInstructionToPayOrderResponseModelMapper()
+                orderCreator,
+                payment,
+                orders,
+                status,
+                order,
+                new CreateOrderModelToCommandMapper(),
+                new OrderToModelMapper(),
+                new ChangeOrderStatusModelToCommandMapper(),
+                new PaymentInstructionToPayOrderResponseModelMapper()
         );
     }
 

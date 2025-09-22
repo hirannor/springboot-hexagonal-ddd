@@ -9,7 +9,8 @@ import java.util.function.Function;
 
 public class RegisterModelToCommandMapper implements Function<RegisterModel, Register> {
 
-    public RegisterModelToCommandMapper() {}
+    public RegisterModelToCommandMapper() {
+    }
 
     @Override
     public Register apply(final RegisterModel model) {

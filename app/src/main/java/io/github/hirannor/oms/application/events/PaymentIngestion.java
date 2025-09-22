@@ -5,15 +5,12 @@ import io.github.hirannor.oms.application.usecase.order.OrderStatusChanging;
 import io.github.hirannor.oms.domain.order.OrderStatus;
 import io.github.hirannor.oms.domain.payment.events.PaymentCanceled;
 import io.github.hirannor.oms.domain.payment.events.PaymentFailed;
-import io.github.hirannor.oms.domain.payment.events.PaymentInitialized;
 import io.github.hirannor.oms.domain.payment.events.PaymentSucceeded;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.event.TransactionPhase;
-import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 public class PaymentIngestion {

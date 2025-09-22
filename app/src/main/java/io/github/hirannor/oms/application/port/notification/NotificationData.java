@@ -10,4 +10,5 @@ public record NotificationData(
         String customerName,
         EmailAddress email,
         Address address
-) {}
+) {
+}

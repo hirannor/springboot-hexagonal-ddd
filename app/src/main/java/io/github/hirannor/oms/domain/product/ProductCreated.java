@@ -3,7 +3,6 @@ package io.github.hirannor.oms.domain.product;
 
 import io.github.hirannor.oms.domain.core.valueobject.Money;
 import io.github.hirannor.oms.infrastructure.event.DomainEvent;
-import io.github.hirannor.oms.infrastructure.event.EventId;
 import io.github.hirannor.oms.infrastructure.messaging.Message;
 import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 

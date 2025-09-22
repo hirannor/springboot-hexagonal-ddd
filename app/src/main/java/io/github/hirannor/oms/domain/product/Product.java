@@ -78,6 +78,6 @@ public class Product extends AggregateRoot {
 
     @Override
     public void clearEvents() {
-       events.clear();
+        events.clear();
     }
 }

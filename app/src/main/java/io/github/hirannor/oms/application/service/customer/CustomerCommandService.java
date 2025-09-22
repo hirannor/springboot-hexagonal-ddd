@@ -26,7 +26,7 @@ class CustomerCommandService implements
         CustomerDeletion {
 
     private static final Logger LOGGER = LogManager.getLogger(
-        CustomerCommandService.class
+            CustomerCommandService.class
     );
     private static final String ERR_CUSTOMER_ID_IS_NULL = "CustomerId cannot be null!";
     private static final String ERR_CUSTOMER_NOT_FOUND = "Customer not found with value: %s";
@@ -46,7 +46,7 @@ class CustomerCommandService implements
 
         final Customer foundCustomer = customers.findBy(cmd.customerId())
                 .orElseThrow(
-                    failBecauseCustomerWasNotFoundBy(cmd.customerId())
+                        failBecauseCustomerWasNotFoundBy(cmd.customerId())
                 );
 
         final Customer withModifiedPersonalDetails = foundCustomer.changePersonalDetailsBy(cmd);
@@ -57,7 +57,7 @@ class CustomerCommandService implements
         withModifiedPersonalDetails.clearEvents();
 
         LOGGER.info("Personal details for customer id: {} are updated successfully!",
-            withModifiedPersonalDetails.id().asText());
+                withModifiedPersonalDetails.id().asText());
 
         return withModifiedPersonalDetails;
     }
@@ -68,7 +68,7 @@ class CustomerCommandService implements
 
         customers.findBy(id)
                 .orElseThrow(
-                    failBecauseCustomerWasNotFoundBy(id)
+                        failBecauseCustomerWasNotFoundBy(id)
                 );
 
         LOGGER.info("Attempting to delete customer with id: {}", id.asText());

@@ -22,8 +22,8 @@ class CustomerViewToDomainMapper implements Function<CustomerView, Customer> {
 
     CustomerViewToDomainMapper() {
         this(
-            new GenderModelToDomainMapper(),
-            new CountryModelToDomainMapper()
+                new GenderModelToDomainMapper(),
+                new CountryModelToDomainMapper()
         );
     }
 
@@ -51,8 +51,8 @@ class CustomerViewToDomainMapper implements Function<CustomerView, Customer> {
                 .ifPresent(builder::firstName);
 
         Optional.ofNullable(view.getLastName())
-            .map(LastName::from)
-            .ifPresent(builder::lastName);
+                .map(LastName::from)
+                .ifPresent(builder::lastName);
 
         if (isCompleteAddress(view)) {
             Address address = Address.from(

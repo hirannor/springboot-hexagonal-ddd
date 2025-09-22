@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 @ApplicationService
 class NotificationService implements NotificationSending {
     private static final Logger LOGGER = LogManager.getLogger(
-        NotificationService.class
+            NotificationService.class
     );
     private final OrderRepository orders;
     private final CustomerRepository customers;
@@ -33,9 +33,9 @@ class NotificationService implements NotificationSending {
 
     @Autowired
     NotificationService(final OrderRepository orders,
-                               final CustomerRepository customers,
-                               final Notificator notifications,
-                               final NotificationFactory notificationFactory) {
+                        final CustomerRepository customers,
+                        final Notificator notifications,
+                        final NotificationFactory notificationFactory) {
         this.orders = orders;
         this.customers = customers;
         this.notifications = notifications;
@@ -59,18 +59,18 @@ class NotificationService implements NotificationSending {
                         customer.fullName(),
                         customer.emailAddress(),
                         customer.address()
-        ));
+                ));
 
         LOGGER.info("Start notification type: {} for customer: {}",
-            command.notificationType(),
-            customer.id().asText()
+                command.notificationType(),
+                customer.id().asText()
         );
 
         notifications.send(msg);
 
         LOGGER.info("Notification: {} for customer: {} successfully sent",
-            command.notificationType(),
-            customer.id().asText()
+                command.notificationType(),
+                customer.id().asText()
         );
     }
 

@@ -6,7 +6,8 @@ import java.util.function.Function;
 
 class RoleModelToRoleMapper implements Function<RoleModel, Role> {
 
-    RoleModelToRoleMapper() {}
+    RoleModelToRoleMapper() {
+    }
 
     @Override
     public Role apply(final RoleModel model) {

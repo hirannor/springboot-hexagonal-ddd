@@ -23,9 +23,11 @@
         </openapi-generator-maven-plugin.customers.apiPackage>
         <openapi-generator-maven-plugin.customers.modelPackage>io.github.hirannor.oms.adapter.web.rest.customer.model
         </openapi-generator-maven-plugin.customers.modelPackage>
-        <openapi-generator-maven-plugin.authentication.apiPackage>io.github.hirannor.oms.adapter.web.rest.authentication.api
+        <openapi-generator-maven-plugin.authentication.apiPackage>
+            io.github.hirannor.oms.adapter.web.rest.authentication.api
         </openapi-generator-maven-plugin.authentication.apiPackage>
-        <openapi-generator-maven-plugin.authentication.modelPackage>io.github.hirannor.oms.adapter.web.rest.authentication.model
+        <openapi-generator-maven-plugin.authentication.modelPackage>
+            io.github.hirannor.oms.adapter.web.rest.authentication.model
         </openapi-generator-maven-plugin.authentication.modelPackage>
         <openapi-generator-maven-plugin.products.apiPackage>io.github.hirannor.oms.adapter.web.rest.products.api
         </openapi-generator-maven-plugin.products.apiPackage>

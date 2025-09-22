@@ -33,10 +33,10 @@ import org.springframework.context.annotation.Import;
 })
 @SpringBootApplication(
         exclude = {
-            org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration.class,
-            org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration.class,
-            org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration.class,
-            org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class
+                org.springframework.boot.autoconfigure.liquibase.LiquibaseAutoConfiguration.class,
+                org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration.class,
+                org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration.class,
+                org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class
         }
 )
 @ComponentScan(

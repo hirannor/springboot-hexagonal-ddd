@@ -14,8 +14,8 @@ import java.util.Properties;
 @Configuration
 @ComponentScan
 @ConditionalOnProperty(
-    value = "adapter.notification",
-    havingValue = "email"
+        value = "adapter.notification",
+        havingValue = "email"
 )
 @EnableConfigurationProperties({MailProperties.class, EmailNotificationConfigurationProperties.class})
 public class EmailNotificationConfiguration {

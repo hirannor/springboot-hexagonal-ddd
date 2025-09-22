@@ -10,6 +10,7 @@ import java.util.List;
 public interface Evented {
     /**
      * Retrieves a list of domain events
+     *
      * @return a list of {@link DomainEvent}
      */
     List<DomainEvent> events();

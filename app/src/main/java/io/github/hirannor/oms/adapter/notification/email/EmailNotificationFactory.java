@@ -21,7 +21,8 @@ class EmailNotificationFactory implements NotificationFactory {
     private static final String VAR_POSTAL_CODE = "postalCode";
     private static final String VAR_STREET = "streetAddress";
 
-    EmailNotificationFactory() {}
+    EmailNotificationFactory() {
+    }
 
     @Override
     public NotificationMessage createNotification(final NotificationData data) {

@@ -3,9 +3,9 @@ package io.github.hirannor.oms.application.service.authentication;
 import io.github.hirannor.oms.application.port.authentication.Authenticator;
 import io.github.hirannor.oms.application.usecase.customer.Authenticating;
 import io.github.hirannor.oms.application.usecase.customer.RefreshAuthentication;
+import io.github.hirannor.oms.domain.authentication.AttemptAuthentication;
 import io.github.hirannor.oms.domain.authentication.AuthUser;
 import io.github.hirannor.oms.domain.authentication.AuthenticationResult;
-import io.github.hirannor.oms.domain.authentication.AttemptAuthentication;
 import io.github.hirannor.oms.domain.authentication.RefreshToken;
 import io.github.hirannor.oms.infrastructure.application.ApplicationService;
 import org.apache.logging.log4j.LogManager;
@@ -18,7 +18,7 @@ import java.util.function.Function;
 class AuthenticationService implements Authenticating, RefreshAuthentication {
 
     private static final Logger LOGGER = LogManager.getLogger(
-        AuthenticationService.class
+            AuthenticationService.class
     );
 
     private final Function<AttemptAuthentication, AuthUser> mapCommandToUser;

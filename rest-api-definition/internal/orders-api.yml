@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: API for managing Orders
 security:
-  - bearerAuth: []
+  - bearerAuth: [ ]
 
 paths:
   /orders:
@@ -181,7 +181,7 @@ components:
   schemas:
     Currency:
       type: string
-      enum: [HUF, EUR]
+      enum: [ HUF, EUR ]
 
     Money:
       type: object
@@ -192,7 +192,7 @@ components:
           example: "99.99"
         currency:
           $ref: '#/components/schemas/Currency'
-      required: [amount, currency]
+      required: [ amount, currency ]
 
     OrderedProduct:
       type: object
@@ -204,7 +204,7 @@ components:
           minimum: 1
         price:
           $ref: '#/components/schemas/Money'
-      required: [productId, quantity, price]
+      required: [ productId, quantity, price ]
 
     CreateOrder:
       type: object
@@ -215,7 +215,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OrderedProduct'
-      required: [customerId, products]
+      required: [ customerId, products ]
 
     PayOrderResponse:
       type: object
@@ -227,7 +227,7 @@ components:
           type: string
         amount:
           $ref: '#/components/schemas/Money'
-      required: [paymentUrl, orderId, amount]
+      required: [ paymentUrl, orderId, amount ]
 
     ChangeOrderStatus:
       type: object
@@ -236,7 +236,7 @@ components:
           $ref: '#/components/schemas/OrderStatus'
         orderId:
           type: string
-      required: [newStatus, orderId]
+      required: [ newStatus, orderId ]
 
     Order:
       type: object
@@ -256,7 +256,7 @@ components:
           format: date-time
         totalPrice:
           $ref: '#/components/schemas/Money'
-      required: [id, status, orderedProducts, customerId, createdAt, totalPrice]
+      required: [ id, status, orderedProducts, customerId, createdAt, totalPrice ]
 
     OrderStatus:
       type: string

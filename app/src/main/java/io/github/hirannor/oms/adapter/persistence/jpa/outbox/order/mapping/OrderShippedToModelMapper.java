@@ -6,7 +6,8 @@ import io.github.hirannor.oms.domain.order.events.OrderShipped;
 import java.util.function.Function;
 
 public class OrderShippedToModelMapper implements Function<OrderShipped, OrderShippedModel> {
-    public OrderShippedToModelMapper() {}
+    public OrderShippedToModelMapper() {
+    }
 
     @Override
     public OrderShippedModel apply(final OrderShipped evt) {

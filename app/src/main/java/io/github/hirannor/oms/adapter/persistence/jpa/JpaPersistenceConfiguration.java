@@ -28,7 +28,7 @@ import javax.sql.DataSource;
         value = "adapter.persistence",
         havingValue = "spring-data-jpa"
 )
-@EnableConfigurationProperties({org.springframework.boot.autoconfigure.orm.jpa.JpaProperties.class, DataSourceProperties.class })
+@EnableConfigurationProperties({org.springframework.boot.autoconfigure.orm.jpa.JpaProperties.class, DataSourceProperties.class})
 public class JpaPersistenceConfiguration {
 
     private static final String BUNDLE_INIT_PATH =

@@ -32,9 +32,9 @@ public class AuthUserModel {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "EC_AUTH_USER_ROLE",
-        joinColumns = @JoinColumn(name = "USER_ID"),
-        inverseJoinColumns = @JoinColumn(name = "ROLE_ID")
+            name = "EC_AUTH_USER_ROLE",
+            joinColumns = @JoinColumn(name = "USER_ID"),
+            inverseJoinColumns = @JoinColumn(name = "ROLE_ID")
     )
     private Set<RoleModel> roles = new HashSet<>();
 

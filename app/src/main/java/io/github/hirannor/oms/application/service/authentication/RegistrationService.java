@@ -20,7 +20,7 @@ import java.util.Set;
 class RegistrationService implements Registrating {
 
     private static final Logger LOGGER = LogManager.getLogger(
-        RegistrationService.class
+            RegistrationService.class
     );
 
     private final Authenticator authenticator;

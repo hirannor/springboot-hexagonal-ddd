@@ -7,7 +7,8 @@ import java.util.function.Function;
 
 class PermissionRoleModelToRole implements Function<PermissionRoleModel, Role> {
 
-    PermissionRoleModelToRole() {}
+    PermissionRoleModelToRole() {
+    }
 
     @Override
     public Role apply(final PermissionRoleModel model) {

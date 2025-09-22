@@ -20,7 +20,9 @@ Content-Type: application/json
   "password": "V7fR9pQ2"
 }
 
-> {% client.global.set("bearerToken", response.body.token) %}
+> {%
+    client.global.set("bearerToken", response.body.token)
+%}
 
 ### Authenticate as an ADMIN (POST /api/auth)
 POST http://localhost:8080/api/auth
@@ -31,7 +33,9 @@ Content-Type: application/json
   "password": "V7fR9pQ2"
 }
 
-> {% client.global.set("bearerToken", response.body.token) %}
+> {%
+    client.global.set("bearerToken", response.body.token)
+%}
 
 # -------------------------------
 # Customers API - HTTP Requests
@@ -41,7 +45,9 @@ Content-Type: application/json
 GET http://localhost:8080/api/customers/me
 Authorization: Bearer {{bearerToken}}
 
-> {% client.global.set("customerId", response.body.customerId) %}
+> {%
+    client.global.set("customerId", response.body.customerId)
+%}
 
 ### Get all customers (GET /api/customers)
 GET http://localhost:8080/api/customers
@@ -70,7 +76,8 @@ Authorization: Bearer {{bearerToken}}
 }
 
 ### Get all customers with query parameters (GET /api/customers)
-GET http://localhost:8080/api/customers?birthDateFrom=1990-01-01&birthDateTo=1990-01-01&gender=MALE&emailAddress=johnny.doe@test.com
+GET http://localhost:8080/api/customers?birthDateFrom=1990-01-01&birthDateTo=1990-01-01&gender=MALE&
+    emailAddress=johnny.doe@test.com
 Authorization: Bearer {{bearerToken}}
 
 ### Delete a customer by ID (DELETE /api/customers/{customerId})

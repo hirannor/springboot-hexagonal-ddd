@@ -10,7 +10,8 @@ import java.util.function.BiFunction;
 
 public class OrderItemToPaymentItemMapper implements BiFunction<OrderItem, Map<ProductId, Product>, PaymentItem> {
 
-    public OrderItemToPaymentItemMapper() {}
+    public OrderItemToPaymentItemMapper() {
+    }
 
     @Override
     public PaymentItem apply(final OrderItem item, final Map<ProductId, Product> products) {
@@ -19,10 +20,10 @@ public class OrderItemToPaymentItemMapper implements BiFunction<OrderItem, Map<P
         final Product product = products.get(item.productId());
 
         return PaymentItem.create(
-            item.productId(),
-            item.quantity(),
-            product.name(),
-            item.price()
+                item.productId(),
+                item.quantity(),
+                product.name(),
+                item.price()
         );
     }
 }

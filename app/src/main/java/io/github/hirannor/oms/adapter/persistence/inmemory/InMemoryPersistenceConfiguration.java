@@ -12,10 +12,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan
 @ConditionalOnProperty(
-    value = "adapter.persistence",
-    havingValue = "in-memory"
+        value = "adapter.persistence",
+        havingValue = "in-memory"
 )
 public class InMemoryPersistenceConfiguration {
 
-    InMemoryPersistenceConfiguration() {}
+    InMemoryPersistenceConfiguration() {
+    }
 }

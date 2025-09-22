@@ -13,10 +13,11 @@ import org.springframework.stereotype.Component;
 public class SmsNotificator implements Notificator {
 
     private static final Logger LOGGER = LogManager.getLogger(
-        SmsNotificator.class
+            SmsNotificator.class
     );
 
-    SmsNotificator() {}
+    SmsNotificator() {
+    }
 
     @Override
     public void send(final NotificationMessage notification) {

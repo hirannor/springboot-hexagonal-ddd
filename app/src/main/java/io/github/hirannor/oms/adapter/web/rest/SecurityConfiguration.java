@@ -26,60 +26,60 @@ class SecurityConfiguration {
     @Bean
     SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         http
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth -> auth
-                // Customers API
-                .requestMatchers(HttpMethod.GET, "/api/customers")
-                .hasRole(PermissionRoleModel.ADMIN.value())
-                .requestMatchers(HttpMethod.DELETE, "/api/customers/*")
-                .hasRole(PermissionRoleModel.ADMIN.value())
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(auth -> auth
+                        // Customers API
+                        .requestMatchers(HttpMethod.GET, "/api/customers")
+                        .hasRole(PermissionRoleModel.ADMIN.value())
+                        .requestMatchers(HttpMethod.DELETE, "/api/customers/*")
+                        .hasRole(PermissionRoleModel.ADMIN.value())
 
-                .requestMatchers(HttpMethod.GET, "/api/customers/*")
-                .hasAnyRole(PermissionRoleModel.CUSTOMER.value(), PermissionRoleModel.ADMIN.value())
+                        .requestMatchers(HttpMethod.GET, "/api/customers/*")
+                        .hasAnyRole(PermissionRoleModel.CUSTOMER.value(), PermissionRoleModel.ADMIN.value())
 
-                .requestMatchers(HttpMethod.PUT, "/api/customers/*")
-                .hasRole(PermissionRoleModel.CUSTOMER.value())
+                        .requestMatchers(HttpMethod.PUT, "/api/customers/*")
+                        .hasRole(PermissionRoleModel.CUSTOMER.value())
 
-                // Products API
-                .requestMatchers(HttpMethod.GET, "/api/products")
-                .hasAnyRole(PermissionRoleModel.ADMIN.value(), PermissionRoleModel.CUSTOMER.value())
-                .requestMatchers(HttpMethod.GET, "/api/products/*")
-                .hasAnyRole(PermissionRoleModel.ADMIN.value(), PermissionRoleModel.CUSTOMER.value())
+                        // Products API
+                        .requestMatchers(HttpMethod.GET, "/api/products")
+                        .hasAnyRole(PermissionRoleModel.ADMIN.value(), PermissionRoleModel.CUSTOMER.value())
+                        .requestMatchers(HttpMethod.GET, "/api/products/*")
+                        .hasAnyRole(PermissionRoleModel.ADMIN.value(), PermissionRoleModel.CUSTOMER.value())
 
-                .requestMatchers(HttpMethod.POST, "/api/products")
-                .hasRole(PermissionRoleModel.ADMIN.value())
-                .requestMatchers(HttpMethod.DELETE, "/api/products/*")
-                .hasRole(PermissionRoleModel.ADMIN.value())
+                        .requestMatchers(HttpMethod.POST, "/api/products")
+                        .hasRole(PermissionRoleModel.ADMIN.value())
+                        .requestMatchers(HttpMethod.DELETE, "/api/products/*")
+                        .hasRole(PermissionRoleModel.ADMIN.value())
 
-                // Baskets API
-                .requestMatchers(HttpMethod.GET, "/api/baskets")
-                .hasRole(PermissionRoleModel.ADMIN.value())
-                .requestMatchers(HttpMethod.DELETE, "/api/baskets/*")
-                .hasRole(PermissionRoleModel.ADMIN.value())
+                        // Baskets API
+                        .requestMatchers(HttpMethod.GET, "/api/baskets")
+                        .hasRole(PermissionRoleModel.ADMIN.value())
+                        .requestMatchers(HttpMethod.DELETE, "/api/baskets/*")
+                        .hasRole(PermissionRoleModel.ADMIN.value())
 
-                .requestMatchers(HttpMethod.GET, "/api/baskets/*")
-                .hasRole(PermissionRoleModel.CUSTOMER.value())
-                .requestMatchers(HttpMethod.POST, "/api/baskets")
-                .hasRole(PermissionRoleModel.CUSTOMER.value())
+                        .requestMatchers(HttpMethod.GET, "/api/baskets/*")
+                        .hasRole(PermissionRoleModel.CUSTOMER.value())
+                        .requestMatchers(HttpMethod.POST, "/api/baskets")
+                        .hasRole(PermissionRoleModel.CUSTOMER.value())
 
-                // Orders API
-                .requestMatchers(HttpMethod.PATCH, "/api/orders/*/status")
-                .hasRole(PermissionRoleModel.ADMIN.value())
+                        // Orders API
+                        .requestMatchers(HttpMethod.PATCH, "/api/orders/*/status")
+                        .hasRole(PermissionRoleModel.ADMIN.value())
 
-                .requestMatchers(HttpMethod.POST, "/api/orders/*/cancel", "/api/orders/*/pay")
-                .hasRole(PermissionRoleModel.CUSTOMER.value())
-                .requestMatchers(HttpMethod.GET, "/api/orders/*")
-                .hasRole(PermissionRoleModel.CUSTOMER.value())
-                .requestMatchers(HttpMethod.POST, "/api/orders")
-                .hasRole(PermissionRoleModel.CUSTOMER.value())
+                        .requestMatchers(HttpMethod.POST, "/api/orders/*/cancel", "/api/orders/*/pay")
+                        .hasRole(PermissionRoleModel.CUSTOMER.value())
+                        .requestMatchers(HttpMethod.GET, "/api/orders/*")
+                        .hasRole(PermissionRoleModel.CUSTOMER.value())
+                        .requestMatchers(HttpMethod.POST, "/api/orders")
+                        .hasRole(PermissionRoleModel.CUSTOMER.value())
 
-                // Everything else
-                .anyRequest().permitAll()
-            )
-            .addFilterBefore(authFilter, BasicAuthenticationFilter.class)
-            .exceptionHandling(ex -> ex
-            .accessDeniedHandler(accessDenied)
-        );
+                        // Everything else
+                        .anyRequest().permitAll()
+                )
+                .addFilterBefore(authFilter, BasicAuthenticationFilter.class)
+                .exceptionHandling(ex -> ex
+                        .accessDeniedHandler(accessDenied)
+                );
 
         return http.build();
     }

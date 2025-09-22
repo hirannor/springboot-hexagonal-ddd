@@ -7,7 +7,8 @@ import java.util.function.Function;
 
 public class CurrencyToModelMapper implements Function<Currency, CurrencyModel> {
 
-    public CurrencyToModelMapper() {}
+    public CurrencyToModelMapper() {
+    }
 
     @Override
     public CurrencyModel apply(final Currency currency) {

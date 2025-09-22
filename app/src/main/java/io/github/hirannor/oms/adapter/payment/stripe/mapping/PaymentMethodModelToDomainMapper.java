@@ -7,7 +7,8 @@ import java.util.function.Function;
 
 public class PaymentMethodModelToDomainMapper implements Function<PaymentMethodModel, PaymentMethod> {
 
-    public PaymentMethodModelToDomainMapper() {}
+    public PaymentMethodModelToDomainMapper() {
+    }
 
     @Override
     public PaymentMethod apply(final PaymentMethodModel method) {

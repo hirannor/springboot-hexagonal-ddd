@@ -1,6 +1,6 @@
 package io.github.hirannor.oms.adapter.persistence.jpa.outbox.mapping;
 
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.*;
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.DomainEventModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.OrderCreatedModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.OrderPaidModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.OrderProcessingModel;

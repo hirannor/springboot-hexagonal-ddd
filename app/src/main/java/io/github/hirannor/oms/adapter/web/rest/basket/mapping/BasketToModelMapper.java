@@ -13,13 +13,14 @@ public class BasketToModelMapper implements Function<Basket, BasketModel> {
     public BasketToModelMapper() {
         this.mapMoneyToModel = new MoneyToModelMapper();
     }
+
     @Override
     public BasketModel apply(final Basket basket) {
         if (basket == null) return null;
 
         return new BasketModel()
-            .id(basket.id().asText())
-            .customerId(basket.customer().asText())
-            .totalPrice(mapMoneyToModel.apply(basket.totalPrice()));
+                .id(basket.id().asText())
+                .customerId(basket.customer().asText())
+                .totalPrice(mapMoneyToModel.apply(basket.totalPrice()));
     }
 }
