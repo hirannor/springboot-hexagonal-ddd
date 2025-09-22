@@ -61,7 +61,7 @@ class NotificationService implements NotificationSending {
                         customer.address()
                 ));
 
-        LOGGER.info("Start notification for notificationType={} , customerId={}",
+        LOGGER.info("Start notificationType={} for customerId={}",
                 command.notificationType(),
                 customer.id().asText()
         );

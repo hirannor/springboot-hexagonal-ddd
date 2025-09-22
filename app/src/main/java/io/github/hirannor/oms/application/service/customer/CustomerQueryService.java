@@ -58,7 +58,7 @@ class CustomerQueryService implements CustomerDisplaying {
     public Optional<Customer> displayBy(EmailAddress emailAddress) {
         if (emailAddress == null) throw new IllegalArgumentException(ERR_CUSTOMER_ID_IS_NULL);
 
-        LOGGER.info("Retrieving customer by emailAddress={}", emailAddress);
+        LOGGER.info("Retrieving customer by emailAddress={}", emailAddress.asText());
 
         return customers.findByEmailAddress(emailAddress);
     }

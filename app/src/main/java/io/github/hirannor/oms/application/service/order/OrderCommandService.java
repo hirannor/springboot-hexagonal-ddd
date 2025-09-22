@@ -56,7 +56,7 @@ class OrderCommandService implements
     public Order create(final CreateOrder create) {
         if (create == null) throw new IllegalArgumentException("CreateOrder is null");
 
-        LOGGER.info("Start creating order with orderId={}, customerId= {}",
+        LOGGER.info("Start creating order with orderId={}, customerId={}",
                 create.orderId().asText(),
                 create.customer().asText());
 
