@@ -1,6 +1,7 @@
 package io.github.hirannor.oms.infrastructure.aggregate;
 
 import io.github.hirannor.oms.infrastructure.event.DomainEvent;
+import io.github.hirannor.oms.infrastructure.event.Evented;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,6 +1,4 @@
-package io.github.hirannor.oms.infrastructure.aggregate;
-
-import io.github.hirannor.oms.infrastructure.event.DomainEvent;
+package io.github.hirannor.oms.infrastructure.event;
 
 import java.util.List;
 

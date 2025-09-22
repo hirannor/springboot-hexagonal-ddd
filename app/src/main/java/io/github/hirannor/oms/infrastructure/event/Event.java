@@ -8,6 +8,4 @@ import io.github.hirannor.oms.infrastructure.messaging.Message;
  * @author Mate Karolyi
  */
 public interface Event extends Message {
-
-
 }
