@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.function.Function;
 
 @Component
-public class RabbitMessageListener {
+class RabbitMessageListener {
     private static final Logger LOGGER = LogManager.getLogger(RabbitMessageListener.class);
 
     private final ObjectMapper mapper;
@@ -28,8 +28,8 @@ public class RabbitMessageListener {
         this.mapDomainEventModelToEvent = new DomainEventModelToEventMapper();
     }
 
-    @RabbitListener(queues = "oms.queue")
-    public void receive(final String json) {
+    @RabbitListener(queues = "${messaging.rabbit.queue}")
+    void receive(final String json) {
         try {
             final EventEnvelope envelope = mapper.readValue(json, EventEnvelope.class);
             final Class<?> clazz = Class.forName(envelope.type());

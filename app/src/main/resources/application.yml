@@ -60,3 +60,14 @@ security:
     refresh-expiration: 30d
     issuer: oms-backend
     audience: oms-clients
+
+messaging:
+  rabbit:
+    exchange: oms.exchange
+    queue: oms.queue
+    dlq: oms.queue.dlq
+    outbox:
+      poll-interval: 5s
+      batch-size: 50
+    retry:
+      max-attempts: 3

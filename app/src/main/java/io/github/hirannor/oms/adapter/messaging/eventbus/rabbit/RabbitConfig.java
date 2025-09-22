@@ -5,8 +5,10 @@ import org.springframework.amqp.rabbit.config.RetryInterceptorBuilder;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.retry.RejectAndDontRequeueRecoverer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,22 +21,27 @@ import org.springframework.scheduling.annotation.EnableScheduling;
         havingValue = "rabbitmq"
 )
 @EnableScheduling
+@EnableConfigurationProperties(RabbitConfigurationProperties.class)
 public class RabbitConfig {
-    private static final String EXCHANGE = "oms.exchange";
-    private static final String QUEUE = "oms.queue";
-    private static final String DLQ = "oms.queue.dlq";
+
+    private final RabbitConfigurationProperties properties;
+
+    @Autowired
+    RabbitConfig(final RabbitConfigurationProperties properties) {
+        this.properties = properties;
+    }
 
     @Bean
     TopicExchange createOmsExchange() {
-        return new TopicExchange(EXCHANGE);
+        return new TopicExchange(properties.getExchange());
     }
 
     @Bean
     @Qualifier("omsQueue")
     Queue createOmsQueue() {
-        return QueueBuilder.durable(QUEUE)
-                .withArgument("x-dead-letter-exchange", EXCHANGE)
-                .withArgument("x-dead-letter-routing-key", DLQ)
+        return QueueBuilder.durable(properties.getQueue())
+                .withArgument("x-dead-letter-exchange", properties.getExchange())
+                .withArgument("x-dead-letter-routing-key", properties.getDlq())
                 .build();
     }
 
@@ -42,12 +49,12 @@ public class RabbitConfig {
     @Bean
     @Qualifier("omsDeadLetterQueue")
     Queue createOmsDeadLetterQueue() {
-        return QueueBuilder.durable(DLQ).build();
+        return QueueBuilder.durable(properties.getDlq()).build();
     }
 
     @Bean
     Binding createOmsDlqBinding(@Qualifier("omsDeadLetterQueue") final Queue omsDeadLetterQueue, final TopicExchange omsExchange) {
-        return BindingBuilder.bind(omsDeadLetterQueue).to(omsExchange).with(DLQ);
+        return BindingBuilder.bind(omsDeadLetterQueue).to(omsExchange).with(properties.getDlq());
     }
 
     @Bean
@@ -63,7 +70,7 @@ public class RabbitConfig {
 
         factory.setAdviceChain(
                 RetryInterceptorBuilder.stateless()
-                        .maxAttempts(3)
+                        .maxAttempts(properties.getRetry().getMaxAttempts())
                         .backOffOptions(1000, 2.0, 10000)
                         .recoverer(new RejectAndDontRequeueRecoverer())
                         .build()

@@ -11,6 +11,8 @@ import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.Instant;
 import java.util.List;
@@ -62,8 +64,10 @@ public class OutboxJpaRepository implements Outbox {
     }
 
     @Override
-    public List<DomainEvent> findUnprocessed() {
-        return outboxes.findTop50ByProcessedFalseOrderByCreatedAtAsc()
+    public List<DomainEvent> findUnprocessed(int batchSize) {
+        final Pageable pageable = PageRequest.of(0, batchSize);
+
+        return outboxes.findByProcessedFalseOrderByCreatedAtAsc(pageable)
                 .stream()
                 .map(this::toDomainEvent)
                 .map(mapDomainEventModelToEvent)

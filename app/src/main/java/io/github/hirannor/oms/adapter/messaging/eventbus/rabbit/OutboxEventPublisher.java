@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.function.Function;
 
 @Component
-public class OutboxEventPublisher {
+class OutboxEventPublisher {
 
     private static final Logger LOGGER = LogManager.getLogger(OutboxEventPublisher.class);
 
@@ -28,22 +28,26 @@ public class OutboxEventPublisher {
     private final ObjectMapper mapper;
 
     private final Function<DomainEvent, DomainEventModel> mapDomainEventToModel;
-
+    private final RabbitConfigurationProperties properties;
 
     @Autowired
-    public OutboxEventPublisher(final Outbox repository,
-                                final RabbitTemplate rabbitTemplate,
-                                final ObjectMapper mapper) {
+    OutboxEventPublisher(final Outbox repository,
+                         final RabbitTemplate rabbitTemplate,
+                         final ObjectMapper mapper,
+                         final RabbitConfigurationProperties properties) {
         this.repository = repository;
         this.rabbitTemplate = rabbitTemplate;
         this.mapper = mapper;
+        this.properties = properties;
         this.mapDomainEventToModel = new DomainEventToModelMapper();
     }
 
-    @Scheduled(fixedDelay = 5000)
     @Transactional
+    @Scheduled(fixedDelayString = "${messaging.rabbit.outbox.poll-interval}")
     void publishOutboxEvents() {
-        final List<DomainEvent> events = repository.findUnprocessed();
+        final int batchSize = properties.getOutbox().getBatchSize();
+        final List<DomainEvent> events = repository.findUnprocessed(batchSize);
+
         for (final DomainEvent evt : events) {
             try {
                 final DomainEventModel eventModel = mapDomainEventToModel.apply(evt);

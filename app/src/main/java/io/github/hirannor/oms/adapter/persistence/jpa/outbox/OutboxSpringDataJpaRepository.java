@@ -1,14 +1,15 @@
 package io.github.hirannor.oms.adapter.persistence.jpa.outbox;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 
 import java.time.Instant;
-import java.util.List;
 import java.util.Optional;
 
 public interface OutboxSpringDataJpaRepository extends JpaRepository<OutboxModel, String> {
-    List<OutboxModel> findTop50ByProcessedFalseOrderByCreatedAtAsc();
+    Slice<OutboxModel> findByProcessedFalseOrderByCreatedAtAsc(Pageable pageable);
 
     Optional<OutboxModel> findByEventId(String eventId);
 
