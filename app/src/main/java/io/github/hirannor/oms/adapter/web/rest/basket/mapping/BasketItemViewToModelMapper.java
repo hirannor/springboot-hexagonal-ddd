@@ -4,6 +4,7 @@ package io.github.hirannor.oms.adapter.web.rest.basket.mapping;
 import io.github.hirannor.oms.adapter.web.rest.baskets.model.BasketItemModel;
 import io.github.hirannor.oms.adapter.web.rest.baskets.model.MoneyModel;
 import io.github.hirannor.oms.application.service.basket.BasketItemView;
+import io.github.hirannor.oms.domain.basket.BasketStatus;
 import io.github.hirannor.oms.domain.core.valueobject.Money;
 
 import java.util.function.Function;

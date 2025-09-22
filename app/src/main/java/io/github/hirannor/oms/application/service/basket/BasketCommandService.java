@@ -1,5 +1,6 @@
 package io.github.hirannor.oms.application.service.basket;
 
+import io.github.hirannor.oms.application.port.outbox.Outbox;
 import io.github.hirannor.oms.application.service.basket.error.BasketNotFound;
 import io.github.hirannor.oms.application.service.customer.error.CustomerNotFound;
 import io.github.hirannor.oms.application.usecase.basket.BasketCheckout;
@@ -38,15 +39,19 @@ class BasketCommandService implements
     private final BasketRepository baskets;
     private final CustomerRepository customers;
     private final ProductRepository products;
+    private final Outbox outboxes;
     private final BiFunction<Basket, Map<ProductId, Product>, BasketView> mapBasketToView;
 
 
     @Autowired
-    BasketCommandService(final BasketRepository baskets, CustomerRepository customers,
-                         final ProductRepository products) {
+    BasketCommandService(final BasketRepository baskets,
+                         final CustomerRepository customers,
+                         final ProductRepository products,
+                         final Outbox outboxes) {
         this.baskets = baskets;
         this.customers = customers;
         this.products = products;
+        this.outboxes = outboxes;
         this.mapBasketToView = new BasketToViewMapper();
     }
 
@@ -59,6 +64,10 @@ class BasketCommandService implements
 
         final Basket basket = Basket.create(creation);
         baskets.save(basket);
+
+        basket.events()
+            .forEach(outboxes::save);
+        basket.clearEvents();
 
         return basket;
     }
@@ -79,6 +88,10 @@ class BasketCommandService implements
 
         basket.checkout();
         baskets.save(basket);
+
+        basket.events()
+                .forEach(outboxes::save);
+        basket.clearEvents();
 
         return mapToView(basket);
     }

@@ -19,4 +19,8 @@ public record BasketCheckedOut(
     public static BasketCheckedOut record(final CustomerId customerId, final List<BasketItem> items) {
         return new BasketCheckedOut(Message.generateId(), customerId, items, Instant.now());
     }
+
+    public static BasketCheckedOut recreate(final MessageId id, final CustomerId customerId, final List<BasketItem> items) {
+        return new BasketCheckedOut(id, customerId, items, Instant.now());
+    }
 }

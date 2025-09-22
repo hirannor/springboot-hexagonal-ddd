@@ -19,6 +19,7 @@ public class Basket extends AggregateRoot {
 
     private final BasketId id;
     private final CustomerId customer;
+    private BasketStatus status;
     private final List<BasketItem> items;
     private final List<DomainEvent> events;
 
@@ -30,20 +31,25 @@ public class Basket extends AggregateRoot {
         this.customer = customer;
         this.items = new ArrayList<>();
         this.events = new ArrayList<>();
+        this.status = BasketStatus.ACTIVE;
     }
 
-    Basket(final BasketId id, final CustomerId customer, final List<BasketItem> items) {
+    Basket(final BasketId id, final CustomerId customer, final List<BasketItem> items, final BasketStatus status) {
         Objects.requireNonNull(id);
         Objects.requireNonNull(customer);
 
         this.id = id;
         this.customer = customer;
         this.items = items;
+        this.status = status;
         this.events = new ArrayList<>();
     }
 
-    public static Basket from(final BasketId id, final CustomerId customer, final List<BasketItem> items) {
-        return new Basket(id, customer, new ArrayList<>(items));
+    public static Basket from(final BasketId id,
+                              final CustomerId customer,
+                              final List<BasketItem> items,
+                              final BasketStatus status) {
+        return new Basket(id, customer, new ArrayList<>(items), status);
     }
 
     public static Basket create(final CreateBasket create) {
@@ -62,6 +68,10 @@ public class Basket extends AggregateRoot {
 
     public CustomerId customer() {
         return customer;
+    }
+
+    public BasketStatus status() {
+        return status;
     }
 
     public List<BasketItem> items() {
@@ -87,7 +97,18 @@ public class Basket extends AggregateRoot {
         return new BasketSnapshot(customer, items);
     }
 
+    public boolean isCheckedOut() {
+        return status == BasketStatus.CHECKED_OUT;
+    }
+
     public void checkout() {
+        if (status != BasketStatus.ACTIVE)
+            throw new IllegalStateException("Basket cannot be checked out from status " + status);
+
+        if (items.isEmpty())
+            throw new IllegalStateException("Cannot checkout an empty basket");
+
+        this.status = BasketStatus.CHECKED_OUT;
         events.add(BasketCheckedOut.record(customer, items));
     }
 

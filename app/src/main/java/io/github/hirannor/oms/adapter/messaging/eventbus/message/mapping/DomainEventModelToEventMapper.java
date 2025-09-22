@@ -1,6 +1,9 @@
 package io.github.hirannor.oms.adapter.messaging.eventbus.message.mapping;
 
 import io.github.hirannor.oms.adapter.messaging.eventbus.message.DomainEventModel;
+import io.github.hirannor.oms.adapter.messaging.eventbus.message.basket.BasketCheckedOutModel;
+import io.github.hirannor.oms.adapter.messaging.eventbus.message.basket.mapping.BasketCheckedOutModelToDomainMapper;
+import io.github.hirannor.oms.adapter.messaging.eventbus.message.basket.mapping.BasketCheckedOutToModelMapper;
 import io.github.hirannor.oms.adapter.messaging.eventbus.message.order.OrderCreatedModel;
 import io.github.hirannor.oms.adapter.messaging.eventbus.message.order.OrderPaidModel;
 import io.github.hirannor.oms.adapter.messaging.eventbus.message.order.OrderProcessingModel;
@@ -15,6 +18,7 @@ import io.github.hirannor.oms.adapter.messaging.eventbus.message.payment.Payment
 import io.github.hirannor.oms.adapter.messaging.eventbus.message.payment.mapping.PaymentCanceledModelToDomainMapper;
 import io.github.hirannor.oms.adapter.messaging.eventbus.message.payment.mapping.PaymentFailedModelToDomainMapper;
 import io.github.hirannor.oms.adapter.messaging.eventbus.message.payment.mapping.PaymentSucceededModelToDomainMapper;
+import io.github.hirannor.oms.domain.basket.events.BasketCheckedOut;
 import io.github.hirannor.oms.domain.order.events.OrderCreated;
 import io.github.hirannor.oms.domain.order.events.OrderPaid;
 import io.github.hirannor.oms.domain.order.events.OrderProcessing;
@@ -35,6 +39,8 @@ public class DomainEventModelToEventMapper implements Function<DomainEventModel,
     private final Function<OrderPaidModel, OrderPaid> mapOrderPaidModelToDomain;
     private final Function<OrderProcessingModel, OrderProcessing> mapOrderProcessingModelToDomain;
     private final Function<OrderShippedModel, OrderShipped> mapOrderShippedModelToDomain;
+    private final Function<BasketCheckedOutModel, BasketCheckedOut> mapBasketCheckedOutModelToDomain;
+
 
     public DomainEventModelToEventMapper() {
         this.mapOrderCreatedModelToDomain = new OrderCreatedModelToDomainMapper();
@@ -44,6 +50,7 @@ public class DomainEventModelToEventMapper implements Function<DomainEventModel,
         this.mapOrderPaidModelToDomain = new OrderPaidModelToDomainMapper();
         this.mapOrderProcessingModelToDomain = new OrderProcessingModelToDomainMapper();
         this.mapOrderShippedModelToDomain = new OrderShippedModelToDomainMapper();
+        this.mapBasketCheckedOutModelToDomain = new BasketCheckedOutModelToDomainMapper();
     }
 
     @Override
@@ -58,6 +65,7 @@ public class DomainEventModelToEventMapper implements Function<DomainEventModel,
             case OrderPaidModel model -> mapOrderPaidModelToDomain.apply(model);
             case OrderProcessingModel model -> mapOrderProcessingModelToDomain.apply(model);
             case OrderShippedModel model -> mapOrderShippedModelToDomain.apply(model);
+            case BasketCheckedOutModel model -> mapBasketCheckedOutModelToDomain.apply(model);
             default -> null;
         };
     }

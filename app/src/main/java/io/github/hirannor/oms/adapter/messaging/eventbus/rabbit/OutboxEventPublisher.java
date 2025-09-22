@@ -53,7 +53,7 @@ class OutboxEventPublisher {
                 final DomainEventModel eventModel = mapDomainEventToModel.apply(evt);
 
                 if (eventModel == null) {
-                    LOGGER.warn("Skipping unmapped event {} with id {}", evt.getClass().getSimpleName(), evt.id().asText());
+                    LOGGER.warn("Skipping unmapped event");
                     continue;
                 }
 

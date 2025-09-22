@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.function.Function;
 
 @PersistenceAdapter
-public class OutboxJpaRepository implements Outbox {
+class OutboxJpaRepository implements Outbox {
     private static final Logger LOGGER = LogManager.getLogger(
             OutboxJpaRepository.class
     );
@@ -30,7 +30,7 @@ public class OutboxJpaRepository implements Outbox {
     private final ObjectMapper mapper;
 
     @Autowired
-    public OutboxJpaRepository(final OutboxSpringDataJpaRepository outboxes,
+    OutboxJpaRepository(final OutboxSpringDataJpaRepository outboxes,
                                final ObjectMapper mapper) {
         this.outboxes = outboxes;
         this.mapper = mapper;

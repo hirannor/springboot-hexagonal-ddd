@@ -1,4 +1,4 @@
-package io.github.hirannor.oms.application.events;
+package io.github.hirannor.oms.application.events.customer;
 
 import io.github.hirannor.oms.domain.customer.event.CustomerRegistered;
 import io.github.hirannor.oms.domain.customer.event.PersonalDetailsChanged;

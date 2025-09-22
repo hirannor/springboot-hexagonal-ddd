@@ -1,4 +1,4 @@
-package io.github.hirannor.oms.application.events;
+package io.github.hirannor.oms.application.events.order;
 
 
 import io.github.hirannor.oms.application.port.notification.SystemNotificationType;

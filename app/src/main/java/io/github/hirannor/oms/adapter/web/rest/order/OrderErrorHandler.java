@@ -2,6 +2,7 @@ package io.github.hirannor.oms.adapter.web.rest.order;
 
 import io.github.hirannor.oms.adapter.web.rest.orders.model.ProblemDetailsModel;
 import io.github.hirannor.oms.application.service.order.error.OrderCannotBeCreatedWithoutAddress;
+import io.github.hirannor.oms.application.service.order.error.OrderCannotBeCreatedWithoutBasketCheckout;
 import io.github.hirannor.oms.application.service.order.error.OrderNotFound;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,18 @@ class OrderErrorHandler {
                 .detail(ex.getMessage());
 
         return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(OrderCannotBeCreatedWithoutBasketCheckout.class)
+    ResponseEntity<?> orderWithoutBasketCheckout(final OrderCannotBeCreatedWithoutBasketCheckout ex, final HttpServletRequest request) {
+        final ProblemDetailsModel message = new ProblemDetailsModel()
+                .timestamp(Instant.now())
+                .status(HttpStatus.CONFLICT.value())
+                .title("Basket not checked out")
+                .instance(request.getRequestURI())
+                .detail(ex.getMessage());
+
+        return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
 
 }

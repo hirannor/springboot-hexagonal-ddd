@@ -1,13 +1,16 @@
 package io.github.hirannor.oms.application.service.order;
 
 import io.github.hirannor.oms.application.port.outbox.Outbox;
+import io.github.hirannor.oms.application.service.basket.error.BasketNotFound;
 import io.github.hirannor.oms.application.service.customer.error.CustomerNotFound;
 import io.github.hirannor.oms.application.service.order.error.OrderCannotBeCreatedWithoutAddress;
+import io.github.hirannor.oms.application.service.order.error.OrderCannotBeCreatedWithoutBasketCheckout;
 import io.github.hirannor.oms.application.service.order.error.OrderNotFound;
 import io.github.hirannor.oms.application.usecase.order.ChangeOrderStatus;
 import io.github.hirannor.oms.application.usecase.order.OrderCancellation;
 import io.github.hirannor.oms.application.usecase.order.OrderCreation;
 import io.github.hirannor.oms.application.usecase.order.OrderStatusChanging;
+import io.github.hirannor.oms.domain.basket.Basket;
 import io.github.hirannor.oms.domain.basket.BasketRepository;
 import io.github.hirannor.oms.domain.core.valueobject.CustomerId;
 import io.github.hirannor.oms.domain.customer.Customer;
@@ -62,6 +65,12 @@ class OrderCommandService implements
 
         if (!customer.hasCompleteAddress())
             failBecauseMissingAddressDetails(customer.id());
+
+        final Basket basket = baskets.findBy(create.customer())
+                .orElseThrow(failBecauseOfBasketNotFound(create.customer()));
+
+        if (!basket.isCheckedOut())
+            throw new OrderCannotBeCreatedWithoutBasketCheckout("Cannot create order, basket is not checked-out");
 
         final Order order = Order.create(create);
         orders.save(order);
@@ -123,6 +132,10 @@ class OrderCommandService implements
 
     private void failBecauseMissingAddressDetails(final CustomerId customer) {
         throw new OrderCannotBeCreatedWithoutAddress("An order cannot be created if the customer: " + customer.asText() + " does not have address details.");
+    }
+
+    private Supplier<BasketNotFound> failBecauseOfBasketNotFound(final CustomerId customer) {
+        return () ->  new BasketNotFound("Basket was not found for customer: " + customer.asText());
     }
 
     private Supplier<OrderNotFound> failBecauseOrderWasNotFoundBy(OrderId order) {

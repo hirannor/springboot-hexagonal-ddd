@@ -1,6 +1,8 @@
 package io.github.hirannor.oms.adapter.persistence.jpa.outbox.mapping;
 
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.DomainEventModel;
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.basket.BasketCheckedOutModel;
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.basket.mapping.BasketCheckedOutToModelMapper;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.OrderCreatedModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.OrderPaidModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.OrderProcessingModel;
@@ -15,6 +17,7 @@ import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.PaymentSucc
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.mapping.PaymentCanceledToModelMapper;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.mapping.PaymentFailedToModelMapper;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.mapping.PaymentSucceededToModelMapper;
+import io.github.hirannor.oms.domain.basket.events.BasketCheckedOut;
 import io.github.hirannor.oms.domain.order.events.OrderCreated;
 import io.github.hirannor.oms.domain.order.events.OrderPaid;
 import io.github.hirannor.oms.domain.order.events.OrderProcessing;
@@ -35,6 +38,7 @@ public class DomainEventToModelMapper implements Function<DomainEvent, DomainEve
     private final Function<OrderPaid, OrderPaidModel> mapOrderPaidToModel;
     private final Function<OrderProcessing, OrderProcessingModel> mapOrderProcessingToModel;
     private final Function<OrderShipped, OrderShippedModel> mapOrderShippedToModel;
+    private final Function<BasketCheckedOut, BasketCheckedOutModel> mapBasketCheckedOutToModel;
 
     public DomainEventToModelMapper() {
         this.mapOrderCreatedToModel = new OrderCreatedToModelMapper();
@@ -44,6 +48,7 @@ public class DomainEventToModelMapper implements Function<DomainEvent, DomainEve
         this.mapOrderPaidToModel = new OrderPaidToModelMapper();
         this.mapOrderProcessingToModel = new OrderProcessingToModelMapper();
         this.mapOrderShippedToModel = new OrderShippedToModelMapper();
+        this.mapBasketCheckedOutToModel = new BasketCheckedOutToModelMapper();
     }
 
 
@@ -59,6 +64,7 @@ public class DomainEventToModelMapper implements Function<DomainEvent, DomainEve
             case OrderPaid evt -> mapOrderPaidToModel.apply(evt);
             case OrderProcessing evt -> mapOrderProcessingToModel.apply(evt);
             case OrderShipped evt -> mapOrderShippedToModel.apply(evt);
+            case BasketCheckedOut evt -> mapBasketCheckedOutToModel.apply(evt);
             default -> null;
         };
     }

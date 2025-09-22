@@ -1,20 +1,20 @@
 package io.github.hirannor.oms.adapter.persistence.jpa.outbox.mapping;
 
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.DomainEventModel;
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.basket.BasketCheckedOutModel;
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.basket.mapping.BasketCheckedOutModelToDomainMapper;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.OrderCreatedModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.OrderPaidModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.OrderProcessingModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.OrderShippedModel;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.mapping.OrderCreatedModelToDomainMapper;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.mapping.OrderPaidModelToDomainMapper;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.mapping.OrderProcessingModelToDomainMapper;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.mapping.OrderShippedModelToDomainMapper;
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.mapping.*;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.PaymentCanceledModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.PaymentFailedModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.PaymentSucceededModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.mapping.PaymentCanceledModelToDomainMapper;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.mapping.PaymentFailedModelToDomainMapper;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.mapping.PaymentSucceededModelToDomainMapper;
+import io.github.hirannor.oms.domain.basket.events.BasketCheckedOut;
 import io.github.hirannor.oms.domain.order.events.OrderCreated;
 import io.github.hirannor.oms.domain.order.events.OrderPaid;
 import io.github.hirannor.oms.domain.order.events.OrderProcessing;
@@ -35,6 +35,7 @@ public class DomainEventModelToEventMapper implements Function<DomainEventModel,
     private final Function<OrderPaidModel, OrderPaid> mapOrderPaidModelToDomain;
     private final Function<OrderProcessingModel, OrderProcessing> mapOrderProcessingModelToDomain;
     private final Function<OrderShippedModel, OrderShipped> mapOrderShippedModelToDomain;
+    private final Function<BasketCheckedOutModel, BasketCheckedOut> mapBasketCheckedOutModelToDomain;
 
     public DomainEventModelToEventMapper() {
         this.mapOrderCreatedModelToDomain = new OrderCreatedModelToDomainMapper();
@@ -44,6 +45,7 @@ public class DomainEventModelToEventMapper implements Function<DomainEventModel,
         this.mapOrderPaidModelToDomain = new OrderPaidModelToDomainMapper();
         this.mapOrderProcessingModelToDomain = new OrderProcessingModelToDomainMapper();
         this.mapOrderShippedModelToDomain = new OrderShippedModelToDomainMapper();
+        this.mapBasketCheckedOutModelToDomain = new BasketCheckedOutModelToDomainMapper();
     }
 
     @Override
@@ -58,6 +60,7 @@ public class DomainEventModelToEventMapper implements Function<DomainEventModel,
             case OrderPaidModel model -> mapOrderPaidModelToDomain.apply(model);
             case OrderProcessingModel model -> mapOrderProcessingModelToDomain.apply(model);
             case OrderShippedModel model -> mapOrderShippedModelToDomain.apply(model);
+            case BasketCheckedOutModel model -> mapBasketCheckedOutModelToDomain.apply(model);
             default -> null;
         };
     }

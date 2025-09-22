@@ -37,6 +37,10 @@ public class BasketModel {
     )
     private Set<BasketItemModel> items = new HashSet<>();
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "STATUS")
+    private BasketStatusModel status;
+
     public BasketModel() {
     }
 
@@ -62,6 +66,14 @@ public class BasketModel {
 
     public void setCustomerId(String customerId) {
         this.customerId = customerId;
+    }
+
+    public BasketStatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(final BasketStatusModel status) {
+        this.status = status;
     }
 
     public Set<BasketItemModel> getItems() {

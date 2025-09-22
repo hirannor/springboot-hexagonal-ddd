@@ -19,6 +19,9 @@
             <column name="CUSTOMER_ID" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
+            <column name="STATUS" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
 
         <createSequence sequenceName="basket_seq" startValue="1" incrementBy="5"/>

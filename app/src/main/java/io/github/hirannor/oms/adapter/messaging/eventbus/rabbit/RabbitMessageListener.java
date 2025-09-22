@@ -35,7 +35,6 @@ class RabbitMessageListener {
             final Class<?> clazz = Class.forName(envelope.type());
             final DomainEventModel model = (DomainEventModel) mapper.readValue(envelope.payload(), clazz);
 
-
             final DomainEvent evt = mapDomainEventModelToEvent.apply(model);
 
             if (evt == null) {
