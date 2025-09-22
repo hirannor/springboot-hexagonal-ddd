@@ -61,14 +61,14 @@ class NotificationService implements NotificationSending {
                         customer.address()
                 ));
 
-        LOGGER.info("Start notification type: {} for customer: {}",
+        LOGGER.info("Start notification for notificationType={} , customerId={}",
                 command.notificationType(),
                 customer.id().asText()
         );
 
         notifications.send(msg);
 
-        LOGGER.info("Notification: {} for customer: {} successfully sent",
+        LOGGER.info("NotificationType={} for customerId={} successfully sent",
                 command.notificationType(),
                 customer.id().asText()
         );

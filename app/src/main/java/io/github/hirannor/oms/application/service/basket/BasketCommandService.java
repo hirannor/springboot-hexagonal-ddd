@@ -21,6 +21,8 @@ import io.github.hirannor.oms.domain.product.Product;
 import io.github.hirannor.oms.domain.product.ProductId;
 import io.github.hirannor.oms.domain.product.ProductRepository;
 import io.github.hirannor.oms.infrastructure.application.ApplicationService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -35,6 +37,10 @@ class BasketCommandService implements
         BasketDeletion,
         BasketCheckout,
         BasketProductHandling {
+
+    private static final Logger LOGGER = LogManager.getLogger(
+        BasketCommandService.class
+    );
 
     private final BasketRepository baskets;
     private final CustomerRepository customers;
@@ -59,6 +65,8 @@ class BasketCommandService implements
     public Basket create(final CreateBasket creation) {
         if (creation == null) throw new IllegalArgumentException("CreateBasket is null");
 
+        LOGGER.info("Start creating basket for customerId={}", creation.customerId().asText());
+
         customers.findBy(creation.customerId())
                 .orElseThrow(failBecauseCustomerWasNotFoundBy(creation.customerId()));
 
@@ -69,6 +77,9 @@ class BasketCommandService implements
                 .forEach(outboxes::save);
         basket.clearEvents();
 
+        LOGGER.info("Created basket with basketId={} for customerId={}",
+                basket.id().asText(), creation.customerId().asText());
+
         return basket;
     }
 
@@ -77,11 +88,15 @@ class BasketCommandService implements
         if (customer == null) throw new IllegalArgumentException("CustomerId is null");
 
         baskets.deleteBy(customer);
+        LOGGER.info("Basket is deleted for customerId={}", customer.asText());
+
     }
 
     @Override
     public BasketView checkout(final CheckoutBasket command) {
         if (command == null) throw new IllegalArgumentException("CheckoutBasket is null");
+
+        LOGGER.info("Start check-out basket for customerId={}", command.customerId().asText());
 
         final Basket basket = baskets.findBy(command.customerId())
                 .orElseThrow(failBecauseBasketWasNotFoundBy(command.customerId()));
@@ -93,6 +108,11 @@ class BasketCommandService implements
                 .forEach(outboxes::save);
         basket.clearEvents();
 
+        LOGGER.info("Basket with basketId={} is successfully checked out for customerId={}",
+                basket.id().asText(),
+                basket.customer().asText()
+        );
+
         return mapToView(basket);
     }
 
@@ -100,20 +120,50 @@ class BasketCommandService implements
     public void add(final AddBasketItem command) {
         if (command == null) throw new IllegalArgumentException("AddBasketItem is null");
 
+        LOGGER.info("Start adding productId={} to basketId={}",
+                command.item().productId().asText(),
+                command.basketId().asText());
+
         final Basket basket = baskets.findBy(command.basketId())
                 .orElseThrow(failBecauseBasketWasNotFoundBy(command.basketId()));
 
         basket.addProduct(command.item());
         baskets.save(basket);
+
+        basket.events()
+                .forEach(outboxes::save);
+        basket.clearEvents();
+
+        LOGGER.info("Product with productId={} added to basketId={}",
+                command.item().productId().asText(),
+                command.basketId().asText()
+        );
     }
 
     @Override
     public void remove(final RemoveBasketItem command) {
+        if (command == null) throw new IllegalArgumentException("RemoveBasketItem is null");
+
+        LOGGER.info("Start removing productId={} from basketId={}",
+                command.item().productId().asText(),
+                command.basketId().asText()
+        );
+
+
         final Basket basket = baskets.findBy(command.basketId())
                 .orElseThrow(failBecauseBasketWasNotFoundBy(command.basketId()));
 
         basket.removeProduct(command.item());
         baskets.save(basket);
+
+        basket.events()
+                .forEach(outboxes::save);
+        basket.clearEvents();
+
+        LOGGER.info("Product with productId={} removed from basketId={}",
+                command.item().productId().asText(),
+                command.basketId().asText()
+        );
     }
 
     private Supplier<CustomerNotFound> failBecauseCustomerWasNotFoundBy(final CustomerId id) {

@@ -29,7 +29,7 @@ class ProductCommandService implements ProductCreation {
     public Product create(final CreateProduct cmd) {
         if (cmd == null) throw new IllegalArgumentException("AddProduct cannot be null");
 
-        LOGGER.info("Creating new product with id: {}, name: {}",
+        LOGGER.info("Creating new product with productId={}, name={}",
                 cmd.productId().asText(),
                 cmd.name());
 
@@ -40,7 +40,7 @@ class ProductCommandService implements ProductCreation {
                 .forEach(outboxes::save);
         toPersist.clearEvents();
 
-        LOGGER.info("Product with id: {} was created successfully",
+        LOGGER.info("Product with productId={} was created successfully",
                 cmd.productId().asText());
 
         return toPersist;

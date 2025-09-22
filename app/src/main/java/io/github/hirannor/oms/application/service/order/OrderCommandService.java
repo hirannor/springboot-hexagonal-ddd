@@ -56,7 +56,7 @@ class OrderCommandService implements
     public Order create(final CreateOrder create) {
         if (create == null) throw new IllegalArgumentException("CreateOrder is null");
 
-        LOGGER.info("Start creating order with id :{} for customer id: {}",
+        LOGGER.info("Start creating order with orderId={}, customerId= {}",
                 create.orderId().asText(),
                 create.customer().asText());
 
@@ -80,7 +80,7 @@ class OrderCommandService implements
 
         baskets.deleteBy(order.customer());
 
-        LOGGER.info("Order with id: {} was successfully created for customer: {}",
+        LOGGER.info("Order orderId={} was successfully created for customerId={}",
                 order.id().asText(),
                 order.id().asText());
 
@@ -91,7 +91,7 @@ class OrderCommandService implements
     public void cancelBy(final OrderId id) {
         if (id == null) throw new IllegalArgumentException("OrderId is null");
 
-        LOGGER.info("Start cancellation for id id: {}",
+        LOGGER.info("Start cancellation for orderId={}",
                 id.asText()
         );
         final Order order = orders.findBy(id)
@@ -103,14 +103,14 @@ class OrderCommandService implements
         order.events().forEach(outboxes::save);
         order.clearEvents();
 
-        LOGGER.info("Order with id: {} is successfully cancelled", id.asText());
+        LOGGER.info("Order with orderId={} is successfully cancelled", id.asText());
     }
 
     @Override
     public void change(final ChangeOrderStatus changeStatus) {
         if (changeStatus == null) throw new IllegalArgumentException("ChangeOrderStatus is null");
 
-        LOGGER.info("Changing order status to: {} for order id: {}",
+        LOGGER.info("Changing orderStatus={} for orderId={}",
                 changeStatus.status(),
                 changeStatus.orderId().asText()
         );
@@ -124,7 +124,7 @@ class OrderCommandService implements
         order.events().forEach(outboxes::save);
         order.clearEvents();
 
-        LOGGER.info("Order status is successfully changed for order id: {}",
+        LOGGER.info("Order status is successfully changed for orderId={}",
                 changeStatus.orderId().asText()
         );
     }

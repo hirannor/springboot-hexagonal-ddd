@@ -46,7 +46,7 @@ class CustomerCommandService implements
 
         final Customer foundCustomer = customers.findBy(cmd.customerId())
                 .orElseThrow(
-                        failBecauseCustomerWasNotFoundBy(cmd.customerId())
+                    failBecauseCustomerWasNotFoundBy(cmd.customerId())
                 );
 
         final Customer withModifiedPersonalDetails = foundCustomer.changePersonalDetailsBy(cmd);
@@ -56,7 +56,7 @@ class CustomerCommandService implements
                 .forEach(outboxes::save);
         withModifiedPersonalDetails.clearEvents();
 
-        LOGGER.info("Personal details for customer id: {} are updated successfully!",
+        LOGGER.info("Personal details for customerId={} are updated successfully!",
                 withModifiedPersonalDetails.id().asText());
 
         return withModifiedPersonalDetails;
@@ -71,7 +71,7 @@ class CustomerCommandService implements
                         failBecauseCustomerWasNotFoundBy(id)
                 );
 
-        LOGGER.info("Attempting to delete customer with id: {}", id.asText());
+        LOGGER.info("Attempting to delete customer with customerId={}", id.asText());
 
         customers.deleteBy(id);
     }

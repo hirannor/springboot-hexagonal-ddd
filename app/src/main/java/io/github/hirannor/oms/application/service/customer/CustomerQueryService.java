@@ -49,7 +49,7 @@ class CustomerQueryService implements CustomerDisplaying {
     public Optional<Customer> displayBy(final CustomerId customerId) {
         if (customerId == null) throw new IllegalArgumentException(ERR_CUSTOMER_ID_IS_NULL);
 
-        LOGGER.info("Retrieving customer by id: {}", customerId);
+        LOGGER.info("Retrieving customer by customerId={}", customerId);
 
         return customers.findBy(customerId);
     }
@@ -58,7 +58,7 @@ class CustomerQueryService implements CustomerDisplaying {
     public Optional<Customer> displayBy(EmailAddress emailAddress) {
         if (emailAddress == null) throw new IllegalArgumentException(ERR_CUSTOMER_ID_IS_NULL);
 
-        LOGGER.info("Retrieving customer by id: {}", emailAddress);
+        LOGGER.info("Retrieving customer by emailAddress={}", emailAddress);
 
         return customers.findByEmailAddress(emailAddress);
     }

@@ -40,11 +40,11 @@ class AuthenticationService implements Authenticating, RefreshAuthentication {
     public AuthenticationResult authenticate(final AttemptAuthentication cmd) {
         if (cmd == null) throw new IllegalArgumentException("AttemptAuthentication cannot be null");
 
-        LOGGER.info("Attempting to authenticate: {}", cmd.emailAddress().asText());
+        LOGGER.info("Attempting to authenticate with emailAddress={}", cmd.emailAddress().asText());
         final AuthUser authUser = mapCommandToUser.apply(cmd);
 
         final AuthenticationResult result = authenticator.authenticate(authUser);
-        LOGGER.info("Authentication was successful for: {} ", cmd.emailAddress().asText());
+        LOGGER.info("Authentication was successful with emailAddress={} ", cmd.emailAddress().asText());
 
         return result;
     }
@@ -58,7 +58,7 @@ class AuthenticationService implements Authenticating, RefreshAuthentication {
 
         final AuthenticationResult result = authenticator.refresh(cmd);
 
-        LOGGER.info("Refresh was successful for: {}", result.emailAddress().asText());
+        LOGGER.info("Refresh was successful for emailAddress={}", result.emailAddress().asText());
 
         return result;
     }
