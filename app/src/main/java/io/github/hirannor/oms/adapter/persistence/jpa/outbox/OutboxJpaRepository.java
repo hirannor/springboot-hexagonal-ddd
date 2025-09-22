@@ -31,7 +31,7 @@ class OutboxJpaRepository implements Outbox {
 
     @Autowired
     OutboxJpaRepository(final OutboxSpringDataJpaRepository outboxes,
-                               final ObjectMapper mapper) {
+                        final ObjectMapper mapper) {
         this.outboxes = outboxes;
         this.mapper = mapper;
         this.mapDomainEventModelToEvent = new DomainEventModelToEventMapper();
@@ -65,6 +65,8 @@ class OutboxJpaRepository implements Outbox {
 
     @Override
     public List<DomainEvent> findUnprocessed(int batchSize) {
+        if (batchSize <= 0) throw new IllegalArgumentException("Batch size must be greater than 0");
+
         final Pageable pageable = PageRequest.of(0, batchSize);
 
         return outboxes.findByProcessedFalseOrderByCreatedAtAsc(pageable)

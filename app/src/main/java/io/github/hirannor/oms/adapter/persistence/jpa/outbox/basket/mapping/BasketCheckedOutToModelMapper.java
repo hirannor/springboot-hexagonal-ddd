@@ -17,18 +17,18 @@ public class BasketCheckedOutToModelMapper implements Function<BasketCheckedOut,
 
     @Override
     public BasketCheckedOutModel apply(final BasketCheckedOut evt) {
-       if (evt == null) return null;
+        if (evt == null) return null;
 
-       final List<BasketItemModel> items = evt.items()
+        final List<BasketItemModel> items = evt.items()
                 .stream()
                 .map(mapBasketItemToModel)
                 .toList();
 
         return new BasketCheckedOutModel(
-               evt.id().asText(),
-               evt.customerId().asText(),
+                evt.id().asText(),
+                evt.customerId().asText(),
                 items,
                 evt.occurredAt()
-       );
+        );
     }
 }

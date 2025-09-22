@@ -3,7 +3,6 @@ package io.github.hirannor.oms.adapter.messaging.eventbus.message.mapping;
 import io.github.hirannor.oms.adapter.messaging.eventbus.message.DomainEventModel;
 import io.github.hirannor.oms.adapter.messaging.eventbus.message.basket.BasketCheckedOutModel;
 import io.github.hirannor.oms.adapter.messaging.eventbus.message.basket.mapping.BasketCheckedOutModelToDomainMapper;
-import io.github.hirannor.oms.adapter.messaging.eventbus.message.basket.mapping.BasketCheckedOutToModelMapper;
 import io.github.hirannor.oms.adapter.messaging.eventbus.message.order.OrderCreatedModel;
 import io.github.hirannor.oms.adapter.messaging.eventbus.message.order.OrderPaidModel;
 import io.github.hirannor.oms.adapter.messaging.eventbus.message.order.OrderProcessingModel;

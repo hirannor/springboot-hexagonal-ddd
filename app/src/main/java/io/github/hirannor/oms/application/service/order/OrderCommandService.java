@@ -135,7 +135,7 @@ class OrderCommandService implements
     }
 
     private Supplier<BasketNotFound> failBecauseOfBasketNotFound(final CustomerId customer) {
-        return () ->  new BasketNotFound("Basket was not found for customer: " + customer.asText());
+        return () -> new BasketNotFound("Basket was not found for customer: " + customer.asText());
     }
 
     private Supplier<OrderNotFound> failBecauseOrderWasNotFoundBy(OrderId order) {

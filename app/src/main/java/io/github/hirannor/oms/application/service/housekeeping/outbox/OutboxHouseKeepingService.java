@@ -14,7 +14,7 @@ import java.time.temporal.ChronoUnit;
 class OutboxHouseKeepingService {
 
     private static final Logger LOGGER = LogManager.getLogger(
-        OutboxHouseKeepingService.class
+            OutboxHouseKeepingService.class
     );
 
     private final Outbox outbox;
@@ -24,8 +24,8 @@ class OutboxHouseKeepingService {
         this.outbox = outbox;
     }
 
-    @Scheduled(cron = "0 */5 * * * *")
-    public void cleanup() {
+    @Scheduled(cron = "${outbox.house-keeping-cron}")
+    void cleanup() {
         LOGGER.info("Starting outbox housekeeping");
 
         outbox.deleteProcessedOlderThan(Instant.now().minus(7, ChronoUnit.DAYS));

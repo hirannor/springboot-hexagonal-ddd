@@ -1,7 +1,6 @@
 package io.github.hirannor.oms.adapter.persistence.jpa.outbox.basket;
 
 
-
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.DomainEventModel;
 
 import java.time.Instant;

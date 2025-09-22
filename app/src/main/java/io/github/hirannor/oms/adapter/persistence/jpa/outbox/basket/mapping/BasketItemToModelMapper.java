@@ -15,6 +15,7 @@ public class BasketItemToModelMapper implements Function<BasketItem, BasketItemM
     public BasketItemToModelMapper() {
         this.mapCurrencyToModel = new CurrencyToModelMapper();
     }
+
     @Override
     public BasketItemModel apply(final BasketItem item) {
         if (item == null) return null;

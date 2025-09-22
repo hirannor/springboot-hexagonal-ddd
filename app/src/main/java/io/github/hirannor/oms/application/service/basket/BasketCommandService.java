@@ -66,7 +66,7 @@ class BasketCommandService implements
         baskets.save(basket);
 
         basket.events()
-            .forEach(outboxes::save);
+                .forEach(outboxes::save);
         basket.clearEvents();
 
         return basket;

@@ -71,3 +71,6 @@ messaging:
       batch-size: 50
     retry:
       max-attempts: 3
+
+outbox:
+  house-keeping-cron:  "0 0 2 * * *"

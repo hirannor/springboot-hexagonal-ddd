@@ -27,7 +27,6 @@ import io.github.hirannor.oms.domain.payment.events.PaymentFailed;
 import io.github.hirannor.oms.domain.payment.events.PaymentSucceeded;
 import io.github.hirannor.oms.infrastructure.event.DomainEvent;
 
-import java.util.Objects;
 import java.util.function.Function;
 
 public class DomainEventToModelMapper implements Function<DomainEvent, DomainEventModel> {

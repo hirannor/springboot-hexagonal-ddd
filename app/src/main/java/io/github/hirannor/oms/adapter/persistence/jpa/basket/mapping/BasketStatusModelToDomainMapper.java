@@ -7,7 +7,8 @@ import io.github.hirannor.oms.domain.basket.BasketStatus;
 import java.util.function.Function;
 
 public class BasketStatusModelToDomainMapper implements Function<BasketStatusModel, BasketStatus> {
-    public BasketStatusModelToDomainMapper() {}
+    public BasketStatusModelToDomainMapper() {
+    }
 
     @Override
     public BasketStatus apply(final BasketStatusModel model) {

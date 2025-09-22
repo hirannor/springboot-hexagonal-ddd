@@ -7,7 +7,8 @@ import java.util.function.Function;
 
 public class BasketItemToOrderItemMapper implements Function<BasketItem, OrderItem> {
 
-    public BasketItemToOrderItemMapper() {}
+    public BasketItemToOrderItemMapper() {
+    }
 
     @Override
     public OrderItem apply(final BasketItem basketItem) {
