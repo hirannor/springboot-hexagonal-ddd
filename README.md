@@ -75,6 +75,9 @@ Key principles enforced via ArchUnit tests:
 
 Running these tests ensures **architectural integrity** as the project evolves.
 
+### Messaging Flow (Outbox + RabbitMQ)
+![Messaging-flow](img/messaging_flow.svg)
+
 ## Getting Started
 
 ### Prerequisites

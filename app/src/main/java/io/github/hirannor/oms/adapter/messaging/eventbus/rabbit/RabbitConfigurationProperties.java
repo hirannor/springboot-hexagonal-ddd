@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.time.Duration;
 
 @ConfigurationProperties(value = "messaging.rabbit")
-public class RabbitConfigurationProperties {
+class RabbitConfigurationProperties {
     private String exchange;
     private String queue;
     private String dlq;

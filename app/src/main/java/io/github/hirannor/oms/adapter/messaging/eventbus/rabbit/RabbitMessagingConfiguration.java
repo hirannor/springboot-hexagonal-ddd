@@ -22,7 +22,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 )
 @EnableScheduling
 @EnableConfigurationProperties(RabbitConfigurationProperties.class)
-public class RabbitConfig {
+public class RabbitMessagingConfiguration {
 
     private static final String X_DEAD_LETTER_EXCHANGE = "x-dead-letter-exchange";
     private static final String X_DEAD_LETTER_ROUTING_KEY = "x-dead-letter-routing-key";
@@ -30,7 +30,7 @@ public class RabbitConfig {
     private final RabbitConfigurationProperties properties;
 
     @Autowired
-    RabbitConfig(final RabbitConfigurationProperties properties) {
+    RabbitMessagingConfiguration(final RabbitConfigurationProperties properties) {
         this.properties = properties;
     }
 
