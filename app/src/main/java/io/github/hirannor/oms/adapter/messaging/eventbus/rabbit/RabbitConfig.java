@@ -24,6 +24,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableConfigurationProperties(RabbitConfigurationProperties.class)
 public class RabbitConfig {
 
+    private static final String X_DEAD_LETTER_EXCHANGE = "x-dead-letter-exchange";
+    private static final String X_DEAD_LETTER_ROUTING_KEY = "x-dead-letter-routing-key";
+
     private final RabbitConfigurationProperties properties;
 
     @Autowired
@@ -40,8 +43,8 @@ public class RabbitConfig {
     @Qualifier("omsQueue")
     Queue createOmsQueue() {
         return QueueBuilder.durable(properties.getQueue())
-                .withArgument("x-dead-letter-exchange", properties.getExchange())
-                .withArgument("x-dead-letter-routing-key", properties.getDlq())
+                .withArgument(X_DEAD_LETTER_EXCHANGE, properties.getExchange())
+                .withArgument(X_DEAD_LETTER_ROUTING_KEY, properties.getDlq())
                 .build();
     }
 
