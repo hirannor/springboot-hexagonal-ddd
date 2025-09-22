@@ -19,22 +19,6 @@ class GlobalErrorHandler {
     GlobalErrorHandler() {
     }
 
-    @ExceptionHandler(Exception.class)
-    ResponseEntity<ProblemDetailsModel> internalServerError(
-            final Exception ex,
-            final HttpServletRequest request
-    ) {
-        final ProblemDetailsModel message = ProblemDetailsModel.builder()
-                .timestamp(Instant.now())
-                .title(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .detail("An unexpected error occurred. Please contact support.")
-                .instance(request.getRequestURI())
-                .build();
-
-        return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     @ExceptionHandler(IllegalArgumentException.class)
     ResponseEntity<ProblemDetailsModel> badRequest(
             final IllegalArgumentException ex,

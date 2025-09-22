@@ -112,6 +112,12 @@ public class Customer extends AggregateRoot {
         return this;
     }
 
+    public boolean hasCompleteAddress() {
+        return Optional.ofNullable(address)
+                .map(Address::isComplete)
+                .orElse(false);
+    }
+
     public CustomerId id() {
         return customerId;
     }

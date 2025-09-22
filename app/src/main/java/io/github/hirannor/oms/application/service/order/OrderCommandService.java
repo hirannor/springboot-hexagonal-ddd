@@ -60,7 +60,7 @@ class OrderCommandService implements
         final Customer customer = customers.findBy(create.customer())
                 .orElseThrow(failBecauseCustomerWasNotFoundBy(create.customer()));
 
-        if (!customer.address().isComplete())
+        if (!customer.hasCompleteAddress())
             failBecauseMissingAddressDetails(customer.id());
 
         final Order order = Order.create(create);
