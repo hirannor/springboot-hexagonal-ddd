@@ -1,9 +1,12 @@
 package io.github.hirannor.oms.adapter.notification.email;
 
 import io.github.hirannor.oms.application.port.notification.EmailNotificationMessage;
-import io.github.hirannor.oms.application.port.notification.NotificationData;
 import io.github.hirannor.oms.application.port.notification.NotificationFactory;
 import io.github.hirannor.oms.application.port.notification.NotificationMessage;
+import io.github.hirannor.oms.application.port.notification.data.NotificationData;
+import io.github.hirannor.oms.application.port.notification.data.OrderCreatedNotificationData;
+import io.github.hirannor.oms.application.port.notification.data.OrderPaidNotificationData;
+import io.github.hirannor.oms.application.port.notification.data.OrderShippedNotificationData;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -14,26 +17,25 @@ class EmailNotificationFactory implements NotificationFactory {
     private static final String ORDER_CREATED_TEMPLATE = "notifications/order-created";
     private static final String ORDER_PAID_TEMPLATE = "notifications/order-paid";
     private static final String ORDER_SHIPPED_TEMPLATE = "notifications/order-shipped";
+
     private static final String VAR_CUSTOMER_NAME = "customerName";
     private static final String VAR_ORDER_ID = "orderId";
-    private static final String VAR_COUNTRY = "country";
-    private static final String VAR_CITY = "city";
-    private static final String VAR_POSTAL_CODE = "postalCode";
-    private static final String VAR_STREET = "streetAddress";
+    private static final String VAR_ADDRESS = "address";
+    private static final String VAR_PRODUCTS = "products";
+    private static final String VAR_TOTAL_PRICE = "totalPrice";
 
-    EmailNotificationFactory() {
-    }
+    EmailNotificationFactory() {}
 
     @Override
-    public NotificationMessage createNotification(final NotificationData data) {
-        return switch (data.type()) {
-            case ORDER_CREATED -> createOrderCreatedNotificationFrom(data);
-            case ORDER_PAID -> createOrderPaidNotificationFrom(data);
-            case ORDER_SHIPPED -> createOrderShippedNotificationFrom(data);
+    public NotificationMessage createNotification(final NotificationData base) {
+        return switch (base) {
+            case OrderCreatedNotificationData data -> createOrderCreatedNotificationFrom(data);
+            case OrderPaidNotificationData data -> createOrderPaidNotificationFrom(data);
+            case OrderShippedNotificationData data -> createOrderShippedNotificationFrom(data);
         };
     }
 
-    private EmailNotificationMessage createOrderShippedNotificationFrom(final NotificationData data) {
+    private EmailNotificationMessage createOrderShippedNotificationFrom(final OrderShippedNotificationData data) {
         return EmailNotificationMessage.create(
                 data.email().value(),
                 "Your order has shipped!",
@@ -41,34 +43,34 @@ class EmailNotificationFactory implements NotificationFactory {
                 Map.of(
                         VAR_CUSTOMER_NAME, data.customerName(),
                         VAR_ORDER_ID, data.orderId().value(),
-                        VAR_COUNTRY, data.address().country().name(),
-                        VAR_CITY, data.address().city(),
-                        VAR_POSTAL_CODE, data.address().postalCode().value(),
-                        VAR_STREET, data.address().streetAddress()
+                        VAR_ADDRESS, data.address()
                 )
         );
     }
 
-    private EmailNotificationMessage createOrderPaidNotificationFrom(final NotificationData data) {
+    private EmailNotificationMessage createOrderPaidNotificationFrom(final OrderPaidNotificationData data) {
         return EmailNotificationMessage.create(
                 data.email().value(),
                 "Payment received",
                 ORDER_PAID_TEMPLATE,
                 Map.of(
                         VAR_CUSTOMER_NAME, data.customerName(),
-                        VAR_ORDER_ID, data.orderId().value()
+                        VAR_ORDER_ID, data.orderId().value(),
+                        VAR_TOTAL_PRICE, data.price()
                 )
         );
     }
 
-    private EmailNotificationMessage createOrderCreatedNotificationFrom(final NotificationData data) {
+    private EmailNotificationMessage createOrderCreatedNotificationFrom(final OrderCreatedNotificationData data) {
         return EmailNotificationMessage.create(
                 data.email().value(),
                 "Your order confirmation",
                 ORDER_CREATED_TEMPLATE,
                 Map.of(
                         VAR_CUSTOMER_NAME, data.customerName(),
-                        VAR_ORDER_ID, data.orderId().value()
+                        VAR_ORDER_ID, data.orderId().value(),
+                        VAR_PRODUCTS, data.productSummaries(),
+                        VAR_TOTAL_PRICE, data.totalPrice()
                 )
         );
     }

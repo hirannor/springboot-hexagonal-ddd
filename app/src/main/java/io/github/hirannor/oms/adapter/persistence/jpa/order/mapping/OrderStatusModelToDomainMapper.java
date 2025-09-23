@@ -15,7 +15,6 @@ public class OrderStatusModelToDomainMapper implements Function<OrderStatusModel
         if (model == null) return null;
 
         return switch (model) {
-            case CREATED -> OrderStatus.CREATED;
             case CANCELLED -> OrderStatus.CANCELLED;
             case SHIPPED -> OrderStatus.SHIPPED;
             case REFUNDED -> OrderStatus.REFUNDED;

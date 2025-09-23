@@ -28,9 +28,12 @@ variety of concepts:
 * **Order** – aggregate root handling the full order lifecycle:
     - Creation
     - Status changes (
-      `CREATED → WAITING_FOR_PAYMENT → PAID_SUCCESSFULLY → PROCESSING → SHIPPED → DELIVERED → RETURNED/REFUNDED`)
+      `WAITING_FOR_PAYMENT → PAID_SUCCESSFULLY → PROCESSING → SHIPPED → DELIVERED → RETURNED/REFUNDED`)
     - Cancellation and refund
     - Emits domain events such as `OrderCreated`, `OrderPaid`, `OrderShipped`.
+  
+### Order Status flow
+![Order-status-flow](img/order_status_flow.svg)
 
 * **Basket** – aggregate root representing a shopping basket where products can be added/removed before checkout.
     - Customers can maintain one basket.

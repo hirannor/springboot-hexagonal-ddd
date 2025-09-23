@@ -3,7 +3,6 @@ package io.github.hirannor.oms.application.events.order;
 import io.github.hirannor.oms.application.usecase.order.ChangeOrderStatus;
 import io.github.hirannor.oms.application.usecase.order.OrderStatusChanging;
 import io.github.hirannor.oms.domain.order.OrderStatus;
-import io.github.hirannor.oms.domain.order.events.OrderCreated;
 import io.github.hirannor.oms.domain.order.events.OrderPaid;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,15 +23,6 @@ public class OrderIngestion {
         this.status = status;
     }
 
-
-    @EventListener
-    public void handle(final OrderCreated evt) {
-        if (evt == null) throw new IllegalArgumentException("OrderCreated event cannot be null!");
-
-        LOGGER.debug("OrderCreated event received: {}", evt);
-
-        status.change(ChangeOrderStatus.issue(evt.orderId(), OrderStatus.WAITING_FOR_PAYMENT));
-    }
 
     @EventListener
     public void handle(final OrderPaid evt) {

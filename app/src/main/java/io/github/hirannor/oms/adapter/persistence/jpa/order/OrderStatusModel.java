@@ -4,7 +4,6 @@ import java.util.Objects;
 
 public enum OrderStatusModel {
 
-    CREATED("CREATED"),
     WAITING_FOR_PAYMENT("WAITING_FOR_PAYMENT"),
     PAID_SUCCESSFULLY("PAID_SUCCESSFULLY"),
     PAYMENT_FAILED("PAYMENT_FAILED"),

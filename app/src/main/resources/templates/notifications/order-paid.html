@@ -1,15 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 20px 30px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            line-height: 1.6;
+        }
+
+        h1 {
+            color: #28a745;
+            margin-bottom: 16px;
+        }
+
+        .order-info {
+            margin: 20px 0;
+            padding: 15px;
+            background: #e8f9f0;
+            border-radius: 6px;
+            border: 1px solid #c9eecf;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #6c757d;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto;">
-    <h2>Payment Received</h2>
-    <p>Dear [[${customerName}]],</p>
-    <p>We've received your payment for order <strong>[[${orderId}]]</strong>.</p>
+<div class="container">
+    <h1>Payment Received</h1>
+
+    <p>Dear <strong th:text="${customerName}">Customer</strong>,</p>
+
+    <div class="order-info">
+        <p>We've received your payment for order
+            <strong th:text="${orderId}">12345</strong>.
+        </p>
+        <p>
+            <strong>Total Paid:</strong>
+            <span th:text="${totalPrice.amount} + ' ' + ${totalPrice.currency}">24.99 EUR</span>
+        </p>
+    </div>
+
     <p>You'll receive a shipping notification once your order is dispatched.</p>
-    <p>Regards,<br/>The Shop Team</p>
+    <p>Thank you for shopping with us!</p>
+
+    <div class="footer">
+        &copy; 2025 OMS Store. All rights reserved.
+    </div>
 </div>
 </body>
 </html>

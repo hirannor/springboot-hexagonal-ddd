@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
     <style>
@@ -7,43 +7,62 @@
             font-family: Arial, sans-serif;
             background-color: #f8f9fa;
             padding: 20px;
+            margin: 0;
         }
 
         .container {
-            background: white;
+            background: #ffffff;
             border-radius: 8px;
-            padding: 20px;
+            padding: 20px 30px;
             max-width: 600px;
             margin: auto;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            line-height: 1.6;
         }
 
-        h2 {
-            color: #28a745;
+        h1 {
+            color: #007bff;
+            margin-bottom: 16px;
         }
 
         .address {
             margin-top: 15px;
             padding: 10px;
             background: #f1f1f1;
-            border-radius: 5px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #6c757d;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h2>Hello [[${customerName}]],</h2>
-    <p>Your order <strong>[[${orderId}]]</strong> has been shipped!</p>
+    <h1>Hello <span th:text="${customerName}">Customer</span>,</h1>
+
+    <p>Your order <strong th:text="${orderId}">12345</strong> has been shipped!</p>
 
     <p>It is on the way to:</p>
     <div class="address">
-        <p>[[${streetAddress}]]</p>
-        <p>[[${postalCode}]] [[${city}]]</p>
-        <p>[[${country}]]</p>
+        <p th:text="${address.streetAddress}">Main Street 1</p>
+        <p>
+            <span th:text="${address.postalCode.value}">12345</span>
+            <span th:text="${address.city}">City</span>
+        </p>
+        <p th:text="${address.country.name}">Country</p>
     </div>
 
     <p>You will receive tracking details soon.</p>
     <p>Thank you for shopping with us!</p>
+
+    <div class="footer">
+        &copy; 2025 OMS Store. All rights reserved.
+    </div>
 </div>
 </body>
 </html>

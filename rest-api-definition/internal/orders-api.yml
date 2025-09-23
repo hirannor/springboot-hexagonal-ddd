@@ -261,7 +261,6 @@ components:
     OrderStatus:
       type: string
       enum:
-        - CREATED
         - WAITING_FOR_PAYMENT
         - PAID_SUCCESSFULLY
         - PAYMENT_FAILED

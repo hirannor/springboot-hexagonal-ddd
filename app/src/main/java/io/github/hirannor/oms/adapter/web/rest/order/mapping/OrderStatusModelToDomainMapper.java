@@ -24,7 +24,6 @@ public class OrderStatusModelToDomainMapper implements Function<OrderStatusModel
             case CANCELLED -> OrderStatus.CANCELLED;
             case REFUNDED -> OrderStatus.REFUNDED;
             case SHIPPED -> OrderStatus.SHIPPED;
-            case CREATED -> OrderStatus.CREATED;
         };
     }
 }

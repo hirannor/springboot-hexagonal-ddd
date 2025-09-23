@@ -52,7 +52,7 @@ public class Order extends AggregateRoot {
         final Order createdOrder = empty()
                 .id(command.orderId())
                 .orderItems(command.orderItems())
-                .status(OrderStatus.CREATED)
+                .status(OrderStatus.WAITING_FOR_PAYMENT)
                 .customer(command.customer())
                 .assemble();
 
@@ -98,8 +98,6 @@ public class Order extends AggregateRoot {
             case CANCELLED -> cancel();
             case RETURNED -> returnOrder();
             case REFUNDED -> refund();
-            case CREATED -> {
-            }
         }
     }
 
