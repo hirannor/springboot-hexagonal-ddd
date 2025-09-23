@@ -1,4 +1,4 @@
-# Spring-Boot - Ports-And-Adapters / Hexagonal Architecture with DDD
+# Spring Boot Hexagonal DDD - Order Management System
 
 | Build Status                                                                                                                                                                                                             | License                                                                                                                                                                                                          |
 |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -37,7 +37,6 @@ variety of concepts:
 
 * **Basket** – aggregate root representing a shopping basket where products can be added/removed before checkout.
     - Customers can maintain one basket.
-    - On checkout, the basket is cleared and converted into an order.
 
 * **Product** – aggregate root representing catalog items.
     - Contains immutable product information (id, name, price, currency).
