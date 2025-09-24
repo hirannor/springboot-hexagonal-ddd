@@ -35,6 +35,8 @@ public class BasketModeller implements Modeller<BasketModel> {
         from.setCustomerId(domain.customer().asText());
         from.setStatus(mapStatusToModel.apply(domain.status()));
 
+        from.getItems().clear();
+
         domain.items()
                 .stream()
                 .map(mapItemToModel)

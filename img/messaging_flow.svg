@@ -51,7 +51,7 @@
         <!-- Arrow marker -->
         <marker id="arrowhead" markerWidth="10" markerHeight="7"
                 refX="9" refY="3.5" orient="auto">
-            <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568" />
+            <polygon points="0 0, 10 3.5, 0 7" fill="#4a5568"/>
         </marker>
     </defs>
 
@@ -190,13 +190,16 @@
         <text x="0" y="10" class="text title" style="font-size: 12px; text-anchor: start;">Key Features:</text>
 
         <text x="0" y="30" class="text" style="font-size: 9px; text-anchor: start;">• Guaranteed message delivery</text>
-        <text x="0" y="45" class="text" style="font-size: 9px; text-anchor: start;">• Transactional outbox pattern</text>
+        <text x="0" y="45" class="text" style="font-size: 9px; text-anchor: start;">• Transactional outbox pattern
+        </text>
         <text x="0" y="60" class="text" style="font-size: 9px; text-anchor: start;">• Dead letter queue support</text>
         <text x="0" y="75" class="text" style="font-size: 9px; text-anchor: start;">• Event-driven architecture</text>
         <text x="0" y="90" class="text" style="font-size: 9px; text-anchor: start;">• Decoupled components</text>
-        <text x="0" y="105" class="text" style="font-size: 9px; text-anchor: start;">• Scheduled message publishing</text>
+        <text x="0" y="105" class="text" style="font-size: 9px; text-anchor: start;">• Scheduled message publishing
+        </text>
         <text x="0" y="120" class="text" style="font-size: 9px; text-anchor: start;">• Clean architecture layers</text>
-        <text x="0" y="135" class="text" style="font-size: 9px; text-anchor: start;">• Resilient message processing</text>
+        <text x="0" y="135" class="text" style="font-size: 9px; text-anchor: start;">• Resilient message processing
+        </text>
         <text x="0" y="150" class="text" style="font-size: 9px; text-anchor: start;">• Domain event publishing</text>
     </g>
 </svg>

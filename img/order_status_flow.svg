@@ -58,9 +58,11 @@
         <ellipse cx="0" cy="0" rx="80" ry="40" fill="url(#startGradient)"
                  stroke="#38A169" stroke-width="2" filter="url(#dropShadow)"/>
         <text x="0" y="-8" text-anchor="middle" font-family="Arial, sans-serif"
-              font-size="11" font-weight="bold" fill="#1A365D">WAITING FOR</text>
+              font-size="11" font-weight="bold" fill="#1A365D">WAITING FOR
+        </text>
         <text x="0" y="8" text-anchor="middle" font-family="Arial, sans-serif"
-              font-size="11" font-weight="bold" fill="#1A365D">PAYMENT</text>
+              font-size="11" font-weight="bold" fill="#1A365D">PAYMENT
+        </text>
     </g>
 
     <!-- PAID_SUCCESSFULLY -->
@@ -68,9 +70,11 @@
         <ellipse cx="0" cy="0" rx="75" ry="35" fill="url(#paymentGradient)"
                  stroke="#D69E2E" stroke-width="2" filter="url(#dropShadow)"/>
         <text x="0" y="-6" text-anchor="middle" font-family="Arial, sans-serif"
-              font-size="12" font-weight="bold" fill="#1A365D">PAID</text>
+              font-size="12" font-weight="bold" fill="#1A365D">PAID
+        </text>
         <text x="0" y="8" text-anchor="middle" font-family="Arial, sans-serif"
-              font-size="12" font-weight="bold" fill="#1A365D">SUCCESSFULLY</text>
+              font-size="12" font-weight="bold" fill="#1A365D">SUCCESSFULLY
+        </text>
     </g>
 
     <!-- PROCESSING -->
@@ -78,7 +82,8 @@
         <ellipse cx="0" cy="0" rx="70" ry="35" fill="url(#processGradient)"
                  stroke="#2B6CB0" stroke-width="2" filter="url(#dropShadow)"/>
         <text x="0" y="2" text-anchor="middle" font-family="Arial, sans-serif"
-              font-size="13" font-weight="bold" fill="white">PROCESSING</text>
+              font-size="13" font-weight="bold" fill="white">PROCESSING
+        </text>
     </g>
 
     <!-- SHIPPED -->
@@ -86,7 +91,8 @@
         <ellipse cx="0" cy="0" rx="60" ry="35" fill="url(#processGradient)"
                  stroke="#2B6CB0" stroke-width="2" filter="url(#dropShadow)"/>
         <text x="0" y="2" text-anchor="middle" font-family="Arial, sans-serif"
-              font-size="13" font-weight="bold" fill="white">SHIPPED</text>
+              font-size="13" font-weight="bold" fill="white">SHIPPED
+        </text>
     </g>
 
     <!-- DELIVERED -->
@@ -94,7 +100,8 @@
         <ellipse cx="0" cy="0" rx="65" ry="35" fill="url(#processGradient)"
                  stroke="#2B6CB0" stroke-width="2" filter="url(#dropShadow)"/>
         <text x="0" y="2" text-anchor="middle" font-family="Arial, sans-serif"
-              font-size="13" font-weight="bold" fill="white">DELIVERED</text>
+              font-size="13" font-weight="bold" fill="white">DELIVERED
+        </text>
     </g>
 
     <!-- Row 2: Payment failure states -->
@@ -103,9 +110,11 @@
         <ellipse cx="0" cy="0" rx="70" ry="35" fill="url(#failureGradient)"
                  stroke="#C53030" stroke-width="2" filter="url(#dropShadow)"/>
         <text x="0" y="-6" text-anchor="middle" font-family="Arial, sans-serif"
-              font-size="12" font-weight="bold" fill="white">PAYMENT</text>
+              font-size="12" font-weight="bold" fill="white">PAYMENT
+        </text>
         <text x="0" y="8" text-anchor="middle" font-family="Arial, sans-serif"
-              font-size="12" font-weight="bold" fill="white">FAILED</text>
+              font-size="12" font-weight="bold" fill="white">FAILED
+        </text>
     </g>
 
     <!-- PAYMENT_CANCELED -->
@@ -113,9 +122,11 @@
         <ellipse cx="0" cy="0" rx="75" ry="35" fill="url(#failureGradient)"
                  stroke="#C53030" stroke-width="2" filter="url(#dropShadow)"/>
         <text x="0" y="-6" text-anchor="middle" font-family="Arial, sans-serif"
-              font-size="12" font-weight="bold" fill="white">PAYMENT</text>
+              font-size="12" font-weight="bold" fill="white">PAYMENT
+        </text>
         <text x="0" y="8" text-anchor="middle" font-family="Arial, sans-serif"
-              font-size="12" font-weight="bold" fill="white">CANCELED</text>
+              font-size="12" font-weight="bold" fill="white">CANCELED
+        </text>
     </g>
 
     <!-- Row 3: Other states -->
@@ -124,7 +135,8 @@
         <ellipse cx="0" cy="0" rx="65" ry="35" fill="url(#failureGradient)"
                  stroke="#C53030" stroke-width="2" filter="url(#dropShadow)"/>
         <text x="0" y="2" text-anchor="middle" font-family="Arial, sans-serif"
-              font-size="13" font-weight="bold" fill="white">CANCELLED</text>
+              font-size="13" font-weight="bold" fill="white">CANCELLED
+        </text>
     </g>
 
     <!-- RETURNED -->
@@ -132,7 +144,8 @@
         <ellipse cx="0" cy="0" rx="65" ry="35" fill="url(#failureGradient)"
                  stroke="#C53030" stroke-width="2" filter="url(#dropShadow)"/>
         <text x="0" y="2" text-anchor="middle" font-family="Arial, sans-serif"
-              font-size="13" font-weight="bold" fill="white">RETURNED</text>
+              font-size="13" font-weight="bold" fill="white">RETURNED
+        </text>
     </g>
 
     <!-- REFUNDED (Terminal) -->
@@ -140,7 +153,8 @@
         <ellipse cx="0" cy="0" rx="65" ry="35" fill="url(#terminalGradient)"
                  stroke="#2D3748" stroke-width="3" filter="url(#dropShadow)"/>
         <text x="0" y="2" text-anchor="middle" font-family="Arial, sans-serif"
-              font-size="13" font-weight="bold" fill="white">REFUNDED</text>
+              font-size="13" font-weight="bold" fill="white">REFUNDED
+        </text>
     </g>
 
     <!-- Smooth curved transitions -->
@@ -213,7 +227,8 @@
               stroke="#E2E8F0" stroke-width="1" filter="url(#dropShadow)"/>
 
         <text x="10" y="10" font-family="Arial, sans-serif" font-size="18"
-              font-weight="bold" fill="#2D3748">Legend</text>
+              font-weight="bold" fill="#2D3748">Legend
+        </text>
 
         <g transform="translate(20, 40)">
             <ellipse cx="0" cy="0" rx="15" ry="10" fill="url(#startGradient)"
@@ -278,7 +293,8 @@
               stroke="#E2E8F0" stroke-width="1" filter="url(#dropShadow)"/>
 
         <text x="10" y="10" font-family="Arial, sans-serif" font-size="18"
-              font-weight="bold" fill="#2D3748">Key Transitions</text>
+              font-weight="bold" fill="#2D3748">Key Transitions
+        </text>
 
         <text x="20" y="40" font-family="Arial, sans-serif" font-size="13" fill="#4A5568">
             • Payment failures can retry (back to WAITING_FOR_PAYMENT)

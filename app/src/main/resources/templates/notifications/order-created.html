@@ -94,7 +94,8 @@
                 <td th:text="${product.description}">Ergonomic wireless mouse</td>
                 <td th:text="${product.quantity}">1</td>
                 <td th:text="${product.price.amount} + ' ' + ${product.price.currency}">24.99 EUR</td>
-                <td th:text="${product.price.amount * product.quantity} + ' ' + ${product.price.currency}">24.99 EUR</td>
+                <td th:text="${product.price.amount * product.quantity} + ' ' + ${product.price.currency}">24.99 EUR
+                </td>
             </tr>
             <tr class="total-row">
                 <td colspan="4" style="text-align: right;">Total:</td>

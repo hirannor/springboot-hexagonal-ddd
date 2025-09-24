@@ -2,6 +2,7 @@ package io.github.hirannor.oms.domain.order;
 
 import io.github.hirannor.oms.domain.core.valueobject.CustomerId;
 import io.github.hirannor.oms.domain.core.valueobject.Money;
+import io.github.hirannor.oms.domain.core.valueobject.ProductQuantity;
 import io.github.hirannor.oms.domain.order.command.CreateOrder;
 import io.github.hirannor.oms.domain.order.events.*;
 import io.github.hirannor.oms.infrastructure.aggregate.AggregateRoot;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class Order extends AggregateRoot {
@@ -92,6 +94,7 @@ public class Order extends AggregateRoot {
             case PAID_SUCCESSFULLY -> markAsPaidSuccessfully();
             case PAYMENT_FAILED -> markAsPaymentFailed();
             case PAYMENT_CANCELED -> markAsPaymentCanceled();
+            case PAYMENT_EXPIRED -> markAsPaymentExpired();
             case PROCESSING -> startProcessing();
             case SHIPPED -> ship();
             case DELIVERED -> deliver();
@@ -99,6 +102,16 @@ public class Order extends AggregateRoot {
             case RETURNED -> returnOrder();
             case REFUNDED -> refund();
         }
+    }
+
+    public void startProcessing() {
+        if (!status.canTransitionTo(OrderStatus.PROCESSING))
+            throw new IllegalStateException("Cannot start processing from status " + status);
+
+        addHistory(status, OrderStatus.PROCESSING);
+
+        this.status = OrderStatus.PROCESSING;
+        events.add(OrderProcessing.record(id, customer));
     }
 
     public void ship() {
@@ -172,16 +185,6 @@ public class Order extends AggregateRoot {
         return Collections.unmodifiableList(events);
     }
 
-    private void startProcessing() {
-        if (!status.canTransitionTo(OrderStatus.PROCESSING))
-            throw new IllegalStateException("Cannot start processing from status " + status);
-
-        addHistory(status, OrderStatus.PROCESSING);
-
-        this.status = OrderStatus.PROCESSING;
-        events.add(OrderProcessing.record(id, customer));
-    }
-
     private void markAsWaitingForPayment() {
         if (!status.canTransitionTo(OrderStatus.WAITING_FOR_PAYMENT))
             throw new IllegalStateException("Cannot mark as WAITING_FOR_PAYMENT from " + status);
@@ -196,16 +199,38 @@ public class Order extends AggregateRoot {
 
         addHistory(status, OrderStatus.PAID_SUCCESSFULLY);
         this.status = OrderStatus.PAID_SUCCESSFULLY;
-        events.add(OrderPaid.record(id, customer));
+
+        final List<ProductQuantity> products = orderItems.stream()
+                .map(mapOrderItemToProductQuantity())
+                .toList();
+
+        events.add(OrderPaid.record(id, customer, products));
+    }
+
+    private void markAsPaymentExpired() {
+        if (!status.canTransitionTo(OrderStatus.PAYMENT_EXPIRED))
+            throw new IllegalStateException("Cannot mark as PAYMENT_EXPIRED from " + status);
+
+        final List<ProductQuantity> products = orderItems.stream()
+                .map(mapOrderItemToProductQuantity())
+                .toList();
+
+        addHistory(status, OrderStatus.PAYMENT_EXPIRED);
+        this.status = OrderStatus.PAYMENT_EXPIRED;
+        events.add(OrderPaymentExpired.record(id, customer, products));
     }
 
     private void markAsPaymentFailed() {
         if (!status.canTransitionTo(OrderStatus.PAYMENT_FAILED))
             throw new IllegalStateException("Cannot mark as PAYMENT_FAILED from " + status);
 
+        final List<ProductQuantity> products = orderItems.stream()
+                .map(mapOrderItemToProductQuantity())
+                .toList();
+
         addHistory(status, OrderStatus.PAYMENT_FAILED);
         this.status = OrderStatus.PAYMENT_FAILED;
-        events.add(OrderPaymentFailed.record(id, customer));
+        events.add(OrderPaymentFailed.record(id, customer, products));
     }
 
     private void markAsPaymentCanceled() {
@@ -223,6 +248,10 @@ public class Order extends AggregateRoot {
 
     private Supplier<IllegalStateException> failBecauseOrderDoesntContainProduct() {
         return () -> new IllegalStateException("Order must contain at least one product");
+    }
+
+    private static Function<OrderItem, ProductQuantity> mapOrderItemToProductQuantity() {
+        return item -> ProductQuantity.of(item.productId(), item.quantity());
     }
 
 }

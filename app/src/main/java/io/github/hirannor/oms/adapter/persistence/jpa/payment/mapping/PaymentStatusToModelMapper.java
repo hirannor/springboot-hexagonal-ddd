@@ -18,6 +18,7 @@ public class PaymentStatusToModelMapper implements Function<PaymentStatus, Payme
             case SUCCEEDED -> PaymentStatusModel.SUCCEEDED;
             case INITIALIZED -> PaymentStatusModel.INITIALIZED;
             case FAILED -> PaymentStatusModel.FAILED;
+            case EXPIRED -> PaymentStatusModel.EXPIRED;
             case CANCELED -> PaymentStatusModel.CANCELED;
         };
     }

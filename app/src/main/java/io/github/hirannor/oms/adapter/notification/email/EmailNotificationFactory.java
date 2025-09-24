@@ -24,7 +24,8 @@ class EmailNotificationFactory implements NotificationFactory {
     private static final String VAR_PRODUCTS = "products";
     private static final String VAR_TOTAL_PRICE = "totalPrice";
 
-    EmailNotificationFactory() {}
+    EmailNotificationFactory() {
+    }
 
     @Override
     public NotificationMessage createNotification(final NotificationData base) {

@@ -19,6 +19,7 @@ public class OrderStatusToModelMapper implements Function<OrderStatus, OrderStat
             case PAYMENT_CANCELED -> OrderStatusModel.PAYMENT_CANCELED;
             case PAYMENT_FAILED -> OrderStatusModel.PAYMENT_FAILED;
             case PROCESSING -> OrderStatusModel.PROCESSING;
+            case PAYMENT_EXPIRED -> OrderStatusModel.PAYMENT_EXPIRED;
             case DELIVERED -> OrderStatusModel.DELIVERED;
             case RETURNED -> OrderStatusModel.RETURNED;
             case CANCELLED -> OrderStatusModel.CANCELLED;

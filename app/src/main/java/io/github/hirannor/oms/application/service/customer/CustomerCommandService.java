@@ -46,7 +46,7 @@ class CustomerCommandService implements
 
         final Customer foundCustomer = customers.findBy(cmd.customerId())
                 .orElseThrow(
-                    failBecauseCustomerWasNotFoundBy(cmd.customerId())
+                        failBecauseCustomerWasNotFoundBy(cmd.customerId())
                 );
 
         final Customer withModifiedPersonalDetails = foundCustomer.changePersonalDetailsBy(cmd);

@@ -17,6 +17,8 @@ import io.github.hirannor.oms.domain.basket.command.CreateBasket;
 import io.github.hirannor.oms.domain.basket.command.RemoveBasketItem;
 import io.github.hirannor.oms.domain.core.valueobject.CustomerId;
 import io.github.hirannor.oms.domain.customer.CustomerRepository;
+import io.github.hirannor.oms.domain.inventory.Inventory;
+import io.github.hirannor.oms.domain.inventory.InventoryRepository;
 import io.github.hirannor.oms.domain.product.Product;
 import io.github.hirannor.oms.domain.product.ProductId;
 import io.github.hirannor.oms.domain.product.ProductRepository;
@@ -39,13 +41,14 @@ class BasketCommandService implements
         BasketProductHandling {
 
     private static final Logger LOGGER = LogManager.getLogger(
-        BasketCommandService.class
+            BasketCommandService.class
     );
 
     private final BasketRepository baskets;
     private final CustomerRepository customers;
     private final ProductRepository products;
     private final Outbox outboxes;
+    private final InventoryRepository inventories;
     private final BiFunction<Basket, Map<ProductId, Product>, BasketView> mapBasketToView;
 
 
@@ -53,11 +56,13 @@ class BasketCommandService implements
     BasketCommandService(final BasketRepository baskets,
                          final CustomerRepository customers,
                          final ProductRepository products,
-                         final Outbox outboxes) {
+                         final Outbox outboxes,
+                         final InventoryRepository inventories) {
         this.baskets = baskets;
         this.customers = customers;
         this.products = products;
         this.outboxes = outboxes;
+        this.inventories = inventories;
         this.mapBasketToView = new BasketToViewMapper();
     }
 
@@ -107,6 +112,23 @@ class BasketCommandService implements
         basket.events()
                 .forEach(outboxes::save);
         basket.clearEvents();
+
+        final Map<ProductId, BasketItem> itemsByProduct = basket.items()
+                .stream()
+                .collect(Collectors.toMap(BasketItem::productId, item -> item));
+
+        final List<ProductId> productIds = itemsByProduct.keySet().stream().toList();
+        final List<Inventory> inventoriesList = inventories.findAllBy(productIds);
+
+        for (final Inventory inv : inventoriesList) {
+            final BasketItem item = itemsByProduct.get(inv.productId());
+
+            inv.reserve(item.quantity());
+            inventories.save(inv);
+
+            inv.events().forEach(outboxes::save);
+            inv.clearEvents();
+        }
 
         LOGGER.info("Basket with basketId={} is successfully checked out for customerId={}",
                 basket.id().asText(),
@@ -159,6 +181,7 @@ class BasketCommandService implements
         basket.events()
                 .forEach(outboxes::save);
         basket.clearEvents();
+
 
         LOGGER.info("Product with productId={} removed from basketId={}",
                 command.item().productId().asText(),

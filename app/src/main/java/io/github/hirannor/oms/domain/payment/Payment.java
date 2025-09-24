@@ -3,10 +3,7 @@ package io.github.hirannor.oms.domain.payment;
 import io.github.hirannor.oms.domain.core.valueobject.Money;
 import io.github.hirannor.oms.domain.order.OrderId;
 import io.github.hirannor.oms.domain.payment.command.StartPayment;
-import io.github.hirannor.oms.domain.payment.events.PaymentCanceled;
-import io.github.hirannor.oms.domain.payment.events.PaymentFailed;
-import io.github.hirannor.oms.domain.payment.events.PaymentInitialized;
-import io.github.hirannor.oms.domain.payment.events.PaymentSucceeded;
+import io.github.hirannor.oms.domain.payment.events.*;
 import io.github.hirannor.oms.infrastructure.aggregate.AggregateRoot;
 import io.github.hirannor.oms.infrastructure.event.DomainEvent;
 
@@ -89,9 +86,18 @@ public class Payment extends AggregateRoot {
         Objects.requireNonNull(receipt, "receipt cannot be null");
 
         switch (receipt.status()) {
-            case SUCCEEDED -> succeed();
-            case FAILED -> fail();
-            case CANCELED -> cancel();
+            case SUCCEEDED -> {
+                if (status != SUCCEEDED) succeed();
+            }
+            case FAILED -> {
+                if (status != FAILED) fail();
+            }
+            case EXPIRED -> {
+                if (status != EXPIRED) expire();
+            }
+            case CANCELED -> {
+                if (status != CANCELED) cancel();
+            }
         }
     }
 
@@ -111,6 +117,14 @@ public class Payment extends AggregateRoot {
 
         this.status = SUCCEEDED;
         events.add(PaymentSucceeded.record(id, orderId, amount));
+    }
+
+    private void expire() {
+        if (!status.canTransitionTo(EXPIRED))
+            throw new IllegalStateException("Cannot succeed from " + status);
+
+        this.status = EXPIRED;
+        events.add(PaymentExpired.record(id, orderId));
     }
 
     private void fail() {

@@ -17,6 +17,7 @@ public class OrderStatusModelToDomainMapper implements Function<OrderStatusModel
             case WAITING_FOR_PAYMENT -> OrderStatus.WAITING_FOR_PAYMENT;
             case PAID_SUCCESSFULLY -> OrderStatus.PAID_SUCCESSFULLY;
             case PAYMENT_CANCELED -> OrderStatus.PAYMENT_CANCELED;
+            case PAYMENT_EXPIRED -> OrderStatus.PAYMENT_EXPIRED;
             case PAYMENT_FAILED -> OrderStatus.PAYMENT_FAILED;
             case PROCESSING -> OrderStatus.PROCESSING;
             case DELIVERED -> OrderStatus.DELIVERED;

@@ -131,15 +131,28 @@ class StripePaymentGateway implements PaymentGateway {
             final Event event = Webhook.constructEvent(payload, signatureHeader, config.getWebHookSecret());
             final String type = event.getType();
 
-            if (!type.startsWith("payment_intent.")) return Optional.empty();
 
-            try {
-                final PaymentReceipt receipt = handlePaymentIntentEvent(PaymentIntentEvent.from(type), event);
-                return Optional.of(receipt);
-            } catch (final IllegalArgumentException ex) {
-                LOGGER.debug("Skipping process, because of: {}", ex.getMessage());
-                return Optional.empty();
+            if (type.startsWith("payment_intent.")) {
+                try {
+                    final PaymentReceipt receipt = handlePaymentIntentEvent(PaymentIntentEvent.from(type), event);
+                    return Optional.of(receipt);
+                } catch (final IllegalArgumentException ex) {
+                    LOGGER.debug("Skipping PaymentIntent process, reason: {}", ex.getMessage());
+                    return Optional.empty();
+                }
             }
+
+            if (type.startsWith("checkout.session.")) {
+                try {
+                    final PaymentReceipt receipt = handleCheckoutSessionEvent(CheckOutSessionEvent.from(type), event);
+                    return Optional.of(receipt);
+                } catch (final IllegalArgumentException ex) {
+                    LOGGER.debug("Skipping CheckoutSession process, reason: {}", ex.getMessage());
+                    return Optional.empty();
+                }
+            }
+
+            return Optional.empty();
 
         } catch (final SignatureVerificationException e) {
             throw new IllegalArgumentException("Invalid Stripe webhook signature", e);
@@ -167,14 +180,44 @@ class StripePaymentGateway implements PaymentGateway {
                 intent.getId(),
                 method,
                 OrderId.from(orderId),
-                mapToPaymentStatus(intentEvent),
+                mapPaymentIntentEventToStatus(intentEvent),
                 event.getId(),
                 amount
         );
     }
 
+    private PaymentReceipt handleCheckoutSessionEvent(final CheckOutSessionEvent sessionEvent, final Event event) {
+        final Session session = (Session) event.getDataObjectDeserializer()
+                .getObject()
+                .orElseThrow(() -> new IllegalStateException("Invalid checkout session data"));
 
-    private PaymentStatus mapToPaymentStatus(final PaymentIntentEvent event) {
+        final String orderId = session.getMetadata().get("orderId");
+        final PaymentStatus status = mapCheckoutSessionEventToStatus(sessionEvent);
+
+        final Money amount = session.getAmountTotal() != null
+                ? Money.of(session.getAmountTotal() / 100.0, Currency.EUR)
+                : Money.of(0, Currency.EUR);
+
+        return PaymentReceipt.create(
+                session.getId(),
+                session.getPaymentIntent(),
+                PaymentMethod.CARD,
+                OrderId.from(orderId),
+                status,
+                event.getId(),
+                amount
+        );
+    }
+
+    private PaymentStatus mapCheckoutSessionEventToStatus(final CheckOutSessionEvent event) {
+        return switch (event) {
+            case COMPLETED, ASYNC_SUCCESS -> PaymentStatus.SUCCEEDED;
+            case EXPIRED -> PaymentStatus.EXPIRED;
+            case ASYNC_FAILED -> PaymentStatus.FAILED;
+        };
+    }
+
+    private PaymentStatus mapPaymentIntentEventToStatus(final PaymentIntentEvent event) {
         return switch (event) {
             case PAYMENT_SUCCEEDED -> PaymentStatus.SUCCEEDED;
             case PAYMENT_FAILED -> PaymentStatus.FAILED;

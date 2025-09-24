@@ -24,5 +24,8 @@ public record OrderCreatedNotificationData(
         return new OrderCreatedNotificationData(orderId, customerName, email, productSummaries, totalPrice);
     }
 
-    @Override public SystemNotificationType type() { return SystemNotificationType.ORDER_CREATED; }
+    @Override
+    public SystemNotificationType type() {
+        return SystemNotificationType.ORDER_CREATED;
+    }
 }

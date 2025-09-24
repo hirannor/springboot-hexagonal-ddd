@@ -6,6 +6,7 @@ import java.util.Set;
 public enum OrderStatus {
     WAITING_FOR_PAYMENT,
     PAID_SUCCESSFULLY,
+    PAYMENT_EXPIRED,
     PAYMENT_CANCELED,
     PAYMENT_FAILED,
     PROCESSING,
@@ -18,6 +19,7 @@ public enum OrderStatus {
     public Set<OrderStatus> allowedTransitions() {
         return switch (this) {
             case PAYMENT_FAILED, PAYMENT_CANCELED -> EnumSet.of(WAITING_FOR_PAYMENT, CANCELLED, PAID_SUCCESSFULLY);
+            case PAYMENT_EXPIRED -> EnumSet.of(CANCELLED);
             case WAITING_FOR_PAYMENT -> EnumSet.of(PAID_SUCCESSFULLY, PAYMENT_FAILED, PAYMENT_CANCELED, CANCELLED);
             case PAID_SUCCESSFULLY -> EnumSet.of(PROCESSING, CANCELLED, REFUNDED);
             case PROCESSING -> EnumSet.of(SHIPPED, CANCELLED);
@@ -58,5 +60,9 @@ public enum OrderStatus {
 
     public boolean isWaitingForPayment() {
         return this == WAITING_FOR_PAYMENT;
+    }
+
+    public boolean isExpired() {
+        return this == PAYMENT_EXPIRED;
     }
 }

@@ -31,15 +31,20 @@ variety of concepts:
       `WAITING_FOR_PAYMENT → PAID_SUCCESSFULLY → PROCESSING → SHIPPED → DELIVERED → RETURNED/REFUNDED`)
     - Cancellation and refund
     - Emits domain events such as `OrderCreated`, `OrderPaid`, `OrderShipped`.
-  
-### Order Status flow
-![Order-status-flow](img/order_status_flow.svg)
 
 * **Basket** – aggregate root representing a shopping basket where products can be added/removed before checkout.
     - Customers can maintain one basket.
 
 * **Product** – aggregate root representing catalog items.
     - Contains immutable product information (id, name, price, currency).
+  
+* **Inventory** – aggregate root representing stock levels of products.
+  - Tracks both `availableQuantity` and `reservedQuantity`.
+  - Supports operations:
+    - `reserve(quantity)` → called on basket checkout, prevents overselling.
+    - `release(quantity)` → called when payment expired/cancels, frees stock.
+    - `deduct(quantity)` → called when payment succeeds, finalizes stock usage.
+  - Emits domain events such as `InventoryCreated`, `StockReserved`, `StockReleased`, `StockDeducted`, `StockDeductionFailed`.
 
 * **Payment** – aggregate root representing the lifecycle of a payment transaction for an order.
     - Created when a payment is initialized.
@@ -78,6 +83,7 @@ Key principles enforced via ArchUnit tests:
 Running these tests ensures **architectural integrity** as the project evolves.
 
 ### Messaging Flow (Outbox + RabbitMQ)
+
 ![Messaging-flow](img/messaging_flow.svg)
 
 ## Getting Started

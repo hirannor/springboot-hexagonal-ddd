@@ -9,10 +9,7 @@ import io.github.hirannor.oms.domain.core.valueobject.Money;
 import io.github.hirannor.oms.infrastructure.aggregate.AggregateRoot;
 import io.github.hirannor.oms.infrastructure.event.DomainEvent;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Function;
 
 public class Basket extends AggregateRoot {
@@ -79,10 +76,30 @@ public class Basket extends AggregateRoot {
     }
 
     public void addProduct(final BasketItem item) {
+        Objects.requireNonNull(item, "BasketItem command cannot be null");
+
+        final ListIterator<BasketItem> iterator = items.listIterator();
+
+        while (iterator.hasNext()) {
+            final BasketItem existing = iterator.next();
+
+            if (existing.productId().equals(item.productId())) {
+                final BasketItem merged = BasketItem.create(
+                        existing.productId(),
+                        existing.quantity() + item.quantity(),
+                        existing.price()
+                );
+                iterator.set(merged);
+                return;
+            }
+        }
+
         items.add(item);
     }
 
     public void removeProduct(final BasketItem item) {
+        Objects.requireNonNull(item, "BasketItem command cannot be null");
+
         items.remove(item);
     }
 
@@ -106,7 +123,7 @@ public class Basket extends AggregateRoot {
             throw new IllegalStateException("Basket cannot be checked out from status " + status);
 
         if (items.isEmpty())
-            throw new IllegalStateException("Cannot checkout an empty basket");
+            throw new BasketIsEmpty("Cannot checkout an empty basket");
 
         this.status = BasketStatus.CHECKED_OUT;
         events.add(BasketCheckedOut.record(customer, items));

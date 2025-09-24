@@ -17,6 +17,7 @@ public class PaymentStatusModelToDomainMapper implements Function<PaymentStatusM
         return switch (model) {
             case SUCCEEDED -> PaymentStatus.SUCCEEDED;
             case INITIALIZED -> PaymentStatus.INITIALIZED;
+            case EXPIRED -> PaymentStatus.EXPIRED;
             case FAILED -> PaymentStatus.FAILED;
             case CANCELED -> PaymentStatus.CANCELED;
         };

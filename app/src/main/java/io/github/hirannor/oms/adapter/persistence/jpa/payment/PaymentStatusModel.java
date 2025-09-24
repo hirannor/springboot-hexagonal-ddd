@@ -6,6 +6,7 @@ public enum PaymentStatusModel {
 
     INITIALIZED("INITIALIZED"),
     SUCCEEDED("SUCCEEDED"),
+    EXPIRED("EXPIRED"),
     FAILED("FAILED"),
     CANCELED("CANCELED");
 

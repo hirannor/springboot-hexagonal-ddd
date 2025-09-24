@@ -133,6 +133,7 @@ class PaymentService implements PaymentInitialization, PaymentCallbackHandling {
                             toPersist.events().forEach(outboxes::save);
                             toPersist.clearEvents();
 
+
                             LOGGER.info("Payment callback successfully processed for orderId={}",
                                     paymentReceipt.orderId().asText()
                             );

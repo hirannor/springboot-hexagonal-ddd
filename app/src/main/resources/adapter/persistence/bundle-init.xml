@@ -12,9 +12,11 @@
     <include file="adapter/persistence/ddl/basket-ddl-1.0.0.xml"/>
     <include file="adapter/persistence/ddl/payments-ddl-1.0.0.xml"/>
     <include file="adapter/persistence/ddl/outbox-ddl-1.0.0.xml"/>
+    <include file="adapter/persistence/ddl/inventory-ddl-1.0.0.xml"/>
 
     <!-- DML -->
     <include file="/adapter/persistence/dml/auth-dml-1.0.0.xml"/>
     <include file="adapter/persistence/dml/product-dml-1.0.0.xml"/>
+    <include file="adapter/persistence/dml/inventory-dml-1.0.0.xml"/>
 
 </databaseChangeLog>

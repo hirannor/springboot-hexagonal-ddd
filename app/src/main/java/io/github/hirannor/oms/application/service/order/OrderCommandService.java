@@ -6,31 +6,36 @@ import io.github.hirannor.oms.application.service.customer.error.CustomerNotFoun
 import io.github.hirannor.oms.application.service.order.error.OrderCannotBeCreatedWithoutAddress;
 import io.github.hirannor.oms.application.service.order.error.OrderCannotBeCreatedWithoutBasketCheckout;
 import io.github.hirannor.oms.application.service.order.error.OrderNotFound;
-import io.github.hirannor.oms.application.usecase.order.ChangeOrderStatus;
-import io.github.hirannor.oms.application.usecase.order.OrderCancellation;
-import io.github.hirannor.oms.application.usecase.order.OrderCreation;
-import io.github.hirannor.oms.application.usecase.order.OrderStatusChanging;
+import io.github.hirannor.oms.application.usecase.order.*;
 import io.github.hirannor.oms.domain.basket.Basket;
 import io.github.hirannor.oms.domain.basket.BasketRepository;
 import io.github.hirannor.oms.domain.core.valueobject.CustomerId;
+import io.github.hirannor.oms.domain.core.valueobject.ProductQuantity;
 import io.github.hirannor.oms.domain.customer.Customer;
 import io.github.hirannor.oms.domain.customer.CustomerRepository;
+import io.github.hirannor.oms.domain.inventory.Inventory;
+import io.github.hirannor.oms.domain.inventory.InventoryRepository;
 import io.github.hirannor.oms.domain.order.Order;
 import io.github.hirannor.oms.domain.order.OrderId;
 import io.github.hirannor.oms.domain.order.OrderRepository;
 import io.github.hirannor.oms.domain.order.command.CreateOrder;
+import io.github.hirannor.oms.domain.product.ProductId;
 import io.github.hirannor.oms.infrastructure.application.ApplicationService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 @ApplicationService
 class OrderCommandService implements
         OrderCreation,
         OrderCancellation,
-        OrderStatusChanging {
+        OrderStatusChanging,
+        OrderPaymentProcessing {
 
     private static final Logger LOGGER = LogManager.getLogger(
             OrderCommandService.class
@@ -40,17 +45,21 @@ class OrderCommandService implements
     private final BasketRepository baskets;
     private final CustomerRepository customers;
     private final Outbox outboxes;
+    private final InventoryRepository inventories;
 
     @Autowired
     OrderCommandService(final OrderRepository orders,
                         final BasketRepository baskets,
                         final CustomerRepository customers,
-                        final Outbox outboxes) {
+                        final Outbox outboxes,
+                        final InventoryRepository inventories) {
         this.orders = orders;
         this.baskets = baskets;
         this.customers = customers;
         this.outboxes = outboxes;
+        this.inventories = inventories;
     }
+
 
     @Override
     public Order create(final CreateOrder create) {
@@ -129,6 +138,41 @@ class OrderCommandService implements
         );
     }
 
+    @Override
+    public void startProcessing(final StartOrderPaymentProcessing cmd) {
+        if (cmd == null) throw new IllegalArgumentException("StartOrderPaymentProcessing is null");
+
+        final Order order = orders.findBy(cmd.orderId())
+                .orElseThrow(failBecauseOrderWasNotFoundBy(cmd.orderId()));
+
+        final List<ProductId> productIds = cmd.products().stream()
+                .map(ProductQuantity::productId)
+                .toList();
+
+        final Map<ProductId, Inventory> inventoryMap = inventories.findAllBy(productIds)
+                .stream()
+                .collect(Collectors.toMap(Inventory::productId, i -> i));
+
+        for (final ProductQuantity product : cmd.products()) {
+            final Inventory inventory = inventoryMap.get(product.productId());
+
+            if (inventory == null)
+                throw new IllegalStateException("Inventory not found for productId=" + product.productId().asText());
+
+            inventory.deduct(product.quantity());
+            inventories.save(inventory);
+
+            inventory.events().forEach(outboxes::save);
+            inventory.clearEvents();
+        }
+
+        order.startProcessing();
+        orders.save(order);
+
+        order.events().forEach(outboxes::save);
+        order.clearEvents();
+    }
+
 
     private void failBecauseMissingAddressDetails(final CustomerId customer) {
         throw new OrderCannotBeCreatedWithoutAddress("An order cannot be created if the customer: " + customer.asText() + " does not have address details.");
@@ -145,5 +189,5 @@ class OrderCommandService implements
     private Supplier<CustomerNotFound> failBecauseCustomerWasNotFoundBy(final CustomerId customer) {
         return () -> new CustomerNotFound("Customer not found with id " + customer);
     }
-
 }
+

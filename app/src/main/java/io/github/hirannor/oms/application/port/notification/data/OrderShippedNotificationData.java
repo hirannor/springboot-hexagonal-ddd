@@ -18,5 +18,9 @@ public record OrderShippedNotificationData(
             final Address address) {
         return new OrderShippedNotificationData(orderId, customerName, email, address);
     }
-    @Override public SystemNotificationType type() { return SystemNotificationType.ORDER_SHIPPED; }
+
+    @Override
+    public SystemNotificationType type() {
+        return SystemNotificationType.ORDER_SHIPPED;
+    }
 }

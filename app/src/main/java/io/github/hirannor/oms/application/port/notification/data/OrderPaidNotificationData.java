@@ -19,5 +19,8 @@ public record OrderPaidNotificationData(
         return new OrderPaidNotificationData(orderId, customerName, email, amount);
     }
 
-    @Override public SystemNotificationType type() { return SystemNotificationType.ORDER_PAID; }
+    @Override
+    public SystemNotificationType type() {
+        return SystemNotificationType.ORDER_PAID;
+    }
 }
