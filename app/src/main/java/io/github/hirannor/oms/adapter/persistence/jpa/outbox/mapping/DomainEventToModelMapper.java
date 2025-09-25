@@ -23,13 +23,12 @@ public class DomainEventToModelMapper implements Function<DomainEvent, DomainEve
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public DomainEventModel apply(final DomainEvent event) {
         if (event == null) return null;
 
-        final DomainEventMapper<DomainEvent, DomainEventModel> mapper = (DomainEventMapper<DomainEvent, DomainEventModel>) registry.get(event.getClass());
-
-        if (mapper == null) return null;
-
-        return mapper.apply(event);
+        return ((DomainEventMapper<DomainEvent, DomainEventModel>)
+                registry.get(event.getClass()))
+                .apply(event);
     }
 }
