@@ -1,79 +1,35 @@
 package io.github.hirannor.oms.adapter.persistence.jpa.outbox.mapping;
 
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.DomainEventModel;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.basket.BasketCheckedOutModel;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.basket.mapping.BasketCheckedOutModelToDomainMapper;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.inventory.StockDeductionFailedModel;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.inventory.StockDeductionFailedModelToDomainMapper;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.*;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.mapping.*;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.PaymentCanceledModel;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.PaymentExpiredModel;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.PaymentFailedModel;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.PaymentSucceededModel;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.mapping.PaymentCanceledModelToDomainMapper;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.mapping.PaymentExpiredModelToDomainMapper;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.mapping.PaymentFailedModelToDomainMapper;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.mapping.PaymentSucceededModelToDomainMapper;
-import io.github.hirannor.oms.domain.basket.events.BasketCheckedOut;
-import io.github.hirannor.oms.domain.inventory.events.StockDeductionFailed;
-import io.github.hirannor.oms.domain.order.events.*;
-import io.github.hirannor.oms.domain.payment.events.PaymentCanceled;
-import io.github.hirannor.oms.domain.payment.events.PaymentExpired;
-import io.github.hirannor.oms.domain.payment.events.PaymentFailed;
-import io.github.hirannor.oms.domain.payment.events.PaymentSucceeded;
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.DomainEventModelMapper;
 import io.github.hirannor.oms.infrastructure.event.DomainEvent;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
+@Component(value = "DomainEventModelToEventJpaMapper")
 public class DomainEventModelToEventMapper implements Function<DomainEventModel, DomainEvent> {
 
-    private final Function<OrderCreatedModel, OrderCreated> mapOrderCreatedModelToDomain;
-    private final Function<PaymentSucceededModel, PaymentSucceeded> mapPaymentSucceededModelToDomain;
-    private final Function<PaymentFailedModel, PaymentFailed> mapPaymentFailedModelToDomain;
-    private final Function<PaymentCanceledModel, PaymentCanceled> mapPaymentCanceledModelToDomain;
-    private final Function<OrderPaidModel, OrderPaid> mapOrderPaidModelToDomain;
-    private final Function<OrderProcessingModel, OrderProcessing> mapOrderProcessingModelToDomain;
-    private final Function<OrderShippedModel, OrderShipped> mapOrderShippedModelToDomain;
-    private final Function<BasketCheckedOutModel, BasketCheckedOut> mapBasketCheckedOutModelToDomain;
-    private final Function<OrderPaymentFailedModel, OrderPaymentFailed> mapOrderPaymentFailedModelToDomain;
-    private final Function<StockDeductionFailedModel, StockDeductionFailed> mapStockDeductionFailedModelToDomain;
-    private final Function<OrderPaymentExpiredModel, OrderPaymentExpired> mapOrderPaymentExpiredToModel;
-    private final Function<PaymentExpiredModel, PaymentExpired> mapPaymentExpiredModelToDomain;
+    private final Map<Class<? extends DomainEventModel>, DomainEventModelMapper<?, ?>> registry;
 
-    public DomainEventModelToEventMapper() {
-        this.mapOrderCreatedModelToDomain = new OrderCreatedModelToDomainMapper();
-        this.mapPaymentSucceededModelToDomain = new PaymentSucceededModelToDomainMapper();
-        this.mapPaymentFailedModelToDomain = new PaymentFailedModelToDomainMapper();
-        this.mapPaymentCanceledModelToDomain = new PaymentCanceledModelToDomainMapper();
-        this.mapOrderPaidModelToDomain = new OrderPaidModelToDomainMapper();
-        this.mapOrderProcessingModelToDomain = new OrderProcessingModelToDomainMapper();
-        this.mapOrderShippedModelToDomain = new OrderShippedModelToDomainMapper();
-        this.mapBasketCheckedOutModelToDomain = new BasketCheckedOutModelToDomainMapper();
-        this.mapOrderPaymentFailedModelToDomain = new OrderPaymentFailedModelToDomainMapper();
-        this.mapStockDeductionFailedModelToDomain = new StockDeductionFailedModelToDomainMapper();
-        this.mapOrderPaymentExpiredToModel = new OrderPaymentExpiredModelToDomainMapper();
-        this.mapPaymentExpiredModelToDomain = new PaymentExpiredModelToDomainMapper();
+    @Autowired
+    public DomainEventModelToEventMapper(final List<DomainEventModelMapper<?, ?>> mappers) {
+        this.registry = mappers.stream()
+                .collect(Collectors.toMap(DomainEventModelMapper::eventType, m -> m));
     }
 
     @Override
-    public DomainEvent apply(final DomainEventModel evtModel) {
-        if (evtModel == null) return null;
+    public DomainEvent apply(final DomainEventModel model) {
+        if (model == null) return null;
 
-        return switch (evtModel) {
-            case OrderCreatedModel model -> mapOrderCreatedModelToDomain.apply(model);
-            case PaymentSucceededModel model -> mapPaymentSucceededModelToDomain.apply(model);
-            case PaymentFailedModel model -> mapPaymentFailedModelToDomain.apply(model);
-            case PaymentCanceledModel model -> mapPaymentCanceledModelToDomain.apply(model);
-            case OrderPaidModel model -> mapOrderPaidModelToDomain.apply(model);
-            case OrderProcessingModel model -> mapOrderProcessingModelToDomain.apply(model);
-            case OrderShippedModel model -> mapOrderShippedModelToDomain.apply(model);
-            case BasketCheckedOutModel model -> mapBasketCheckedOutModelToDomain.apply(model);
-            case OrderPaymentFailedModel model -> mapOrderPaymentFailedModelToDomain.apply(model);
-            case StockDeductionFailedModel model -> mapStockDeductionFailedModelToDomain.apply(model);
-            case OrderPaymentExpiredModel model -> mapOrderPaymentExpiredToModel.apply(model);
-            case PaymentExpiredModel model -> mapPaymentExpiredModelToDomain.apply(model);
-            default -> null;
-        };
+        final DomainEventModelMapper<DomainEventModel, DomainEvent> mapper = (DomainEventModelMapper<DomainEventModel, DomainEvent>) registry.get(model.getClass());
+        if (mapper == null) return null;
+
+
+        return mapper.apply(model);
     }
 }

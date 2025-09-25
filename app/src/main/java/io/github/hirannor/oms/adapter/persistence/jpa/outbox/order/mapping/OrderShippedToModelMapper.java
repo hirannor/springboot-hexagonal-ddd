@@ -1,11 +1,12 @@
 package io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.mapping;
 
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.DomainEventMapper;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.OrderShippedModel;
 import io.github.hirannor.oms.domain.order.events.OrderShipped;
+import org.springframework.stereotype.Component;
 
-import java.util.function.Function;
-
-public class OrderShippedToModelMapper implements Function<OrderShipped, OrderShippedModel> {
+@Component(value = "OrderShippedToModelMapper")
+public class OrderShippedToModelMapper implements DomainEventMapper<OrderShipped, OrderShippedModel> {
     public OrderShippedToModelMapper() {
     }
 
@@ -14,5 +15,10 @@ public class OrderShippedToModelMapper implements Function<OrderShipped, OrderSh
         if (evt == null) return null;
 
         return new OrderShippedModel(evt.id().asText(), evt.orderId().asText(), evt.customerId().asText());
+    }
+
+    @Override
+    public Class<OrderShipped> eventType() {
+        return OrderShipped.class;
     }
 }

@@ -1,10 +1,11 @@
 package io.github.hirannor.oms.adapter.persistence.jpa.outbox.inventory;
 
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.DomainEventMapper;
 import io.github.hirannor.oms.domain.inventory.events.StockDeductionFailed;
+import org.springframework.stereotype.Component;
 
-import java.util.function.Function;
-
-public class StockDeductionFailedToModelMapper implements Function<StockDeductionFailed, StockDeductionFailedModel> {
+@Component(value = "StockDeductionFailedToModelMapper")
+public class StockDeductionFailedToModelMapper implements DomainEventMapper<StockDeductionFailed, StockDeductionFailedModel> {
     public StockDeductionFailedToModelMapper() {
     }
 
@@ -20,5 +21,10 @@ public class StockDeductionFailedToModelMapper implements Function<StockDeductio
                 evt.reservedQuantity(),
                 evt.availableQuantity()
         );
+    }
+
+    @Override
+    public Class<StockDeductionFailed> eventType() {
+        return StockDeductionFailed.class;
     }
 }

@@ -2,8 +2,6 @@ package io.github.hirannor.oms.adapter.persistence.jpa.outbox;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.mapping.DomainEventModelToEventMapper;
-import io.github.hirannor.oms.adapter.persistence.jpa.outbox.mapping.DomainEventToModelMapper;
 import io.github.hirannor.oms.application.port.outbox.Outbox;
 import io.github.hirannor.oms.infrastructure.adapter.PersistenceAdapter;
 import io.github.hirannor.oms.infrastructure.event.DomainEvent;
@@ -31,11 +29,14 @@ class OutboxJpaRepository implements Outbox {
 
     @Autowired
     OutboxJpaRepository(final OutboxSpringDataJpaRepository outboxes,
-                        final ObjectMapper mapper) {
+                        final ObjectMapper mapper,
+                        final Function<DomainEventModel, DomainEvent> mapDomainEventModelToEvent,
+                        final Function<DomainEvent, DomainEventModel> mapDomainEventToModelModel
+                        ) {
         this.outboxes = outboxes;
         this.mapper = mapper;
-        this.mapDomainEventModelToEvent = new DomainEventModelToEventMapper();
-        this.mapDomainEventToModelModel = new DomainEventToModelMapper();
+        this.mapDomainEventModelToEvent = mapDomainEventModelToEvent;
+        this.mapDomainEventToModelModel = mapDomainEventToModelModel;
     }
 
     @Override
@@ -64,7 +65,7 @@ class OutboxJpaRepository implements Outbox {
     }
 
     @Override
-    public List<DomainEvent> findUnprocessed(int batchSize) {
+    public List<DomainEvent> findAllUnprocessed(int batchSize) {
         if (batchSize <= 0) throw new IllegalArgumentException("Batch size must be greater than 0");
 
         final Pageable pageable = PageRequest.of(0, batchSize);

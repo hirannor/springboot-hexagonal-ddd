@@ -1,8 +1,7 @@
 package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.hirannor.oms.adapter.messaging.eventbus.message.DomainEventModel;
-import io.github.hirannor.oms.adapter.messaging.eventbus.message.mapping.DomainEventModelToEventMapper;
+import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.DomainEventModel;
 import io.github.hirannor.oms.infrastructure.event.DomainEvent;
 import io.github.hirannor.oms.infrastructure.messaging.EventEnvelope;
 import org.apache.logging.log4j.LogManager;
@@ -22,10 +21,11 @@ class RabbitMessageListener {
     private final Function<DomainEventModel, DomainEvent> mapDomainEventModelToEvent;
 
     public RabbitMessageListener(final ObjectMapper mapper,
-                                 final ApplicationEventPublisher internalBus) {
+                                 final ApplicationEventPublisher internalBus,
+                                 final Function<DomainEventModel, DomainEvent> mapDomainEventModelToEvent) {
         this.mapper = mapper;
         this.internalBus = internalBus;
-        this.mapDomainEventModelToEvent = new DomainEventModelToEventMapper();
+        this.mapDomainEventModelToEvent = mapDomainEventModelToEvent;
     }
 
     @RabbitListener(queues = "${messaging.rabbit.queue}")

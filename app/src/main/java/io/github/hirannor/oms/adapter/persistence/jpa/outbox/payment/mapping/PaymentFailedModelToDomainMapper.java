@@ -1,14 +1,15 @@
 package io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.mapping;
 
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.DomainEventModelMapper;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.PaymentFailedModel;
 import io.github.hirannor.oms.domain.order.OrderId;
 import io.github.hirannor.oms.domain.payment.PaymentId;
 import io.github.hirannor.oms.domain.payment.events.PaymentFailed;
 import io.github.hirannor.oms.infrastructure.messaging.MessageId;
+import org.springframework.stereotype.Component;
 
-import java.util.function.Function;
-
-public class PaymentFailedModelToDomainMapper implements Function<PaymentFailedModel, PaymentFailed> {
+@Component(value = "PaymentFailedModelToDomainMapper")
+public class PaymentFailedModelToDomainMapper implements DomainEventModelMapper<PaymentFailedModel, PaymentFailed> {
 
     public PaymentFailedModelToDomainMapper() {
     }
@@ -22,5 +23,10 @@ public class PaymentFailedModelToDomainMapper implements Function<PaymentFailedM
                 PaymentId.from(model.paymentId()),
                 OrderId.from(model.orderId())
         );
+    }
+
+    @Override
+    public Class<PaymentFailedModel> eventType() {
+        return PaymentFailedModel.class;
     }
 }

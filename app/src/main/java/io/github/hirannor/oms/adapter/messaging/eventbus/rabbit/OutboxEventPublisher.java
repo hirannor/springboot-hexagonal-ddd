@@ -2,8 +2,7 @@ package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.hirannor.oms.adapter.messaging.eventbus.message.DomainEventModel;
-import io.github.hirannor.oms.adapter.messaging.eventbus.message.mapping.DomainEventToModelMapper;
+import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.DomainEventModel;
 import io.github.hirannor.oms.application.port.outbox.Outbox;
 import io.github.hirannor.oms.infrastructure.event.DomainEvent;
 import io.github.hirannor.oms.infrastructure.messaging.EventEnvelope;
@@ -23,7 +22,7 @@ class OutboxEventPublisher {
 
     private static final Logger LOGGER = LogManager.getLogger(OutboxEventPublisher.class);
 
-    private final Outbox repository;
+    private final Outbox outboxes;
     private final RabbitTemplate rabbitTemplate;
     private final ObjectMapper mapper;
 
@@ -31,22 +30,23 @@ class OutboxEventPublisher {
     private final RabbitConfigurationProperties properties;
 
     @Autowired
-    OutboxEventPublisher(final Outbox repository,
+    OutboxEventPublisher(final Outbox outboxes,
                          final RabbitTemplate rabbitTemplate,
                          final ObjectMapper mapper,
-                         final RabbitConfigurationProperties properties) {
-        this.repository = repository;
+                         final RabbitConfigurationProperties properties,
+                         final Function<DomainEvent, DomainEventModel> mapDomainEventToModel) {
+        this.outboxes = outboxes;
         this.rabbitTemplate = rabbitTemplate;
         this.mapper = mapper;
         this.properties = properties;
-        this.mapDomainEventToModel = new DomainEventToModelMapper();
+        this.mapDomainEventToModel = mapDomainEventToModel;
     }
 
     @Transactional
     @Scheduled(fixedDelayString = "${messaging.rabbit.outbox.poll-interval}")
     void publishOutboxEvents() {
         final int batchSize = properties.getOutbox().getBatchSize();
-        final List<DomainEvent> events = repository.findUnprocessed(batchSize);
+        final List<DomainEvent> events = outboxes.findAllUnprocessed(batchSize);
 
         for (final DomainEvent evt : events) {
             try {
@@ -60,7 +60,7 @@ class OutboxEventPublisher {
                 final EventEnvelope envelope = new EventEnvelope(eventModel.getClass().getName(), mapper.writeValueAsString(eventModel));
 
                 rabbitTemplate.convertAndSend(properties.getExchange(), eventModel.getClass().getSimpleName(), mapper.writeValueAsString(envelope));
-                repository.markAsProcessed(evt.id());
+                outboxes.markAsProcessed(evt.id());
 
                 LOGGER.debug("Published event {} with id {}", evt.getClass().getSimpleName(), evt.id().asText());
 

@@ -1,0 +1,32 @@
+package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.payment.mapping;
+
+import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.DomainEventModelMapper;
+import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.payment.PaymentCanceledModel;
+import io.github.hirannor.oms.domain.order.OrderId;
+import io.github.hirannor.oms.domain.payment.PaymentId;
+import io.github.hirannor.oms.domain.payment.events.PaymentCanceled;
+import io.github.hirannor.oms.infrastructure.messaging.MessageId;
+import org.springframework.stereotype.Component;
+
+@Component
+public class PaymentCanceledModelToDomainMapper implements DomainEventModelMapper<PaymentCanceledModel, PaymentCanceled> {
+
+    public PaymentCanceledModelToDomainMapper() {
+    }
+
+    @Override
+    public PaymentCanceled apply(final PaymentCanceledModel model) {
+        if (model == null) return null;
+
+        return PaymentCanceled.recreate(
+                MessageId.from(model.eventId()),
+                PaymentId.from(model.paymentId()),
+                OrderId.from(model.orderId())
+        );
+    }
+
+    @Override
+    public Class<PaymentCanceledModel> eventType() {
+        return PaymentCanceledModel.class;
+    }
+}

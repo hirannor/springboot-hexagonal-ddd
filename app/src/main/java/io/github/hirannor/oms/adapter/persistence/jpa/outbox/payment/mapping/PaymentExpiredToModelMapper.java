@@ -1,11 +1,12 @@
 package io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.mapping;
 
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.DomainEventMapper;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.PaymentExpiredModel;
 import io.github.hirannor.oms.domain.payment.events.PaymentExpired;
+import org.springframework.stereotype.Component;
 
-import java.util.function.Function;
-
-public class PaymentExpiredToModelMapper implements Function<PaymentExpired, PaymentExpiredModel> {
+@Component(value = "PaymentExpiredToModelMapper")
+public class PaymentExpiredToModelMapper implements DomainEventMapper<PaymentExpired, PaymentExpiredModel> {
 
     public PaymentExpiredToModelMapper() {
     }
@@ -17,5 +18,10 @@ public class PaymentExpiredToModelMapper implements Function<PaymentExpired, Pay
         return new PaymentExpiredModel(evt.id().asText(),
                 evt.paymentId().asText(),
                 evt.orderId().asText());
+    }
+
+    @Override
+    public Class<PaymentExpired> eventType() {
+        return PaymentExpired.class;
     }
 }

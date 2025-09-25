@@ -2,6 +2,7 @@ package io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.mapping;
 
 import io.github.hirannor.oms.adapter.persistence.jpa.CurrencyModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.CurrencyModelToDomainMapper;
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.DomainEventModelMapper;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.PaymentSucceededModel;
 import io.github.hirannor.oms.domain.core.valueobject.Currency;
 import io.github.hirannor.oms.domain.core.valueobject.Money;
@@ -9,10 +10,12 @@ import io.github.hirannor.oms.domain.order.OrderId;
 import io.github.hirannor.oms.domain.payment.PaymentId;
 import io.github.hirannor.oms.domain.payment.events.PaymentSucceeded;
 import io.github.hirannor.oms.infrastructure.messaging.MessageId;
+import org.springframework.stereotype.Component;
 
 import java.util.function.Function;
 
-public class PaymentSucceededModelToDomainMapper implements Function<PaymentSucceededModel, PaymentSucceeded> {
+@Component(value = "PaymentSucceededModelToDomainMapper")
+public class PaymentSucceededModelToDomainMapper implements DomainEventModelMapper<PaymentSucceededModel, PaymentSucceeded> {
     private final Function<CurrencyModel, Currency> mapCurrencyModelToDomain;
 
     public PaymentSucceededModelToDomainMapper() {
@@ -29,5 +32,10 @@ public class PaymentSucceededModelToDomainMapper implements Function<PaymentSucc
                 OrderId.from(model.orderId()),
                 Money.of(model.amount(), mapCurrencyModelToDomain.apply(CurrencyModel.from(model.currency())))
         );
+    }
+
+    @Override
+    public Class<PaymentSucceededModel> eventType() {
+        return PaymentSucceededModel.class;
     }
 }

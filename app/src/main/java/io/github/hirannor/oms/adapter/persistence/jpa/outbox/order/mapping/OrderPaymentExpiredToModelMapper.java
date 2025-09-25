@@ -1,14 +1,17 @@
 package io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.mapping;
 
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.DomainEventMapper;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.ProductQuantityModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.OrderPaymentExpiredModel;
 import io.github.hirannor.oms.domain.core.valueobject.ProductQuantity;
 import io.github.hirannor.oms.domain.order.events.OrderPaymentExpired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.function.Function;
 
-public class OrderPaymentExpiredToModelMapper implements Function<OrderPaymentExpired, OrderPaymentExpiredModel> {
+@Component(value = "OrderPaymentExpiredToModelMapper")
+public class OrderPaymentExpiredToModelMapper implements DomainEventMapper<OrderPaymentExpired, OrderPaymentExpiredModel> {
 
     public OrderPaymentExpiredToModelMapper() {
     }
@@ -32,5 +35,10 @@ public class OrderPaymentExpiredToModelMapper implements Function<OrderPaymentEx
 
     private Function<ProductQuantity, ProductQuantityModel> toModel() {
         return productQuantity -> ProductQuantityModel.of(productQuantity.productId().asText(), productQuantity.quantity());
+    }
+
+    @Override
+    public Class<OrderPaymentExpired> eventType() {
+        return OrderPaymentExpired.class;
     }
 }

@@ -145,7 +145,8 @@ class OrderCommandService implements
         final Order order = orders.findBy(cmd.orderId())
                 .orElseThrow(failBecauseOrderWasNotFoundBy(cmd.orderId()));
 
-        final List<ProductId> productIds = cmd.products().stream()
+        final List<ProductId> productIds = cmd.products()
+                .stream()
                 .map(ProductQuantity::productId)
                 .toList();
 

@@ -1,14 +1,15 @@
 package io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.mapping;
 
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.DomainEventModelMapper;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.OrderCreatedModel;
 import io.github.hirannor.oms.domain.core.valueobject.CustomerId;
 import io.github.hirannor.oms.domain.order.OrderId;
 import io.github.hirannor.oms.domain.order.events.OrderCreated;
 import io.github.hirannor.oms.infrastructure.messaging.MessageId;
+import org.springframework.stereotype.Component;
 
-import java.util.function.Function;
-
-public class OrderCreatedModelToDomainMapper implements Function<OrderCreatedModel, OrderCreated> {
+@Component(value = "OrderCreatedModelToDomainMapper")
+public class OrderCreatedModelToDomainMapper implements DomainEventModelMapper<OrderCreatedModel, OrderCreated> {
     public OrderCreatedModelToDomainMapper() {
     }
 
@@ -21,5 +22,10 @@ public class OrderCreatedModelToDomainMapper implements Function<OrderCreatedMod
                 OrderId.from(model.orderId()),
                 CustomerId.from(model.customerId())
         );
+    }
+
+    @Override
+    public Class<OrderCreatedModel> eventType() {
+        return OrderCreatedModel.class;
     }
 }

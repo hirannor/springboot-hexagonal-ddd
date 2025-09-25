@@ -2,16 +2,18 @@ package io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.mapping;
 
 import io.github.hirannor.oms.adapter.persistence.jpa.CurrencyModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.CurrencyToModelMapper;
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.DomainEventMapper;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.payment.PaymentSucceededModel;
 import io.github.hirannor.oms.domain.core.valueobject.Currency;
 import io.github.hirannor.oms.domain.payment.events.PaymentSucceeded;
+import org.springframework.stereotype.Component;
 
 import java.util.function.Function;
 
-public class PaymentSucceededToModelMapper implements Function<PaymentSucceeded, PaymentSucceededModel> {
+@Component(value = "PaymentSucceededToModelMapper")
+public class PaymentSucceededToModelMapper implements DomainEventMapper<PaymentSucceeded, PaymentSucceededModel> {
 
     private final Function<Currency, CurrencyModel> mapCurrencyToModel;
-
 
     public PaymentSucceededToModelMapper() {
         this.mapCurrencyToModel = new CurrencyToModelMapper();
@@ -28,5 +30,10 @@ public class PaymentSucceededToModelMapper implements Function<PaymentSucceeded,
                 evt.money().amount(),
                 mapCurrencyToModel.apply(evt.money().currency()).dbRepresentation()
         );
+    }
+
+    @Override
+    public Class<PaymentSucceeded> eventType() {
+        return PaymentSucceeded.class;
     }
 }

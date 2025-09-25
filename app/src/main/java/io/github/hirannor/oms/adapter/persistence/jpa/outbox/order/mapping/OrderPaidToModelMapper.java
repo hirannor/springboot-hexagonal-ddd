@@ -1,14 +1,17 @@
 package io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.mapping;
 
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.DomainEventMapper;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.ProductQuantityModel;
 import io.github.hirannor.oms.adapter.persistence.jpa.outbox.order.OrderPaidModel;
 import io.github.hirannor.oms.domain.core.valueobject.ProductQuantity;
 import io.github.hirannor.oms.domain.order.events.OrderPaid;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.function.Function;
 
-public class OrderPaidToModelMapper implements Function<OrderPaid, OrderPaidModel> {
+@Component(value = "OrderPaidToModelMapper")
+public class OrderPaidToModelMapper implements DomainEventMapper<OrderPaid, OrderPaidModel> {
     public OrderPaidToModelMapper() {
     }
 
@@ -30,5 +33,10 @@ public class OrderPaidToModelMapper implements Function<OrderPaid, OrderPaidMode
 
     private Function<ProductQuantity, ProductQuantityModel> toModel() {
         return productQuantity -> ProductQuantityModel.of(productQuantity.productId().asText(), productQuantity.quantity());
+    }
+
+    @Override
+    public Class<OrderPaid> eventType() {
+        return OrderPaid.class;
     }
 }

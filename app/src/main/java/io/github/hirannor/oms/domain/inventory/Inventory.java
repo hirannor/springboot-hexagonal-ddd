@@ -1,6 +1,8 @@
 package io.github.hirannor.oms.domain.inventory;
 
 import io.github.hirannor.oms.domain.inventory.command.CreateInventory;
+import io.github.hirannor.oms.domain.inventory.error.InventoryReleaseFailed;
+import io.github.hirannor.oms.domain.inventory.error.InventoryReservationFailed;
 import io.github.hirannor.oms.domain.inventory.events.*;
 import io.github.hirannor.oms.domain.product.ProductId;
 import io.github.hirannor.oms.infrastructure.aggregate.AggregateRoot;
@@ -76,7 +78,7 @@ public class Inventory extends AggregateRoot {
     public void reserve(final int quantity) {
         if (quantity <= 0) throw new IllegalArgumentException("Reserve quantity must be positive");
 
-        if (freeToSell() < quantity) throw new NotEnoughStockToReserve("Not enough stock to reserve");
+        if (freeToSell() < quantity) throw new InventoryReservationFailed("Not enough stock to reserve");
 
         this.reservedQuantity += quantity;
         events.add(StockReserved.record(id, productId, quantity, reservedQuantity, freeToSell()));
@@ -85,7 +87,7 @@ public class Inventory extends AggregateRoot {
     public void release(final int quantity) {
         if (quantity <= 0) throw new IllegalArgumentException("Release quantity must be positive");
 
-        if (quantity > reservedQuantity) throw new CannotReleaseMoreThanReserved("Cannot release more than reserved");
+        if (quantity > reservedQuantity) throw new InventoryReleaseFailed("Cannot release more than reserved");
 
         this.reservedQuantity -= quantity;
         events.add(StockReleased.record(id, productId, quantity, reservedQuantity, freeToSell()));

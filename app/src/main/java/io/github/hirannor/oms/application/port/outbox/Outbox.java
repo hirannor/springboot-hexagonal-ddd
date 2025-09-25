@@ -9,7 +9,7 @@ import java.util.List;
 public interface Outbox {
     void save(DomainEvent evt);
 
-    List<DomainEvent> findUnprocessed(int batchSize);
+    List<DomainEvent> findAllUnprocessed(int batchSize);
 
     void markAsProcessed(MessageId id);
 
