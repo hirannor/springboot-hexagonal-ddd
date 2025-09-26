@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 @Component
 class OutboxMessagePublisher {
@@ -18,28 +19,31 @@ class OutboxMessagePublisher {
     private static final Logger LOGGER = LogManager.getLogger(OutboxMessagePublisher.class);
 
     private final Outbox outboxes;
-    private final MessagePublisher messages;
     private final RabbitConfigurationProperties properties;
+    private final Consumer<Message> pipeline;
 
     @Autowired
     OutboxMessagePublisher(final Outbox outboxes,
                            final MessagePublisher messages,
                            final RabbitConfigurationProperties properties) {
         this.outboxes = outboxes;
-        this.messages = messages;
         this.properties = properties;
+        this.pipeline = ((Consumer<Message>) messages::publish)
+                .andThen(logMessages());
     }
 
     @Transactional
     @Scheduled(fixedDelayString = "${messaging.rabbit.outbox.poll-interval}")
     void publishOutboxMessages() {
         final List<Message> unprocessedMessages = outboxes.findAllUnprocessed(properties.getOutbox().getBatchSize());
+        unprocessedMessages.forEach(pipeline);
+    }
 
-        for (final Message message : unprocessedMessages) {
-            messages.publish(message);
-            outboxes.markAsProcessed(message.id());
-
-            LOGGER.debug("Published {} with id {}", message.getClass().getSimpleName(), message.id().asText());
-        }
+    private Consumer<Message> logMessages() {
+        return msg -> LOGGER.debug(
+                "Published {} with id {}",
+                msg.getClass().getSimpleName(),
+                msg.id().asText()
+        );
     }
 }

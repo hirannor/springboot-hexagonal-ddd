@@ -6,6 +6,7 @@ import io.github.hirannor.oms.infrastructure.messaging.Message;
 import io.github.hirannor.oms.infrastructure.messaging.MessagePublisher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Component;
 
@@ -39,7 +40,8 @@ class RabbitMessagePublisher implements MessagePublisher {
         rabbitTemplate.convertAndSend(
                 properties.getExchange(),
                 model.getClass().getSimpleName(),
-                model
+                model,
+                new CorrelationData(message.id().asText())
         );
 
         LOGGER.debug("Successfully published message [{}] to exchange [{}] with routing key [{}]",
