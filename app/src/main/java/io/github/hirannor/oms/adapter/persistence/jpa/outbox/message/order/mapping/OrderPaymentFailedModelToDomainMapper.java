@@ -41,7 +41,7 @@ public class OrderPaymentFailedModelToDomainMapper implements MessageModelMapper
     }
 
     @Override
-    public Class<OrderPaymentFailedModel> eventType() {
+    public Class<OrderPaymentFailedModel> messageType() {
         return OrderPaymentFailedModel.class;
     }
 }

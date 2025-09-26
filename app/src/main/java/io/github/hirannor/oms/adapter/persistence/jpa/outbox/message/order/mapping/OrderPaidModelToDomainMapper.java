@@ -40,7 +40,7 @@ public class OrderPaidModelToDomainMapper implements MessageModelMapper<OrderPai
     }
 
     @Override
-    public Class<OrderPaidModel> eventType() {
+    public Class<OrderPaidModel> messageType() {
         return OrderPaidModel.class;
     }
 }

@@ -20,7 +20,7 @@ public class MessageModelToEventMapper implements Function<MessageModel, Message
     @Autowired
     public MessageModelToEventMapper(final List<MessageModelMapper<?, ?>> mappers) {
         this.registry = mappers.stream()
-                .collect(Collectors.toMap(MessageModelMapper::eventType, m -> m));
+                .collect(Collectors.toMap(MessageModelMapper::messageType, m -> m));
     }
 
     @Override

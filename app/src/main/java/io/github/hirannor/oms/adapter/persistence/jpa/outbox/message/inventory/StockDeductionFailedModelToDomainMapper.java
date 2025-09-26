@@ -26,7 +26,7 @@ public class StockDeductionFailedModelToDomainMapper implements MessageModelMapp
     }
 
     @Override
-    public Class<StockDeductionFailedModel> eventType() {
+    public Class<StockDeductionFailedModel> messageType() {
         return StockDeductionFailedModel.class;
     }
 }

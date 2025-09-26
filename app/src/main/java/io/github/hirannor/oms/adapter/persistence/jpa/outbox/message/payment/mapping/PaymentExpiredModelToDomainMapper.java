@@ -25,7 +25,7 @@ public class PaymentExpiredModelToDomainMapper implements MessageModelMapper<Pay
     }
 
     @Override
-    public Class<PaymentExpiredModel> eventType() {
+    public Class<PaymentExpiredModel> messageType() {
         return PaymentExpiredModel.class;
     }
 }

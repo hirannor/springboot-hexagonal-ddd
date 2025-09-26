@@ -7,5 +7,5 @@ import java.util.function.Function;
 public interface MessageModelMapper<E extends MessageModel, M extends DomainEvent>
         extends Function<E, M> {
 
-    Class<E> eventType();
+    Class<E> messageType();
 }

@@ -24,7 +24,7 @@ public class OrderProcessingModelToDomainMapper implements MessageModelMapper<Or
     }
 
     @Override
-    public Class<OrderProcessingModel> eventType() {
+    public Class<OrderProcessingModel> messageType() {
         return OrderProcessingModel.class;
     }
 }

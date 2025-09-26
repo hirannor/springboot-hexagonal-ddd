@@ -24,7 +24,7 @@ public class OrderShippedModelToDomainMapper implements MessageModelMapper<Order
     }
 
     @Override
-    public Class<OrderShippedModel> eventType() {
+    public Class<OrderShippedModel> messageType() {
         return OrderShippedModel.class;
     }
 }

@@ -34,7 +34,7 @@ public class PaymentSucceededModelToDomainMapper implements MessageModelMapper<P
     }
 
     @Override
-    public Class<PaymentSucceededModel> eventType() {
+    public Class<PaymentSucceededModel> messageType() {
         return PaymentSucceededModel.class;
     }
 }

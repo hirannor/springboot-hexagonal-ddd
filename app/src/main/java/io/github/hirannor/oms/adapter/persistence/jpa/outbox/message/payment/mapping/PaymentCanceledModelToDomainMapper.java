@@ -25,7 +25,7 @@ public class PaymentCanceledModelToDomainMapper implements MessageModelMapper<Pa
     }
 
     @Override
-    public Class<PaymentCanceledModel> eventType() {
+    public Class<PaymentCanceledModel> messageType() {
         return PaymentCanceledModel.class;
     }
 }

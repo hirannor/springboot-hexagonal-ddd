@@ -38,7 +38,7 @@ public class BasketCheckedOutModelToDomainMapper implements MessageModelMapper<B
     }
 
     @Override
-    public Class<BasketCheckedOutModel> eventType() {
+    public Class<BasketCheckedOutModel> messageType() {
         return BasketCheckedOutModel.class;
     }
 }
