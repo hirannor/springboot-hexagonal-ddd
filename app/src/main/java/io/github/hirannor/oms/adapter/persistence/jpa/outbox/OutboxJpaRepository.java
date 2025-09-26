@@ -44,29 +44,27 @@ class OutboxJpaRepository implements Outbox {
     public void save(final Message msg) {
         if (msg == null) throw new IllegalArgumentException("Message cannot be null!");
 
-        try {
-            final MessageModel message = mapToModel.apply(msg);
+        final MessageModel message = mapToModel.apply(msg);
 
-            if (message == null) return;
-
-            final String payload = mapper.writeValueAsString(message);
-
-            final OutboxModel model = new OutboxModel();
-            model.setMessageId(message.id().asText());
-            model.setMessageType(message.getClass().getName());
-            model.setProcessed(false);
-            model.setCreatedAt(Instant.now());
-            model.setPayload(payload);
-
-            outboxes.save(model);
-        } catch (final JsonProcessingException ex) {
-            LOGGER.error("Failed to serialize msg {}", msg.getClass().getSimpleName(), ex);
-            throw new IllegalStateException("Cannot save msg to outbox", ex);
+        if (message == null) {
+            LOGGER.warn("Unhandled message type: {}, skip saving to outbox table", msg);
+            return;
         }
+
+        final String payload = toJson(message);
+
+        final OutboxModel model = new OutboxModel();
+        model.setMessageId(message.id().asText());
+        model.setMessageType(message.getClass().getName());
+        model.setProcessed(false);
+        model.setCreatedAt(Instant.now());
+        model.setPayload(payload);
+
+        outboxes.save(model);
     }
 
     @Override
-    public List<Message> findAllUnprocessed(int batchSize) {
+    public List<Message> findAllUnprocessedBy(int batchSize) {
         if (batchSize <= 0) throw new IllegalArgumentException("Batch size must be greater than 0");
 
         final Pageable pageable = PageRequest.of(0, batchSize);
@@ -94,6 +92,15 @@ class OutboxJpaRepository implements Outbox {
         if (time == null) throw new IllegalArgumentException("time cannot be null");
 
         outboxes.deleteByProcessedIsTrueAndCreatedAtBefore(time);
+    }
+
+    private String toJson(final MessageModel model) {
+        try {
+            return mapper.writeValueAsString(model);
+        } catch (final JsonProcessingException ex) {
+            LOGGER.error("Failed to serialize msg {}", model.getClass().getSimpleName(), ex);
+            throw new IllegalStateException("Cannot save msg to outbox", ex);
+        }
     }
 
     private MessageModel toMessageModel(final OutboxModel model) {

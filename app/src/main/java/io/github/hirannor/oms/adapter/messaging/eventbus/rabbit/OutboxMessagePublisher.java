@@ -19,7 +19,7 @@ class OutboxMessagePublisher {
     private static final Logger LOGGER = LogManager.getLogger(OutboxMessagePublisher.class);
 
     private final Outbox outboxes;
-    private final RabbitConfigurationProperties properties;
+    private final int batchSize;
     private final Consumer<Message> pipeline;
 
     @Autowired
@@ -27,7 +27,7 @@ class OutboxMessagePublisher {
                            final MessagePublisher messages,
                            final RabbitConfigurationProperties properties) {
         this.outboxes = outboxes;
-        this.properties = properties;
+        this.batchSize = properties.getOutbox().getBatchSize();
         this.pipeline = ((Consumer<Message>) messages::publish)
                 .andThen(logMessages());
     }
@@ -35,7 +35,7 @@ class OutboxMessagePublisher {
     @Transactional
     @Scheduled(fixedDelayString = "${messaging.rabbit.outbox.poll-interval}")
     void publishOutboxMessages() {
-        final List<Message> unprocessedMessages = outboxes.findAllUnprocessed(properties.getOutbox().getBatchSize());
+        final List<Message> unprocessedMessages = outboxes.findAllUnprocessedBy(batchSize);
         unprocessedMessages.forEach(pipeline);
     }
 

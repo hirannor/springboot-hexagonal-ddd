@@ -37,7 +37,6 @@ class RabbitMessageListener {
                 model.id().asText());
 
         final Message messageToPublish = mapToMessage.apply(model);
-
         internalBus.publishEvent(messageToPublish);
 
         LOGGER.debug("Published {} with id {} to internal bus",
