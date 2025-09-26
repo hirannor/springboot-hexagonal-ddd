@@ -1,6 +1,6 @@
 package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.order.mapping;
 
-import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.DomainEventModelMapper;
+import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.MessageModelMapper;
 import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.ProductQuantityModel;
 import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.order.OrderPaidModel;
 import io.github.hirannor.oms.domain.core.valueobject.CustomerId;
@@ -8,14 +8,13 @@ import io.github.hirannor.oms.domain.core.valueobject.ProductQuantity;
 import io.github.hirannor.oms.domain.order.OrderId;
 import io.github.hirannor.oms.domain.order.events.OrderPaid;
 import io.github.hirannor.oms.domain.product.ProductId;
-import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.function.Function;
 
 @Component
-public class OrderPaidModelToDomainMapper implements DomainEventModelMapper<OrderPaidModel, OrderPaid> {
+public class OrderPaidModelToDomainMapper implements MessageModelMapper<OrderPaidModel, OrderPaid> {
     public OrderPaidModelToDomainMapper() {
     }
 
@@ -30,7 +29,7 @@ public class OrderPaidModelToDomainMapper implements DomainEventModelMapper<Orde
 
 
         return OrderPaid.recreate(
-                MessageId.from(model.eventId()),
+                model.id(),
                 OrderId.from(model.orderId()),
                 CustomerId.from(model.customerId()),
                 products
@@ -42,7 +41,7 @@ public class OrderPaidModelToDomainMapper implements DomainEventModelMapper<Orde
     }
 
     @Override
-    public Class<OrderPaidModel> eventType() {
+    public Class<OrderPaidModel> messageType() {
         return OrderPaidModel.class;
     }
 }

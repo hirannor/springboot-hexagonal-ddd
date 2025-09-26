@@ -1,10 +1,11 @@
 package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.payment;
 
-import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.DomainEventModel;
+import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.MessageModel;
+import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 
 public record PaymentFailedModel(
-        String eventId,
+        MessageId id,
         String paymentId,
         String orderId
-) implements DomainEventModel {
+) implements MessageModel {
 }

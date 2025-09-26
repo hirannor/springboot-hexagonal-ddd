@@ -1,15 +1,14 @@
 package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.order.mapping;
 
-import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.DomainEventModelMapper;
+import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.MessageModelMapper;
 import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.order.OrderProcessingModel;
 import io.github.hirannor.oms.domain.core.valueobject.CustomerId;
 import io.github.hirannor.oms.domain.order.OrderId;
 import io.github.hirannor.oms.domain.order.events.OrderProcessing;
-import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OrderProcessingModelToDomainMapper implements DomainEventModelMapper<OrderProcessingModel, OrderProcessing> {
+public class OrderProcessingModelToDomainMapper implements MessageModelMapper<OrderProcessingModel, OrderProcessing> {
     public OrderProcessingModelToDomainMapper() {
     }
 
@@ -18,14 +17,14 @@ public class OrderProcessingModelToDomainMapper implements DomainEventModelMappe
         if (model == null) return null;
 
         return OrderProcessing.recreate(
-                MessageId.from(model.eventId()),
+                model.id(),
                 OrderId.from(model.orderId()),
                 CustomerId.from(model.customerId())
         );
     }
 
     @Override
-    public Class<OrderProcessingModel> eventType() {
+    public Class<OrderProcessingModel> messageType() {
         return OrderProcessingModel.class;
     }
 }

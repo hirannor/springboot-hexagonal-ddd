@@ -1,6 +1,6 @@
 package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.order.mapping;
 
-import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.DomainEventMapper;
+import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.MessageMapper;
 import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.ProductQuantityModel;
 import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.order.OrderPaymentExpiredModel;
 import io.github.hirannor.oms.domain.core.valueobject.ProductQuantity;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.function.Function;
 
 @Component
-public class OrderPaymentExpiredToModelMapper implements DomainEventMapper<OrderPaymentExpired, OrderPaymentExpiredModel> {
+public class OrderPaymentExpiredToModelMapper implements MessageMapper<OrderPaymentExpired, OrderPaymentExpiredModel> {
 
     public OrderPaymentExpiredToModelMapper() {
     }
@@ -26,7 +26,7 @@ public class OrderPaymentExpiredToModelMapper implements DomainEventMapper<Order
                 .map(toModel())
                 .toList();
 
-        return new OrderPaymentExpiredModel(evt.id().asText(),
+        return new OrderPaymentExpiredModel(evt.id(),
                 evt.orderId().asText(),
                 evt.customer().asText(),
                 products
@@ -34,7 +34,7 @@ public class OrderPaymentExpiredToModelMapper implements DomainEventMapper<Order
     }
 
     @Override
-    public Class<OrderPaymentExpired> eventType() {
+    public Class<OrderPaymentExpired> messageType() {
         return OrderPaymentExpired.class;
     }
 

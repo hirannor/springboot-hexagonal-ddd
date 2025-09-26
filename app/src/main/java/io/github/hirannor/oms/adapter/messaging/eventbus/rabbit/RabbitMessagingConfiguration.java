@@ -1,10 +1,13 @@
 package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.config.RetryInterceptorBuilder;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.retry.RejectAndDontRequeueRecoverer;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -28,10 +31,16 @@ public class RabbitMessagingConfiguration {
     private static final String X_DEAD_LETTER_ROUTING_KEY = "x-dead-letter-routing-key";
 
     private final RabbitConfigurationProperties properties;
+    private final ConnectionFactory connectionFactory;
+    private final ObjectMapper objectMapper;
 
     @Autowired
-    RabbitMessagingConfiguration(final RabbitConfigurationProperties properties) {
+    RabbitMessagingConfiguration(final RabbitConfigurationProperties properties,
+                                 final ConnectionFactory connectionFactory,
+                                 final ObjectMapper objectMapper) {
         this.properties = properties;
+        this.connectionFactory = connectionFactory;
+        this.objectMapper = objectMapper;
     }
 
     @Bean
@@ -66,11 +75,11 @@ public class RabbitMessagingConfiguration {
     }
 
     @Bean
-    public SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
-            final ConnectionFactory connectionFactory) {
+    SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory() {
         final SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
-        factory.setConnectionFactory(connectionFactory);
 
+        factory.setConnectionFactory(connectionFactory);
+        factory.setMessageConverter(createJacksonMessageConverter());
         factory.setAdviceChain(
                 RetryInterceptorBuilder.stateless()
                         .maxAttempts(properties.getRetry().getMaxAttempts())
@@ -80,4 +89,18 @@ public class RabbitMessagingConfiguration {
         );
         return factory;
     }
+
+
+    @Bean
+    RabbitTemplate rabbitTemplate() {
+        final RabbitTemplate template = new RabbitTemplate(connectionFactory);
+        template.setMessageConverter(createJacksonMessageConverter());
+
+        return template;
+    }
+
+    private Jackson2JsonMessageConverter createJacksonMessageConverter() {
+        return new Jackson2JsonMessageConverter(objectMapper);
+    }
+
 }

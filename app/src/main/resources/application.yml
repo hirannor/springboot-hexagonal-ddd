@@ -1,6 +1,11 @@
 logging:
   level:
     root: INFO
+    io:
+      github:
+        hirannor:
+          oms: DEBUG
+
   file:
     path: logs
 

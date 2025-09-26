@@ -5,14 +5,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.time.Duration;
 
 @ConfigurationProperties(value = "messaging.rabbit")
-class RabbitConfigurationProperties {
+public class RabbitConfigurationProperties {
     private String exchange;
     private String queue;
     private String dlq;
     private Outbox outbox;
     private Retry retry;
 
-    RabbitConfigurationProperties() {
+    public RabbitConfigurationProperties() {
         this.outbox = new Outbox();
         this.retry = new Retry();
     }

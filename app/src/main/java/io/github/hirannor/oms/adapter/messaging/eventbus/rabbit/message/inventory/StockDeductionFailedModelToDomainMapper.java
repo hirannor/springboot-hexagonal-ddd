@@ -1,14 +1,13 @@
 package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.inventory;
 
-import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.DomainEventModelMapper;
+import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.MessageModelMapper;
 import io.github.hirannor.oms.domain.inventory.InventoryId;
 import io.github.hirannor.oms.domain.inventory.events.StockDeductionFailed;
 import io.github.hirannor.oms.domain.product.ProductId;
-import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StockDeductionFailedModelToDomainMapper implements DomainEventModelMapper<StockDeductionFailedModel, StockDeductionFailed> {
+public class StockDeductionFailedModelToDomainMapper implements MessageModelMapper<StockDeductionFailedModel, StockDeductionFailed> {
     public StockDeductionFailedModelToDomainMapper() {
     }
 
@@ -17,7 +16,7 @@ public class StockDeductionFailedModelToDomainMapper implements DomainEventModel
         if (model == null) return null;
 
         return StockDeductionFailed.recreate(
-                MessageId.from(model.eventId()),
+                model.id(),
                 InventoryId.from(model.inventoryId()),
                 ProductId.from(model.productId()),
                 model.requestedQuantity(),
@@ -27,7 +26,7 @@ public class StockDeductionFailedModelToDomainMapper implements DomainEventModel
     }
 
     @Override
-    public Class<StockDeductionFailedModel> eventType() {
+    public Class<StockDeductionFailedModel> messageType() {
         return StockDeductionFailedModel.class;
     }
 }

@@ -1,15 +1,15 @@
 package io.github.hirannor.oms.application.port.outbox;
 
-import io.github.hirannor.oms.infrastructure.event.DomainEvent;
+import io.github.hirannor.oms.infrastructure.messaging.Message;
 import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 
 import java.time.Instant;
 import java.util.List;
 
 public interface Outbox {
-    void save(DomainEvent evt);
+    void save(Message msg);
 
-    List<DomainEvent> findAllUnprocessed(int batchSize);
+    List<Message> findAllUnprocessed(int batchSize);
 
     void markAsProcessed(MessageId id);
 

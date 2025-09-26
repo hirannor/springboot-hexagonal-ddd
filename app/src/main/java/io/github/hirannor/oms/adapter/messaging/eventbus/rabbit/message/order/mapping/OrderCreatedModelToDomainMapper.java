@@ -1,15 +1,14 @@
 package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.order.mapping;
 
-import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.DomainEventModelMapper;
+import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.MessageModelMapper;
 import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.order.OrderCreatedModel;
 import io.github.hirannor.oms.domain.core.valueobject.CustomerId;
 import io.github.hirannor.oms.domain.order.OrderId;
 import io.github.hirannor.oms.domain.order.events.OrderCreated;
-import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 import org.springframework.stereotype.Component;
 
 @Component
-public class OrderCreatedModelToDomainMapper implements DomainEventModelMapper<OrderCreatedModel, OrderCreated> {
+public class OrderCreatedModelToDomainMapper implements MessageModelMapper<OrderCreatedModel, OrderCreated> {
     public OrderCreatedModelToDomainMapper() {
     }
 
@@ -18,14 +17,14 @@ public class OrderCreatedModelToDomainMapper implements DomainEventModelMapper<O
         if (model == null) return null;
 
         return OrderCreated.recreate(
-                MessageId.from(model.eventId()),
+                model.id(),
                 OrderId.from(model.orderId()),
                 CustomerId.from(model.customerId())
         );
     }
 
     @Override
-    public Class<OrderCreatedModel> eventType() {
+    public Class<OrderCreatedModel> messageType() {
         return OrderCreatedModel.class;
     }
 }

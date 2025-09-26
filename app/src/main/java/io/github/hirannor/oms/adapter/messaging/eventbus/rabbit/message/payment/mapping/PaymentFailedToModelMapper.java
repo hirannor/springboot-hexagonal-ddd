@@ -1,12 +1,12 @@
 package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.payment.mapping;
 
-import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.DomainEventMapper;
+import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.MessageMapper;
 import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.payment.PaymentFailedModel;
 import io.github.hirannor.oms.domain.payment.events.PaymentFailed;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PaymentFailedToModelMapper implements DomainEventMapper<PaymentFailed, PaymentFailedModel> {
+public class PaymentFailedToModelMapper implements MessageMapper<PaymentFailed, PaymentFailedModel> {
 
     public PaymentFailedToModelMapper() {
     }
@@ -15,13 +15,13 @@ public class PaymentFailedToModelMapper implements DomainEventMapper<PaymentFail
     public PaymentFailedModel apply(final PaymentFailed evt) {
         if (evt == null) return null;
 
-        return new PaymentFailedModel(evt.id().asText(),
+        return new PaymentFailedModel(evt.id(),
                 evt.paymentId().asText(),
                 evt.orderId().asText());
     }
 
     @Override
-    public Class<PaymentFailed> eventType() {
+    public Class<PaymentFailed> messageType() {
         return PaymentFailed.class;
     }
 }

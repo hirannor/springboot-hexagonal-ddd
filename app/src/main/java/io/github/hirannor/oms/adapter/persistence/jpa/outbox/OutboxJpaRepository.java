@@ -2,9 +2,10 @@ package io.github.hirannor.oms.adapter.persistence.jpa.outbox;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.hirannor.oms.adapter.persistence.jpa.outbox.message.MessageModel;
 import io.github.hirannor.oms.application.port.outbox.Outbox;
 import io.github.hirannor.oms.infrastructure.adapter.PersistenceAdapter;
-import io.github.hirannor.oms.infrastructure.event.DomainEvent;
+import io.github.hirannor.oms.infrastructure.messaging.Message;
 import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,58 +23,58 @@ class OutboxJpaRepository implements Outbox {
             OutboxJpaRepository.class
     );
 
-    private final Function<DomainEventModel, DomainEvent> mapDomainEventModelToEvent;
-    private final Function<DomainEvent, DomainEventModel> mapDomainEventToModelModel;
+    private final Function<MessageModel, Message> mapToMessage;
+    private final Function<Message, MessageModel> mapToModel;
     private final OutboxSpringDataJpaRepository outboxes;
     private final ObjectMapper mapper;
 
     @Autowired
     OutboxJpaRepository(final OutboxSpringDataJpaRepository outboxes,
                         final ObjectMapper mapper,
-                        final Function<DomainEventModel, DomainEvent> mapDomainEventModelToEvent,
-                        final Function<DomainEvent, DomainEventModel> mapDomainEventToModelModel
+                        final Function<MessageModel, Message> mapToMessage,
+                        final Function<Message, MessageModel> mapToModel
                         ) {
         this.outboxes = outboxes;
         this.mapper = mapper;
-        this.mapDomainEventModelToEvent = mapDomainEventModelToEvent;
-        this.mapDomainEventToModelModel = mapDomainEventToModelModel;
+        this.mapToMessage = mapToMessage;
+        this.mapToModel = mapToModel;
     }
 
     @Override
-    public void save(final DomainEvent evt) {
-        if (evt == null) throw new IllegalArgumentException("DomainEvent cannot be null!");
+    public void save(final Message msg) {
+        if (msg == null) throw new IllegalArgumentException("Message cannot be null!");
 
         try {
-            final DomainEventModel eventModel = mapDomainEventToModelModel.apply(evt);
+            final MessageModel message = mapToModel.apply(msg);
 
-            if (eventModel == null) return;
+            if (message == null) return;
 
-            final String payload = mapper.writeValueAsString(eventModel);
+            final String payload = mapper.writeValueAsString(message);
 
             final OutboxModel model = new OutboxModel();
-            model.setEventId(eventModel.eventId());
-            model.setEventType(eventModel.getClass().getName());
+            model.setEventId(message.id());
+            model.setEventType(message.getClass().getName());
             model.setProcessed(false);
             model.setCreatedAt(Instant.now());
             model.setPayload(payload);
 
             outboxes.save(model);
         } catch (final JsonProcessingException ex) {
-            LOGGER.error("Failed to serialize event {}", evt.getClass().getSimpleName(), ex);
-            throw new IllegalStateException("Cannot save event to outbox", ex);
+            LOGGER.error("Failed to serialize msg {}", msg.getClass().getSimpleName(), ex);
+            throw new IllegalStateException("Cannot save msg to outbox", ex);
         }
     }
 
     @Override
-    public List<DomainEvent> findAllUnprocessed(int batchSize) {
+    public List<Message> findAllUnprocessed(int batchSize) {
         if (batchSize <= 0) throw new IllegalArgumentException("Batch size must be greater than 0");
 
         final Pageable pageable = PageRequest.of(0, batchSize);
 
         return outboxes.findByProcessedFalseOrderByCreatedAtAsc(pageable)
                 .stream()
-                .map(this::toDomainEvent)
-                .map(mapDomainEventModelToEvent)
+                .map(this::toMessageModel)
+                .map(mapToMessage)
                 .toList();
     }
 
@@ -95,12 +96,12 @@ class OutboxJpaRepository implements Outbox {
         outboxes.deleteByProcessedIsTrueAndCreatedAtBefore(time);
     }
 
-    private DomainEventModel toDomainEvent(final OutboxModel model) {
+    private MessageModel toMessageModel(final OutboxModel model) {
         try {
             final Class<?> clazz = Class.forName(model.getEventType());
-            return (DomainEventModel) mapper.readValue(model.getPayload(), clazz);
+            return (MessageModel) mapper.readValue(model.getPayload(), clazz);
         } catch (final JsonProcessingException | ClassNotFoundException ex) {
-            LOGGER.error("Failed to serialize event {}", model.getClass().getSimpleName(), ex);
+            LOGGER.error("Failed to serialize message {}", model.getClass().getSimpleName(), ex);
             throw new RuntimeException(ex);
         }
     }

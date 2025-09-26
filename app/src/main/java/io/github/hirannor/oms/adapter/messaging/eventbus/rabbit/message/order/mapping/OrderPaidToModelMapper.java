@@ -1,6 +1,6 @@
 package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.order.mapping;
 
-import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.DomainEventMapper;
+import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.MessageMapper;
 import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.ProductQuantityModel;
 import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.order.OrderPaidModel;
 import io.github.hirannor.oms.domain.core.valueobject.ProductQuantity;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.function.Function;
 
 @Component
-public class OrderPaidToModelMapper implements DomainEventMapper<OrderPaid, OrderPaidModel> {
+public class OrderPaidToModelMapper implements MessageMapper<OrderPaid, OrderPaidModel> {
     public OrderPaidToModelMapper() {
     }
 
@@ -25,7 +25,7 @@ public class OrderPaidToModelMapper implements DomainEventMapper<OrderPaid, Orde
                 .map(toModel())
                 .toList();
 
-        return new OrderPaidModel(evt.id().asText(),
+        return new OrderPaidModel(evt.id(),
                 evt.orderId().asText(),
                 evt.customerId().asText(),
                 products
@@ -33,7 +33,7 @@ public class OrderPaidToModelMapper implements DomainEventMapper<OrderPaid, Orde
     }
 
     @Override
-    public Class<OrderPaid> eventType() {
+    public Class<OrderPaid> messageType() {
         return OrderPaid.class;
     }
 

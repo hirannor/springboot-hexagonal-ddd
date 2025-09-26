@@ -1,9 +1,8 @@
 package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.DomainEventModel;
-import io.github.hirannor.oms.infrastructure.event.DomainEvent;
-import io.github.hirannor.oms.infrastructure.messaging.EventEnvelope;
+import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.MessageModel;
+import io.github.hirannor.oms.infrastructure.adapter.DriverAdapter;
+import io.github.hirannor.oms.infrastructure.messaging.Message;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -13,47 +12,36 @@ import org.springframework.stereotype.Component;
 import java.util.function.Function;
 
 @Component
+@DriverAdapter
 class RabbitMessageListener {
     private static final Logger LOGGER = LogManager.getLogger(RabbitMessageListener.class);
 
-    private final ObjectMapper mapper;
     private final ApplicationEventPublisher internalBus;
-    private final Function<DomainEventModel, DomainEvent> mapDomainEventModelToEvent;
+    private final Function<MessageModel, Message> mapToMessage;
 
-    public RabbitMessageListener(final ObjectMapper mapper,
-                                 final ApplicationEventPublisher internalBus,
-                                 final Function<DomainEventModel, DomainEvent> mapDomainEventModelToEvent) {
-        this.mapper = mapper;
+    RabbitMessageListener(final ApplicationEventPublisher internalBus,
+                          final Function<MessageModel, Message> mapToMessage) {
         this.internalBus = internalBus;
-        this.mapDomainEventModelToEvent = mapDomainEventModelToEvent;
+        this.mapToMessage = mapToMessage;
     }
 
     @RabbitListener(queues = "${messaging.rabbit.queue}")
-    void receive(final String json) {
-        try {
-            final EventEnvelope envelope = mapper.readValue(json, EventEnvelope.class);
-            final Class<?> clazz = Class.forName(envelope.type());
-            final DomainEventModel model = (DomainEventModel) mapper.readValue(envelope.payload(), clazz);
-
-            final DomainEvent evt = mapDomainEventModelToEvent.apply(model);
-
-            if (evt == null) {
-                LOGGER.warn("Skipping unmapped model {}", clazz.getSimpleName());
-                return;
-            }
-
-            LOGGER.debug("Received model {} with id {} from RabbitMQ",
-                    clazz.getSimpleName(),
-                    evt.id().asText());
-
-            internalBus.publishEvent(evt);
-
-            LOGGER.debug("Published model {} with id {} to internal bus",
-                    clazz.getSimpleName(),
-                    evt.id().asText());
-        } catch (Exception e) {
-            LOGGER.error("Failed to handle RabbitMQ message: {}", json, e);
-            throw new IllegalStateException("Failed to consume RabbitMQ message", e);
+    void onMessage(final Message message) {
+        if (!(message instanceof MessageModel model)) {
+            LOGGER.warn("Received unexpected message type: {}", message.getClass().getName());
+            return;
         }
+
+        LOGGER.debug("Received model {} with id {} from RabbitMQ",
+                model.getClass().getSimpleName(),
+                model.id().asText());
+
+        final Message messageToPublish = mapToMessage.apply(model);
+
+        internalBus.publishEvent(messageToPublish);
+
+        LOGGER.debug("Published {} with id {} to internal bus",
+                messageToPublish.getClass().getSimpleName(),
+                messageToPublish.id().asText());
     }
 }

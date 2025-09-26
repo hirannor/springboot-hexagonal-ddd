@@ -24,9 +24,9 @@ public class BasketItemModelToDomainMapper implements Function<BasketItemModel, 
 
 
         return BasketItem.create(
-                ProductId.from(model.getProductId()),
-                model.getQuantity(),
-                Money.of(model.getPriceAmount(), mapCurrencyModelToDomain.apply(model.getCurrency()))
+                ProductId.from(model.productId()),
+                model.quantity(),
+                Money.of(model.priceAmount(), mapCurrencyModelToDomain.apply(model.currency()))
         );
     }
 }

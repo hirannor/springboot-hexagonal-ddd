@@ -1,10 +1,11 @@
 package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.order;
 
-import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.DomainEventModel;
+import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.MessageModel;
+import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 
 public record OrderCreatedModel(
-        String eventId,
+        MessageId id,
         String orderId,
         String customerId
-) implements DomainEventModel {
+) implements MessageModel {
 }

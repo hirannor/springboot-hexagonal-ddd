@@ -1,6 +1,6 @@
 package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.payment.mapping;
 
-import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.DomainEventMapper;
+import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.MessageMapper;
 import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.currency.CurrencyModel;
 import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.currency.CurrencyToModelMapper;
 import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.payment.PaymentSucceededModel;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.function.Function;
 
 @Component
-public class PaymentSucceededToModelMapper implements DomainEventMapper<PaymentSucceeded, PaymentSucceededModel> {
+public class PaymentSucceededToModelMapper implements MessageMapper<PaymentSucceeded, PaymentSucceededModel> {
 
     private final Function<Currency, CurrencyModel> mapCurrencyToModel;
 
@@ -25,7 +25,7 @@ public class PaymentSucceededToModelMapper implements DomainEventMapper<PaymentS
         if (evt.orderId() == null) return null;
 
         return new PaymentSucceededModel(
-                evt.id().asText(),
+                evt.id(),
                 evt.paymentId().asText(),
                 evt.orderId().asText(),
                 evt.money().amount(),
@@ -34,7 +34,7 @@ public class PaymentSucceededToModelMapper implements DomainEventMapper<PaymentS
     }
 
     @Override
-    public Class<PaymentSucceeded> eventType() {
+    public Class<PaymentSucceeded> messageType() {
         return PaymentSucceeded.class;
     }
 }
