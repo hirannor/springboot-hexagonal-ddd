@@ -26,7 +26,7 @@ public class OrderPaymentExpiredToModelMapper implements MessageMapper<OrderPaym
                 .map(toModel())
                 .toList();
 
-        return new OrderPaymentExpiredModel(evt.id().asText(),
+        return new OrderPaymentExpiredModel(evt.id(),
                 evt.orderId().asText(),
                 evt.customer().asText(),
                 products

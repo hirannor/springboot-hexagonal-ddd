@@ -26,7 +26,7 @@ public class OrderPaymentFailedToModelMapper implements MessageMapper<OrderPayme
                 .map(toModel())
                 .toList();
 
-        return new OrderPaymentFailedModel(model.id().asText(),
+        return new OrderPaymentFailedModel(model.id(),
                 model.orderId().asText(),
                 model.customer().asText(),
                 products

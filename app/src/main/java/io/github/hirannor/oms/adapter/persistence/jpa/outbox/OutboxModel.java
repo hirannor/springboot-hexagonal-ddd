@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.Instant;
 
 @Entity
-@Table(name = "EC_OUTBOX_EVENT")
+@Table(name = "EC_OUTBOX_MESSAGE")
 public class OutboxModel {
     private static final int ALLOCATION_SIZE = 5;
 
@@ -21,14 +21,14 @@ public class OutboxModel {
     )
     private Long id;
 
-    @Column(name = "EVENT_ID", nullable = false)
-    private String eventId;
+    @Column(name = "MESSAGE_ID", nullable = false)
+    private String messageId;
 
     @Column(name = "PROCESSED", nullable = false)
     private boolean processed;
 
-    @Column(name = "EVENT_TYPE", nullable = false)
-    private String eventType;
+    @Column(name = "MESSAGE_TYPE", nullable = false)
+    private String messageType;
 
     @Column(name = "CREATED_AT", nullable = false)
     private Instant createdAt;
@@ -44,12 +44,12 @@ public class OutboxModel {
         this.id = id;
     }
 
-    public String getEventId() {
-        return eventId;
+    public String getMessageId() {
+        return messageId;
     }
 
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
+    public void setMessageId(String eventId) {
+        this.messageId = eventId;
     }
 
     public boolean isProcessed() {
@@ -60,12 +60,12 @@ public class OutboxModel {
         this.processed = processed;
     }
 
-    public String getEventType() {
-        return eventType;
+    public String getMessageType() {
+        return messageType;
     }
 
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
+    public void setMessageType(String eventType) {
+        this.messageType = eventType;
     }
 
     public Instant getCreatedAt() {

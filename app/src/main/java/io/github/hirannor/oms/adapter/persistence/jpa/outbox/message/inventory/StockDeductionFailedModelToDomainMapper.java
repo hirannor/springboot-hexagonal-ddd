@@ -4,7 +4,6 @@ import io.github.hirannor.oms.adapter.persistence.jpa.outbox.message.MessageMode
 import io.github.hirannor.oms.domain.inventory.InventoryId;
 import io.github.hirannor.oms.domain.inventory.events.StockDeductionFailed;
 import io.github.hirannor.oms.domain.product.ProductId;
-import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 import org.springframework.stereotype.Component;
 
 @Component(value = "StockDeductionFailedModelToDomainMapper")
@@ -17,7 +16,7 @@ public class StockDeductionFailedModelToDomainMapper implements MessageModelMapp
         if (model == null) return null;
 
         return StockDeductionFailed.recreate(
-                MessageId.from(model.id()),
+                model.id(),
                 InventoryId.from(model.inventoryId()),
                 ProductId.from(model.productId()),
                 model.requestedQuantity(),

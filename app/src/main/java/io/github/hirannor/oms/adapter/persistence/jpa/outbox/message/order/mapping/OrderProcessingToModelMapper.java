@@ -14,7 +14,7 @@ public class OrderProcessingToModelMapper implements MessageMapper<OrderProcessi
     public OrderProcessingModel apply(final OrderProcessing evt) {
         if (evt == null) return null;
 
-        return new OrderProcessingModel(evt.id().asText(), evt.orderId().asText(), evt.customerId().asText());
+        return new OrderProcessingModel(evt.id(), evt.orderId().asText(), evt.customerId().asText());
     }
 
     @Override

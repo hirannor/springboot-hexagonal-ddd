@@ -28,7 +28,7 @@ public class BasketCheckedOutToModelMapper implements MessageMapper<BasketChecke
                 .toList();
 
         return new BasketCheckedOutModel(
-                evt.id().asText(),
+                evt.id(),
                 evt.customerId().asText(),
                 items,
                 evt.occurredAt()

@@ -8,7 +8,6 @@ import io.github.hirannor.oms.domain.core.valueobject.ProductQuantity;
 import io.github.hirannor.oms.domain.order.OrderId;
 import io.github.hirannor.oms.domain.order.events.OrderPaid;
 import io.github.hirannor.oms.domain.product.ProductId;
-import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class OrderPaidModelToDomainMapper implements MessageModelMapper<OrderPai
                 .toList();
 
         return OrderPaid.recreate(
-                MessageId.from(model.id()),
+                model.id(),
                 OrderId.from(model.orderId()),
                 CustomerId.from(model.customerId()),
                 products

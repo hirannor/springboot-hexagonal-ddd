@@ -52,8 +52,8 @@ class OutboxJpaRepository implements Outbox {
             final String payload = mapper.writeValueAsString(message);
 
             final OutboxModel model = new OutboxModel();
-            model.setEventId(message.id());
-            model.setEventType(message.getClass().getName());
+            model.setMessageId(message.id().asText());
+            model.setMessageType(message.getClass().getName());
             model.setProcessed(false);
             model.setCreatedAt(Instant.now());
             model.setPayload(payload);
@@ -82,7 +82,7 @@ class OutboxJpaRepository implements Outbox {
     public void markAsProcessed(final MessageId id) {
         if (id == null) throw new IllegalArgumentException("Id cannot be null!");
 
-        outboxes.findByEventId(id.asText())
+        outboxes.findByMessageId(id.asText())
                 .ifPresent(model -> {
                     model.setProcessed(true);
                     outboxes.save(model);
@@ -98,7 +98,7 @@ class OutboxJpaRepository implements Outbox {
 
     private MessageModel toMessageModel(final OutboxModel model) {
         try {
-            final Class<?> clazz = Class.forName(model.getEventType());
+            final Class<?> clazz = Class.forName(model.getMessageType());
             return (MessageModel) mapper.readValue(model.getPayload(), clazz);
         } catch (final JsonProcessingException | ClassNotFoundException ex) {
             LOGGER.error("Failed to serialize message {}", model.getClass().getSimpleName(), ex);

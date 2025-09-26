@@ -14,7 +14,7 @@ public class StockDeductionFailedToModelMapper implements MessageMapper<StockDed
         if (evt == null) return null;
 
         return new StockDeductionFailedModel(
-                evt.id().asText(),
+                evt.id(),
                 evt.inventoryId().asText(),
                 evt.productId().asText(),
                 evt.requestedQuantity(),

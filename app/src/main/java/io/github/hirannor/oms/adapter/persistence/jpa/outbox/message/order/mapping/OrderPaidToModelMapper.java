@@ -24,7 +24,7 @@ public class OrderPaidToModelMapper implements MessageMapper<OrderPaid, OrderPai
                 .map(toModel())
                 .toList();
 
-        return new OrderPaidModel(evt.id().asText(),
+        return new OrderPaidModel(evt.id(),
                 evt.orderId().asText(),
                 evt.customerId().asText(),
                 products

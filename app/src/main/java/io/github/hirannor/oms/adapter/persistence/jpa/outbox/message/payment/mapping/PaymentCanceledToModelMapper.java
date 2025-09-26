@@ -15,7 +15,7 @@ public class PaymentCanceledToModelMapper implements MessageMapper<PaymentCancel
     public PaymentCanceledModel apply(final PaymentCanceled evt) {
         if (evt == null) return null;
 
-        return new PaymentCanceledModel(evt.id().asText(),
+        return new PaymentCanceledModel(evt.id(),
                 evt.paymentId().asText(),
                 evt.orderId().asText());
     }

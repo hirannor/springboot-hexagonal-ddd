@@ -24,7 +24,7 @@ public class PaymentSucceededToModelMapper implements MessageMapper<PaymentSucce
         if (evt == null) return null;
 
         return new PaymentSucceededModel(
-                evt.id().asText(),
+                evt.id(),
                 evt.paymentId().asText(),
                 evt.orderId().asText(),
                 evt.money().amount(),

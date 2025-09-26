@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface OutboxSpringDataJpaRepository extends JpaRepository<OutboxModel, String> {
     Slice<OutboxModel> findByProcessedFalseOrderByCreatedAtAsc(Pageable pageable);
 
-    Optional<OutboxModel> findByEventId(String eventId);
+    Optional<OutboxModel> findByMessageId(String messageId);
 
     @Modifying
     void deleteByProcessedIsTrueAndCreatedAtBefore(Instant cutoff);

@@ -15,7 +15,7 @@ public class PaymentExpiredToModelMapper implements MessageMapper<PaymentExpired
     public PaymentExpiredModel apply(final PaymentExpired evt) {
         if (evt == null) return null;
 
-        return new PaymentExpiredModel(evt.id().asText(),
+        return new PaymentExpiredModel(evt.id(),
                 evt.paymentId().asText(),
                 evt.orderId().asText());
     }

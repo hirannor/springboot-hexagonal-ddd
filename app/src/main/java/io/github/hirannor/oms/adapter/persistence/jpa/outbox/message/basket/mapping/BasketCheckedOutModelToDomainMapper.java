@@ -6,7 +6,6 @@ import io.github.hirannor.oms.adapter.persistence.jpa.outbox.message.basket.Bask
 import io.github.hirannor.oms.domain.basket.BasketItem;
 import io.github.hirannor.oms.domain.basket.events.BasketCheckedOut;
 import io.github.hirannor.oms.domain.core.valueobject.CustomerId;
-import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,14 +24,14 @@ public class BasketCheckedOutModelToDomainMapper implements MessageModelMapper<B
     public BasketCheckedOut apply(final BasketCheckedOutModel model) {
         if (model == null) return null;
 
-        final List<BasketItem> items = model.getItems()
+        final List<BasketItem> items = model.items()
                 .stream()
                 .map(mapBasketItemModelToDomain)
                 .toList();
 
         return BasketCheckedOut.recreate(
-                MessageId.from(model.getEventId()),
-                CustomerId.from(model.getCustomerId()),
+                model.id(),
+                CustomerId.from(model.customerId()),
                 items
         );
 

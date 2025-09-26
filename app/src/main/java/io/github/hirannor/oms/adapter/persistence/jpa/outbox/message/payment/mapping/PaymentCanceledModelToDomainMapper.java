@@ -5,7 +5,6 @@ import io.github.hirannor.oms.adapter.persistence.jpa.outbox.message.payment.Pay
 import io.github.hirannor.oms.domain.order.OrderId;
 import io.github.hirannor.oms.domain.payment.PaymentId;
 import io.github.hirannor.oms.domain.payment.events.PaymentCanceled;
-import io.github.hirannor.oms.infrastructure.messaging.MessageId;
 import org.springframework.stereotype.Component;
 
 @Component(value = "PaymentCanceledModelToDomainMapper")
@@ -19,7 +18,7 @@ public class PaymentCanceledModelToDomainMapper implements MessageModelMapper<Pa
         if (model == null) return null;
 
         return PaymentCanceled.recreate(
-                MessageId.from(model.id()),
+                model.id(),
                 PaymentId.from(model.paymentId()),
                 OrderId.from(model.orderId())
         );

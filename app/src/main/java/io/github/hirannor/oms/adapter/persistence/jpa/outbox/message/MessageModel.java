@@ -1,5 +1,6 @@
 package io.github.hirannor.oms.adapter.persistence.jpa.outbox.message;
 
-public interface MessageModel {
-    String id();
+import io.github.hirannor.oms.infrastructure.messaging.Message;
+
+public interface MessageModel extends Message {
 }

@@ -14,7 +14,7 @@ public class OrderShippedToModelMapper implements MessageMapper<OrderShipped, Or
     public OrderShippedModel apply(final OrderShipped evt) {
         if (evt == null) return null;
 
-        return new OrderShippedModel(evt.id().asText(), evt.orderId().asText(), evt.customerId().asText());
+        return new OrderShippedModel(evt.id(), evt.orderId().asText(), evt.customerId().asText());
     }
 
     @Override

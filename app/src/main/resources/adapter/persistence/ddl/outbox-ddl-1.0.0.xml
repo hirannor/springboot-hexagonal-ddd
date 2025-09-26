@@ -12,16 +12,16 @@
                 incrementBy="5"
                 startValue="1"/>
 
-        <createTable tableName="EC_OUTBOX_EVENT">
+        <createTable tableName="EC_OUTBOX_MESSAGE">
             <column name="id" type="BIGINT">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
 
-            <column name="event_id" type="VARCHAR(255)">
+            <column name="message_id" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
 
-            <column name="EVENT_TYPE" type="VARCHAR(255)">
+            <column name="message_type" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
 
@@ -38,17 +38,17 @@
             </column>
         </createTable>
 
-        <createIndex indexName="idx_outbox_processed" tableName="EC_OUTBOX_EVENT">
+        <createIndex indexName="idx_outbox_processed" tableName="EC_OUTBOX_MESSAGE">
             <column name="processed"/>
         </createIndex>
 
-        <createIndex indexName="idx_outbox_created_at" tableName="EC_OUTBOX_EVENT">
+        <createIndex indexName="idx_outbox_created_at" tableName="EC_OUTBOX_MESSAGE">
             <column name="created_at"/>
         </createIndex>
 
         <addUniqueConstraint
-                tableName="EC_OUTBOX_EVENT"
-                columnNames="event_id"
-                constraintName="uk_outbox_event_id"/>
+                tableName="EC_OUTBOX_MESSAGE"
+                columnNames="message_id"
+                constraintName="uk_outbox_message_id"/>
     </changeSet>
 </databaseChangeLog>

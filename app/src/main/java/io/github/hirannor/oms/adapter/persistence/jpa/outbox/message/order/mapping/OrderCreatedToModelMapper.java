@@ -14,7 +14,7 @@ public class OrderCreatedToModelMapper implements MessageMapper<OrderCreated, Or
     public OrderCreatedModel apply(final OrderCreated evt) {
         if (evt == null) return null;
 
-        return new OrderCreatedModel(evt.id().asText(),
+        return new OrderCreatedModel(evt.id(),
                 evt.orderId().asText(),
                 evt.customerId().asText()
         );

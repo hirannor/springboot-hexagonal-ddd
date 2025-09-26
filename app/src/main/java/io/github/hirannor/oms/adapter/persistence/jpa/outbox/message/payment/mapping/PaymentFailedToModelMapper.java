@@ -15,7 +15,7 @@ public class PaymentFailedToModelMapper implements MessageMapper<PaymentFailed, 
     public PaymentFailedModel apply(final PaymentFailed evt) {
         if (evt == null) return null;
 
-        return new PaymentFailedModel(evt.id().asText(),
+        return new PaymentFailedModel(evt.id(),
                 evt.paymentId().asText(),
                 evt.orderId().asText());
     }
