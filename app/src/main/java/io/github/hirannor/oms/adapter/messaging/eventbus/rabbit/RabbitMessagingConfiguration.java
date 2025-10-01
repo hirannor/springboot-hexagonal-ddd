@@ -2,12 +2,10 @@ package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.*;
-import org.springframework.amqp.rabbit.config.RetryInterceptorBuilder;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.retry.RejectAndDontRequeueRecoverer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -62,7 +60,6 @@ public class RabbitMessagingConfiguration {
                 .build();
     }
 
-
     @Bean
     @Qualifier("omsDeadLetterQueue")
     Queue createOmsDeadLetterQueue() {
@@ -70,15 +67,16 @@ public class RabbitMessagingConfiguration {
     }
 
     @Bean
-    Binding createOmsDlqBinding(@Qualifier("omsDeadLetterQueue") final Queue omsDeadLetterQueue, final TopicExchange omsExchange) {
+    Binding createOmsDlqBinding(@Qualifier("omsDeadLetterQueue") final Queue omsDeadLetterQueue,
+                                final TopicExchange omsExchange) {
         return BindingBuilder.bind(omsDeadLetterQueue).to(omsExchange).with(properties.getDlq());
     }
 
     @Bean
-    Binding createOmsQueueBinding(@Qualifier("omsQueue") final Queue omsQueue, final TopicExchange omsExchange) {
-        return BindingBuilder.bind(omsQueue).to(omsExchange).with("#");
+    Binding createOmsQueueBinding(@Qualifier("omsQueue") final Queue omsQueue,
+                                  final TopicExchange omsExchange) {
+        return BindingBuilder.bind(omsQueue).to(omsExchange).with("oms.events");
     }
-
 
     @Bean
     ConnectionFactory connectionFactory() {
@@ -94,19 +92,15 @@ public class RabbitMessagingConfiguration {
     }
 
     @Bean
-    SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(final SimpleRabbitListenerContainerFactoryConfigurer configurer) {
+    SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
+            final SimpleRabbitListenerContainerFactoryConfigurer configurer) {
+
         final SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         configurer.configure(factory, this.connectionFactory());
         Objects.requireNonNull(factory);
 
         factory.setMessageConverter(createJacksonMessageConverter());
-        factory.setAdviceChain(
-                RetryInterceptorBuilder.stateless()
-                        .maxAttempts(properties.getRetry().getMaxAttempts())
-                        .backOffOptions(1000, 2.0, 10000)
-                        .recoverer(new RejectAndDontRequeueRecoverer())
-                        .build()
-        );
+
         return factory;
     }
 
@@ -114,12 +108,10 @@ public class RabbitMessagingConfiguration {
     RabbitTemplate rabbitTemplate() {
         final RabbitTemplate template = new RabbitTemplate(connectionFactory());
         template.setMessageConverter(createJacksonMessageConverter());
-
         return template;
     }
 
     private Jackson2JsonMessageConverter createJacksonMessageConverter() {
         return new Jackson2JsonMessageConverter(objectMapper);
     }
-
 }

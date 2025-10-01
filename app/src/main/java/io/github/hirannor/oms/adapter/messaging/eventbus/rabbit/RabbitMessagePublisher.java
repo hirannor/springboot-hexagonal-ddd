@@ -17,6 +17,7 @@ import java.util.function.Function;
 class RabbitMessagePublisher implements MessagePublisher {
 
     private static final Logger LOGGER = LogManager.getLogger(RabbitMessagePublisher.class);
+    private static final String ROUTING_KEY = "oms.events";
 
     private final RabbitTemplate rabbitTemplate;
     private final RabbitConfigurationProperties properties;
@@ -39,9 +40,8 @@ class RabbitMessagePublisher implements MessagePublisher {
 
         rabbitTemplate.convertAndSend(
                 properties.getExchange(),
-                model.getClass().getSimpleName(),
-                model,
-                new CorrelationData(message.id().asText())
+                ROUTING_KEY,
+                model
         );
 
         LOGGER.debug("Successfully published message [{}] to exchange [{}] with routing key [{}]",

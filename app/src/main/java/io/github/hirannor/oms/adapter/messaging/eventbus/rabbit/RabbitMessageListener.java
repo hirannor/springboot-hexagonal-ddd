@@ -1,6 +1,5 @@
 package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit;
 
-import com.rabbitmq.client.Channel;
 import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.MessageModel;
 import io.github.hirannor.oms.application.port.outbox.Outbox;
 import io.github.hirannor.oms.infrastructure.adapter.DriverAdapter;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import java.io.IOException;
 import java.util.function.Function;
 
 @Component
@@ -36,41 +34,26 @@ class RabbitMessageListener {
         this.outbox = outbox;
     }
 
-    @RabbitListener(queues = "${messaging.rabbit.queue}", ackMode = "MANUAL")
-    void onMessage(final Message message,
-                   final Channel channel,
-                   final org.springframework.amqp.core.Message amqpMessage) throws IOException {
+    @RabbitListener(queues = "${messaging.rabbit.queue}")
+    void onMessage(final Message message) {
         if (!(message instanceof MessageModel model)) {
             LOGGER.warn("Received unexpected message type: {}", message.getClass().getName());
             return;
         }
 
-        long tag = amqpMessage.getMessageProperties().getDeliveryTag();
+        txTemplate.executeWithoutResult(tx -> {
+            LOGGER.debug("Received {} with id {} from RabbitMQ",
+                    model.getClass().getSimpleName(),
+                    model.id().asText());
 
-        try {
-            txTemplate.executeWithoutResult(tx -> {
-                LOGGER.debug("Received {} with id {} from RabbitMQ",
-                        model.getClass().getSimpleName(),
-                        model.id().asText());
+            final Message domainMessage = mapToMessage.apply(model);
 
-                final Message domainMessage = mapToMessage.apply(model);
+            outbox.markAsProcessed(domainMessage.id());
+            internalBus.publishEvent(domainMessage);
 
-                outbox.markAsProcessed(domainMessage.id());
-
-                internalBus.publishEvent(domainMessage);
-
-                LOGGER.debug("Published {} with id {} to internal bus + saved to Outbox",
-                        domainMessage.getClass().getSimpleName(),
-                        domainMessage.id().asText());
-            });
-
-            channel.basicAck(tag, false);
-            LOGGER.debug("ACK sent to RabbitMQ for message {}", model.id().asText());
-
-        } catch (final Exception ex) {
-            LOGGER.error("Failed processing RabbitMQ message {}, rolling back + requeue. cause={}",
-                    model.id().asText(), ex.getMessage(), ex);
-            channel.basicNack(tag, false, true);
-        }
+            LOGGER.debug("Published {} with id {} to internal bus + saved to Outbox",
+                    domainMessage.getClass().getSimpleName(),
+                    domainMessage.id().asText());
+        });
     }
 }
