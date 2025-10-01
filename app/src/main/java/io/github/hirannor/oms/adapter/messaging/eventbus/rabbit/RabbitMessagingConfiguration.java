@@ -38,17 +38,14 @@ public class RabbitMessagingConfiguration {
     private final RabbitConfigurationProperties properties;
     private final ObjectMapper objectMapper;
     private final RabbitProperties rabbitProperties;
-    private final RabbitMessageConfirmCallbackHandler callbackHandler;
 
     @Autowired
     RabbitMessagingConfiguration(final RabbitConfigurationProperties properties,
                                  final ObjectMapper objectMapper,
-                                 final RabbitProperties rabbitProperties,
-                                 final RabbitMessageConfirmCallbackHandler callbackHandler) {
+                                 final RabbitProperties rabbitProperties) {
         this.properties = properties;
         this.objectMapper = objectMapper;
         this.rabbitProperties = rabbitProperties;
-        this.callbackHandler = callbackHandler;
     }
 
     @Bean
@@ -117,8 +114,6 @@ public class RabbitMessagingConfiguration {
     RabbitTemplate rabbitTemplate() {
         final RabbitTemplate template = new RabbitTemplate(connectionFactory());
         template.setMessageConverter(createJacksonMessageConverter());
-        template.setConfirmCallback(callbackHandler);
-        template.setReturnsCallback(callbackHandler);
 
         return template;
     }

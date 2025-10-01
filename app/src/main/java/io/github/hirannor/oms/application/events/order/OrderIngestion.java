@@ -11,8 +11,8 @@ import io.github.hirannor.oms.domain.order.events.OrderPaymentFailed;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @Component
 public class OrderIngestion {
@@ -33,7 +33,7 @@ public class OrderIngestion {
         this.orderCancellation = orderCancellation;
     }
 
-    @EventListener
+    @TransactionalEventListener
     public void handle(final OrderPaid evt) {
         if (evt == null) throw new IllegalArgumentException("OrderPaid event cannot be null!");
 
@@ -45,14 +45,14 @@ public class OrderIngestion {
         ));
     }
 
-    @EventListener
+    @TransactionalEventListener
     public void handle(final OrderPaymentFailed evt) {
         if (evt == null) throw new IllegalArgumentException("OrderPaymentFailed event cannot be null!");
 
         LOGGER.debug("OrderPaymentFailed event received: {}", evt);
     }
 
-    @EventListener
+    @TransactionalEventListener
     public void handle(final OrderPaymentExpired evt) {
         if (evt == null) throw new IllegalArgumentException("OrderPaymentExpired event cannot be null!");
 
