@@ -35,8 +35,8 @@ class OutboxMessagePublisher {
     @Transactional
     @Scheduled(fixedDelayString = "${messaging.rabbit.outbox.poll-interval}")
     void publishOutboxMessages() {
-        final List<Message> unprocessedMessages = outboxes.findAllUnprocessedBy(batchSize);
-        unprocessedMessages.forEach(pipeline);
+        final List<Message> pendingMessages = outboxes.findAllPendingBy(batchSize);
+        pendingMessages.forEach(pipeline);
     }
 
     private Consumer<Message> logMessages() {

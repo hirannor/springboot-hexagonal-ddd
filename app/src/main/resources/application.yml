@@ -71,6 +71,7 @@ messaging:
     exchange: oms.exchange
     queue: oms.queue
     dlq: oms.queue.dlq
+    dlx: oms.exchange.dlx
     outbox:
       poll-interval: 5s
       batch-size: 50

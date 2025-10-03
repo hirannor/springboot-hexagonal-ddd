@@ -9,6 +9,7 @@ public class RabbitConfigurationProperties {
     private String exchange;
     private String queue;
     private String dlq;
+    private String dlx;
     private Outbox outbox;
     private Retry retry;
 
@@ -39,6 +40,14 @@ public class RabbitConfigurationProperties {
 
     public void setDlq(final String dlq) {
         this.dlq = dlq;
+    }
+
+    public String getDlx() {
+        return dlx;
+    }
+
+    public void setDlx(String dlx) {
+        this.dlx = dlx;
     }
 
     public Outbox getOutbox() {

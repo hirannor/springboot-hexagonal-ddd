@@ -1,7 +1,7 @@
 package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit;
 
 import io.github.hirannor.oms.adapter.messaging.eventbus.rabbit.message.MessageModel;
-import io.github.hirannor.oms.application.port.outbox.Outbox;
+import io.github.hirannor.oms.application.service.outbox.OutboxProcessing;
 import io.github.hirannor.oms.infrastructure.adapter.DriverAdapter;
 import io.github.hirannor.oms.infrastructure.messaging.Message;
 import org.apache.logging.log4j.LogManager;
@@ -22,12 +22,12 @@ class RabbitMessageListener {
     private final ApplicationEventPublisher internalBus;
     private final Function<MessageModel, Message> mapToMessage;
     private final TransactionTemplate txTemplate;
-    private final Outbox outbox;
+    private final OutboxProcessing outbox;
 
     RabbitMessageListener(final ApplicationEventPublisher internalBus,
                           final Function<MessageModel, Message> mapToMessage,
                           final PlatformTransactionManager txManager,
-                          final Outbox outbox) {
+                          final OutboxProcessing outbox) {
         this.internalBus = internalBus;
         this.mapToMessage = mapToMessage;
         this.txTemplate = new TransactionTemplate(txManager);
@@ -41,19 +41,28 @@ class RabbitMessageListener {
             return;
         }
 
-        txTemplate.executeWithoutResult(tx -> {
-            LOGGER.debug("Received {} with id {} from RabbitMQ",
-                    model.getClass().getSimpleName(),
-                    model.id().asText());
+        try {
+            txTemplate.executeWithoutResult(tx -> {
+                LOGGER.debug("Received {} with id {} from RabbitMQ",
+                        model.getClass().getSimpleName(),
+                        model.id().asText());
 
-            final Message domainMessage = mapToMessage.apply(model);
+                final Message domainMessage = mapToMessage.apply(model);
 
-            outbox.markAsProcessed(domainMessage.id());
-            internalBus.publishEvent(domainMessage);
+                internalBus.publishEvent(domainMessage);
 
-            LOGGER.debug("Published {} with id {} to internal bus + saved to Outbox",
-                    domainMessage.getClass().getSimpleName(),
-                    domainMessage.id().asText());
-        });
+                LOGGER.debug("Published {} with id {} to internal bus",
+                        domainMessage.getClass().getSimpleName(),
+                        domainMessage.id().asText());
+            });
+
+            outbox.markAsPublished(model.id());
+
+        } catch (Exception e) {
+            LOGGER.error("Failed to process message {} with id {}, will NOT mark as processed",
+                    message.getClass().getSimpleName(), model.id().asText(), e);
+            outbox.markAsFailed(model.id(), e);
+            throw e;
+        }
     }
 }

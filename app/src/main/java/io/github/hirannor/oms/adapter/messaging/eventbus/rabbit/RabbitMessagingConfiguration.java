@@ -2,10 +2,12 @@ package io.github.hirannor.oms.adapter.messaging.eventbus.rabbit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.config.RetryInterceptorBuilder;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.retry.RejectAndDontRequeueRecoverer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,6 +21,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.util.Objects;
+
 
 @Configuration
 @ComponentScan
@@ -47,36 +50,40 @@ public class RabbitMessagingConfiguration {
     }
 
     @Bean
-    TopicExchange createOmsExchange() {
+    TopicExchange omsExchange() {
         return new TopicExchange(properties.getExchange());
     }
 
     @Bean
-    @Qualifier("omsQueue")
-    Queue createOmsQueue() {
+    TopicExchange omsDeadLetterExchange() {
+        return new TopicExchange(properties.getDlx());
+    }
+
+    @Bean
+    Queue omsQueue() {
         return QueueBuilder.durable(properties.getQueue())
-                .withArgument(X_DEAD_LETTER_EXCHANGE, properties.getExchange())
+                .withArgument(X_DEAD_LETTER_EXCHANGE, properties.getDlx())
                 .withArgument(X_DEAD_LETTER_ROUTING_KEY, properties.getDlq())
                 .build();
     }
 
     @Bean
-    @Qualifier("omsDeadLetterQueue")
-    Queue createOmsDeadLetterQueue() {
+    Queue omsDeadLetterQueue() {
         return QueueBuilder.durable(properties.getDlq()).build();
     }
 
     @Bean
-    Binding createOmsDlqBinding(@Qualifier("omsDeadLetterQueue") final Queue omsDeadLetterQueue,
-                                final TopicExchange omsExchange) {
-        return BindingBuilder.bind(omsDeadLetterQueue).to(omsExchange).with(properties.getDlq());
+    Binding createOmsQueueBinding(@Qualifier("omsQueue") final Queue omsQueue,
+                                  @Qualifier("omsExchange") final TopicExchange omsExchange) {
+        return BindingBuilder.bind(omsQueue).to(omsExchange).with("oms.events");
     }
 
     @Bean
-    Binding createOmsQueueBinding(@Qualifier("omsQueue") final Queue omsQueue,
-                                  final TopicExchange omsExchange) {
-        return BindingBuilder.bind(omsQueue).to(omsExchange).with("oms.events");
+    Binding createOmsDlqBinding(@Qualifier("omsDeadLetterQueue") final Queue omsDeadLetterQueue,
+                                @Qualifier("omsDeadLetterExchange") final TopicExchange omsDeadLetterExchange) {
+        return BindingBuilder.bind(omsDeadLetterQueue).to(omsDeadLetterExchange).with(properties.getDlq());
     }
+
 
     @Bean
     ConnectionFactory connectionFactory() {
@@ -85,13 +92,10 @@ public class RabbitMessagingConfiguration {
         connection.setPort(rabbitProperties.getPort());
         connection.setUsername(rabbitProperties.getUsername());
         connection.setPassword(rabbitProperties.getPassword());
-        connection.setPublisherReturns(rabbitProperties.isPublisherReturns());
-        connection.setPublisherConfirmType(CachingConnectionFactory.ConfirmType.CORRELATED);
-        connection.setPublisherReturns(true);
         return connection;
     }
 
-    @Bean
+    @Bean(name = "rabbitListenerContainerFactory")
     SimpleRabbitListenerContainerFactory rabbitListenerContainerFactory(
             final SimpleRabbitListenerContainerFactoryConfigurer configurer) {
 
@@ -101,8 +105,17 @@ public class RabbitMessagingConfiguration {
 
         factory.setMessageConverter(createJacksonMessageConverter());
 
+        factory.setAdviceChain(
+                RetryInterceptorBuilder.stateless()
+                        .maxAttempts(properties.getRetry().getMaxAttempts())
+                        .backOffOptions(2000, 2.0, 10000)
+                        .recoverer(new RejectAndDontRequeueRecoverer())
+                        .build()
+        );
+
         return factory;
     }
+
 
     @Bean
     RabbitTemplate rabbitTemplate() {

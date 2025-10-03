@@ -24,9 +24,6 @@ public class OutboxModel {
     @Column(name = "MESSAGE_ID", nullable = false)
     private String messageId;
 
-    @Column(name = "PROCESSED", nullable = false)
-    private boolean processed;
-
     @Column(name = "MESSAGE_TYPE", nullable = false)
     private String messageType;
 
@@ -35,6 +32,16 @@ public class OutboxModel {
 
     @Column(name = "PAYLOAD", nullable = false)
     private String payload;
+
+    @Column(name = "STATUS", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private OutboxStatusModel status = OutboxStatusModel.PENDING;
+
+    @Column(name = "ATTEMPT_COUNT", nullable = false)
+    private int attemptCount = 0;
+
+    @Column(name = "LAST_ATTEMPT_AT")
+    private Instant lastAttemptAt;
 
     public Long getId() {
         return id;
@@ -50,14 +57,6 @@ public class OutboxModel {
 
     public void setMessageId(String eventId) {
         this.messageId = eventId;
-    }
-
-    public boolean isProcessed() {
-        return processed;
-    }
-
-    public void setProcessed(boolean processed) {
-        this.processed = processed;
     }
 
     public String getMessageType() {
@@ -82,5 +81,29 @@ public class OutboxModel {
 
     public void setPayload(String payload) {
         this.payload = payload;
+    }
+
+    public OutboxStatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(OutboxStatusModel status) {
+        this.status = status;
+    }
+
+    public int getAttemptCount() {
+        return attemptCount;
+    }
+
+    public void setAttemptCount(int attemptCount) {
+        this.attemptCount = attemptCount;
+    }
+
+    public Instant getLastAttemptAt() {
+        return lastAttemptAt;
+    }
+
+    public void setLastAttemptAt(Instant lastAttemptAt) {
+        this.lastAttemptAt = lastAttemptAt;
     }
 }

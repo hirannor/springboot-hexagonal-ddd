@@ -9,9 +9,12 @@ import java.util.List;
 public interface Outbox {
     void save(Message msg);
 
-    List<Message> findAllUnprocessedBy(int batchSize);
+    List<Message> findAllPendingBy(int batchSize);
 
-    void markAsProcessed(MessageId id);
+    void markAsPublished(MessageId id);
 
-    void deleteProcessedOlderThan(Instant time);
+    void deletePublishedOlderThan(Instant time);
+
+    void markAsFailed(MessageId id, Throwable reason);
+
 }

@@ -9,10 +9,10 @@ import java.time.Instant;
 import java.util.Optional;
 
 public interface OutboxSpringDataJpaRepository extends JpaRepository<OutboxModel, String> {
-    Slice<OutboxModel> findByProcessedFalseOrderByCreatedAtAsc(Pageable pageable);
-
     Optional<OutboxModel> findByMessageId(String messageId);
 
     @Modifying
-    void deleteByProcessedIsTrueAndCreatedAtBefore(Instant cutoff);
+    void deleteByStatusAndCreatedAtBefore(OutboxStatusModel status, Instant cutoff);
+
+    Slice<OutboxModel> findByStatusOrderByCreatedAtAsc(OutboxStatusModel status, Pageable pageable);
 }

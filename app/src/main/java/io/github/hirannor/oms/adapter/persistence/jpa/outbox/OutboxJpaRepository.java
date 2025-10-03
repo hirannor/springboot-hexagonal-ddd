@@ -32,8 +32,7 @@ class OutboxJpaRepository implements Outbox {
     OutboxJpaRepository(final OutboxSpringDataJpaRepository outboxes,
                         final ObjectMapper mapper,
                         final Function<MessageModel, Message> mapToMessage,
-                        final Function<Message, MessageModel> mapToModel
-                        ) {
+                        final Function<Message, MessageModel> mapToModel) {
         this.outboxes = outboxes;
         this.mapper = mapper;
         this.mapToMessage = mapToMessage;
@@ -45,7 +44,6 @@ class OutboxJpaRepository implements Outbox {
         if (msg == null) throw new IllegalArgumentException("Message cannot be null!");
 
         final MessageModel message = mapToModel.apply(msg);
-
         if (message == null) {
             LOGGER.warn("Unhandled message type: {}, skip saving to outbox table", msg);
             return;
@@ -56,20 +54,21 @@ class OutboxJpaRepository implements Outbox {
         final OutboxModel model = new OutboxModel();
         model.setMessageId(message.id().asText());
         model.setMessageType(message.getClass().getName());
-        model.setProcessed(false);
         model.setCreatedAt(Instant.now());
         model.setPayload(payload);
+        model.setStatus(OutboxStatusModel.PENDING);
+        model.setAttemptCount(0);
 
         outboxes.save(model);
     }
 
     @Override
-    public List<Message> findAllUnprocessedBy(int batchSize) {
+    public List<Message> findAllPendingBy(int batchSize) {
         if (batchSize <= 0) throw new IllegalArgumentException("Batch size must be greater than 0");
 
         final Pageable pageable = PageRequest.of(0, batchSize);
 
-        return outboxes.findByProcessedFalseOrderByCreatedAtAsc(pageable)
+        return outboxes.findByStatusOrderByCreatedAtAsc(OutboxStatusModel.PENDING, pageable)
                 .stream()
                 .map(this::toMessageModel)
                 .map(mapToMessage)
@@ -77,21 +76,37 @@ class OutboxJpaRepository implements Outbox {
     }
 
     @Override
-    public void markAsProcessed(final MessageId id) {
+    public void markAsPublished(final MessageId id) {
         if (id == null) throw new IllegalArgumentException("Id cannot be null!");
 
         outboxes.findByMessageId(id.asText())
                 .ifPresent(model -> {
-                    model.setProcessed(true);
+                    model.setStatus(OutboxStatusModel.PUBLISHED);
+                    model.setLastAttemptAt(Instant.now());
+                    model.setAttemptCount(model.getAttemptCount() + 1);
                     outboxes.save(model);
                 });
     }
 
     @Override
-    public void deleteProcessedOlderThan(final Instant time) {
+    public void markAsFailed(final MessageId id, final Throwable reason) {
+        if (id == null) throw new IllegalArgumentException("Id cannot be null!");
+
+        outboxes.findByMessageId(id.asText())
+                .ifPresent(model -> {
+                    model.setStatus(OutboxStatusModel.FAILED);
+                    model.setLastAttemptAt(Instant.now());
+                    model.setAttemptCount(model.getAttemptCount() + 1);
+                    LOGGER.error("Marking message {} as FAILED due to {}", id.asText(), reason.getMessage(), reason);
+                    outboxes.save(model);
+                });
+    }
+
+    @Override
+    public void deletePublishedOlderThan(final Instant time) {
         if (time == null) throw new IllegalArgumentException("time cannot be null");
 
-        outboxes.deleteByProcessedIsTrueAndCreatedAtBefore(time);
+        outboxes.deleteByStatusAndCreatedAtBefore(OutboxStatusModel.PUBLISHED, time);
     }
 
     private String toJson(final MessageModel model) {
@@ -108,7 +123,7 @@ class OutboxJpaRepository implements Outbox {
             final Class<?> clazz = Class.forName(model.getMessageType());
             return (MessageModel) mapper.readValue(model.getPayload(), clazz);
         } catch (final JsonProcessingException | ClassNotFoundException ex) {
-            LOGGER.error("Failed to serialize message {}", model.getClass().getSimpleName(), ex);
+            LOGGER.error("Failed to deserialize message {}", model.getClass().getSimpleName(), ex);
             throw new RuntimeException(ex);
         }
     }

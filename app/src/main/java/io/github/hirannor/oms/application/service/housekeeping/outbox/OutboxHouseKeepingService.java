@@ -28,7 +28,7 @@ class OutboxHouseKeepingService {
     void cleanup() {
         LOGGER.info("Starting outbox housekeeping");
 
-        outbox.deleteProcessedOlderThan(Instant.now().minus(7, ChronoUnit.DAYS));
+        outbox.deletePublishedOlderThan(Instant.now().minus(7, ChronoUnit.DAYS));
 
         LOGGER.info("Outbox housekeeping completed");
     }

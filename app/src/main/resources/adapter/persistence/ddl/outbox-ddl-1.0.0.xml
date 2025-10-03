@@ -6,7 +6,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.19.xsd">
 
-    <changeSet id="create_tables::outbox:ddl:1.0.0" author="hirannor">
+    <changeSet id="create_tables::outbox:ddl:2.0.0" author="hirannor">
         <createSequence
                 sequenceName="outbox_seq"
                 incrementBy="5"
@@ -25,9 +25,15 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="processed" type="BOOLEAN">
+            <column name="status" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
+
+            <column name="attempt_count" type="INT" defaultValueNumeric="0">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="last_attempt_at" type="TIMESTAMP"/>
 
             <column name="created_at" type="TIMESTAMP">
                 <constraints nullable="false"/>
@@ -38,8 +44,8 @@
             </column>
         </createTable>
 
-        <createIndex indexName="idx_outbox_processed" tableName="EC_OUTBOX_MESSAGE">
-            <column name="processed"/>
+        <createIndex indexName="idx_outbox_status" tableName="EC_OUTBOX_MESSAGE">
+            <column name="status"/>
         </createIndex>
 
         <createIndex indexName="idx_outbox_created_at" tableName="EC_OUTBOX_MESSAGE">
